@@ -31,7 +31,7 @@ output = {
     'source_excel': research['source_excel'],
     'internal_price_basis': research['internal_price_basis'],
     'matching_policy': research['matching_policy'],
-    'generated_at': datetime.now(timezone.utc).isoformat(),
+    'generated_at': research.get('generated_at') or '2026-08-18T12:00:00Z',
     'product_count': len(products),
     'brand_count': len({p['brand_name'] for p in products}),
     'source_columns': research['source_columns'],
