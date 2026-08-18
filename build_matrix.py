@@ -408,11 +408,10 @@ th.source-col-head {
   position: sticky;
   left: 735px;
   z-index: 20;
-  width: 135px;
-  min-width: 135px;
-  max-width: 135px;
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
   background: #ffffff;
-  text-align: right;
   border-right: 2px solid #cbd5e1 !important;
   box-shadow: var(--shadow-pin);
 }
@@ -483,6 +482,15 @@ tbody tr:hover td.col-selling-price {
 .num-price.selling {
   color: #0f172a;
   font-weight: 700;
+}
+
+/* Selling Price Cell Layout */
+.selling-price-cell-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  width: 100%;
 }
 
 /* Source Cells & Cards */
@@ -1074,7 +1082,17 @@ function render() {
     }
 
     const calculatedSelling = computeSellingPrice(mfg);
-    const sellingDisplay = calculatedSelling ? `<span class="num-price selling">${esc(money.format(calculatedSelling))}</span>` : '<span class="cell-dash">—</span>';
+    let sellingDisplay = '<span class="cell-dash">—</span>';
+    if (calculatedSelling && mfg > 0) {
+      const sellingMarkupPct = calculateMarkup(calculatedSelling, mfg);
+      const sellingMarkupChip = getMarkupChip(sellingMarkupPct);
+      sellingDisplay = `
+        <div class="selling-price-cell-wrap">
+          <span class="num-price selling">${esc(money.format(calculatedSelling))}</span>
+          ${sellingMarkupChip}
+        </div>
+      `;
+    }
 
     return `
       <tr tabindex="0" data-index="${products.indexOf(p)}">
@@ -1099,13 +1117,20 @@ function openDetail(p) {
   const mfg = Number(p.manufactured_price);
   const calculatedSelling = computeSellingPrice(mfg);
   const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
+  const sellingMarkupPct = calculatedSelling && mfg > 0 ? calculateMarkup(calculatedSelling, mfg) : null;
   
   let out = `
     <div class="detail-stats-grid">
       <div class="detail-stat-box"><span>Purchasing (MFG Price)</span><strong>${esc(money.format(mfg))}</strong></div>
       <div class="detail-stat-box"><span>Market Average</span><strong>${esc(money.format(p.market_average_price))}</strong></div>
       <div class="detail-stat-box"><span>Variable Costs (Overhead)</span><strong>${esc(money.format(overhead))}</strong></div>
-      <div class="detail-stat-box"><span>Calculated Selling Price</span><strong style="color:var(--brand-blue);">${calculatedSelling ? esc(money.format(calculatedSelling)) : '—'}</strong></div>
+      <div class="detail-stat-box">
+        <span>Calculated Selling Price</span>
+        <strong style="color:var(--brand-blue);display:flex;align-items:center;gap:6px;">
+          ${calculatedSelling ? esc(money.format(calculatedSelling)) : '—'}
+          ${getMarkupChip(sellingMarkupPct)}
+        </strong>
+      </div>
     </div>
     <div class="detail-sources-list">
   `;
