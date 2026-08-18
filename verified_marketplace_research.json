@@ -30,7 +30,7 @@
     "Arogga": 176,
     "Shajgoj": 165,
     "OhSoGo": 150,
-    "Guerniss Official": 79,
+    "Guerniss Official": 81,
     "Daraz": 61,
     "eMartWay": 44,
     "Bio-Xin Official": 40,
@@ -42,8 +42,8 @@
     "Nature Beauty Official": 1
   },
   "coverage_counts": {
-    "0": 10,
-    "1": 121,
+    "0": 8,
+    "1": 123,
     "2": 132,
     "3": 49,
     "4": 38,
@@ -3997,7 +3997,17 @@
         "market_average_price": 1890,
         "product_cost": 1134
       },
-      "sources": {}
+      "sources": {
+        "Guerniss Official": {
+          "price": 1890.0,
+          "url": "https://guerniss.com/products/aloe-essence-moisturizing-brightening-serum",
+          "matched_title": "Aloe Essence Moisturizing & Brightening Serum",
+          "size": "30ml",
+          "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "row": 131,
@@ -4172,7 +4182,17 @@
         "market_average_price": 1750,
         "product_cost": 1050
       },
-      "sources": {}
+      "sources": {
+        "Guerniss Official": {
+          "price": 1575.0,
+          "url": "https://guerniss.com/products/protection-lotion-sunscreen-spf45",
+          "matched_title": "Everyday Protection Lotion Sunscreen SPF 45",
+          "size": "60ml",
+          "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "row": 138,

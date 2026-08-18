@@ -11,7 +11,7 @@
     "bundles_rejected_for_single_skus": true,
     "unverified_sources_omitted": true
   },
-  "generated_at": "2026-08-18T06:21:09.922892+00:00",
+  "generated_at": "2026-08-18T06:37:22.916430+00:00",
   "product_count": 372,
   "brand_count": 15,
   "source_columns": [
@@ -33,7 +33,7 @@
     "Arogga": 176,
     "Shajgoj": 165,
     "OhSoGo": 150,
-    "Guerniss Official": 79,
+    "Guerniss Official": 81,
     "Daraz": 61,
     "eMartWay": 44,
     "Bio-Xin Official": 40,
@@ -45,8 +45,8 @@
     "Nature Beauty Official": 1
   },
   "coverage_counts": {
-    "0": 10,
-    "1": 121,
+    "0": 8,
+    "1": 123,
     "2": 132,
     "3": 49,
     "4": 38,
@@ -3243,7 +3243,17 @@
       "brand_name": "Guerniss",
       "manufactured_price": 1134,
       "market_average_price": 1890,
-      "sources": {}
+      "sources": {
+        "Guerniss Official": {
+          "price": 1890.0,
+          "url": "https://guerniss.com/products/aloe-essence-moisturizing-brightening-serum",
+          "matched_title": "Aloe Essence Moisturizing & Brightening Serum",
+          "size": "30ml",
+          "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Guerniss Anti Melasma Whitening Serum",
@@ -3378,7 +3388,17 @@
       "brand_name": "Guerniss",
       "manufactured_price": 1050,
       "market_average_price": 1750,
-      "sources": {}
+      "sources": {
+        "Guerniss Official": {
+          "price": 1575.0,
+          "url": "https://guerniss.com/products/protection-lotion-sunscreen-spf45",
+          "matched_title": "Everyday Protection Lotion Sunscreen SPF 45",
+          "size": "60ml",
+          "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Guerniss Anti Melasma Cream",
