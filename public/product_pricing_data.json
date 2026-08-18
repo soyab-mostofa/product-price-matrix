@@ -11,7 +11,7 @@
     "bundles_rejected_for_single_skus": true,
     "unverified_sources_omitted": true
   },
-  "generated_at": "2026-08-18T09:05:46.426134+00:00",
+  "generated_at": "2026-08-18T09:08:44.578233+00:00",
   "product_count": 372,
   "brand_count": 15,
   "source_columns": [
@@ -55,8 +55,10 @@
   },
   "products": [
     {
+      "row": 2,
       "product_name": "Bio-Screen Powder Sunblock SPF 50+",
       "brand_name": "Bio-Screen",
+      "size": "12gm",
       "manufactured_price": 1237.5,
       "market_average_price": 1650,
       "sources": {
@@ -72,8 +74,10 @@
       }
     },
     {
+      "row": 3,
       "product_name": "BioCare Vitamin C Whitening Facial Cream",
       "brand_name": "BioCare",
+      "size": "50ml",
       "manufactured_price": 1612.5,
       "market_average_price": 2150,
       "sources": {
@@ -98,8 +102,10 @@
       }
     },
     {
+      "row": 4,
       "product_name": "BioCare Vitamin C Body Whitening Oil",
       "brand_name": "BioCare",
+      "size": "100ml",
       "manufactured_price": 862.5,
       "market_average_price": 1150,
       "sources": {
@@ -115,8 +121,10 @@
       }
     },
     {
+      "row": 5,
       "product_name": "BioCare Vitamin C Whitening Facial Wash",
       "brand_name": "BioCare",
+      "size": "100ml",
       "manufactured_price": 974.25,
       "market_average_price": 1299,
       "sources": {
@@ -132,8 +140,10 @@
       }
     },
     {
+      "row": 6,
       "product_name": "BioCare Retinol+C Serum",
       "brand_name": "BioCare",
+      "size": "30ml",
       "manufactured_price": 1237.5,
       "market_average_price": 1650,
       "sources": {
@@ -158,8 +168,10 @@
       }
     },
     {
+      "row": 7,
       "product_name": "BioCare Whitening Face & Neck Cream",
       "brand_name": "BioCare",
+      "size": "60ml",
       "manufactured_price": 1237.5,
       "market_average_price": 1650,
       "sources": {
@@ -175,8 +187,10 @@
       }
     },
     {
+      "row": 8,
       "product_name": "BioCare Glow Serum",
       "brand_name": "BioCare",
+      "size": "30ml",
       "manufactured_price": 1237.5,
       "market_average_price": 1650,
       "sources": {
@@ -201,8 +215,10 @@
       }
     },
     {
+      "row": 9,
       "product_name": "BioCare PureGlow Soothing Cleansing Gel",
       "brand_name": "BioCare",
+      "size": "200ml",
       "manufactured_price": 412.5,
       "market_average_price": 550,
       "sources": {
@@ -218,8 +234,10 @@
       }
     },
     {
+      "row": 10,
       "product_name": "BioCare Acne & Oil Control Creamy Face Wash",
       "brand_name": "BioCare",
+      "size": "150ml",
       "manufactured_price": 449.25,
       "market_average_price": 599,
       "sources": {
@@ -235,8 +253,10 @@
       }
     },
     {
+      "row": 11,
       "product_name": "BioCare Bio White Whitening Face Wash",
       "brand_name": "BioCare",
+      "size": "200ml",
       "manufactured_price": 487.5,
       "market_average_price": 650,
       "sources": {
@@ -252,8 +272,10 @@
       }
     },
     {
+      "row": 12,
       "product_name": "BioCare 12 Hour Protection Sunscreen Cream SPF 60+",
       "brand_name": "BioCare",
+      "size": "50g",
       "manufactured_price": 1612.5,
       "market_average_price": 2150,
       "sources": {
@@ -269,8 +291,10 @@
       }
     },
     {
+      "row": 13,
       "product_name": "Bio-Screen Sunblock BB cream SPF 60",
       "brand_name": "Bio-Screen",
+      "size": "50ml",
       "manufactured_price": 1199.25,
       "market_average_price": 1599,
       "sources": {
@@ -286,8 +310,10 @@
       }
     },
     {
+      "row": 14,
       "product_name": "BioCare Hair Repairing Argan Oil Conditioner",
       "brand_name": "BioCare",
+      "size": "200g",
       "manufactured_price": 1199.25,
       "market_average_price": 1599,
       "sources": {
@@ -303,8 +329,10 @@
       }
     },
     {
+      "row": 15,
       "product_name": "BioCare Ultra Hydra+ Moisturizing Cream",
       "brand_name": "BioCare",
+      "size": "80ml",
       "manufactured_price": 787.5,
       "market_average_price": 1050,
       "sources": {
@@ -329,8 +357,10 @@
       }
     },
     {
+      "row": 16,
       "product_name": "BioCare Brightening Body Lotion",
       "brand_name": "BioCare",
+      "size": "230ml",
       "manufactured_price": 749.25,
       "market_average_price": 999,
       "sources": {
@@ -355,8 +385,10 @@
       }
     },
     {
+      "row": 17,
       "product_name": "BioCare Acne, Oil & Pores Minimizing Serum",
       "brand_name": "BioCare",
+      "size": "30ml",
       "manufactured_price": 824.25,
       "market_average_price": 1099,
       "sources": {
@@ -381,8 +413,10 @@
       }
     },
     {
+      "row": 18,
       "product_name": "BioCare Acne and Oil Control Moisturizing Gel",
       "brand_name": "BioCare",
+      "size": "50ml",
       "manufactured_price": 824.25,
       "market_average_price": 1099,
       "sources": {
@@ -407,8 +441,10 @@
       }
     },
     {
+      "row": 19,
       "product_name": "BioCare Brightening Aloe Vera Gel",
       "brand_name": "BioCare",
+      "size": "200ml",
       "manufactured_price": 824.25,
       "market_average_price": 1099,
       "sources": {
@@ -433,8 +469,10 @@
       }
     },
     {
+      "row": 20,
       "product_name": "BioCare Handmade Milk and Honey Glowing Beauty Bar",
       "brand_name": "BioCare",
+      "size": "100gm",
       "manufactured_price": 412.5,
       "market_average_price": 550,
       "sources": {
@@ -459,8 +497,10 @@
       }
     },
     {
+      "row": 21,
       "product_name": "BioCare Handmade Papaya PureGlow Beauty Bar",
       "brand_name": "BioCare",
+      "size": "100gm",
       "manufactured_price": 412.5,
       "market_average_price": 550,
       "sources": {
@@ -485,8 +525,10 @@
       }
     },
     {
+      "row": 22,
       "product_name": "BioCare Handmade Baby Bar",
       "brand_name": "BioCare",
+      "size": "65gm",
       "manufactured_price": 337.5,
       "market_average_price": 450,
       "sources": {
@@ -511,8 +553,10 @@
       }
     },
     {
+      "row": 23,
       "product_name": "BioCare Handmade Niacinamide Brightening Beauty Bar",
       "brand_name": "BioCare",
+      "size": "100gm",
       "manufactured_price": 412.5,
       "market_average_price": 550,
       "sources": {
@@ -537,8 +581,10 @@
       }
     },
     {
+      "row": 24,
       "product_name": "BioCare Hair Growth Oil",
       "brand_name": "BioCare",
+      "size": "50ml",
       "manufactured_price": 486.75,
       "market_average_price": 649,
       "sources": {
@@ -563,8 +609,10 @@
       }
     },
     {
+      "row": 25,
       "product_name": "BioCare Niacinamide Brightening Creamy Gel",
       "brand_name": "BioCare",
+      "size": "50ml",
       "manufactured_price": 824.25,
       "market_average_price": 1099,
       "sources": {
@@ -589,8 +637,10 @@
       }
     },
     {
+      "row": 26,
       "product_name": "BioCare Niacinamide Brightening Face Wash",
       "brand_name": "BioCare",
+      "size": "200ml",
       "manufactured_price": 487.5,
       "market_average_price": 650,
       "sources": {
@@ -615,8 +665,10 @@
       }
     },
     {
+      "row": 27,
       "product_name": "BioCare Niacinamide Brightening Serum",
       "brand_name": "BioCare",
+      "size": "30ml",
       "manufactured_price": 824.25,
       "market_average_price": 1099,
       "sources": {
@@ -641,8 +693,10 @@
       }
     },
     {
+      "row": 28,
       "product_name": "BioCare Acne & Oil Control Sunscreen Moisturizer SPF 60+",
       "brand_name": "BioCare",
+      "size": "40g",
       "manufactured_price": 1199.25,
       "market_average_price": 1599,
       "sources": {
@@ -658,8 +712,10 @@
       }
     },
     {
+      "row": 29,
       "product_name": "BioCare Castor + Vitamin E Hair Oil",
       "brand_name": "BioCare",
+      "size": "50ml",
       "manufactured_price": 449.25,
       "market_average_price": 599,
       "sources": {
@@ -675,8 +731,10 @@
       }
     },
     {
+      "row": 30,
       "product_name": "BioCare Hair Growth Serum",
       "brand_name": "BioCare",
+      "size": "30ml",
       "manufactured_price": 749.25,
       "market_average_price": 999,
       "sources": {
@@ -692,8 +750,10 @@
       }
     },
     {
+      "row": 31,
       "product_name": "BioCare Skin Glowing & Repairing Essential Oil",
       "brand_name": "BioCare",
+      "size": "30ml",
       "manufactured_price": 749.25,
       "market_average_price": 999,
       "sources": {
@@ -718,8 +778,10 @@
       }
     },
     {
+      "row": 32,
       "product_name": "BioCare Ultra Hydra Non-Sticky Glycerin",
       "brand_name": "BioCare",
+      "size": "50g",
       "manufactured_price": 374.25,
       "market_average_price": 499,
       "sources": {
@@ -735,8 +797,10 @@
       }
     },
     {
+      "row": 33,
       "product_name": "BioCare Zero Dandruff Shampoo",
       "brand_name": "BioCare",
+      "size": "150ml",
       "manufactured_price": 824.25,
       "market_average_price": 1099,
       "sources": {
@@ -752,8 +816,10 @@
       }
     },
     {
+      "row": 34,
       "product_name": "BioCare DermaBright Whitening Moisturizing Cream",
       "brand_name": "BioCare",
+      "size": "200ml",
       "manufactured_price": 899.25,
       "market_average_price": 1199,
       "sources": {
@@ -769,8 +835,10 @@
       }
     },
     {
+      "row": 35,
       "product_name": "BioCare Tea Tree Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -795,8 +863,10 @@
       }
     },
     {
+      "row": 36,
       "product_name": "BioCare Ginseng Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -821,8 +891,10 @@
       }
     },
     {
+      "row": 37,
       "product_name": "BioCare Depigmentation & Brightening Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -838,8 +910,10 @@
       }
     },
     {
+      "row": 38,
       "product_name": "BioCare Scar & Stretch Mark Repair Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -855,8 +929,10 @@
       }
     },
     {
+      "row": 39,
       "product_name": "BioCare Sandalwood Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -881,8 +957,10 @@
       }
     },
     {
+      "row": 40,
       "product_name": "BioCare Polygonum Multiflorum Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -907,8 +985,10 @@
       }
     },
     {
+      "row": 41,
       "product_name": "BioCare Rosehip Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -933,8 +1013,10 @@
       }
     },
     {
+      "row": 42,
       "product_name": "BioCare Migraine Relief Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -959,8 +1041,10 @@
       }
     },
     {
+      "row": 43,
       "product_name": "BioCare Anti-Acne & Pore-Minimizing Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -976,8 +1060,10 @@
       }
     },
     {
+      "row": 44,
       "product_name": "BioCare Anti-Dandruff & Anti-Gray Hair Essential Oil",
       "brand_name": "BioCare",
+      "size": "10ml",
       "manufactured_price": 599.25,
       "market_average_price": 799,
       "sources": {
@@ -993,8 +1079,10 @@
       }
     },
     {
+      "row": 45,
       "product_name": "BioCare Baby Body Lotion",
       "brand_name": "BioCare",
+      "size": "150ml",
       "manufactured_price": 449.25,
       "market_average_price": 599,
       "sources": {
@@ -1019,8 +1107,10 @@
       }
     },
     {
+      "row": 46,
       "product_name": "BioCare Baby Shampoo & Shower Gel",
       "brand_name": "BioCare",
+      "size": "230ml",
       "manufactured_price": 449.25,
       "market_average_price": 599,
       "sources": {
@@ -1036,8 +1126,10 @@
       }
     },
     {
+      "row": 47,
       "product_name": "BioCare Baby Face Cream",
       "brand_name": "BioCare",
+      "size": "50ml",
       "manufactured_price": 449.25,
       "market_average_price": 599,
       "sources": {
@@ -1062,8 +1154,10 @@
       }
     },
     {
+      "row": 48,
       "product_name": "Niacinamide Facial Cleanser 5%",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -1115,8 +1209,10 @@
       }
     },
     {
+      "row": 49,
       "product_name": "Salicylic Acid Facial Cleanser 0.5%",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -1150,8 +1246,10 @@
       }
     },
     {
+      "row": 50,
       "product_name": "Hydroboost with Hyaluronic Acid Cleanser",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -1194,8 +1292,10 @@
       }
     },
     {
+      "row": 51,
       "product_name": "Vitamin E Milk Plus Facial Cleanser",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -1238,8 +1338,10 @@
       }
     },
     {
+      "row": 52,
       "product_name": "Salicylic Acid Toner 0.5%",
       "brand_name": "Guerniss",
+      "size": "120ml",
       "manufactured_price": 282,
       "market_average_price": 470,
       "sources": {
@@ -1255,8 +1357,10 @@
       }
     },
     {
+      "row": 53,
       "product_name": "Vitamin E Moisturizing Toner",
       "brand_name": "Guerniss",
+      "size": "120ml",
       "manufactured_price": 282,
       "market_average_price": 470,
       "sources": {
@@ -1299,8 +1403,10 @@
       }
     },
     {
+      "row": 54,
       "product_name": "Hydroboost with Hyaluronic Acid Toner",
       "brand_name": "Guerniss",
+      "size": "120ml",
       "manufactured_price": 282,
       "market_average_price": 470,
       "sources": {
@@ -1334,8 +1440,10 @@
       }
     },
     {
+      "row": 55,
       "product_name": "Niacinamide Toner 5%",
       "brand_name": "Guerniss",
+      "size": "120ml",
       "manufactured_price": 282,
       "market_average_price": 470,
       "sources": {
@@ -1360,8 +1468,10 @@
       }
     },
     {
+      "row": 56,
       "product_name": "Glutathione Niacinamide Ceramide Serum",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 468,
       "market_average_price": 780,
       "sources": {
@@ -1413,8 +1523,10 @@
       }
     },
     {
+      "row": 57,
       "product_name": "Glutathione Vitamin C Serum",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 468,
       "market_average_price": 780,
       "sources": {
@@ -1457,8 +1569,10 @@
       }
     },
     {
+      "row": 58,
       "product_name": "Glutathione Alpha Arbutin Serum",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 468,
       "market_average_price": 780,
       "sources": {
@@ -1501,8 +1615,10 @@
       }
     },
     {
+      "row": 59,
       "product_name": "Glutathione Hyaluronic Acid Ceramide Serum",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 468,
       "market_average_price": 780,
       "sources": {
@@ -1536,8 +1652,10 @@
       }
     },
     {
+      "row": 60,
       "product_name": "Salicylic Acid Serum 0.5%",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 432,
       "market_average_price": 720,
       "sources": {
@@ -1571,8 +1689,10 @@
       }
     },
     {
+      "row": 61,
       "product_name": "Glycolic Acid Serum 2%",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 432,
       "market_average_price": 720,
       "sources": {
@@ -1615,8 +1735,10 @@
       }
     },
     {
+      "row": 62,
       "product_name": "Niacinamide Micellar Water",
       "brand_name": "Guerniss",
+      "size": "120ml",
       "manufactured_price": 258,
       "market_average_price": 430,
       "sources": {
@@ -1632,8 +1754,10 @@
       }
     },
     {
+      "row": 63,
       "product_name": "Glycolic Acid Micellar Water",
       "brand_name": "Guerniss",
+      "size": "120ml",
       "manufactured_price": 258,
       "market_average_price": 430,
       "sources": {
@@ -1649,8 +1773,10 @@
       }
     },
     {
+      "row": 64,
       "product_name": "Glutathione Hyaluronic Acid Shower Gel (Cloud Touch)",
       "brand_name": "Guerniss",
+      "size": "250ml",
       "manufactured_price": 222,
       "market_average_price": 370,
       "sources": {
@@ -1684,8 +1810,10 @@
       }
     },
     {
+      "row": 65,
       "product_name": "Glutathione Vitamin E Shower Gel (Bloom)",
       "brand_name": "Guerniss",
+      "size": "250ml",
       "manufactured_price": 222,
       "market_average_price": 370,
       "sources": {
@@ -1710,8 +1838,10 @@
       }
     },
     {
+      "row": 66,
       "product_name": "Glutathione Niacinamide Shower Gel (Floral)",
       "brand_name": "Guerniss",
+      "size": "250ml",
       "manufactured_price": 222,
       "market_average_price": 370,
       "sources": {
@@ -1745,8 +1875,10 @@
       }
     },
     {
+      "row": 67,
       "product_name": "Hair Serum",
       "brand_name": "Guerniss",
+      "size": "120ml",
       "manufactured_price": 588,
       "market_average_price": 980,
       "sources": {
@@ -1771,8 +1903,10 @@
       }
     },
     {
+      "row": 68,
       "product_name": "Glutathione Vitamin C Face & Body Scrub",
       "brand_name": "Guerniss",
+      "size": "200ml",
       "manufactured_price": 570,
       "market_average_price": 950,
       "sources": {
@@ -1815,8 +1949,10 @@
       }
     },
     {
+      "row": 69,
       "product_name": "Glutathione Niacinamide Scrub",
       "brand_name": "Guerniss",
+      "size": "200ml",
       "manufactured_price": 570,
       "market_average_price": 950,
       "sources": {
@@ -1859,8 +1995,10 @@
       }
     },
     {
+      "row": 70,
       "product_name": "Glutathione Vitamin E Scrub",
       "brand_name": "Guerniss",
+      "size": "200ml",
       "manufactured_price": 570,
       "market_average_price": 950,
       "sources": {
@@ -1903,8 +2041,10 @@
       }
     },
     {
+      "row": 71,
       "product_name": "Vitamin E Oil",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 690,
       "market_average_price": 1150,
       "sources": {
@@ -1947,8 +2087,10 @@
       }
     },
     {
+      "row": 72,
       "product_name": "Rosemerry Face & Body Oil",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 588,
       "market_average_price": 980,
       "sources": {
@@ -1991,8 +2133,10 @@
       }
     },
     {
+      "row": 73,
       "product_name": "Juliet Rose Water",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -2026,8 +2170,10 @@
       }
     },
     {
+      "row": 74,
       "product_name": "Biotin Healthy Growth Shampoo And Conditioner",
       "brand_name": "Guerniss",
+      "size": "250ml",
       "manufactured_price": 390,
       "market_average_price": 650,
       "sources": {
@@ -2061,8 +2207,10 @@
       }
     },
     {
+      "row": 75,
       "product_name": "Keratin Nourish Therapy Shampoo with Conditioner",
       "brand_name": "Guerniss",
+      "size": "250ml",
       "manufactured_price": 390,
       "market_average_price": 650,
       "sources": {
@@ -2096,8 +2244,10 @@
       }
     },
     {
+      "row": 76,
       "product_name": "Vitamin E glossy locks Shampoo with Conditioner",
       "brand_name": "Guerniss",
+      "size": "250ml",
       "manufactured_price": 390,
       "market_average_price": 650,
       "sources": {
@@ -2140,8 +2290,10 @@
       }
     },
     {
+      "row": 77,
       "product_name": "Onion Seed Hair Oil",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 510,
       "market_average_price": 850,
       "sources": {
@@ -2175,8 +2327,10 @@
       }
     },
     {
+      "row": 78,
       "product_name": "Ginger Hair Oil",
       "brand_name": "Guerniss",
+      "size": "100ml",
       "manufactured_price": 534,
       "market_average_price": 890,
       "sources": {
@@ -2201,8 +2355,10 @@
       }
     },
     {
+      "row": 79,
       "product_name": "Guerniss Vacation Lipstick (Saintmartin)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2218,8 +2374,10 @@
       }
     },
     {
+      "row": 80,
       "product_name": "Guerniss Vacation Lipstick (Cox's Bazar)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2235,8 +2393,10 @@
       }
     },
     {
+      "row": 81,
       "product_name": "Guerniss Vacation Lipstick (Nilgiri)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2252,8 +2412,10 @@
       }
     },
     {
+      "row": 82,
       "product_name": "Guerniss Vacation Lipstick (Kaptai)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2269,8 +2431,10 @@
       }
     },
     {
+      "row": 83,
       "product_name": "Guerniss Vacation Lipstick (Sajek)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2286,8 +2450,10 @@
       }
     },
     {
+      "row": 84,
       "product_name": "Guerniss Vacation Lipstick (Kuakata)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2303,8 +2469,10 @@
       }
     },
     {
+      "row": 85,
       "product_name": "Guerniss Vacation Lipstick (Jaflong)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2320,8 +2488,10 @@
       }
     },
     {
+      "row": 86,
       "product_name": "Guerniss Vacation Lipstick (Ratargul)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2337,8 +2507,10 @@
       }
     },
     {
+      "row": 87,
       "product_name": "Guerniss Vacation Lipstick (Nikli Haor)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2354,8 +2526,10 @@
       }
     },
     {
+      "row": 88,
       "product_name": "Guerniss Vacation Lipstick (Monpura)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2371,8 +2545,10 @@
       }
     },
     {
+      "row": 89,
       "product_name": "Guerniss Vacation Lipstick (Moynamoti)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2388,8 +2564,10 @@
       }
     },
     {
+      "row": 90,
       "product_name": "Guerniss Vacation Lipstick (Panam Nagar)",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -2405,8 +2583,10 @@
       }
     },
     {
+      "row": 91,
       "product_name": "Guerniss Full Cover Matte Foundation (1.0 Porcelain)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1122,
       "market_average_price": 1870,
       "sources": {
@@ -2431,8 +2611,10 @@
       }
     },
     {
+      "row": 92,
       "product_name": "Guerniss Full Cover Matte Foundation (2.0 Worm Porcelain)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1122,
       "market_average_price": 1870,
       "sources": {
@@ -2448,8 +2630,10 @@
       }
     },
     {
+      "row": 93,
       "product_name": "Guerniss Full Cover Matte Foundation (3.0 Ivory)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1122,
       "market_average_price": 1870,
       "sources": {
@@ -2465,8 +2649,10 @@
       }
     },
     {
+      "row": 94,
       "product_name": "Guerniss Full Cover Matte Foundation (4.0 Beige)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1122,
       "market_average_price": 1870,
       "sources": {
@@ -2500,8 +2686,10 @@
       }
     },
     {
+      "row": 95,
       "product_name": "Guerniss Full Cover Matte Foundation (5.0 Medium Light)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1122,
       "market_average_price": 1870,
       "sources": {
@@ -2517,8 +2705,10 @@
       }
     },
     {
+      "row": 96,
       "product_name": "Guerniss Full Cover Matte Foundation (6.0 Medium)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1122,
       "market_average_price": 1870,
       "sources": {
@@ -2534,8 +2724,10 @@
       }
     },
     {
+      "row": 97,
       "product_name": "Guerniss Full Cover Matte Foundation (7.0 Tan)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1122,
       "market_average_price": 1870,
       "sources": {
@@ -2551,8 +2743,10 @@
       }
     },
     {
+      "row": 98,
       "product_name": "Guerniss BB Cream (BB 10)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 984,
       "market_average_price": 1640,
       "sources": {
@@ -2577,8 +2771,10 @@
       }
     },
     {
+      "row": 99,
       "product_name": "Guerniss BB Cream (BB 20)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 984,
       "market_average_price": 1640,
       "sources": {
@@ -2603,8 +2799,10 @@
       }
     },
     {
+      "row": 100,
       "product_name": "Guerniss BB Cream (BB 30)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 984,
       "market_average_price": 1640,
       "sources": {
@@ -2629,8 +2827,10 @@
       }
     },
     {
+      "row": 101,
       "product_name": "Guerniss BB Cream (BB 40)",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 984,
       "market_average_price": 1640,
       "sources": {
@@ -2655,8 +2855,10 @@
       }
     },
     {
+      "row": 102,
       "product_name": "Guerniss Pro Perfect Pressed Powder (NC 10)",
       "brand_name": "Guerniss",
+      "size": "12g",
       "manufactured_price": 648,
       "market_average_price": 1080,
       "sources": {
@@ -2672,8 +2874,10 @@
       }
     },
     {
+      "row": 103,
       "product_name": "Guerniss Pro Perfect Pressed Powder (NC 20)",
       "brand_name": "Guerniss",
+      "size": "12g",
       "manufactured_price": 648,
       "market_average_price": 1080,
       "sources": {
@@ -2689,8 +2893,10 @@
       }
     },
     {
+      "row": 104,
       "product_name": "Guerniss Pro Perfect Pressed Powder (NC 30)",
       "brand_name": "Guerniss",
+      "size": "12g",
       "manufactured_price": 648,
       "market_average_price": 1080,
       "sources": {
@@ -2706,8 +2912,10 @@
       }
     },
     {
+      "row": 105,
       "product_name": "Guerniss Pro Perfect Pressed Powder (NC 40)",
       "brand_name": "Guerniss",
+      "size": "12g",
       "manufactured_price": 648,
       "market_average_price": 1080,
       "sources": {
@@ -2723,8 +2931,10 @@
       }
     },
     {
+      "row": 106,
       "product_name": "G/S Liquid Concealer (GO21 - Honey)",
       "brand_name": "Guerniss",
+      "size": "7ml",
       "manufactured_price": 948,
       "market_average_price": 1580,
       "sources": {
@@ -2740,8 +2950,10 @@
       }
     },
     {
+      "row": 107,
       "product_name": "G/S Liquid Concealer (GO22 - Vanilla)",
       "brand_name": "Guerniss",
+      "size": "7ml",
       "manufactured_price": 948,
       "market_average_price": 1580,
       "sources": {
@@ -2757,8 +2969,10 @@
       }
     },
     {
+      "row": 108,
       "product_name": "G/S Liquid Concealer (GO23 - Custard)",
       "brand_name": "Guerniss",
+      "size": "7ml",
       "manufactured_price": 948,
       "market_average_price": 1580,
       "sources": {
@@ -2774,8 +2988,10 @@
       }
     },
     {
+      "row": 109,
       "product_name": "Guerniss XXL Water proof Mascara",
       "brand_name": "Guerniss",
+      "size": "10ml",
       "manufactured_price": 324,
       "market_average_price": 540,
       "sources": {
@@ -2791,8 +3007,10 @@
       }
     },
     {
+      "row": 110,
       "product_name": "Guerniss Lashfull Mascara",
       "brand_name": "Guerniss",
+      "size": "6g",
       "manufactured_price": 534,
       "market_average_price": 890,
       "sources": {
@@ -2817,8 +3035,10 @@
       }
     },
     {
+      "row": 111,
       "product_name": "Guerniss Matte Kajol",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 330,
       "market_average_price": 550,
       "sources": {
@@ -2843,8 +3063,10 @@
       }
     },
     {
+      "row": 112,
       "product_name": "Guerniss New Matte Khol Kajol",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 330,
       "market_average_price": 550,
       "sources": {
@@ -2869,8 +3091,10 @@
       }
     },
     {
+      "row": 113,
       "product_name": "Guerniss Eye Ink Liquid EyeLiner",
       "brand_name": "Guerniss",
+      "size": "5ml",
       "manufactured_price": 414,
       "market_average_price": 690,
       "sources": {
@@ -2886,8 +3110,10 @@
       }
     },
     {
+      "row": 114,
       "product_name": "Guerniss liquid Matte Black Eyeliner",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 468,
       "market_average_price": 780,
       "sources": {
@@ -2903,8 +3129,10 @@
       }
     },
     {
+      "row": 115,
       "product_name": "Makeup Setting Spray",
       "brand_name": "Guerniss",
+      "size": "100 ml",
       "manufactured_price": 714,
       "market_average_price": 1190,
       "sources": {
@@ -2920,8 +3148,10 @@
       }
     },
     {
+      "row": 116,
       "product_name": "Guerniss Water Gloss Lip Glaze (WLG Honey)",
       "brand_name": "Guerniss",
+      "size": "3.5ml",
       "manufactured_price": 432,
       "market_average_price": 720,
       "sources": {
@@ -2937,8 +3167,10 @@
       }
     },
     {
+      "row": 117,
       "product_name": "Guerniss Water Gloss Lip Glaze (WLG Peach)",
       "brand_name": "Guerniss",
+      "size": "3.5ml",
       "manufactured_price": 432,
       "market_average_price": 720,
       "sources": {
@@ -2963,8 +3195,10 @@
       }
     },
     {
+      "row": 118,
       "product_name": "Guerniss Water Gloss Lip Glaze (WLG Watermelon)",
       "brand_name": "Guerniss",
+      "size": "3.5ml",
       "manufactured_price": 432,
       "market_average_price": 720,
       "sources": {
@@ -2980,8 +3214,10 @@
       }
     },
     {
+      "row": 119,
       "product_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G101)",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 870,
       "market_average_price": 1450,
       "sources": {
@@ -3006,8 +3242,10 @@
       }
     },
     {
+      "row": 120,
       "product_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G102)",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 870,
       "market_average_price": 1450,
       "sources": {
@@ -3023,8 +3261,10 @@
       }
     },
     {
+      "row": 121,
       "product_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G103)",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 870,
       "market_average_price": 1450,
       "sources": {
@@ -3040,8 +3280,10 @@
       }
     },
     {
+      "row": 122,
       "product_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G104)",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 870,
       "market_average_price": 1450,
       "sources": {
@@ -3057,8 +3299,10 @@
       }
     },
     {
+      "row": 123,
       "product_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G105)",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 870,
       "market_average_price": 1450,
       "sources": {
@@ -3083,8 +3327,10 @@
       }
     },
     {
+      "row": 124,
       "product_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G106)",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 870,
       "market_average_price": 1450,
       "sources": {
@@ -3100,8 +3346,10 @@
       }
     },
     {
+      "row": 125,
       "product_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G107)",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 870,
       "market_average_price": 1450,
       "sources": {
@@ -3126,8 +3374,10 @@
       }
     },
     {
+      "row": 126,
       "product_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G108)",
       "brand_name": "Guerniss",
+      "size": "3g",
       "manufactured_price": 870,
       "market_average_price": 1450,
       "sources": {
@@ -3143,8 +3393,10 @@
       }
     },
     {
+      "row": 127,
       "product_name": "Guerniss Vitamin E Milk Plus Face Wash",
       "brand_name": "Guerniss",
+      "size": "60ml",
       "manufactured_price": 768,
       "market_average_price": 1280,
       "sources": {
@@ -3169,8 +3421,10 @@
       }
     },
     {
+      "row": 128,
       "product_name": "Guerniss Anti Melasma Toner",
       "brand_name": "Guerniss",
+      "size": "150ml",
       "manufactured_price": 1122,
       "market_average_price": 1870,
       "sources": {
@@ -3204,8 +3458,10 @@
       }
     },
     {
+      "row": 129,
       "product_name": "Guerniss Vitamin C Serum",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1134,
       "market_average_price": 1890,
       "sources": {
@@ -3239,8 +3495,10 @@
       }
     },
     {
+      "row": 130,
       "product_name": "Guerniss Aloe Moisturizing and Brightening Essence",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1134,
       "market_average_price": 1890,
       "sources": {
@@ -3256,8 +3514,10 @@
       }
     },
     {
+      "row": 131,
       "product_name": "Guerniss Anti Melasma Whitening Serum",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1134,
       "market_average_price": 1890,
       "sources": {
@@ -3282,15 +3542,19 @@
       }
     },
     {
+      "row": 132,
       "product_name": "Guerniss Moisturizing and Hydrating Essence",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1134,
       "market_average_price": 1890,
       "sources": {}
     },
     {
+      "row": 133,
       "product_name": "Guerniss Niacinamide 10% + Zinc 1% Serum",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1134,
       "market_average_price": 1890,
       "sources": {
@@ -3315,8 +3579,10 @@
       }
     },
     {
+      "row": 134,
       "product_name": "Guerniss Tea Tree Oil",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 1134,
       "market_average_price": 1890,
       "sources": {
@@ -3332,8 +3598,10 @@
       }
     },
     {
+      "row": 135,
       "product_name": "Guerniss Spotless Brightening Serum",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 834,
       "market_average_price": 1390,
       "sources": {
@@ -3367,8 +3635,10 @@
       }
     },
     {
+      "row": 136,
       "product_name": "Guerniss SPF 25++ Bossim Brightening Day Cream",
       "brand_name": "Guerniss",
+      "size": "50ml",
       "manufactured_price": 1134,
       "market_average_price": 1890,
       "sources": {
@@ -3384,8 +3654,10 @@
       }
     },
     {
+      "row": 137,
       "product_name": "Guerniss Everyday Sun Block",
       "brand_name": "Guerniss",
+      "size": "60ml",
       "manufactured_price": 1050,
       "market_average_price": 1750,
       "sources": {
@@ -3401,8 +3673,10 @@
       }
     },
     {
+      "row": 138,
       "product_name": "Guerniss Anti Melasma Cream",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 888,
       "market_average_price": 1480,
       "sources": {
@@ -3418,8 +3692,10 @@
       }
     },
     {
+      "row": 139,
       "product_name": "Guerniss Brightening Face Mask",
       "brand_name": "Guerniss",
+      "size": "30ml",
       "manufactured_price": 228,
       "market_average_price": 380,
       "sources": {
@@ -3444,8 +3720,10 @@
       }
     },
     {
+      "row": 140,
       "product_name": "Guerniss Avocado Deep Cleansing Wet Wipes",
       "brand_name": "Guerniss",
+      "size": "",
       "manufactured_price": 18,
       "market_average_price": 30,
       "sources": {
@@ -3479,8 +3757,10 @@
       }
     },
     {
+      "row": 141,
       "product_name": "Nature Beauty Aloe Vera Moisture Soothing Gel",
       "brand_name": "Q Cosmetics",
+      "size": "130ml",
       "manufactured_price": 190.005,
       "market_average_price": 300,
       "sources": {
@@ -3505,8 +3785,10 @@
       }
     },
     {
+      "row": 142,
       "product_name": "Nature Beauty Milk Moisture Soothing Gel",
       "brand_name": "Q Cosmetics",
+      "size": "130ml",
       "manufactured_price": 190.005,
       "market_average_price": 300,
       "sources": {
@@ -3531,8 +3813,10 @@
       }
     },
     {
+      "row": 143,
       "product_name": "Nature Beauty Saffron Moisture Soothing Gel",
       "brand_name": "Q Cosmetics",
+      "size": "130ml",
       "manufactured_price": 269.17375,
       "market_average_price": 425,
       "sources": {
@@ -3566,8 +3850,10 @@
       }
     },
     {
+      "row": 144,
       "product_name": "Nature Beauty Anti-Tobacco Air Freshener",
       "brand_name": "Q Cosmetics",
+      "size": "300ml",
       "manufactured_price": 180.50475,
       "market_average_price": 285,
       "sources": {
@@ -3583,8 +3869,10 @@
       }
     },
     {
+      "row": 145,
       "product_name": "Nature Beauty Jasmine Dew Air Freshener",
       "brand_name": "Q Cosmetics",
+      "size": "300ml",
       "manufactured_price": 180.50475,
       "market_average_price": 285,
       "sources": {
@@ -3609,8 +3897,10 @@
       }
     },
     {
+      "row": 146,
       "product_name": "Nature Beauty Lemon Twist Air Freshener",
       "brand_name": "Q Cosmetics",
+      "size": "300ml",
       "manufactured_price": 180.50475,
       "market_average_price": 285,
       "sources": {
@@ -3644,8 +3934,10 @@
       }
     },
     {
+      "row": 147,
       "product_name": "Nature Beauty Lavender Air Freshener",
       "brand_name": "Q Cosmetics",
+      "size": "300ml",
       "manufactured_price": 180.50475,
       "market_average_price": 285,
       "sources": {
@@ -3670,8 +3962,10 @@
       }
     },
     {
+      "row": 148,
       "product_name": "Nature Beauty Hand Wash- Lavender",
       "brand_name": "Q Cosmetics",
+      "size": "200ml",
       "manufactured_price": 95.0025,
       "market_average_price": 150,
       "sources": {
@@ -3696,8 +3990,10 @@
       }
     },
     {
+      "row": 149,
       "product_name": "Nature Beauty Hand Wash- Orchid",
       "brand_name": "Q Cosmetics",
+      "size": "200ml",
       "manufactured_price": 95.0025,
       "market_average_price": 150,
       "sources": {
@@ -3722,8 +4018,10 @@
       }
     },
     {
+      "row": 150,
       "product_name": "Nature Beauty Hand Wash- Strawberry",
       "brand_name": "Q Cosmetics",
+      "size": "200ml",
       "manufactured_price": 95.0025,
       "market_average_price": 150,
       "sources": {
@@ -3748,8 +4046,10 @@
       }
     },
     {
+      "row": 151,
       "product_name": "Nature Beauty Lemon Handwash",
       "brand_name": "Q Cosmetics",
+      "size": "370ml",
       "manufactured_price": 158.3375,
       "market_average_price": 250,
       "sources": {
@@ -3774,8 +4074,10 @@
       }
     },
     {
+      "row": 152,
       "product_name": "Nature Beauty Strawberry Handwash",
       "brand_name": "Q Cosmetics",
+      "size": "370ml",
       "manufactured_price": 158.3375,
       "market_average_price": 250,
       "sources": {
@@ -3791,8 +4093,10 @@
       }
     },
     {
+      "row": 153,
       "product_name": "Nature Beauty Fruity Shower Gel",
       "brand_name": "Q Cosmetics",
+      "size": "500ml",
       "manufactured_price": 300.84125,
       "market_average_price": 475,
       "sources": {
@@ -3817,8 +4121,10 @@
       }
     },
     {
+      "row": 154,
       "product_name": "Nature Beauty Ocean Fresh Shower Gel",
       "brand_name": "Q Cosmetics",
+      "size": "500ml",
       "manufactured_price": 300.84125,
       "market_average_price": 475,
       "sources": {
@@ -3834,8 +4140,10 @@
       }
     },
     {
+      "row": 155,
       "product_name": "Nature Beauty Hand-made Beauty Bar (Fruity)",
       "brand_name": "Q Cosmetics",
+      "size": "115gm",
       "manufactured_price": 221.6725,
       "market_average_price": 350,
       "sources": {
@@ -3860,8 +4168,10 @@
       }
     },
     {
+      "row": 156,
       "product_name": "Nature Beauty Hand-made Beauty Bar (Goat Milk)",
       "brand_name": "Q Cosmetics",
+      "size": "115gm",
       "manufactured_price": 221.6725,
       "market_average_price": 350,
       "sources": {
@@ -3877,8 +4187,10 @@
       }
     },
     {
+      "row": 157,
       "product_name": "Nature Beauty Hand-made Beauty Bar (Saffron)",
       "brand_name": "Q Cosmetics",
+      "size": "100gm",
       "manufactured_price": 285.0075,
       "market_average_price": 450,
       "sources": {
@@ -3903,8 +4215,10 @@
       }
     },
     {
+      "row": 158,
       "product_name": "Nature Beauty Healthy Glowing Body Lotion",
       "brand_name": "Q Cosmetics",
+      "size": "200ml",
       "manufactured_price": 221.6725,
       "market_average_price": 350,
       "sources": {
@@ -3929,8 +4243,10 @@
       }
     },
     {
+      "row": 159,
       "product_name": "Nature Beauty Skin Relief Milk Moisture Lotion",
       "brand_name": "Q Cosmetics",
+      "size": "200ml",
       "manufactured_price": 221.6725,
       "market_average_price": 350,
       "sources": {
@@ -3955,8 +4271,10 @@
       }
     },
     {
+      "row": 160,
       "product_name": "Nature Beauty Healthy Glowing Body Lotion",
       "brand_name": "Q Cosmetics",
+      "size": "370ml",
       "manufactured_price": 300.84125,
       "market_average_price": 475,
       "sources": {
@@ -3999,8 +4317,10 @@
       }
     },
     {
+      "row": 161,
       "product_name": "Nature Beauty Milk Body Lotion",
       "brand_name": "Q Cosmetics",
+      "size": "370ml",
       "manufactured_price": 300.84125,
       "market_average_price": 475,
       "sources": {
@@ -4043,8 +4363,10 @@
       }
     },
     {
+      "row": 162,
       "product_name": "Nature Beauty Hyaluronic 1% & Glycolic Acid 2% Serum",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 364.17625,
       "market_average_price": 575,
       "sources": {
@@ -4078,8 +4400,10 @@
       }
     },
     {
+      "row": 163,
       "product_name": "Nature Beauty Niacinamide 10% Serum",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 364.17625,
       "market_average_price": 575,
       "sources": {
@@ -4113,8 +4437,10 @@
       }
     },
     {
+      "row": 164,
       "product_name": "Nature Beauty Salicylic Acid 2% Serum",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 364.17625,
       "market_average_price": 575,
       "sources": {
@@ -4157,8 +4483,10 @@
       }
     },
     {
+      "row": 165,
       "product_name": "Nature Beauty Milk Facewash",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 186.83825,
       "market_average_price": 295,
       "sources": {
@@ -4174,8 +4502,10 @@
       }
     },
     {
+      "row": 166,
       "product_name": "Nature Beauty Neem Oil Control Facewash",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 186.83825,
       "market_average_price": 295,
       "sources": {
@@ -4200,8 +4530,10 @@
       }
     },
     {
+      "row": 167,
       "product_name": "Nature Beauty Papaya Facewash",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 186.83825,
       "market_average_price": 295,
       "sources": {
@@ -4217,8 +4549,10 @@
       }
     },
     {
+      "row": 168,
       "product_name": "Nature Beauty Tea Tree Facewash",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 186.83825,
       "market_average_price": 295,
       "sources": {
@@ -4261,8 +4595,10 @@
       }
     },
     {
+      "row": 169,
       "product_name": "Nature Beauty Sweet Cherry Tinted Lip Balm",
       "brand_name": "Q Cosmetics",
+      "size": "3.4gm",
       "manufactured_price": 126.03665,
       "market_average_price": 199,
       "sources": {
@@ -4278,8 +4614,10 @@
       }
     },
     {
+      "row": 170,
       "product_name": "Nature Beauty Pink Rose Tinted Lip Balm",
       "brand_name": "Q Cosmetics",
+      "size": "3.4gm",
       "manufactured_price": 126.03665,
       "market_average_price": 199,
       "sources": {
@@ -4295,8 +4633,10 @@
       }
     },
     {
+      "row": 171,
       "product_name": "Nature Beauty Icy Lemon Lip Balm",
       "brand_name": "Q Cosmetics",
+      "size": "3.4gm",
       "manufactured_price": 126.03665,
       "market_average_price": 199,
       "sources": {
@@ -4321,8 +4661,10 @@
       }
     },
     {
+      "row": 172,
       "product_name": "Nature Beauty Aloe Soft Lip Balm",
       "brand_name": "Q Cosmetics",
+      "size": "3.4gm",
       "manufactured_price": 126.03665,
       "market_average_price": 199,
       "sources": {
@@ -4338,8 +4680,10 @@
       }
     },
     {
+      "row": 173,
       "product_name": "Nature Beauty Herbal Hair Oil",
       "brand_name": "Q Cosmetics",
+      "size": "150ml",
       "manufactured_price": 186.83825,
       "market_average_price": 295,
       "sources": {
@@ -4364,8 +4708,10 @@
       }
     },
     {
+      "row": 174,
       "product_name": "Nature Beauty Appricot Face Scrub",
       "brand_name": "Q Cosmetics",
+      "size": "130ml",
       "manufactured_price": 177.338,
       "market_average_price": 280,
       "sources": {
@@ -4390,8 +4736,10 @@
       }
     },
     {
+      "row": 175,
       "product_name": "Nature Beauty Olive Oil - Glass",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 177.338,
       "market_average_price": 280,
       "sources": {
@@ -4425,8 +4773,10 @@
       }
     },
     {
+      "row": 176,
       "product_name": "Nature Beauty Sunscreen",
       "brand_name": "Q Cosmetics",
+      "size": "50ml",
       "manufactured_price": 348.3425,
       "market_average_price": 550,
       "sources": {
@@ -4478,8 +4828,10 @@
       }
     },
     {
+      "row": 177,
       "product_name": "QLUXURY Body Mist For Man - Blue Lagoon",
       "brand_name": "Q Cosmetics",
+      "size": "150ml",
       "manufactured_price": 300.84125,
       "market_average_price": 475,
       "sources": {
@@ -4513,8 +4865,10 @@
       }
     },
     {
+      "row": 178,
       "product_name": "QLUXURY Body Mist For Man - Silver Edge",
       "brand_name": "Q Cosmetics",
+      "size": "150ml",
       "manufactured_price": 300.84125,
       "market_average_price": 475,
       "sources": {
@@ -4539,8 +4893,10 @@
       }
     },
     {
+      "row": 179,
       "product_name": "QLUXURY Body Mist For Women - Fruity Flirt",
       "brand_name": "Q Cosmetics",
+      "size": "150ml",
       "manufactured_price": 300.84125,
       "market_average_price": 475,
       "sources": {
@@ -4565,8 +4921,10 @@
       }
     },
     {
+      "row": 180,
       "product_name": "QLUXURY Body Mist For Women - Musky Bloom",
       "brand_name": "Q Cosmetics",
+      "size": "150ml",
       "manufactured_price": 300.84125,
       "market_average_price": 475,
       "sources": {
@@ -4591,8 +4949,10 @@
       }
     },
     {
+      "row": 181,
       "product_name": "Apple Colour Shampoo ( Black)",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 63.335,
       "market_average_price": 100,
       "sources": {
@@ -4617,8 +4977,10 @@
       }
     },
     {
+      "row": 182,
       "product_name": "Qolore All Blur Pro Face Primer",
       "brand_name": "Q Cosmetics",
+      "size": "25ml",
       "manufactured_price": 437.0115,
       "market_average_price": 690,
       "sources": {
@@ -4634,8 +4996,10 @@
       }
     },
     {
+      "row": 183,
       "product_name": "Qolore Black Kohl Kajal",
       "brand_name": "Q Cosmetics",
+      "size": "0.35gm",
       "manufactured_price": 221.6725,
       "market_average_price": 350,
       "sources": {
@@ -4660,8 +5024,10 @@
       }
     },
     {
+      "row": 184,
       "product_name": "Qolore Cloud Soft Cotton Pads - 80pcs",
       "brand_name": "Q Cosmetics",
+      "size": "",
       "manufactured_price": 174.17125,
       "market_average_price": 275,
       "sources": {
@@ -4695,8 +5061,10 @@
       }
     },
     {
+      "row": 185,
       "product_name": "Qolore Compact Powder Honey Soft 03",
       "brand_name": "Q Cosmetics",
+      "size": "12gm",
       "manufactured_price": 538.3475,
       "market_average_price": 850,
       "sources": {
@@ -4712,8 +5080,10 @@
       }
     },
     {
+      "row": 186,
       "product_name": "Qolore Compact Powder Ivory Pink-05",
       "brand_name": "Q Cosmetics",
+      "size": "12gm",
       "manufactured_price": 538.3475,
       "market_average_price": 850,
       "sources": {
@@ -4729,8 +5099,10 @@
       }
     },
     {
+      "row": 187,
       "product_name": "Qolore Compact Powder Natural 07",
       "brand_name": "Q Cosmetics",
+      "size": "12gm",
       "manufactured_price": 538.3475,
       "market_average_price": 850,
       "sources": {
@@ -4755,8 +5127,10 @@
       }
     },
     {
+      "row": 188,
       "product_name": "Qolore Pro Cover Concealer Ivory 05",
       "brand_name": "Q Cosmetics",
+      "size": "3ml",
       "manufactured_price": 380.01,
       "market_average_price": 600,
       "sources": {
@@ -4772,8 +5146,10 @@
       }
     },
     {
+      "row": 189,
       "product_name": "Qolore Pro Cover Concealer Neutral 07",
       "brand_name": "Q Cosmetics",
+      "size": "3ml",
       "manufactured_price": 380.01,
       "market_average_price": 600,
       "sources": {
@@ -4798,8 +5174,10 @@
       }
     },
     {
+      "row": 190,
       "product_name": "Qolore Skin Glow Liquid Foundation Honey Soft-03",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 728.3525,
       "market_average_price": 1150,
       "sources": {
@@ -4815,8 +5193,10 @@
       }
     },
     {
+      "row": 191,
       "product_name": "Qolore Skin Glow Liquid Foundation Ivory Pink-05",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 728.3525,
       "market_average_price": 1150,
       "sources": {
@@ -4841,8 +5221,10 @@
       }
     },
     {
+      "row": 192,
       "product_name": "Qolore Skin Glow Liquid Foundation Natural-07",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 728.3525,
       "market_average_price": 1150,
       "sources": {
@@ -4867,8 +5249,10 @@
       }
     },
     {
+      "row": 193,
       "product_name": "Qolore Soft Matte Liquid Lipstick Cinnamon Love-03",
       "brand_name": "Q Cosmetics",
+      "size": "6gm",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
       "sources": {
@@ -4884,8 +5268,10 @@
       }
     },
     {
+      "row": 194,
       "product_name": "Qolore Soft Matte Liquid Lipstick Scarlet Red-05",
       "brand_name": "Q Cosmetics",
+      "size": "6gm",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
       "sources": {
@@ -4910,8 +5296,10 @@
       }
     },
     {
+      "row": 195,
       "product_name": "Qolore Soft Matte Liquid Lipstick Dark Mauve-07",
       "brand_name": "Q Cosmetics",
+      "size": "6gm",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
       "sources": {
@@ -4927,15 +5315,19 @@
       }
     },
     {
+      "row": 196,
       "product_name": "Qolore Soft Matte Liquid Lipstick Brown Mocha-09",
       "brand_name": "Q Cosmetics",
+      "size": "6gm",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
       "sources": {}
     },
     {
+      "row": 197,
       "product_name": "Qolore Soft Matte Liquid Lipstick Berry Drop-11",
       "brand_name": "Q Cosmetics",
+      "size": "6gm",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
       "sources": {
@@ -4960,8 +5352,10 @@
       }
     },
     {
+      "row": 198,
       "product_name": "Qolore Soft Matte Liquid Lipstick Coral Silk-13",
       "brand_name": "Q Cosmetics",
+      "size": "6gm",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
       "sources": {
@@ -4986,8 +5380,10 @@
       }
     },
     {
+      "row": 199,
       "product_name": "Quinsia 2% Salicylic Acid Moisturizer",
       "brand_name": "Q Cosmetics",
+      "size": "50ml",
       "manufactured_price": 1171.6975,
       "market_average_price": 1850,
       "sources": {
@@ -5012,8 +5408,10 @@
       }
     },
     {
+      "row": 200,
       "product_name": "Quinsia 2% Salicylic Acid Serum",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 791.6875,
       "market_average_price": 1250,
       "sources": {
@@ -5038,8 +5436,10 @@
       }
     },
     {
+      "row": 201,
       "product_name": "Quinsia Salicylic Acid Facewash",
       "brand_name": "Q Cosmetics",
+      "size": "120ml",
       "manufactured_price": 1045.0275,
       "market_average_price": 1650,
       "sources": {
@@ -5073,8 +5473,10 @@
       }
     },
     {
+      "row": 202,
       "product_name": "Quinsia Salicylic Acid Toner",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 950.025,
       "market_average_price": 1500,
       "sources": {
@@ -5099,8 +5501,10 @@
       }
     },
     {
+      "row": 203,
       "product_name": "Quinsia Salicylic Acid Sheet Mask",
       "brand_name": "Q Cosmetics",
+      "size": "30gm",
       "manufactured_price": 126.67,
       "market_average_price": 200,
       "sources": {
@@ -5125,8 +5529,10 @@
       }
     },
     {
+      "row": 204,
       "product_name": "Quinsia Anti-Melasma Moisturizer",
       "brand_name": "Q Cosmetics",
+      "size": "50ml",
       "manufactured_price": 1171.6975,
       "market_average_price": 1850,
       "sources": {
@@ -5151,8 +5557,10 @@
       }
     },
     {
+      "row": 205,
       "product_name": "Quinsia Anti-Melasma Serum",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 791.6875,
       "market_average_price": 1250,
       "sources": {
@@ -5168,8 +5576,10 @@
       }
     },
     {
+      "row": 206,
       "product_name": "Quinsia Anti-Melasma Facewash",
       "brand_name": "Q Cosmetics",
+      "size": "120ml",
       "manufactured_price": 1045.0275,
       "market_average_price": 1650,
       "sources": {
@@ -5203,8 +5613,10 @@
       }
     },
     {
+      "row": 207,
       "product_name": "Quinsia Anti-Melasma Refreshing Toner",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 950.025,
       "market_average_price": 1500,
       "sources": {
@@ -5220,8 +5632,10 @@
       }
     },
     {
+      "row": 208,
       "product_name": "Quinsia Anti-Melasma Sheet Mask",
       "brand_name": "Q Cosmetics",
+      "size": "30gm",
       "manufactured_price": 126.67,
       "market_average_price": 200,
       "sources": {
@@ -5246,8 +5660,10 @@
       }
     },
     {
+      "row": 209,
       "product_name": "Quinsia Vitamin C Antioxidant Moisturizer",
       "brand_name": "Q Cosmetics",
+      "size": "50ml",
       "manufactured_price": 1108.3625,
       "market_average_price": 1750,
       "sources": {
@@ -5263,8 +5679,10 @@
       }
     },
     {
+      "row": 210,
       "product_name": "Quinsia Vitamin C Antioxidant Serum",
       "brand_name": "Q Cosmetics",
+      "size": "30ml",
       "manufactured_price": 791.6875,
       "market_average_price": 1250,
       "sources": {
@@ -5298,8 +5716,10 @@
       }
     },
     {
+      "row": 211,
       "product_name": "Quinsia Vitamin C Antioxidant Facewash",
       "brand_name": "Q Cosmetics",
+      "size": "120ml",
       "manufactured_price": 950.025,
       "market_average_price": 1500,
       "sources": {
@@ -5333,8 +5753,10 @@
       }
     },
     {
+      "row": 212,
       "product_name": "Quinsia Vitamin C Antioxidant Toner",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 886.69,
       "market_average_price": 1400,
       "sources": {
@@ -5350,8 +5772,10 @@
       }
     },
     {
+      "row": 213,
       "product_name": "Quinsia Vitamin C Sheet Mask",
       "brand_name": "Q Cosmetics",
+      "size": "30gm",
       "manufactured_price": 126.67,
       "market_average_price": 200,
       "sources": {
@@ -5376,8 +5800,10 @@
       }
     },
     {
+      "row": 214,
       "product_name": "Quinsia Miceller Water",
       "brand_name": "Q Cosmetics",
+      "size": "100ml",
       "manufactured_price": 285.0075,
       "market_average_price": 450,
       "sources": {
@@ -5420,8 +5846,10 @@
       }
     },
     {
+      "row": 215,
       "product_name": "Tulsi Powder/ তুলশী পাতা",
       "brand_name": "Neofarmers",
+      "size": "20g",
       "manufactured_price": 105,
       "market_average_price": 150,
       "sources": {
@@ -5446,8 +5874,10 @@
       }
     },
     {
+      "row": 216,
       "product_name": "Neem Powder/ নিম পাতা",
       "brand_name": "Neofarmers",
+      "size": "100g",
       "manufactured_price": 112,
       "market_average_price": 160,
       "sources": {
@@ -5481,8 +5911,10 @@
       }
     },
     {
+      "row": 217,
       "product_name": "Moringa Powder/ সজনে পাতা গুঁড়া",
       "brand_name": "Neofarmers",
+      "size": "80g",
       "manufactured_price": 279.3,
       "market_average_price": 399,
       "sources": {
@@ -5498,8 +5930,10 @@
       }
     },
     {
+      "row": 218,
       "product_name": "Triphala Powder/ ত্রিফলা গুঁড়া",
       "brand_name": "Neofarmers",
+      "size": "90g",
       "manufactured_price": 80,
       "market_average_price": 100,
       "sources": {
@@ -5524,8 +5958,10 @@
       }
     },
     {
+      "row": 219,
       "product_name": "Rose Patals Powder/ গোলাপের পাপড়ি গুঁড়া",
       "brand_name": "Neofarmers",
+      "size": "25g",
       "manufactured_price": 144.4,
       "market_average_price": 190,
       "sources": {
@@ -5550,8 +5986,10 @@
       }
     },
     {
+      "row": 220,
       "product_name": "Shikakai Powder/ শিকাকাই গুঁড়া",
       "brand_name": "Neofarmers",
+      "size": "110g",
       "manufactured_price": 129.5,
       "market_average_price": 175,
       "sources": {
@@ -5576,8 +6014,10 @@
       }
     },
     {
+      "row": 221,
       "product_name": "Haritaki Powder/ হরিতকী গুঁড়া",
       "brand_name": "Neofarmers",
+      "size": "95g",
       "manufactured_price": 80,
       "market_average_price": 100,
       "sources": {
@@ -5611,8 +6051,10 @@
       }
     },
     {
+      "row": 222,
       "product_name": "Amla Powder/ আমলকী গুঁড়া",
       "brand_name": "Neofarmers",
+      "size": "95g",
       "manufactured_price": 93.6,
       "market_average_price": 120,
       "sources": {
@@ -5646,8 +6088,10 @@
       }
     },
     {
+      "row": 223,
       "product_name": "Reetha Powder/ রিঠা গুঁড়া",
       "brand_name": "Neofarmers",
+      "size": "100g",
       "manufactured_price": 142.5,
       "market_average_price": 190,
       "sources": {
@@ -5672,8 +6116,10 @@
       }
     },
     {
+      "row": 224,
       "product_name": "Fenugreek Powder/ মেথি গুঁড়া",
       "brand_name": "Neofarmers",
+      "size": "100g",
       "manufactured_price": 112.5,
       "market_average_price": 150,
       "sources": {
@@ -5707,8 +6153,10 @@
       }
     },
     {
+      "row": 225,
       "product_name": "Flax seed/ তিসি বীজ",
       "brand_name": "Neofarmers",
+      "size": "120g",
       "manufactured_price": 124.1,
       "market_average_price": 170,
       "sources": {
@@ -5742,8 +6190,10 @@
       }
     },
     {
+      "row": 226,
       "product_name": "Coconut Oil/ নারিকেল তেল (Big)",
       "brand_name": "Neofarmers",
+      "size": "360ml",
       "manufactured_price": 592.5,
       "market_average_price": 790,
       "sources": {
@@ -5768,8 +6218,10 @@
       }
     },
     {
+      "row": 227,
       "product_name": "Coconut Oil/ নারিকেল তেল (Small)",
       "brand_name": "Neofarmers",
+      "size": "180ml",
       "manufactured_price": 374.25,
       "market_average_price": 499,
       "sources": {
@@ -5794,8 +6246,10 @@
       }
     },
     {
+      "row": 228,
       "product_name": "Black seed Oil/ কালিজিরা তেল (Big)",
       "brand_name": "Neofarmers",
+      "size": "75ml",
       "manufactured_price": 330,
       "market_average_price": 440,
       "sources": {
@@ -5820,8 +6274,10 @@
       }
     },
     {
+      "row": 229,
       "product_name": "Black seed Oil/ কালিজিরা তেল (Small)",
       "brand_name": "Neofarmers",
+      "size": "30ml",
       "manufactured_price": 180,
       "market_average_price": 240,
       "sources": {
@@ -5846,8 +6302,10 @@
       }
     },
     {
+      "row": 230,
       "product_name": "Almond Oil/ কাঠ বাদামের তেল",
       "brand_name": "Neofarmers",
+      "size": "30ml",
       "manufactured_price": 292.5,
       "market_average_price": 390,
       "sources": {
@@ -5872,8 +6330,10 @@
       }
     },
     {
+      "row": 231,
       "product_name": "Pumpkin Seed Oil/ কুমড়া বীজের তেল",
       "brand_name": "Neofarmers",
+      "size": "30ml",
       "manufactured_price": 357.5,
       "market_average_price": 550,
       "sources": {
@@ -5898,8 +6358,10 @@
       }
     },
     {
+      "row": 232,
       "product_name": "Onion Oil/ পেঁয়াজের তেল (big)",
       "brand_name": "Neofarmers",
+      "size": "75ml",
       "manufactured_price": 483,
       "market_average_price": 690,
       "sources": {
@@ -5915,8 +6377,10 @@
       }
     },
     {
+      "row": 233,
       "product_name": "Onion Oil/ পেঁয়াজের তেল (Small)",
       "brand_name": "Neofarmers",
+      "size": "30ml",
       "manufactured_price": 266,
       "market_average_price": 380,
       "sources": {
@@ -5932,8 +6396,10 @@
       }
     },
     {
+      "row": 234,
       "product_name": "Hibiscus Oil/ জবা ফুলের তেল (Big)",
       "brand_name": "Neofarmers",
+      "size": "75ml",
       "manufactured_price": 553,
       "market_average_price": 790,
       "sources": {
@@ -5949,8 +6415,10 @@
       }
     },
     {
+      "row": 235,
       "product_name": "Hibiscus Oil/ জবা ফুলের তেল (Small)",
       "brand_name": "Neofarmers",
+      "size": "30ml",
       "manufactured_price": 315,
       "market_average_price": 450,
       "sources": {
@@ -5966,8 +6434,10 @@
       }
     },
     {
+      "row": 236,
       "product_name": "Pistachio Oil/ পেস্তাবাদামের তেল",
       "brand_name": "Neofarmers",
+      "size": "30ml",
       "manufactured_price": 406,
       "market_average_price": 580,
       "sources": {
@@ -5983,8 +6453,10 @@
       }
     },
     {
+      "row": 237,
       "product_name": "Sesame Oil/ তিলের তেল",
       "brand_name": "Neofarmers",
+      "size": "75ml",
       "manufactured_price": 122.5,
       "market_average_price": 175,
       "sources": {
@@ -6000,8 +6472,10 @@
       }
     },
     {
+      "row": 238,
       "product_name": "Neem Oil/ নিমের তেল",
       "brand_name": "Neofarmers",
+      "size": "75ml",
       "manufactured_price": 240,
       "market_average_price": 320,
       "sources": {
@@ -6017,8 +6491,10 @@
       }
     },
     {
+      "row": 239,
       "product_name": "Aloe Vera Oil/ অ্যালোভেরা তেল",
       "brand_name": "Neofarmers",
+      "size": "75ml",
       "manufactured_price": 378,
       "market_average_price": 540,
       "sources": {
@@ -6034,8 +6510,10 @@
       }
     },
     {
+      "row": 240,
       "product_name": "Rose Oil/ গোলাপের তেল",
       "brand_name": "Neofarmers",
+      "size": "75ml",
       "manufactured_price": 273,
       "market_average_price": 390,
       "sources": {
@@ -6069,8 +6547,10 @@
       }
     },
     {
+      "row": 241,
       "product_name": "Mixed Hair Oil/ মিক্সড হেয়ার অয়েল",
       "brand_name": "Neofarmers",
+      "size": "75ml",
       "manufactured_price": 553,
       "market_average_price": 790,
       "sources": {
@@ -6086,8 +6566,10 @@
       }
     },
     {
+      "row": 242,
       "product_name": "Mixed Oil/ মিক্সড অয়েল",
       "brand_name": "Neofarmers",
+      "size": "30ml",
       "manufactured_price": 308,
       "market_average_price": 440,
       "sources": {
@@ -6112,8 +6594,10 @@
       }
     },
     {
+      "row": 243,
       "product_name": "Skin Cafe Coconut OIl",
       "brand_name": "Skin Cafe",
+      "size": "250 ml",
       "manufactured_price": 414,
       "market_average_price": 690,
       "sources": {
@@ -6156,8 +6640,10 @@
       }
     },
     {
+      "row": 244,
       "product_name": "Skin Cafe Pure & Natural Aloe Vera gel 98%",
       "brand_name": "Skin Cafe",
+      "size": "240 ml",
       "manufactured_price": 300,
       "market_average_price": 500,
       "sources": {
@@ -6200,8 +6686,10 @@
       }
     },
     {
+      "row": 245,
       "product_name": "Skin Cafe Tea Tee Essential Oil",
       "brand_name": "Skin Cafe",
+      "size": "10 ml",
       "manufactured_price": 240,
       "market_average_price": 400,
       "sources": {
@@ -6253,8 +6741,10 @@
       }
     },
     {
+      "row": 246,
       "product_name": "Skin cafe Lavender Essential Oil",
       "brand_name": "Skin Cafe",
+      "size": "10 ml",
       "manufactured_price": 240,
       "market_average_price": 400,
       "sources": {
@@ -6297,8 +6787,10 @@
       }
     },
     {
+      "row": 247,
       "product_name": "Skin cafe Sweet Orange Essential Oil",
       "brand_name": "Skin Cafe",
+      "size": "10 ml",
       "manufactured_price": 240,
       "market_average_price": 400,
       "sources": {
@@ -6323,8 +6815,10 @@
       }
     },
     {
+      "row": 248,
       "product_name": "Skin cafe Rosemary Essential Oil",
       "brand_name": "Skin Cafe",
+      "size": "10 ml",
       "manufactured_price": 240,
       "market_average_price": 400,
       "sources": {
@@ -6385,8 +6879,10 @@
       }
     },
     {
+      "row": 249,
       "product_name": "Skin Cafe Brightening Mask",
       "brand_name": "Skin Cafe",
+      "size": "100gm",
       "manufactured_price": 168,
       "market_average_price": 280,
       "sources": {
@@ -6420,8 +6916,10 @@
       }
     },
     {
+      "row": 250,
       "product_name": "Skin Cafe Acne Care Mask",
       "brand_name": "Skin Cafe",
+      "size": "100gm",
       "manufactured_price": 168,
       "market_average_price": 280,
       "sources": {
@@ -6455,8 +6953,10 @@
       }
     },
     {
+      "row": 251,
       "product_name": "Skin cafe Rose water",
       "brand_name": "Skin Cafe",
+      "size": "120 ml",
       "manufactured_price": 192,
       "market_average_price": 320,
       "sources": {
@@ -6517,8 +7017,10 @@
       }
     },
     {
+      "row": 252,
       "product_name": "Skin Cafe Sunscreen",
       "brand_name": "Skin Cafe",
+      "size": "60 gm",
       "manufactured_price": 390,
       "market_average_price": 650,
       "sources": {
@@ -6561,8 +7063,10 @@
       }
     },
     {
+      "row": 253,
       "product_name": "Skin Cafe Micellar Water",
       "brand_name": "Skin Cafe",
+      "size": "120 ml",
       "manufactured_price": 210,
       "market_average_price": 350,
       "sources": {
@@ -6623,8 +7127,10 @@
       }
     },
     {
+      "row": 254,
       "product_name": "Skin cafe Makeup Cleansing Oil",
       "brand_name": "Skin Cafe",
+      "size": "120ml",
       "manufactured_price": 330,
       "market_average_price": 550,
       "sources": {
@@ -6676,8 +7182,10 @@
       }
     },
     {
+      "row": 255,
       "product_name": "Skincafe hair conditioner",
       "brand_name": "Skin Cafe",
+      "size": "120ml",
       "manufactured_price": 165,
       "market_average_price": 275,
       "sources": {
@@ -6702,8 +7210,10 @@
       }
     },
     {
+      "row": 256,
       "product_name": "Skincafe Banana shampoo",
       "brand_name": "Skin Cafe",
+      "size": "250ml",
       "manufactured_price": 255,
       "market_average_price": 425,
       "sources": {
@@ -6746,8 +7256,10 @@
       }
     },
     {
+      "row": 257,
       "product_name": "Skincafe biotin shampoo",
       "brand_name": "Skin Cafe",
+      "size": "250ml",
       "manufactured_price": 255,
       "market_average_price": 425,
       "sources": {
@@ -6808,8 +7320,10 @@
       }
     },
     {
+      "row": 258,
       "product_name": "Skin Cafe Hydrating Hyaluronic Acid Face Wash with Seaweed Extract",
       "brand_name": "Skin Cafe",
+      "size": "140ml",
       "manufactured_price": 237,
       "market_average_price": 395,
       "sources": {
@@ -6852,8 +7366,10 @@
       }
     },
     {
+      "row": 259,
       "product_name": "Skin Cafe Soothing Aloe Vera Facewash with Salicylic Acid",
       "brand_name": "Skin Cafe",
+      "size": "140ml",
       "manufactured_price": 237,
       "market_average_price": 395,
       "sources": {
@@ -6905,8 +7421,10 @@
       }
     },
     {
+      "row": 260,
       "product_name": "Skin Cafe Brightening Serum",
       "brand_name": "Skin Cafe",
+      "size": "30ml",
       "manufactured_price": 390,
       "market_average_price": 650,
       "sources": {
@@ -6949,8 +7467,10 @@
       }
     },
     {
+      "row": 261,
       "product_name": "Skin Cafe Niacinamide 10% Serum",
       "brand_name": "Skin Cafe",
+      "size": "30ml",
       "manufactured_price": 390,
       "market_average_price": 650,
       "sources": {
@@ -6993,8 +7513,10 @@
       }
     },
     {
+      "row": 262,
       "product_name": "Skin Cafe All-Day Moisturizer With Niacinamide",
       "brand_name": "Skin Cafe",
+      "size": "50 gm",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -7046,8 +7568,10 @@
       }
     },
     {
+      "row": 263,
       "product_name": "Skin Cafe Night Repairing Cream With Collagen",
       "brand_name": "Skin Cafe",
+      "size": "50 gm",
       "manufactured_price": 294,
       "market_average_price": 490,
       "sources": {
@@ -7099,8 +7623,10 @@
       }
     },
     {
+      "row": 264,
       "product_name": "Skin Cafe Soft Lips Lip Balm-Smoothie",
       "brand_name": "Skin Cafe",
+      "size": "10gm",
       "manufactured_price": 78,
       "market_average_price": 130,
       "sources": {
@@ -7125,8 +7651,10 @@
       }
     },
     {
+      "row": 265,
       "product_name": "Skin Cafe Soft Lips Lip Balm-Mojito",
       "brand_name": "Skin Cafe",
+      "size": "10gm",
       "manufactured_price": 78,
       "market_average_price": 130,
       "sources": {
@@ -7151,8 +7679,10 @@
       }
     },
     {
+      "row": 266,
       "product_name": "Skin Cafe Moisture Maven Body Lotion",
       "brand_name": "Skin Cafe",
+      "size": "350ml",
       "manufactured_price": 357,
       "market_average_price": 595,
       "sources": {
@@ -7195,8 +7725,10 @@
       }
     },
     {
+      "row": 267,
       "product_name": "Enso Skin Super Light Brightening Gel Moisturizer",
       "brand_name": "Enso Skin",
+      "size": "50 ml",
       "manufactured_price": 210,
       "market_average_price": 350,
       "sources": {
@@ -7221,8 +7753,10 @@
       }
     },
     {
+      "row": 268,
       "product_name": "RAJKONNA MULTANI MATI",
       "brand_name": "RAJKONNA",
+      "size": "80gm",
       "manufactured_price": 78,
       "market_average_price": 130,
       "sources": {
@@ -7283,8 +7817,10 @@
       }
     },
     {
+      "row": 269,
       "product_name": "RAJKONNA HENNA POWDER",
       "brand_name": "RAJKONNA",
+      "size": "50gm",
       "manufactured_price": 90,
       "market_average_price": 150,
       "sources": {
@@ -7327,15 +7863,19 @@
       }
     },
     {
+      "row": 270,
       "product_name": "RAJKONNA GLOW BOOSTER FACIAL WASH Mini pack",
       "brand_name": "RAJKONNA",
+      "size": "15ml",
       "manufactured_price": 18,
       "market_average_price": 30,
       "sources": {}
     },
     {
+      "row": 271,
       "product_name": "RAJKONNA ACNE FIGHTING FACIAL WASH",
       "brand_name": "RAJKONNA",
+      "size": "100ml",
       "manufactured_price": 111,
       "market_average_price": 185,
       "sources": {
@@ -7387,8 +7927,10 @@
       }
     },
     {
+      "row": 272,
       "product_name": "RAJKONNA GLOW BOOSTER FACIAL WASH",
       "brand_name": "RAJKONNA",
+      "size": "100ml",
       "manufactured_price": 111,
       "market_average_price": 185,
       "sources": {
@@ -7440,8 +7982,10 @@
       }
     },
     {
+      "row": 273,
       "product_name": "Rajkonna Light Moisturizer With Rice Water And Licorice Extract",
       "brand_name": "RAJKONNA",
+      "size": "50gm",
       "manufactured_price": 177,
       "market_average_price": 295,
       "sources": {
@@ -7484,8 +8028,10 @@
       }
     },
     {
+      "row": 274,
       "product_name": "RAJKONNA ALL PURPOSE TONER",
       "brand_name": "RAJKONNA",
+      "size": "120ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -7537,8 +8083,10 @@
       }
     },
     {
+      "row": 275,
       "product_name": "RAJKONNA MOISTURIZING SHOWER GEL",
       "brand_name": "RAJKONNA",
+      "size": "330ML",
       "manufactured_price": 198,
       "market_average_price": 330,
       "sources": {
@@ -7581,8 +8129,10 @@
       }
     },
     {
+      "row": 276,
       "product_name": "RAJKONNA WHITE GLOW SHOWER GEL",
       "brand_name": "RAJKONNA",
+      "size": "330ML",
       "manufactured_price": 198,
       "market_average_price": 330,
       "sources": {
@@ -7616,8 +8166,10 @@
       }
     },
     {
+      "row": 277,
       "product_name": "Rajkonna Brightening Body Lotion Super Moisture",
       "brand_name": "RAJKONNA",
+      "size": "300",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -7660,8 +8212,10 @@
       }
     },
     {
+      "row": 278,
       "product_name": "LILAC VITAMIN C SERUM 10%",
       "brand_name": "LILAC",
+      "size": "30ml",
       "manufactured_price": 570,
       "market_average_price": 950,
       "sources": {
@@ -7695,8 +8249,10 @@
       }
     },
     {
+      "row": 279,
       "product_name": "LILAC NIACINAMIDE SERUM 5%",
       "brand_name": "LILAC",
+      "size": "30ml",
       "manufactured_price": 570,
       "market_average_price": 950,
       "sources": {
@@ -7730,8 +8286,10 @@
       }
     },
     {
+      "row": 280,
       "product_name": "LILAC BRIGHTENING SERUM WITH 2% ALPHA ARBUTIN AND 1% KOJIC ACID",
       "brand_name": "LILAC",
+      "size": "30ml",
       "manufactured_price": 570,
       "market_average_price": 950,
       "sources": {
@@ -7756,8 +8314,10 @@
       }
     },
     {
+      "row": 281,
       "product_name": "LILAC 3X SPOT LIGHTENER",
       "brand_name": "LILAC",
+      "size": "50gm",
       "manufactured_price": 210,
       "market_average_price": 350,
       "sources": {
@@ -7809,8 +8369,10 @@
       }
     },
     {
+      "row": 282,
       "product_name": "LILAC BRIGHTENING FACE WASH OILY AND COMBINATION SKIN",
       "brand_name": "LILAC",
+      "size": "120ml",
       "manufactured_price": 417,
       "market_average_price": 695,
       "sources": {
@@ -7862,8 +8424,10 @@
       }
     },
     {
+      "row": 283,
       "product_name": "LILAC BRIGHTENING FACE WASH DRY AND SENSITIVE SKIN",
       "brand_name": "LILAC",
+      "size": "120ml",
       "manufactured_price": 417,
       "market_average_price": 695,
       "sources": {
@@ -7897,8 +8461,10 @@
       }
     },
     {
+      "row": 284,
       "product_name": "LILAC BRIGHTENING MOISTURISER",
       "brand_name": "LILAC",
+      "size": "50gm",
       "manufactured_price": 510,
       "market_average_price": 850,
       "sources": {
@@ -7932,15 +8498,19 @@
       }
     },
     {
+      "row": 285,
       "product_name": "LILAC LIP BALM- Aloevera- SPF-15",
       "brand_name": "LILAC",
+      "size": "30gm",
       "manufactured_price": 120,
       "market_average_price": 200,
       "sources": {}
     },
     {
+      "row": 286,
       "product_name": "LILAC LIP BALM- Rose- SPF-15",
       "brand_name": "LILAC",
+      "size": "30gm",
       "manufactured_price": 132,
       "market_average_price": 220,
       "sources": {
@@ -7956,8 +8526,10 @@
       }
     },
     {
+      "row": 287,
       "product_name": "LILAC PREMIUM TINTED LIP BALM – ORANGE PIE WITH SPF15",
       "brand_name": "LILAC",
+      "size": "10 gm",
       "manufactured_price": 150,
       "market_average_price": 250,
       "sources": {
@@ -7982,8 +8554,10 @@
       }
     },
     {
+      "row": 288,
       "product_name": "Lilac Tinted Lipbalm With SPF15 Strawberry Bliss",
       "brand_name": "LILAC",
+      "size": "4.5 gm",
       "manufactured_price": 78,
       "market_average_price": 130,
       "sources": {
@@ -7999,8 +8573,10 @@
       }
     },
     {
+      "row": 289,
       "product_name": "LILAC PREMIUM LIP BALM – COOKIE DOUGH WITH SPF15",
       "brand_name": "LILAC",
+      "size": "10 gm",
       "manufactured_price": 150,
       "market_average_price": 250,
       "sources": {
@@ -8016,8 +8592,10 @@
       }
     },
     {
+      "row": 290,
       "product_name": "LILAC PREMIUM LIP BALM – CHOCO DELIGHT WITH SPF15",
       "brand_name": "LILAC",
+      "size": "10 gm",
       "manufactured_price": 150,
       "market_average_price": 250,
       "sources": {
@@ -8042,8 +8620,10 @@
       }
     },
     {
+      "row": 291,
       "product_name": "Lilac Lip Balm With SPF15 Orange Crush",
       "brand_name": "LILAC",
+      "size": "4.5",
       "manufactured_price": 78,
       "market_average_price": 130,
       "sources": {
@@ -8059,8 +8639,10 @@
       }
     },
     {
+      "row": 292,
       "product_name": "Hawaa-Hair Fall Avenger Oil",
       "brand_name": "Hawaa",
+      "size": "100 ml",
       "manufactured_price": 132,
       "market_average_price": 220,
       "sources": {
@@ -8112,8 +8694,10 @@
       }
     },
     {
+      "row": 293,
       "product_name": "Hawaa Olive Oil",
       "brand_name": "Hawaa",
+      "size": "100 ml",
       "manufactured_price": 162,
       "market_average_price": 270,
       "sources": {
@@ -8156,8 +8740,10 @@
       }
     },
     {
+      "row": 294,
       "product_name": "Hawaa Castor Oil",
       "brand_name": "Hawaa",
+      "size": "100 ml",
       "manufactured_price": 150,
       "market_average_price": 250,
       "sources": {
@@ -8191,8 +8777,10 @@
       }
     },
     {
+      "row": 295,
       "product_name": "Nirvana Color Face Palette - Windy Monsoon",
       "brand_name": "Nirvana",
+      "size": "15gm",
       "manufactured_price": 570,
       "market_average_price": 950,
       "sources": {
@@ -8217,8 +8805,10 @@
       }
     },
     {
+      "row": 296,
       "product_name": "Nirvana Color Liquid Matte Lipstick- Infatuated",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -8234,15 +8824,19 @@
       }
     },
     {
+      "row": 297,
       "product_name": "Nirvana Color Liquid Matte Lipstick- Kiss me",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {}
     },
     {
+      "row": 298,
       "product_name": "Nirvana Color Liquid Matte Lipstick- Love me",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -8258,8 +8852,10 @@
       }
     },
     {
+      "row": 299,
       "product_name": "Nirvana Color Liquid Matte Lipstick- Sweet Raisin",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -8275,8 +8871,10 @@
       }
     },
     {
+      "row": 300,
       "product_name": "Nirvana Color Liquid Matte Lipstick- Sweet Sin",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -8292,8 +8890,10 @@
       }
     },
     {
+      "row": 301,
       "product_name": "Nirvana Color Liquid Matte Lipstick- Timeless",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -8309,8 +8909,10 @@
       }
     },
     {
+      "row": 302,
       "product_name": "Nirvana Color No Smudge Retractable Eyeliner – Coal Black",
       "brand_name": "Nirvana",
+      "size": "5 gm",
       "manufactured_price": 210,
       "market_average_price": 350,
       "sources": {
@@ -8335,8 +8937,10 @@
       }
     },
     {
+      "row": 303,
       "product_name": "Nirvana Color Nail Enamel – Feeling Blue – 35",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8352,8 +8956,10 @@
       }
     },
     {
+      "row": 304,
       "product_name": "Nirvana Color Nail Enamel – Mint Mojito – 33",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8378,8 +8984,10 @@
       }
     },
     {
+      "row": 305,
       "product_name": "Nirvana Color Nail Enamel – Snow White – 27",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8395,8 +9003,10 @@
       }
     },
     {
+      "row": 306,
       "product_name": "Nirvana Color Nail Enamel – Beautiful Mess – 32",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8412,15 +9022,19 @@
       }
     },
     {
+      "row": 307,
       "product_name": "Nirvana Color Glitter Nail Enamel – Miracle Brush -21",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {}
     },
     {
+      "row": 308,
       "product_name": "Nirvana Color Glitter Nail Enamel – Focus On -23",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8436,8 +9050,10 @@
       }
     },
     {
+      "row": 309,
       "product_name": "Nirvana Color Nail Enamel – Cherry Picked-14",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8462,8 +9078,10 @@
       }
     },
     {
+      "row": 310,
       "product_name": "Nirvana Color Nail Enamel – Femme Fatale – 36",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8479,8 +9097,10 @@
       }
     },
     {
+      "row": 311,
       "product_name": "Nirvana Color Nail Enamel – Spiced Latte – 37",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8496,8 +9116,10 @@
       }
     },
     {
+      "row": 312,
       "product_name": "Nirvana Color Nail Enamel – Pastel Bloom – 29",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8513,8 +9135,10 @@
       }
     },
     {
+      "row": 313,
       "product_name": "Nirvana Color Glitter Nail Enamel – Touched Angel -25",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8530,8 +9154,10 @@
       }
     },
     {
+      "row": 314,
       "product_name": "Nirvana Color Glitter Nail Enamel – Precious Love -19",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8556,8 +9182,10 @@
       }
     },
     {
+      "row": 315,
       "product_name": "Nirvana Color Nail Enamel – Naughty Hand-07",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8573,8 +9201,10 @@
       }
     },
     {
+      "row": 316,
       "product_name": "Nirvana Color Nail Enamel – Mysterious Look -18",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8599,8 +9229,10 @@
       }
     },
     {
+      "row": 317,
       "product_name": "Nirvana Color Nail Enamel – Pretty Girl -17",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8616,8 +9248,10 @@
       }
     },
     {
+      "row": 318,
       "product_name": "Nirvana Color Nail Enamel – Olive You – 34",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8642,8 +9276,10 @@
       }
     },
     {
+      "row": 319,
       "product_name": "Nirvana Color Nail Enamel – Black Swan – 38",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8659,8 +9295,10 @@
       }
     },
     {
+      "row": 320,
       "product_name": "Nirvana Color Nail Enamel – I Am Jealous-05",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8676,8 +9314,10 @@
       }
     },
     {
+      "row": 321,
       "product_name": "Nirvana Color Nail Enamel – I Am Yours-09",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8693,15 +9333,19 @@
       }
     },
     {
+      "row": 322,
       "product_name": "Nirvana Color Glitter Nail Enamel – Shiny Hand-22",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {}
     },
     {
+      "row": 323,
       "product_name": "Nirvana Color Glitter Nail Enamel – Hold Me -24",
       "brand_name": "Nirvana",
+      "size": "8ml",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -8717,8 +9361,10 @@
       }
     },
     {
+      "row": 324,
       "product_name": "Nirvana Color Matte Color Bullet – Honey Crush",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -8743,8 +9389,10 @@
       }
     },
     {
+      "row": 325,
       "product_name": "Nirvana Color Matte Color Bullet – Berry Lips",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -8760,8 +9408,10 @@
       }
     },
     {
+      "row": 326,
       "product_name": "Nirvana Color Matte Color Bullet – Burnt Sienna",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -8777,8 +9427,10 @@
       }
     },
     {
+      "row": 327,
       "product_name": "Nirvana Color Matte Color Bullet – Dusky Wine",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -8803,8 +9455,10 @@
       }
     },
     {
+      "row": 328,
       "product_name": "Nirvana Color Matte Color Bullet – Brick Brown",
       "brand_name": "Nirvana",
+      "size": "5gm",
       "manufactured_price": 210,
       "market_average_price": 350,
       "sources": {
@@ -8829,8 +9483,10 @@
       }
     },
     {
+      "row": 329,
       "product_name": "Nirvana Color Face Perfect Liquid Foundation – Light Golden",
       "brand_name": "Nirvana",
+      "size": "30ml",
       "manufactured_price": 690,
       "market_average_price": 1150,
       "sources": {
@@ -8855,8 +9511,10 @@
       }
     },
     {
+      "row": 330,
       "product_name": "Nirvana Color Face Perfect Liquid Foundation – Light Honey",
       "brand_name": "Nirvana",
+      "size": "30ml",
       "manufactured_price": 690,
       "market_average_price": 1150,
       "sources": {
@@ -8872,8 +9530,10 @@
       }
     },
     {
+      "row": 331,
       "product_name": "Nirvana Color Face Perfect Liquid Foundation – Light Beige",
       "brand_name": "Nirvana",
+      "size": "30ml",
       "manufactured_price": 690,
       "market_average_price": 1150,
       "sources": {
@@ -8898,8 +9558,10 @@
       }
     },
     {
+      "row": 332,
       "product_name": "Nirvana Color Face Perfect Liquid Foundation – Light Natural",
       "brand_name": "Nirvana",
+      "size": "30ml",
       "manufactured_price": 690,
       "market_average_price": 1150,
       "sources": {
@@ -8924,8 +9586,10 @@
       }
     },
     {
+      "row": 333,
       "product_name": "Nirvana Color Eau De Parfum For Women Suranjana",
       "brand_name": "Nirvana",
+      "size": "25ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -8950,8 +9614,10 @@
       }
     },
     {
+      "row": 334,
       "product_name": "Nirvana Color Eau De Parfum For Women Shishir",
       "brand_name": "Nirvana",
+      "size": "25ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -8976,8 +9642,10 @@
       }
     },
     {
+      "row": 335,
       "product_name": "Nirvana Color Eau De Parfum For Women Akashleena",
       "brand_name": "Nirvana",
+      "size": "25ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -9002,8 +9670,10 @@
       }
     },
     {
+      "row": 336,
       "product_name": "Nirvana Color Eau De Parfum For Women Pankouri",
       "brand_name": "Nirvana",
+      "size": "25ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -9028,8 +9698,10 @@
       }
     },
     {
+      "row": 337,
       "product_name": "Nirvana Color Eau De Parfum For Women Prohelika",
       "brand_name": "Nirvana",
+      "size": "25ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -9054,8 +9726,10 @@
       }
     },
     {
+      "row": 338,
       "product_name": "Nirvana Color Volume Pro Mascara",
       "brand_name": "Nirvana",
+      "size": "12ml",
       "manufactured_price": 348,
       "market_average_price": 580,
       "sources": {
@@ -9080,8 +9754,10 @@
       }
     },
     {
+      "row": 339,
       "product_name": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Beige)",
       "brand_name": "Nirvana",
+      "size": "25ml",
       "manufactured_price": 510,
       "market_average_price": 850,
       "sources": {
@@ -9115,8 +9791,10 @@
       }
     },
     {
+      "row": 340,
       "product_name": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Natural)",
       "brand_name": "Nirvana",
+      "size": "25ml",
       "manufactured_price": 510,
       "market_average_price": 850,
       "sources": {
@@ -9141,8 +9819,10 @@
       }
     },
     {
+      "row": 341,
       "product_name": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Golden)",
       "brand_name": "Nirvana",
+      "size": "25ml",
       "manufactured_price": 510,
       "market_average_price": 850,
       "sources": {
@@ -9167,8 +9847,10 @@
       }
     },
     {
+      "row": 342,
       "product_name": "Groome Tea Tree Purifying & Deep Cleansing Nose Strips (Monthly Pack) 6 pcs",
       "brand_name": "Groome",
+      "size": "",
       "manufactured_price": 117,
       "market_average_price": 195,
       "sources": {
@@ -9193,8 +9875,10 @@
       }
     },
     {
+      "row": 343,
       "product_name": "Groome Black Head Remover Charcoal Nose strips(Monthly Pack) 6 pcs",
       "brand_name": "Groome",
+      "size": "",
       "manufactured_price": 117,
       "market_average_price": 195,
       "sources": {
@@ -9210,8 +9894,10 @@
       }
     },
     {
+      "row": 344,
       "product_name": "Groome Beauty Blender Sponge - Yellow",
       "brand_name": "Groome",
+      "size": "",
       "manufactured_price": 132,
       "market_average_price": 220,
       "sources": {
@@ -9254,8 +9940,10 @@
       }
     },
     {
+      "row": 345,
       "product_name": "Groome Makeup Blender Sponge - Pink",
       "brand_name": "Groome",
+      "size": "",
       "manufactured_price": 132,
       "market_average_price": 220,
       "sources": {
@@ -9298,8 +9986,10 @@
       }
     },
     {
+      "row": 346,
       "product_name": "Groome Personal Care Cotton Pad - 80pcs",
       "brand_name": "Groome",
+      "size": "",
       "manufactured_price": 159,
       "market_average_price": 265,
       "sources": {
@@ -9324,8 +10014,10 @@
       }
     },
     {
+      "row": 347,
       "product_name": "Groome Eyebrow and Facial Razor (Pack of 2pcs)",
       "brand_name": "Groome",
+      "size": "",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -9359,8 +10051,10 @@
       }
     },
     {
+      "row": 348,
       "product_name": "Groome Eyebrow And Facial Razor- Scarlet Edge ( 2pcs)",
       "brand_name": "Groome",
+      "size": "",
       "manufactured_price": 144,
       "market_average_price": 240,
       "sources": {
@@ -9403,8 +10097,10 @@
       }
     },
     {
+      "row": 349,
       "product_name": "Groome Niacinamide 5% + Zinc 1% Skin Correcting Serum",
       "brand_name": "Groome",
+      "size": "30 ml",
       "manufactured_price": 588,
       "market_average_price": 980,
       "sources": {
@@ -9438,8 +10134,10 @@
       }
     },
     {
+      "row": 350,
       "product_name": "Groome Glutathione + Alpha Arbutin +HA Brightening Serum",
       "brand_name": "Groome",
+      "size": "30 ml",
       "manufactured_price": 534,
       "market_average_price": 890,
       "sources": {
@@ -9464,8 +10162,10 @@
       }
     },
     {
+      "row": 351,
       "product_name": "Groome Vitamin-C 12% Glowing Serum",
       "brand_name": "Groome",
+      "size": "30 ml",
       "manufactured_price": 534,
       "market_average_price": 890,
       "sources": {
@@ -9499,8 +10199,10 @@
       }
     },
     {
+      "row": 352,
       "product_name": "Groome Bird's Nest Brightening Face Wash",
       "brand_name": "Groome",
+      "size": "100 ml",
       "manufactured_price": 387,
       "market_average_price": 645,
       "sources": {
@@ -9525,8 +10227,10 @@
       }
     },
     {
+      "row": 353,
       "product_name": "Groome Green Clay Oil Control Face Wash",
       "brand_name": "Groome",
+      "size": "100 ml",
       "manufactured_price": 387,
       "market_average_price": 645,
       "sources": {
@@ -9560,8 +10264,10 @@
       }
     },
     {
+      "row": 354,
       "product_name": "Groome Skin Regenerist Brightening & Moisturizing Cream0",
       "brand_name": "Groome",
+      "size": "50g",
       "manufactured_price": 714,
       "market_average_price": 1190,
       "sources": {
@@ -9595,8 +10301,10 @@
       }
     },
     {
+      "row": 355,
       "product_name": "Lavino Neem Purifying Face Wash With 0.5% Salicylic Acid",
       "brand_name": "Lavino",
+      "size": "100ml",
       "manufactured_price": 174,
       "market_average_price": 290,
       "sources": {
@@ -9648,8 +10356,10 @@
       }
     },
     {
+      "row": 356,
       "product_name": "Lavino Milk Brightening Face Wash",
       "brand_name": "Lavino",
+      "size": "100ml",
       "manufactured_price": 174,
       "market_average_price": 290,
       "sources": {
@@ -9692,15 +10402,19 @@
       }
     },
     {
+      "row": 357,
       "product_name": "Lavino Pure Olive Oil",
       "brand_name": "Lavino",
+      "size": "100ml",
       "manufactured_price": 132,
       "market_average_price": 220,
       "sources": {}
     },
     {
+      "row": 358,
       "product_name": "Lavino vitamin c   Face Wash",
       "brand_name": "Lavino",
+      "size": "100ml",
       "manufactured_price": 174,
       "market_average_price": 290,
       "sources": {
@@ -9743,8 +10457,10 @@
       }
     },
     {
+      "row": 359,
       "product_name": "Lavino Brightening Moisturizer - with Alpha Arbutin & Vitamin E",
       "brand_name": "Lavino",
+      "size": "50g",
       "manufactured_price": 285,
       "market_average_price": 475,
       "sources": {
@@ -9769,8 +10485,10 @@
       }
     },
     {
+      "row": 360,
       "product_name": "Lavino Mint Shower Gel – with Peppermint Extract",
       "brand_name": "Lavino",
+      "size": "330ml",
       "manufactured_price": 285,
       "market_average_price": 475,
       "sources": {
@@ -9804,8 +10522,10 @@
       }
     },
     {
+      "row": 361,
       "product_name": "Lavino Vitamin C Shower Gel – with Orange Extract",
       "brand_name": "Lavino",
+      "size": "330ml",
       "manufactured_price": 285,
       "market_average_price": 475,
       "sources": {
@@ -9830,8 +10550,10 @@
       }
     },
     {
+      "row": 362,
       "product_name": "Ombre Body Mist- Bali Trip (W)",
       "brand_name": "Ombre",
+      "size": "120ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -9883,8 +10605,10 @@
       }
     },
     {
+      "row": 363,
       "product_name": "Ombre Body Mist- I found You (W)",
       "brand_name": "Ombre",
+      "size": "120ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -9927,8 +10651,10 @@
       }
     },
     {
+      "row": 364,
       "product_name": "Ombre Body Mist- Blue Pearl (W)",
       "brand_name": "Ombre",
+      "size": "120ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -9980,8 +10706,10 @@
       }
     },
     {
+      "row": 365,
       "product_name": "Ombre Perfumed Body Mist - Holiday Bliss",
       "brand_name": "Ombre",
+      "size": "120ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -10024,8 +10752,10 @@
       }
     },
     {
+      "row": 366,
       "product_name": "Ombre Perfumed Body Mist - Golden Hour",
       "brand_name": "Ombre",
+      "size": "120ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -10059,8 +10789,10 @@
       }
     },
     {
+      "row": 367,
       "product_name": "Ombre Perfumed Body Mist - Munsell Dream",
       "brand_name": "Ombre",
+      "size": "120ml",
       "manufactured_price": 270,
       "market_average_price": 450,
       "sources": {
@@ -10085,8 +10817,10 @@
       }
     },
     {
+      "row": 368,
       "product_name": "Ombre Mini Perfume Blue Pearl (EDP)",
       "brand_name": "Ombre",
+      "size": "9ml",
       "manufactured_price": 138,
       "market_average_price": 230,
       "sources": {
@@ -10102,8 +10836,10 @@
       }
     },
     {
+      "row": 369,
       "product_name": "Ombre Mini Perfume Golden Hour (EDP)",
       "brand_name": "Ombre",
+      "size": "9ml",
       "manufactured_price": 138,
       "market_average_price": 230,
       "sources": {
@@ -10128,8 +10864,10 @@
       }
     },
     {
+      "row": 370,
       "product_name": "Ombre Mini Perfume Bali Trip (EDP)",
       "brand_name": "Ombre",
+      "size": "9ml",
       "manufactured_price": 138,
       "market_average_price": 230,
       "sources": {
@@ -10163,8 +10901,10 @@
       }
     },
     {
+      "row": 371,
       "product_name": "Panam Shower Gel Pulp Rain with Free Loofah",
       "brand_name": "Panam",
+      "size": "250ml",
       "manufactured_price": 174,
       "market_average_price": 290,
       "sources": {
@@ -10180,8 +10920,10 @@
       }
     },
     {
+      "row": 372,
       "product_name": "Panam Shower Gel Ocean Blue With Free Loofah",
       "brand_name": "Panam",
+      "size": "250ml",
       "manufactured_price": 174,
       "market_average_price": 290,
       "sources": {
@@ -10206,8 +10948,10 @@
       }
     },
     {
+      "row": 373,
       "product_name": "Panam Men Brightening Facial Wash",
       "brand_name": "Panam",
+      "size": "100ml",
       "manufactured_price": 210,
       "market_average_price": 350,
       "sources": {

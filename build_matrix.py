@@ -16,8 +16,10 @@ research = json.loads(RESEARCH_PATH.read_text(encoding='utf-8'))
 products = []
 for item in research['products']:
     products.append({
+        'row': item['row'],
         'product_name': item['product_name'],
         'brand_name': item['brand_name'],
+        'size': item.get('size', ''),
         'manufactured_price': item['excel_prices'].get('manufactured_price'),
         'market_average_price': item['excel_prices'].get('market_average_price'),
         'sources': item.get('sources', {}),
@@ -166,6 +168,10 @@ header.app-header {
   border-radius: 50%;
   background: #0ea5e9;
   box-shadow: 0 0 8px #0ea5e9;
+}
+.brand-dot.synced {
+  background: #10b981;
+  box-shadow: 0 0 8px #10b981;
 }
 
 .header-meta-pill {
@@ -886,7 +892,7 @@ dialog::backdrop {
 <header class="app-header">
   <div class="header-left">
     <div class="brand-title">
-      <span class="brand-dot"></span>
+      <span class="brand-dot" id="liveSyncDot" title="Connected to Cloudflare D1 Edge Database"></span>
       Price Matrix
     </div>
     <div class="divider-v"></div>
@@ -930,7 +936,7 @@ dialog::backdrop {
       <span id="sellingChipBtnLabel">View Market Discount %</span>
     </button>
     <button class="btn-calc" id="openEngineBtn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       Pricing Engine
     </button>
     <button class="btn-icon" id="download" title="Export Dataset (JSON)">
@@ -1048,7 +1054,7 @@ dialog::backdrop {
 
     <div id="tabTuneContent" style="display:none;grid-gap:16px;">
       <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.4;">
-        Customize unit costs and margins specifically for this product. Changes here override the global engine settings and persist across sessions.
+        Customize unit costs and margins specifically for this product. Changes here override the global engine settings and persist across sessions via Cloudflare D1.
       </div>
       
       <div class="engine-grid">
@@ -1103,9 +1109,10 @@ dialog::backdrop {
 
 <script id="data" type="application/json">__DATA__</script>
 <script>
-const data = JSON.parse(document.getElementById('data').textContent);
-const products = data.products;
-const sources = data.source_columns;
+// Initial bootstrap dataset
+const initialData = JSON.parse(document.getElementById('data').textContent);
+let products = initialData.products;
+const sources = initialData.source_columns;
 const money = new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0, maximumFractionDigits: 2 });
 const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
 
@@ -1114,7 +1121,6 @@ const STORAGE_KEY_GLOBAL = 'price_matrix_global_params';
 const STORAGE_KEY_OVERRIDES = 'price_matrix_custom_overrides';
 const STORAGE_KEY_CHIP_MODE = 'price_matrix_selling_chip_mode';
 
-// Selling Price Chip Mode: 'markup' (vs MFG Price) or 'discount' (vs Market Avg Price)
 let sellingChipMode = 'markup';
 try {
   const savedMode = localStorage.getItem(STORAGE_KEY_CHIP_MODE);
@@ -1146,7 +1152,7 @@ const defaultGlobalParams = {
   delivery: 60,
   cac: 80,
   targetMarginPct: 25,
-  discountType: 'pct', // 'pct' | 'amt'
+  discountType: 'pct',
   discountVal: 10
 };
 
@@ -1156,33 +1162,43 @@ try {
   if (saved) globalCostParams = { ...globalCostParams, ...JSON.parse(saved) };
 } catch (e) {}
 
-// Per-product custom overrides: { [product_name]: { packaging, transport, delivery, cac, targetMarginPct, discountType, discountVal } }
 let productOverrides = {};
 try {
   const savedOverrides = localStorage.getItem(STORAGE_KEY_OVERRIDES);
   if (savedOverrides) productOverrides = JSON.parse(savedOverrides);
 } catch (e) {}
 
-// Async Sync with Cloudflare D1 Backend
+// Async Sync with Cloudflare D1 Backend (fetches live products, listings, and engine parameters)
 async function syncFromD1() {
   try {
-    const res = await fetch('/api/engine');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success) {
-        if (data.globalParams) {
-          globalCostParams = { ...globalCostParams, ...data.globalParams };
-          try { localStorage.setItem(STORAGE_KEY_GLOBAL, JSON.stringify(globalCostParams)); } catch(e){}
-        }
-        if (data.overrides) {
-          productOverrides = { ...productOverrides, ...data.overrides };
-          try { localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(productOverrides)); } catch(e){}
-        }
-        render();
+    // 1. Fetch live product data from D1
+    const pRes = await fetch('/api/products');
+    if (pRes.ok) {
+      const pData = await pRes.json();
+      if (pData.success && pData.products && pData.products.length > 0) {
+        products = pData.products;
+        document.getElementById('liveSyncDot').classList.add('synced');
       }
     }
+
+    // 2. Fetch live global parameters & custom overrides from D1
+    const eRes = await fetch('/api/engine');
+    if (eRes.ok) {
+      const eData = await eRes.json();
+      if (eData.success) {
+        if (eData.globalParams) {
+          globalCostParams = { ...globalCostParams, ...eData.globalParams };
+          try { localStorage.setItem(STORAGE_KEY_GLOBAL, JSON.stringify(globalCostParams)); } catch(e){}
+        }
+        if (eData.overrides) {
+          productOverrides = { ...productOverrides, ...eData.overrides };
+          try { localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(productOverrides)); } catch(e){}
+        }
+      }
+    }
+    render();
   } catch (err) {
-    // Offline or static file mode: smoothly use localStorage
+    // Offline or static preview fallback
   }
 }
 syncFromD1();
@@ -1233,8 +1249,8 @@ const body = document.getElementById('body');
 const empty = document.getElementById('empty');
 const headerRow = document.getElementById('headerRow');
 
-document.getElementById('productTotal').textContent = data.product_count.toLocaleString();
-const listingTotal = Object.values(data.source_listing_counts).reduce((a, b) => a + b, 0);
+document.getElementById('productTotal').textContent = initialData.product_count.toLocaleString();
+const listingTotal = Object.values(initialData.source_listing_counts).reduce((a, b) => a + b, 0);
 document.getElementById('listingTotal').textContent = listingTotal.toLocaleString();
 
 [...new Set(products.map(p => p.brand_name))].sort().forEach(v => brandFilter.add(new Option(v, v)));
@@ -1324,7 +1340,6 @@ function calculateMarkup(sellingPrice, mfgPrice) {
 
 function calculateMarketDiscount(sellingPrice, marketAvgPrice) {
   if (!marketAvgPrice || marketAvgPrice <= 0 || !sellingPrice) return null;
-  // If selling price is lower than market avg, discount is positive (e.g. -20% vs market)
   return ((marketAvgPrice - sellingPrice) / marketAvgPrice) * 100;
 }
 
@@ -1351,13 +1366,11 @@ function getMarkupChip(pct) {
 function getMarketDiscountChip(discPct) {
   if (discPct === null) return '';
   if (discPct > 0.01) {
-    // Selling below market average: Green discount chip
     return `<span class="markup-chip mkt-disc" title="${discPct.toFixed(1)}% discount off Market Average price">↓-${discPct.toFixed(0)}%</span>`;
   }
   if (Math.abs(discPct) <= 0.01) {
     return `<span class="markup-chip zero" title="Selling at Par with Market Average price">0%</span>`;
   }
-  // Selling above market average: Premium chip
   return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% above Market Average price">↑+${Math.abs(discPct).toFixed(0)}%</span>`;
 }
 
@@ -1627,7 +1640,7 @@ function updateProdTuneSummary() {
   document.getElementById(id).addEventListener('input', updateProdTuneSummary);
 });
 
-function saveProductCustomEngine() {
+async function saveProductCustomEngine() {
   if (!activeProductDetail) return;
   const name = activeProductDetail.product_name;
   productOverrides[name] = {
@@ -1639,26 +1652,26 @@ function saveProductCustomEngine() {
     discountType: currentProdDiscountType,
     discountVal: Number(document.getElementById('prodInputDiscountVal').value) || 0
   };
-  saveProductOverridesToStorage(name);
+  await saveProductOverridesToStorage(name);
   document.getElementById('dialog').close();
   render();
 }
 
-function clearProductCustomEngine() {
+async function clearProductCustomEngine() {
   if (!activeProductDetail) return;
   const name = activeProductDetail.product_name;
   delete productOverrides[name];
-  saveProductOverridesToStorage();
-  removeProductOverrideFromD1(name);
+  await saveProductOverridesToStorage();
+  await removeProductOverrideFromD1(name);
   document.getElementById('dialog').close();
   render();
 }
 
-function resetAllCustomOverrides() {
+async function resetAllCustomOverrides() {
   if (confirm('Reset all custom per-product overrides back to global Pricing Engine defaults?')) {
     productOverrides = {};
-    saveProductOverridesToStorage();
-    clearAllProductOverridesFromD1();
+    await saveProductOverridesToStorage();
+    await clearAllProductOverridesFromD1();
     render();
   }
 }
@@ -1702,8 +1715,8 @@ engineModal.addEventListener('click', e => { if (e.target.id === 'engineModal') 
   });
 });
 
-document.getElementById('applyEngineBtn').onclick = () => {
-  saveGlobalParamsToStorage();
+document.getElementById('applyEngineBtn').onclick = async () => {
+  await saveGlobalParamsToStorage();
   engineModal.close();
   render();
 };
@@ -1712,7 +1725,7 @@ document.getElementById('applyEngineBtn').onclick = () => {
 
 document.getElementById('download').onclick = () => {
   const exportData = {
-    ...data,
+    ...initialData,
     global_cost_parameters: globalCostParams,
     product_custom_overrides: productOverrides,
     products: products.map(p => ({
