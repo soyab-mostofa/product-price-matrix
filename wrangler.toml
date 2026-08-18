@@ -1,0 +1,8 @@
+name = "product-price-matrix"
+compatibility_date = "2026-08-18"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "product-price-matrix-db"
+database_id = "78a79d0b-20b4-4b3f-b0bf-d2d0e97c9990"

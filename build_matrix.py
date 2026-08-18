@@ -1109,7 +1109,7 @@ const sources = data.source_columns;
 const money = new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0, maximumFractionDigits: 2 });
 const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
 
-// Global Cost Parameters (Persistent in localStorage)
+// Global Cost Parameters (Persistent with Cloudflare D1 + localStorage fallback)
 const STORAGE_KEY_GLOBAL = 'price_matrix_global_params';
 const STORAGE_KEY_OVERRIDES = 'price_matrix_custom_overrides';
 const STORAGE_KEY_CHIP_MODE = 'price_matrix_selling_chip_mode';
@@ -1163,12 +1163,64 @@ try {
   if (savedOverrides) productOverrides = JSON.parse(savedOverrides);
 } catch (e) {}
 
-function saveGlobalParamsToStorage() {
+// Async Sync with Cloudflare D1 Backend
+async function syncFromD1() {
+  try {
+    const res = await fetch('/api/engine');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success) {
+        if (data.globalParams) {
+          globalCostParams = { ...globalCostParams, ...data.globalParams };
+          try { localStorage.setItem(STORAGE_KEY_GLOBAL, JSON.stringify(globalCostParams)); } catch(e){}
+        }
+        if (data.overrides) {
+          productOverrides = { ...productOverrides, ...data.overrides };
+          try { localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(productOverrides)); } catch(e){}
+        }
+        render();
+      }
+    }
+  } catch (err) {
+    // Offline or static file mode: smoothly use localStorage
+  }
+}
+syncFromD1();
+
+async function saveGlobalParamsToStorage() {
   try { localStorage.setItem(STORAGE_KEY_GLOBAL, JSON.stringify(globalCostParams)); } catch (e) {}
+  try {
+    await fetch('/api/engine', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(globalCostParams)
+    });
+  } catch (e) {}
 }
 
-function saveProductOverridesToStorage() {
+async function saveProductOverridesToStorage(productName) {
   try { localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(productOverrides)); } catch (e) {}
+  if (productName && productOverrides[productName]) {
+    try {
+      await fetch('/api/overrides', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productName, ...productOverrides[productName] })
+      });
+    } catch (e) {}
+  }
+}
+
+async function removeProductOverrideFromD1(productName) {
+  try {
+    await fetch(`/api/overrides?productName=${encodeURIComponent(productName)}`, { method: 'DELETE' });
+  } catch (e) {}
+}
+
+async function clearAllProductOverridesFromD1() {
+  try {
+    await fetch('/api/overrides?all=true', { method: 'DELETE' });
+  } catch (e) {}
 }
 
 let activeProductDetail = null;
@@ -1587,15 +1639,17 @@ function saveProductCustomEngine() {
     discountType: currentProdDiscountType,
     discountVal: Number(document.getElementById('prodInputDiscountVal').value) || 0
   };
-  saveProductOverridesToStorage();
+  saveProductOverridesToStorage(name);
   document.getElementById('dialog').close();
   render();
 }
 
 function clearProductCustomEngine() {
   if (!activeProductDetail) return;
-  delete productOverrides[activeProductDetail.product_name];
+  const name = activeProductDetail.product_name;
+  delete productOverrides[name];
   saveProductOverridesToStorage();
+  removeProductOverrideFromD1(name);
   document.getElementById('dialog').close();
   render();
 }
@@ -1604,6 +1658,7 @@ function resetAllCustomOverrides() {
   if (confirm('Reset all custom per-product overrides back to global Pricing Engine defaults?')) {
     productOverrides = {};
     saveProductOverridesToStorage();
+    clearAllProductOverridesFromD1();
     render();
   }
 }
