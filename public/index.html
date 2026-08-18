@@ -934,7 +934,7 @@ dialog::backdrop {
       </div>
       <div class="engine-field">
         <label for="inputTransport">Transport (BDT)</label>
-        <input type="number" id="inputTransport" class="engine-input" value="40" min="0" step="1">
+        <input type="number" id="inputTransport" class="engine-input" value="0" min="0" step="1">
         <span class="hint">Inbound freight allocation</span>
       </div>
       <div class="engine-field">
@@ -944,12 +944,12 @@ dialog::backdrop {
       </div>
       <div class="engine-field">
         <label for="inputCAC">CAC / Marketing (BDT)</label>
-        <input type="number" id="inputCAC" class="engine-input" value="80" min="0" step="1">
+        <input type="number" id="inputCAC" class="engine-input" value="0" min="0" step="1">
         <span class="hint">Acquisition cost per order</span>
       </div>
       <div class="engine-field">
         <label for="inputMarginPct">Target Margin (%)</label>
-        <input type="number" id="inputMarginPct" class="engine-input" value="25" min="0" step="1">
+        <input type="number" id="inputMarginPct" class="engine-input" value="0" min="0" step="1">
         <span class="hint">Gross target markup</span>
       </div>
       <div class="engine-field">
@@ -958,7 +958,7 @@ dialog::backdrop {
           <button type="button" class="discount-type-btn active" id="btnTypePct" onclick="setDiscountType('pct')">Percentage (%)</button>
           <button type="button" class="discount-type-btn" id="btnTypeAmt" onclick="setDiscountType('amt')">Amount (BDT)</button>
         </div>
-        <input type="number" id="inputDiscountVal" class="engine-input" value="10" min="0" step="1" style="margin-top:4px;">
+        <input type="number" id="inputDiscountVal" class="engine-input" value="0" min="0" step="1" style="margin-top:4px;">
         <span class="hint" id="discountHint">Promotional discount percentage</span>
       </div>
     </div>
@@ -1067,7 +1067,7 @@ dialog::backdrop {
 const initialData = JSON.parse(document.getElementById('data').textContent);
 let products = initialData.products;
 const sources = initialData.source_columns;
-const money = new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const money = new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0, maximumFractionDigits: 0 });
 const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
 
 // Global Cost Parameters (Persistent with Cloudflare D1 + localStorage fallback)
@@ -1102,12 +1102,12 @@ function toggleSellingChipMode() {
 
 const defaultGlobalParams = {
   packaging: 20,
-  transport: 40,
+  transport: 0,
   delivery: 60,
-  cac: 80,
-  targetMarginPct: 25,
+  cac: 0,
+  targetMarginPct: 0,
   discountType: 'pct',
-  discountVal: 10
+  discountVal: 0
 };
 
 let globalCostParams = { ...defaultGlobalParams };
@@ -1230,7 +1230,7 @@ function computeSellingPrice(mfgPrice, productName) {
   } else {
     finalSelling = Math.max(0, listPriceWithMargin - Number(p.discountVal || 0));
   }
-  return finalSelling;
+  return Math.round(finalSelling);
 }
 
 function setDiscountType(type) {
