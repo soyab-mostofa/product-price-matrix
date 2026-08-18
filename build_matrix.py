@@ -63,18 +63,30 @@ html = r'''<!doctype html>
   --border-subtle: #f4f4f5;
   --border-active: #18181b;
   
-  /* Refined Linear-style price accents */
-  --price-high-bg: #fef2f2;
-  --price-high-text: #dc2626;
-  --price-high-dot: #ef4444;
-  
-  --price-second-bg: #fffbeb;
-  --price-second-text: #d97706;
-  --price-second-dot: #f59e0b;
-  
-  --price-low-bg: #f0fdf4;
-  --price-low-text: #16a34a;
-  --price-low-dot: #22c55e;
+  /* Markup Tier Colors - Crisp modern palette */
+  --tier-discount-bg: #ecfdf5;
+  --tier-discount-border: #a7f3d0;
+  --tier-discount-text: #047857;
+
+  --tier-par-bg: #f4f4f5;
+  --tier-par-border: #e4e4e7;
+  --tier-par-text: #52525b;
+
+  --tier-low-bg: #eff6ff;
+  --tier-low-border: #bfdbfe;
+  --tier-low-text: #1d4ed8;
+
+  --tier-mod-bg: #fffbeb;
+  --tier-mod-border: #fde68a;
+  --tier-mod-text: #b45309;
+
+  --tier-high-bg: #fff7ed;
+  --tier-high-border: #fed7aa;
+  --tier-high-text: #c2410c;
+
+  --tier-extreme-bg: #fef2f2;
+  --tier-extreme-border: #fca5a5;
+  --tier-extreme-text: #b91c1c;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -230,24 +242,24 @@ header.navbar {
 .legend-group {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 11.5px;
+  gap: 8px;
+  font-size: 11px;
   color: var(--text-secondary);
   font-weight: 500;
 }
-.legend-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+.legend-chip {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 10px;
+  border: 1px solid transparent;
 }
-.indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-.indicator.high { background: var(--price-high-dot); }
-.indicator.second { background: var(--price-second-dot); }
-.indicator.low { background: var(--price-low-dot); }
+.legend-chip.disc { background: var(--tier-discount-bg); border-color: var(--tier-discount-border); color: var(--tier-discount-text); }
+.legend-chip.par { background: var(--tier-par-bg); border-color: var(--tier-par-border); color: var(--tier-par-text); }
+.legend-chip.low { background: var(--tier-low-bg); border-color: var(--tier-low-border); color: var(--tier-low-text); }
+.legend-chip.mod { background: var(--tier-mod-bg); border-color: var(--tier-mod-border); color: var(--tier-mod-text); }
+.legend-chip.high { background: var(--tier-high-bg); border-color: var(--tier-high-border); color: var(--tier-high-text); }
+.legend-chip.ext { background: var(--tier-extreme-bg); border-color: var(--tier-extreme-border); color: var(--tier-extreme-text); }
 
 .icon-btn {
   width: 32px;
@@ -300,7 +312,7 @@ thead th {
 }
 
 th.source-column-header {
-  min-width: 215px;
+  min-width: 205px;
   text-align: left;
 }
 .source-header-content {
@@ -382,6 +394,7 @@ td {
   border-right: 1px solid var(--border-subtle);
   vertical-align: middle;
   height: 52px;
+  background: #ffffff;
 }
 
 tbody tr:hover td.col-product,
@@ -424,97 +437,105 @@ tbody tr:hover td.col-market {
   font-weight: 700;
 }
 
-/* Marketplace Source Cells with Markup Badge */
+/* Marketplace Source Cells - Clean neutral cell with highlighted percentage pill */
 .source-data-cell {
   padding: 5px 8px;
-  min-width: 215px;
+  min-width: 205px;
+  background: #ffffff;
 }
 .price-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-radius: 6px;
   background: transparent;
-  transition: all .1s ease;
 }
 .price-left-group {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: center;
+  gap: 7px;
 }
 .price-card-val {
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 600;
-  color: #3f3f46;
+  color: #18181b;
   letter-spacing: -0.02em;
 }
 
-/* Markup Percentage Pill */
-.markup-pill {
+/* Distinct Highlighted Markup Chips */
+.markup-chip {
   font-size: 11px;
   font-weight: 600;
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 5px;
   display: inline-flex;
   align-items: center;
   gap: 2px;
   letter-spacing: -0.01em;
+  border: 1px solid transparent;
+  white-space: nowrap;
 }
-.markup-pill.markup-up {
-  background: rgba(220, 38, 38, 0.08);
-  color: #dc2626;
+
+/* Tier 1: Below MFG (Discount) */
+.markup-chip.chip-discount {
+  background: var(--tier-discount-bg);
+  border-color: var(--tier-discount-border);
+  color: var(--tier-discount-text);
 }
-.markup-pill.markup-down {
-  background: rgba(22, 163, 74, 0.08);
-  color: #16a34a;
+
+/* Tier 2: Exactly 0% */
+.markup-chip.chip-par {
+  background: var(--tier-par-bg);
+  border-color: var(--tier-par-border);
+  color: var(--tier-par-text);
 }
-.markup-pill.markup-even {
-  background: #f4f4f5;
-  color: #71717a;
+
+/* Tier 3: Low Markup (>0% to +15%) */
+.markup-chip.chip-low {
+  background: var(--tier-low-bg);
+  border-color: var(--tier-low-border);
+  color: var(--tier-low-text);
+}
+
+/* Tier 4: Moderate Markup (+15% to +35%) */
+.markup-chip.chip-mod {
+  background: var(--tier-mod-bg);
+  border-color: var(--tier-mod-border);
+  color: var(--tier-mod-text);
+}
+
+/* Tier 5: High Markup (+35% to +60%) */
+.markup-chip.chip-high {
+  background: var(--tier-high-bg);
+  border-color: var(--tier-high-border);
+  color: var(--tier-high-text);
+}
+
+/* Tier 6: Extreme Markup (>+60%) */
+.markup-chip.chip-extreme {
+  background: var(--tier-extreme-bg);
+  border-color: var(--tier-extreme-border);
+  color: var(--tier-extreme-text);
 }
 
 .open-link-btn {
   color: var(--text-tertiary);
   text-decoration: none;
   font-size: 11px;
-  padding: 2px 4px;
+  padding: 2px 5px;
   border-radius: 4px;
+  border: 1px solid transparent;
   transition: all .12s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.7;
 }
 .price-card:hover .open-link-btn {
-  opacity: 1;
   color: var(--text);
-}
-
-/* Aesthetic Highlights */
-.price-card.is-high {
-  background: var(--price-high-bg);
-}
-.price-card.is-high .price-card-val {
-  color: var(--price-high-text);
-  font-weight: 700;
-}
-
-.price-card.is-second {
-  background: var(--price-second-bg);
-}
-.price-card.is-second .price-card-val {
-  color: var(--price-second-text);
-  font-weight: 700;
-}
-
-.price-card.is-low {
-  background: var(--price-low-bg);
-}
-.price-card.is-low .price-card-val {
-  color: var(--price-low-text);
-  font-weight: 700;
+  background: #f4f4f5;
+  border-color: var(--border);
 }
 
 .empty-cell-dash {
@@ -665,9 +686,11 @@ dialog::backdrop {
 
   <div class="nav-right">
     <div class="legend-group">
-      <span class="legend-tag"><span class="indicator high"></span> High</span>
-      <span class="legend-tag"><span class="indicator second"></span> 2nd</span>
-      <span class="legend-tag"><span class="indicator low"></span> Low</span>
+      <span class="legend-chip disc">Below MFG</span>
+      <span class="legend-chip low">+1–15%</span>
+      <span class="legend-chip mod">+15–35%</span>
+      <span class="legend-chip high">+35–60%</span>
+      <span class="legend-chip ext">+60%+</span>
     </div>
     <button class="icon-btn" id="download" title="Export Dataset (JSON)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
@@ -746,11 +769,6 @@ function updateHeaders(activeSources) {
   });
 }
 
-function externalValues(p, activeSources) {
-  const sList = activeSources || sources;
-  return sList.map(s => p.sources[s]?.price).filter(v => v !== undefined && v !== null).map(Number);
-}
-
 function spread(p) {
   const v = sources.map(s => p.sources[s]?.price).filter(v => v !== undefined && v !== null).map(Number);
   return v.length > 1 ? Math.max(...v) - Math.min(...v) : 0;
@@ -758,44 +776,44 @@ function spread(p) {
 
 function calculateMarkup(sellingPrice, mfgPrice) {
   if (!mfgPrice || mfgPrice <= 0 || !sellingPrice) return null;
-  const pct = ((sellingPrice - mfgPrice) / mfgPrice) * 100;
-  return pct;
+  return ((sellingPrice - mfgPrice) / mfgPrice) * 100;
+}
+
+function getMarkupChip(pct) {
+  if (pct === null) return '';
+  if (pct < -0.01) {
+    return `<span class="markup-chip chip-discount" title="${Math.abs(pct).toFixed(1)}% below MFG price">↓${pct.toFixed(0)}%</span>`;
+  }
+  if (Math.abs(pct) <= 0.01) {
+    return `<span class="markup-chip chip-par" title="Equal to MFG price">0%</span>`;
+  }
+  if (pct <= 15) {
+    return `<span class="markup-chip chip-low" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
+  }
+  if (pct <= 35) {
+    return `<span class="markup-chip chip-mod" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
+  }
+  if (pct <= 60) {
+    return `<span class="markup-chip chip-high" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
+  }
+  return `<span class="markup-chip chip-extreme" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
 }
 
 function sourceCell(p, source, activeSources) {
   const listing = p.sources[source];
   if (!listing) return '<td class="source-data-cell"><span class="empty-cell-dash">—</span></td>';
   
-  const vals = externalValues(p, activeSources), price = Number(listing.price);
+  const price = Number(listing.price);
   const mfg = Number(p.manufactured_price);
   const markupPct = calculateMarkup(price, mfg);
-  
-  const sortedUniqueDesc = [...new Set(vals)].sort((a, b) => b - a);
-  let rankClass = '';
-  
-  if (sortedUniqueDesc.length > 1) {
-    if (price === sortedUniqueDesc[0]) rankClass = 'is-high';
-    else if (price === sortedUniqueDesc[1]) rankClass = 'is-second';
-    else if (price === sortedUniqueDesc[sortedUniqueDesc.length - 1]) rankClass = 'is-low';
-  }
-  
-  let markupBadge = '';
-  if (markupPct !== null) {
-    if (markupPct > 0) {
-      markupBadge = `<span class="markup-pill markup-up" title="${markupPct.toFixed(1)}% above MFG price">↑+${markupPct.toFixed(0)}%</span>`;
-    } else if (markupPct < 0) {
-      markupBadge = `<span class="markup-pill markup-down" title="${Math.abs(markupPct).toFixed(1)}% below MFG price">↓${markupPct.toFixed(0)}%</span>`;
-    } else {
-      markupBadge = `<span class="markup-pill markup-even" title="Equal to MFG price">0%</span>`;
-    }
-  }
+  const markupChip = getMarkupChip(markupPct);
   
   return `
     <td class="source-data-cell" data-source="${esc(source)}">
-      <div class="price-card ${rankClass}">
+      <div class="price-card">
         <div class="price-left-group">
           <span class="price-card-val">${esc(money.format(price))}</span>
-          ${markupBadge}
+          ${markupChip}
         </div>
         <a href="${esc(listing.url)}" class="open-link-btn" target="_blank" rel="noopener" title="Open listing" onclick="event.stopPropagation()">↗</a>
       </div>
@@ -861,14 +879,7 @@ function openDetail(p) {
       const x = p.sources[s];
       const mfg = Number(p.manufactured_price);
       const markupPct = calculateMarkup(Number(x.price), mfg);
-      let markupBadge = '';
-      if (markupPct !== null) {
-        if (markupPct > 0) {
-          markupBadge = `<span class="markup-pill markup-up" style="margin-left:6px;">↑+${markupPct.toFixed(0)}%</span>`;
-        } else if (markupPct < 0) {
-          markupBadge = `<span class="markup-pill markup-down" style="margin-left:6px;">↓${markupPct.toFixed(0)}%</span>`;
-        }
-      }
+      const markupChip = getMarkupChip(markupPct);
       out += `
         <div class="source-row">
           <div>
@@ -876,7 +887,7 @@ function openDetail(p) {
             <div style="font-size:11.5px;color:var(--text-secondary);margin-top:2px;">${esc(x.matched_title || '')}</div>
           </div>
           <div style="text-align:right;">
-            <div style="font-weight:700;font-size:15px;color:#0284c7;display:flex;align-items:center;justify-content:flex-end;">${esc(money.format(x.price))} ${markupBadge}</div>
+            <div style="font-weight:700;font-size:15px;color:#0284c7;display:flex;align-items:center;justify-content:flex-end;gap:6px;">${esc(money.format(x.price))} ${markupChip}</div>
             <a href="${esc(x.url)}" target="_blank" rel="noopener">Open link ↗</a>
           </div>
         </div>
