@@ -108,11 +108,11 @@ header.navbar {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   height: 52px;
-  padding: 0 20px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
   flex-shrink: 0;
   z-index: 50;
 }
@@ -120,7 +120,7 @@ header.navbar {
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .app-title {
@@ -130,6 +130,7 @@ header.navbar {
   display: flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
 }
 
 .app-title svg {
@@ -146,6 +147,7 @@ header.navbar {
   font-size: 12px;
   color: var(--text-secondary);
   font-weight: 500;
+  white-space: nowrap;
 }
 .meta-count strong {
   color: var(--text);
@@ -158,12 +160,12 @@ header.navbar {
   align-items: center;
   gap: 8px;
   flex: 1;
-  max-width: 680px;
+  max-width: 620px;
 }
 
 .search-input-wrap {
   position: relative;
-  flex: 1.5;
+  flex: 1.4;
 }
 .search-input-wrap svg {
   position: absolute;
@@ -236,30 +238,28 @@ header.navbar {
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
 }
 
-.legend-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-.legend-chip {
-  padding: 2px 6px;
-  border-radius: 4px;
+.btn-simulator {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-active);
+  background: #18181b;
+  color: #fafafa;
+  font-size: 12px;
   font-weight: 600;
-  font-size: 10px;
-  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s ease;
+  white-space: nowrap;
 }
-.legend-chip.disc { background: var(--tier-discount-bg); border-color: var(--tier-discount-border); color: var(--tier-discount-text); }
-.legend-chip.par { background: var(--tier-par-bg); border-color: var(--tier-par-border); color: var(--tier-par-text); }
-.legend-chip.low { background: var(--tier-low-bg); border-color: var(--tier-low-border); color: var(--tier-low-text); }
-.legend-chip.mod { background: var(--tier-mod-bg); border-color: var(--tier-mod-border); color: var(--tier-mod-text); }
-.legend-chip.high { background: var(--tier-high-bg); border-color: var(--tier-high-border); color: var(--tier-high-text); }
-.legend-chip.ext { background: var(--tier-extreme-bg); border-color: var(--tier-extreme-border); color: var(--tier-extreme-text); }
+.btn-simulator:hover {
+  background: #27272a;
+}
 
 .icon-btn {
   width: 32px;
@@ -304,7 +304,7 @@ thead th {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 10px 14px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border);
   border-right: 1px solid var(--border-subtle);
   white-space: nowrap;
@@ -312,7 +312,7 @@ thead th {
 }
 
 th.source-column-header {
-  min-width: 205px;
+  min-width: 200px;
   text-align: left;
 }
 .source-header-content {
@@ -332,59 +332,69 @@ th.source-column-header {
 .channel-type-badge.brand { background: #f4f4f5; color: #52525b; }
 .channel-type-badge.market { background: #f4f4f5; color: #71717a; }
 
-/* Sticky 5 Base Columns (Adding Pinned Average Markup Column) */
+/* Sticky Left Columns (6 Pinned Base Columns) */
 .col-product {
   position: sticky;
   left: 0;
   z-index: 20;
-  width: 310px;
-  min-width: 310px;
-  max-width: 310px;
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
   background: #ffffff;
 }
 .col-brand {
   position: sticky;
-  left: 310px;
+  left: 280px;
   z-index: 20;
-  width: 120px;
-  min-width: 120px;
-  max-width: 120px;
+  width: 115px;
+  min-width: 115px;
+  max-width: 115px;
   background: #ffffff;
 }
 .col-mfg {
   position: sticky;
-  left: 430px;
+  left: 395px;
   z-index: 20;
-  width: 120px;
-  min-width: 120px;
-  max-width: 120px;
+  width: 115px;
+  min-width: 115px;
+  max-width: 115px;
   background: #ffffff;
   text-align: right;
 }
 .col-market {
   position: sticky;
-  left: 550px;
+  left: 510px;
   z-index: 20;
-  width: 120px;
-  min-width: 120px;
-  max-width: 120px;
+  width: 115px;
+  min-width: 115px;
+  max-width: 115px;
   background: #ffffff;
   text-align: right;
 }
 .col-avg-markup {
   position: sticky;
-  left: 670px;
+  left: 625px;
   z-index: 20;
-  width: 130px;
-  min-width: 130px;
-  max-width: 130px;
+  width: 110px;
+  min-width: 110px;
+  max-width: 110px;
   background: #ffffff;
   text-align: center;
-  border-right: 1px solid #d4d4d8 !important;
-  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.03);
+}
+.col-selling-price {
+  position: sticky;
+  left: 735px;
+  z-index: 20;
+  width: 135px;
+  min-width: 135px;
+  max-width: 135px;
+  background: #ffffff;
+  text-align: right;
+  border-right: 2px solid #d4d4d8 !important;
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.04);
 }
 
-thead th.col-product, thead th.col-brand, thead th.col-mfg, thead th.col-market, thead th.col-avg-markup {
+thead th.col-product, thead th.col-brand, thead th.col-mfg, thead th.col-market, thead th.col-avg-markup, thead th.col-selling-price {
   z-index: 35;
   background: #f4f4f5;
 }
@@ -399,7 +409,7 @@ tbody tr:hover td {
 }
 
 td {
-  padding: 8px 14px;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--border-subtle);
   border-right: 1px solid var(--border-subtle);
   vertical-align: middle;
@@ -411,7 +421,8 @@ tbody tr:hover td.col-product,
 tbody tr:hover td.col-brand,
 tbody tr:hover td.col-mfg,
 tbody tr:hover td.col-market,
-tbody tr:hover td.col-avg-markup {
+tbody tr:hover td.col-avg-markup,
+tbody tr:hover td.col-selling-price {
   background-color: #f1f5f9 !important;
 }
 
@@ -433,7 +444,7 @@ tbody tr:hover td.col-avg-markup {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 105px;
+  max-width: 100px;
   display: block;
 }
 
@@ -446,11 +457,15 @@ tbody tr:hover td.col-avg-markup {
   color: #0284c7;
   font-weight: 700;
 }
+.price-text.selling {
+  color: #0f172a;
+  font-weight: 700;
+}
 
 /* Marketplace Source Cells */
 .source-data-cell {
   padding: 5px 8px;
-  min-width: 205px;
+  min-width: 200px;
   background: #ffffff;
 }
 .price-card {
@@ -543,19 +558,19 @@ tbody tr:hover td.col-avg-markup {
   display: block;
 }
 
-/* Drawer / Dialog */
+/* Modals & Dialogs */
 dialog {
   margin: auto;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: #ffffff;
   color: var(--text);
-  width: min(600px, calc(100% - 32px));
+  width: min(620px, calc(100% - 32px));
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
   outline: none;
 }
 dialog::backdrop {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(2px);
 }
 .drawer-header {
@@ -594,6 +609,67 @@ dialog::backdrop {
   max-height: 70vh;
   overflow-y: auto;
 }
+
+/* Simulator Form */
+.sim-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.sim-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sim-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+.sim-field span.hint {
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.sim-input {
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  background: #ffffff;
+}
+.sim-input:focus {
+  border-color: var(--border-active);
+}
+
+.sim-summary-box {
+  background: #fafafa;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+}
+.sim-summary-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+}
+.sim-summary-row strong {
+  color: var(--text);
+}
+.sim-summary-row.total {
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .stats-summary-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -674,6 +750,8 @@ dialog::backdrop {
     <div class="filter-select-wrap">
       <select id="sort" class="filter-select">
         <option value="product">Product A–Z</option>
+        <option value="sellingAsc">Selling Price: Low to High</option>
+        <option value="sellingDesc">Selling Price: High to Low</option>
         <option value="mfgAsc">MFG: Low to High</option>
         <option value="mfgDesc">MFG: High to Low</option>
         <option value="coverage">Most Channels</option>
@@ -683,13 +761,10 @@ dialog::backdrop {
   </div>
 
   <div class="nav-right">
-    <div class="legend-group">
-      <span class="legend-chip disc">Below MFG</span>
-      <span class="legend-chip low">+1–15%</span>
-      <span class="legend-chip mod">+15–35%</span>
-      <span class="legend-chip high">+35–60%</span>
-      <span class="legend-chip ext">+60%+</span>
-    </div>
+    <button class="btn-simulator" id="openSimulatorBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Cost & Margin Simulator
+    </button>
     <button class="icon-btn" id="download" title="Export Dataset (JSON)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
     </button>
@@ -705,6 +780,7 @@ dialog::backdrop {
         <th class="col-mfg">MFG Price</th>
         <th class="col-market">Market Avg</th>
         <th class="col-avg-markup">Avg Markup</th>
+        <th class="col-selling-price">Selling Price</th>
       </tr>
     </thead>
     <tbody id="body"></tbody>
@@ -712,6 +788,71 @@ dialog::backdrop {
   <div id="empty" class="empty-state-view" hidden>No products found matching the current search criteria.</div>
 </main>
 
+<!-- Cost & Margin Simulator Modal -->
+<dialog id="simulatorModal">
+  <div class="drawer-header">
+    <div>
+      <div class="drawer-brand">Live Simulator</div>
+      <div class="drawer-title">Cost & Margin Parameters</div>
+    </div>
+    <button class="drawer-close" id="closeSimModal" aria-label="Close">✕</button>
+  </div>
+  <div class="drawer-body">
+    <div class="sim-grid">
+      <div class="sim-field">
+        <label for="inputPackaging">Packaging (BDT)</label>
+        <input type="number" id="inputPackaging" class="sim-input" value="20" min="0" step="1">
+        <span class="hint">Per unit packaging cost</span>
+      </div>
+      <div class="sim-field">
+        <label for="inputTransport">Transport (BDT)</label>
+        <input type="number" id="inputTransport" class="sim-input" value="40" min="0" step="1">
+        <span class="hint">Inbound transport & logistics</span>
+      </div>
+      <div class="sim-field">
+        <label for="inputDelivery">Delivery (BDT)</label>
+        <input type="number" id="inputDelivery" class="sim-input" value="60" min="0" step="1">
+        <span class="hint">Last-mile fulfillment delivery</span>
+      </div>
+      <div class="sim-field">
+        <label for="inputCAC">CAC / Marketing (BDT)</label>
+        <input type="number" id="inputCAC" class="sim-input" value="80" min="0" step="1">
+        <span class="hint">Customer acquisition cost</span>
+      </div>
+      <div class="sim-field">
+        <label for="inputMarginPct">Target Margin (%)</label>
+        <input type="number" id="inputMarginPct" class="sim-input" value="25" min="0" step="1">
+        <span class="hint">Profit margin on total cost</span>
+      </div>
+      <div class="sim-field">
+        <label for="inputDiscountPct">Promo Discount (%)</label>
+        <input type="number" id="inputDiscountPct" class="sim-input" value="10" min="0" step="1">
+        <span class="hint">Customer promotional discount</span>
+      </div>
+    </div>
+
+    <div class="sim-summary-box">
+      <div class="sim-summary-row">
+        <span>Total Variable Overhead (Pack + Trans + Deliv + CAC):</span>
+        <strong id="summaryOverhead">৳200.00</strong>
+      </div>
+      <div class="sim-summary-row">
+        <span>Formula:</span>
+        <span>(MFG Price + Overhead) × (1 + Margin%) × (1 - Discount%)</span>
+      </div>
+      <div class="sim-summary-row total">
+        <span>Sample Selling Price (at ৳1,000 MFG):</span>
+        <strong id="summarySample">৳1,350.00</strong>
+      </div>
+    </div>
+
+    <button class="btn-simulator" id="applySimBtn" style="width:100%;justify-content:center;height:38px;font-size:13px;">
+      Apply & Recalculate Matrix
+    </button>
+  </div>
+</dialog>
+
+<!-- Product Detail Modal -->
 <dialog id="dialog">
   <div class="drawer-header">
     <div>
@@ -731,6 +872,16 @@ const sources = data.source_columns;
 const money = new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0, maximumFractionDigits: 2 });
 const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
 
+// Cost Parameters State
+const costParams = {
+  packaging: 20,
+  transport: 40,
+  delivery: 60,
+  cac: 80,
+  targetMarginPct: 25,
+  discountPct: 10
+};
+
 const search = document.getElementById('search');
 const brandFilter = document.getElementById('brandFilter');
 const sourceFilter = document.getElementById('sourceFilter');
@@ -745,6 +896,22 @@ document.getElementById('listingTotal').textContent = listingTotal.toLocaleStrin
 
 [...new Set(products.map(p => p.brand_name))].sort().forEach(v => brandFilter.add(new Option(v, v)));
 sources.forEach(v => sourceFilter.add(new Option(v, v)));
+
+function computeSellingPrice(mfgPrice) {
+  if (!mfgPrice || mfgPrice <= 0) return null;
+  const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
+  const totalBaseCost = mfgPrice + overhead;
+  const listPriceWithMargin = totalBaseCost * (1 + costParams.targetMarginPct / 100);
+  const finalSellingPrice = listPriceWithMargin * (1 - costParams.discountPct / 100);
+  return finalSellingPrice;
+}
+
+function updateSimulatorSummary() {
+  const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
+  document.getElementById('summaryOverhead').textContent = `৳${overhead.toFixed(2)}`;
+  const sample = computeSellingPrice(1000);
+  document.getElementById('summarySample').textContent = `৳${sample.toFixed(2)}`;
+}
 
 function getVisibleSources(list) {
   if (!list.length) return [];
@@ -766,11 +933,6 @@ function updateHeaders(activeSources) {
     `;
     headerRow.appendChild(th);
   });
-}
-
-function spread(p) {
-  const v = sources.map(s => p.sources[s]?.price).filter(v => v !== undefined && v !== null).map(Number);
-  return v.length > 1 ? Math.max(...v) - Math.min(...v) : 0;
 }
 
 function calculateMarkup(sellingPrice, mfgPrice) {
@@ -820,6 +982,11 @@ function sourceCell(p, source, activeSources) {
   `;
 }
 
+function spread(p) {
+  const v = sources.map(s => p.sources[s]?.price).filter(v => v !== undefined && v !== null).map(Number);
+  return v.length > 1 ? Math.max(...v) - Math.min(...v) : 0;
+}
+
 function filtered() {
   const q = search.value.trim().toLowerCase();
   const brand = brandFilter.value;
@@ -832,6 +999,8 @@ function filtered() {
   );
   
   if (sort.value === 'product') list.sort((a, b) => a.product_name.localeCompare(b.product_name));
+  if (sort.value === 'sellingAsc') list.sort((a, b) => (computeSellingPrice(a.manufactured_price) || 0) - (computeSellingPrice(b.manufactured_price) || 0));
+  if (sort.value === 'sellingDesc') list.sort((a, b) => (computeSellingPrice(b.manufactured_price) || 0) - (computeSellingPrice(a.manufactured_price) || 0));
   if (sort.value === 'mfgAsc') list.sort((a, b) => a.manufactured_price - b.manufactured_price);
   if (sort.value === 'mfgDesc') list.sort((a, b) => b.manufactured_price - a.manufactured_price);
   if (sort.value === 'coverage') list.sort((a, b) => Object.keys(b.sources).length - Object.keys(a.sources).length);
@@ -858,6 +1027,9 @@ function render() {
       avgMarkupChip = getMarkupChip(avgMarkupPct);
     }
 
+    const calculatedSelling = computeSellingPrice(mfg);
+    const sellingDisplay = calculatedSelling ? `<span class="price-text selling">${esc(money.format(calculatedSelling))}</span>` : '<span class="empty-cell-dash">—</span>';
+
     return `
       <tr tabindex="0" data-index="${products.indexOf(p)}">
         <td class="col-product"><div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div></td>
@@ -865,6 +1037,7 @@ function render() {
         <td class="col-mfg"><span class="price-text mfg">${esc(money.format(p.manufactured_price))}</span></td>
         <td class="col-market"><span class="price-text">${esc(money.format(p.market_average_price))}</span></td>
         <td class="col-avg-markup">${avgMarkupChip}</td>
+        <td class="col-selling-price">${sellingDisplay}</td>
         ${activeSources.map(s => sourceCell(p, s, activeSources)).join('')}
       </tr>
     `;
@@ -877,21 +1050,16 @@ function openDetail(p) {
   document.getElementById('dialogBrand').textContent = p.brand_name;
   document.getElementById('dialogName').textContent = p.product_name;
   
-  // Calculate average markup
-  const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
   const mfg = Number(p.manufactured_price);
-  let avgMarkupText = '—';
-  if (prices.length > 0 && mfg > 0) {
-    const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
-    const avgMarkupPct = calculateMarkup(avgPrice, mfg);
-    avgMarkupText = `${avgMarkupPct > 0 ? '+' : ''}${avgMarkupPct.toFixed(1)}%`;
-  }
-
+  const calculatedSelling = computeSellingPrice(mfg);
+  const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
+  
   let out = `
     <div class="stats-summary-grid">
-      <div class="stat-item"><span>Manufactured Price</span><strong>${esc(money.format(p.manufactured_price))}</strong></div>
+      <div class="stat-item"><span>Purchasing (MFG Price)</span><strong>${esc(money.format(mfg))}</strong></div>
       <div class="stat-item"><span>Market Average</span><strong>${esc(money.format(p.market_average_price))}</strong></div>
-      <div class="stat-item" style="grid-column: span 2;"><span>Average Price Markup</span><strong style="color:#0284c7;">${avgMarkupText}</strong></div>
+      <div class="stat-item"><span>Variable Costs (Overhead)</span><strong>${esc(money.format(overhead))}</strong></div>
+      <div class="stat-item"><span>Calculated Selling Price</span><strong style="color:#0284c7;">${calculatedSelling ? esc(money.format(calculatedSelling)) : '—'}</strong></div>
     </div>
     <div class="source-items-list">
   `;
@@ -934,10 +1102,51 @@ document.getElementById('dialog').addEventListener('click', e => {
   if (e.target.id === 'dialog') e.target.close();
 });
 
+// Simulator Modal Listeners
+const simModal = document.getElementById('simulatorModal');
+document.getElementById('openSimulatorBtn').onclick = () => {
+  document.getElementById('inputPackaging').value = costParams.packaging;
+  document.getElementById('inputTransport').value = costParams.transport;
+  document.getElementById('inputDelivery').value = costParams.delivery;
+  document.getElementById('inputCAC').value = costParams.cac;
+  document.getElementById('inputMarginPct').value = costParams.targetMarginPct;
+  document.getElementById('inputDiscountPct').value = costParams.discountPct;
+  updateSimulatorSummary();
+  simModal.showModal();
+};
+
+document.getElementById('closeSimModal').onclick = () => simModal.close();
+simModal.addEventListener('click', e => { if (e.target.id === 'simulatorModal') simModal.close(); });
+
+['inputPackaging', 'inputTransport', 'inputDelivery', 'inputCAC', 'inputMarginPct', 'inputDiscountPct'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => {
+    costParams.packaging = Number(document.getElementById('inputPackaging').value) || 0;
+    costParams.transport = Number(document.getElementById('inputTransport').value) || 0;
+    costParams.delivery = Number(document.getElementById('inputDelivery').value) || 0;
+    costParams.cac = Number(document.getElementById('inputCAC').value) || 0;
+    costParams.targetMarginPct = Number(document.getElementById('inputMarginPct').value) || 0;
+    costParams.discountPct = Number(document.getElementById('inputDiscountPct').value) || 0;
+    updateSimulatorSummary();
+  });
+});
+
+document.getElementById('applySimBtn').onclick = () => {
+  simModal.close();
+  render();
+};
+
 [search, brandFilter, sourceFilter, sort].forEach(x => x.addEventListener('input', render));
 
 document.getElementById('download').onclick = () => {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const exportData = {
+    ...data,
+    cost_parameters: costParams,
+    products: products.map(p => ({
+      ...p,
+      calculated_selling_price: computeSellingPrice(p.manufactured_price)
+    }))
+  };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
