@@ -96,6 +96,15 @@ html = r'''<!doctype html>
   --chip-tier4-text: #991b1b;
   --chip-tier4-border: #fca5a5;
 
+  /* Market Discount Chip Colors (Green when selling below market average) */
+  --chip-mkt-disc-bg: #ecfdf5;
+  --chip-mkt-disc-text: #047857;
+  --chip-mkt-disc-border: #a7f3d0;
+
+  --chip-mkt-prem-bg: #fef2f2;
+  --chip-mkt-prem-text: #b91c1c;
+  --chip-mkt-prem-border: #fca5a5;
+
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
@@ -284,6 +293,34 @@ header.app-header {
   transform: translateY(-0.5px);
 }
 .btn-calc svg { width: 14px; height: 14px; }
+
+.btn-toggle-view {
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .15s ease;
+  white-space: nowrap;
+}
+.btn-toggle-view:hover {
+  background: var(--surface-subtle);
+  color: var(--text-main);
+  border-color: var(--border-strong);
+}
+.btn-toggle-view.active-mode {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.btn-toggle-view svg { width: 14px; height: 14px; }
 
 .btn-icon {
   width: 34px;
@@ -569,6 +606,18 @@ tbody tr:hover td.col-selling-price {
   background: var(--chip-tier4-bg);
   border-color: var(--chip-tier4-border);
   color: var(--chip-tier4-text);
+}
+
+/* Market Discount Mode Chips */
+.markup-chip.mkt-disc {
+  background: var(--chip-mkt-disc-bg);
+  border-color: var(--chip-mkt-disc-border);
+  color: var(--chip-mkt-disc-text);
+}
+.markup-chip.mkt-prem {
+  background: var(--chip-mkt-prem-bg);
+  border-color: var(--chip-mkt-prem-border);
+  color: var(--chip-mkt-prem-text);
 }
 
 .btn-open-link {
@@ -876,6 +925,10 @@ dialog::backdrop {
   </div>
 
   <div class="header-right">
+    <button class="btn-toggle-view" id="toggleSellingChipModeBtn" onclick="toggleSellingChipMode()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+      <span id="sellingChipBtnLabel">View Market Discount %</span>
+    </button>
     <button class="btn-calc" id="openEngineBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       Pricing Engine
@@ -895,7 +948,7 @@ dialog::backdrop {
         <th class="col-brand" data-sort="brand" title="Brand / Manufacturer Name. Click to toggle sort.">Brand ↕</th>
         <th class="col-mfg" data-sort="mfg" title="Manufacturing / Sourcing Purchase Price (Internal Reference). Click to toggle sort.">MFG Price ↕</th>
         <th class="col-market" data-sort="market" title="Market Average Selling Price across all channels, with the Average Markup % chip vs MFG Price. Click to toggle sort.">Market Avg ↕</th>
-        <th class="col-selling-price" data-sort="selling" title="Configured Selling Price with markup % vs MFG price, calculated from unit economics model. Click to toggle sort.">Selling Price ↕</th>
+        <th class="col-selling-price" id="sellingPriceColHeader" data-sort="selling" title="Configured Selling Price. Toggle view mode to switch chip between Markup vs MFG % and Discount vs Market Avg %. Click to toggle sort.">Selling Price ↕</th>
       </tr>
     </thead>
     <tbody id="body"></tbody>
@@ -1059,6 +1112,33 @@ const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': 
 // Global Cost Parameters (Persistent in localStorage)
 const STORAGE_KEY_GLOBAL = 'price_matrix_global_params';
 const STORAGE_KEY_OVERRIDES = 'price_matrix_custom_overrides';
+const STORAGE_KEY_CHIP_MODE = 'price_matrix_selling_chip_mode';
+
+// Selling Price Chip Mode: 'markup' (vs MFG Price) or 'discount' (vs Market Avg Price)
+let sellingChipMode = 'markup';
+try {
+  const savedMode = localStorage.getItem(STORAGE_KEY_CHIP_MODE);
+  if (savedMode === 'markup' || savedMode === 'discount') sellingChipMode = savedMode;
+} catch (e) {}
+
+function updateSellingChipToggleUI() {
+  const btn = document.getElementById('toggleSellingChipModeBtn');
+  const label = document.getElementById('sellingChipBtnLabel');
+  if (sellingChipMode === 'discount') {
+    btn.classList.add('active-mode');
+    label.textContent = 'View Product Markup %';
+  } else {
+    btn.classList.remove('active-mode');
+    label.textContent = 'View Market Discount %';
+  }
+}
+
+function toggleSellingChipMode() {
+  sellingChipMode = (sellingChipMode === 'markup') ? 'discount' : 'markup';
+  try { localStorage.setItem(STORAGE_KEY_CHIP_MODE, sellingChipMode); } catch (e) {}
+  updateSellingChipToggleUI();
+  render();
+}
 
 const defaultGlobalParams = {
   packaging: 20,
@@ -1190,6 +1270,12 @@ function calculateMarkup(sellingPrice, mfgPrice) {
   return ((sellingPrice - mfgPrice) / mfgPrice) * 100;
 }
 
+function calculateMarketDiscount(sellingPrice, marketAvgPrice) {
+  if (!marketAvgPrice || marketAvgPrice <= 0 || !sellingPrice) return null;
+  // If selling price is lower than market avg, discount is positive (e.g. -20% vs market)
+  return ((marketAvgPrice - sellingPrice) / marketAvgPrice) * 100;
+}
+
 function getMarkupChip(pct) {
   if (pct === null) return '';
   if (pct < -0.01) {
@@ -1208,6 +1294,19 @@ function getMarkupChip(pct) {
     return `<span class="markup-chip t3" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
   }
   return `<span class="markup-chip t4" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
+}
+
+function getMarketDiscountChip(discPct) {
+  if (discPct === null) return '';
+  if (discPct > 0.01) {
+    // Selling below market average: Green discount chip
+    return `<span class="markup-chip mkt-disc" title="${discPct.toFixed(1)}% cheaper than Market Average price">↓-${discPct.toFixed(0)}% vs Mkt</span>`;
+  }
+  if (Math.abs(discPct) <= 0.01) {
+    return `<span class="markup-chip zero" title="Selling at Par with Market Average price">0% vs Mkt</span>`;
+  }
+  // Selling above market average: Premium chip
+  return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% higher than Market Average price">↑+${Math.abs(discPct).toFixed(0)}% vs Mkt</span>`;
 }
 
 function sourceCell(p, source, activeSources) {
@@ -1277,10 +1376,12 @@ function render() {
   const activeSources = getVisibleSources(list);
   
   updateHeaders(activeSources);
+  updateSellingChipToggleUI();
   
   body.innerHTML = list.map(p => {
     const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
     const mfg = Number(p.manufactured_price);
+    const mktAvg = Number(p.market_average_price);
     let avgMarkupChip = '';
     
     if (prices.length > 0 && mfg > 0) {
@@ -1292,7 +1393,7 @@ function render() {
 
     const marketAvgDisplay = `
       <div class="dual-metric-cell">
-        <span class="num-price">${esc(money.format(p.market_average_price))}</span>
+        <span class="num-price">${esc(money.format(mktAvg))}</span>
         ${avgMarkupChip}
       </div>
     `;
@@ -1300,14 +1401,22 @@ function render() {
     const hasOverride = !!productOverrides[p.product_name];
     const calculatedSelling = computeSellingPrice(mfg, p.product_name);
     let sellingDisplay = '<span class="cell-dash">—</span>';
+    
     if (calculatedSelling && mfg > 0) {
-      const sellingMarkupPct = calculateMarkup(calculatedSelling, mfg);
-      const sellingMarkupChip = getMarkupChip(sellingMarkupPct);
+      let activeChipHtml = '';
+      if (sellingChipMode === 'discount' && mktAvg > 0) {
+        const mktDiscPct = calculateMarketDiscount(calculatedSelling, mktAvg);
+        activeChipHtml = getMarketDiscountChip(mktDiscPct);
+      } else {
+        const sellingMarkupPct = calculateMarkup(calculatedSelling, mfg);
+        activeChipHtml = getMarkupChip(sellingMarkupPct);
+      }
+
       sellingDisplay = `
         <div class="dual-metric-cell">
           ${hasOverride ? '<span class="custom-tune-tag" title="Custom per-product pricing engine override active">Tuned</span>' : ''}
           <span class="num-price ${hasOverride ? 'custom-tuned' : 'selling'}">${esc(money.format(calculatedSelling))}</span>
-          ${sellingMarkupChip}
+          ${activeChipHtml}
         </div>
       `;
     }
@@ -1353,10 +1462,12 @@ function openDetail(p) {
   document.getElementById('dialogName').textContent = p.product_name;
   
   const mfg = Number(p.manufactured_price);
+  const mktAvg = Number(p.market_average_price);
   const calculatedSelling = computeSellingPrice(mfg, p.product_name);
   const params = getProductParams(p.product_name);
   const overhead = Number(params.packaging) + Number(params.transport) + Number(params.delivery) + Number(params.cac);
   const sellingMarkupPct = calculatedSelling && mfg > 0 ? calculateMarkup(calculatedSelling, mfg) : null;
+  const marketDiscPct = calculatedSelling && mktAvg > 0 ? calculateMarketDiscount(calculatedSelling, mktAvg) : null;
   
   const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
   let avgMarketMarkupChip = '';
@@ -1371,7 +1482,7 @@ function openDetail(p) {
       <div class="detail-stat-box">
         <span>Market Average</span>
         <strong style="display:flex;align-items:center;gap:6px;">
-          ${esc(money.format(p.market_average_price))}
+          ${esc(money.format(mktAvg))}
           ${avgMarketMarkupChip}
         </strong>
       </div>
@@ -1381,9 +1492,10 @@ function openDetail(p) {
       </div>
       <div class="detail-stat-box">
         <span>Selling Price ${params.isCustom ? '(Custom)' : ''}</span>
-        <strong style="color:var(--brand-blue);display:flex;align-items:center;gap:6px;">
+        <strong style="color:var(--brand-blue);display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
           ${calculatedSelling ? esc(money.format(calculatedSelling)) : '—'}
           ${getMarkupChip(sellingMarkupPct)}
+          ${marketDiscPct !== null ? getMarketDiscountChip(marketDiscPct) : ''}
         </strong>
       </div>
     </div>
