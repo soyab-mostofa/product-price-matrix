@@ -63,7 +63,7 @@ html = r'''<!doctype html>
   --border-subtle: #f4f4f5;
   --border-active: #18181b;
   
-  /* Markup Tier Colors - Crisp modern palette */
+  /* Markup Tier Colors */
   --tier-discount-bg: #ecfdf5;
   --tier-discount-border: #a7f3d0;
   --tier-discount-text: #047857;
@@ -332,49 +332,59 @@ th.source-column-header {
 .channel-type-badge.brand { background: #f4f4f5; color: #52525b; }
 .channel-type-badge.market { background: #f4f4f5; color: #71717a; }
 
-/* Sticky 4 Base Columns */
+/* Sticky 5 Base Columns (Adding Pinned Average Markup Column) */
 .col-product {
   position: sticky;
   left: 0;
   z-index: 20;
-  width: 320px;
-  min-width: 320px;
-  max-width: 320px;
+  width: 310px;
+  min-width: 310px;
+  max-width: 310px;
   background: #ffffff;
 }
 .col-brand {
   position: sticky;
-  left: 320px;
+  left: 310px;
   z-index: 20;
-  width: 130px;
-  min-width: 130px;
-  max-width: 130px;
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
   background: #ffffff;
 }
 .col-mfg {
   position: sticky;
-  left: 450px;
+  left: 430px;
   z-index: 20;
-  width: 135px;
-  min-width: 135px;
-  max-width: 135px;
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
   background: #ffffff;
   text-align: right;
 }
 .col-market {
   position: sticky;
-  left: 585px;
+  left: 550px;
   z-index: 20;
-  width: 135px;
-  min-width: 135px;
-  max-width: 135px;
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
   background: #ffffff;
   text-align: right;
+}
+.col-avg-markup {
+  position: sticky;
+  left: 670px;
+  z-index: 20;
+  width: 130px;
+  min-width: 130px;
+  max-width: 130px;
+  background: #ffffff;
+  text-align: center;
   border-right: 1px solid #d4d4d8 !important;
   box-shadow: 4px 0 8px rgba(0, 0, 0, 0.03);
 }
 
-thead th.col-product, thead th.col-brand, thead th.col-mfg, thead th.col-market {
+thead th.col-product, thead th.col-brand, thead th.col-mfg, thead th.col-market, thead th.col-avg-markup {
   z-index: 35;
   background: #f4f4f5;
 }
@@ -400,7 +410,8 @@ td {
 tbody tr:hover td.col-product,
 tbody tr:hover td.col-brand,
 tbody tr:hover td.col-mfg,
-tbody tr:hover td.col-market {
+tbody tr:hover td.col-market,
+tbody tr:hover td.col-avg-markup {
   background-color: #f1f5f9 !important;
 }
 
@@ -422,22 +433,21 @@ tbody tr:hover td.col-market {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 110px;
+  max-width: 105px;
   display: block;
 }
 
 .price-text {
-  font-size: 14.5px;
+  font-size: 13.5px;
   font-weight: 600;
   color: #27272a;
-  letter-spacing: -0.02em;
 }
 .price-text.mfg {
   color: #0284c7;
   font-weight: 700;
 }
 
-/* Marketplace Source Cells - Clean neutral cell with highlighted percentage pill */
+/* Marketplace Source Cells */
 .source-data-cell {
   padding: 5px 8px;
   min-width: 205px;
@@ -461,7 +471,6 @@ tbody tr:hover td.col-market {
   font-size: 14px;
   font-weight: 600;
   color: #18181b;
-  letter-spacing: -0.02em;
 }
 
 /* Distinct Highlighted Markup Chips */
@@ -478,42 +487,31 @@ tbody tr:hover td.col-market {
   white-space: nowrap;
 }
 
-/* Tier 1: Below MFG (Discount) */
 .markup-chip.chip-discount {
   background: var(--tier-discount-bg);
   border-color: var(--tier-discount-border);
   color: var(--tier-discount-text);
 }
-
-/* Tier 2: Exactly 0% */
 .markup-chip.chip-par {
   background: var(--tier-par-bg);
   border-color: var(--tier-par-border);
   color: var(--tier-par-text);
 }
-
-/* Tier 3: Low Markup (>0% to +15%) */
 .markup-chip.chip-low {
   background: var(--tier-low-bg);
   border-color: var(--tier-low-border);
   color: var(--tier-low-text);
 }
-
-/* Tier 4: Moderate Markup (+15% to +35%) */
 .markup-chip.chip-mod {
   background: var(--tier-mod-bg);
   border-color: var(--tier-mod-border);
   color: var(--tier-mod-text);
 }
-
-/* Tier 5: High Markup (+35% to +60%) */
 .markup-chip.chip-high {
   background: var(--tier-high-bg);
   border-color: var(--tier-high-border);
   color: var(--tier-high-text);
 }
-
-/* Tier 6: Extreme Markup (>+60%) */
 .markup-chip.chip-extreme {
   background: var(--tier-extreme-bg);
   border-color: var(--tier-extreme-border);
@@ -706,6 +704,7 @@ dialog::backdrop {
         <th class="col-brand">Brand</th>
         <th class="col-mfg">MFG Price</th>
         <th class="col-market">Market Avg</th>
+        <th class="col-avg-markup">Avg Markup</th>
       </tr>
     </thead>
     <tbody id="body"></tbody>
@@ -846,15 +845,30 @@ function render() {
   
   updateHeaders(activeSources);
   
-  body.innerHTML = list.map(p => `
-    <tr tabindex="0" data-index="${products.indexOf(p)}">
-      <td class="col-product"><div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div></td>
-      <td class="col-brand"><span class="brand-label">${esc(p.brand_name)}</span></td>
-      <td class="col-mfg"><span class="price-text mfg">${esc(money.format(p.manufactured_price))}</span></td>
-      <td class="col-market"><span class="price-text">${esc(money.format(p.market_average_price))}</span></td>
-      ${activeSources.map(s => sourceCell(p, s, activeSources)).join('')}
-    </tr>
-  `).join('');
+  body.innerHTML = list.map(p => {
+    // Calculate average markup from all matched sources
+    const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
+    const mfg = Number(p.manufactured_price);
+    let avgMarkupChip = '<span class="empty-cell-dash">—</span>';
+    
+    if (prices.length > 0 && mfg > 0) {
+      const sumPrices = prices.reduce((a, b) => a + b, 0);
+      const avgPrice = sumPrices / prices.length;
+      const avgMarkupPct = calculateMarkup(avgPrice, mfg);
+      avgMarkupChip = getMarkupChip(avgMarkupPct);
+    }
+
+    return `
+      <tr tabindex="0" data-index="${products.indexOf(p)}">
+        <td class="col-product"><div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div></td>
+        <td class="col-brand"><span class="brand-label">${esc(p.brand_name)}</span></td>
+        <td class="col-mfg"><span class="price-text mfg">${esc(money.format(p.manufactured_price))}</span></td>
+        <td class="col-market"><span class="price-text">${esc(money.format(p.market_average_price))}</span></td>
+        <td class="col-avg-markup">${avgMarkupChip}</td>
+        ${activeSources.map(s => sourceCell(p, s, activeSources)).join('')}
+      </tr>
+    `;
+  }).join('');
   
   empty.hidden = list.length > 0;
 }
@@ -863,10 +877,21 @@ function openDetail(p) {
   document.getElementById('dialogBrand').textContent = p.brand_name;
   document.getElementById('dialogName').textContent = p.product_name;
   
+  // Calculate average markup
+  const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
+  const mfg = Number(p.manufactured_price);
+  let avgMarkupText = '—';
+  if (prices.length > 0 && mfg > 0) {
+    const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const avgMarkupPct = calculateMarkup(avgPrice, mfg);
+    avgMarkupText = `${avgMarkupPct > 0 ? '+' : ''}${avgMarkupPct.toFixed(1)}%`;
+  }
+
   let out = `
     <div class="stats-summary-grid">
       <div class="stat-item"><span>Manufactured Price</span><strong>${esc(money.format(p.manufactured_price))}</strong></div>
       <div class="stat-item"><span>Market Average</span><strong>${esc(money.format(p.market_average_price))}</strong></div>
+      <div class="stat-item" style="grid-column: span 2;"><span>Average Price Markup</span><strong style="color:#0284c7;">${avgMarkupText}</strong></div>
     </div>
     <div class="source-items-list">
   `;
@@ -877,7 +902,6 @@ function openDetail(p) {
   } else {
     matchedSources.forEach(s => {
       const x = p.sources[s];
-      const mfg = Number(p.manufactured_price);
       const markupPct = calculateMarkup(Number(x.price), mfg);
       const markupChip = getMarkupChip(markupPct);
       out += `
