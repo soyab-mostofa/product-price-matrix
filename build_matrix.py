@@ -333,6 +333,11 @@ thead th {
   border-right: 1px solid var(--border-light);
   white-space: nowrap;
   user-select: none;
+  cursor: pointer;
+  transition: background .12s ease;
+}
+thead th:hover {
+  background: #f1f5f9;
 }
 
 th.source-col-head {
@@ -793,10 +798,14 @@ dialog::backdrop {
     <div class="select-field">
       <select id="sort">
         <option value="product">Product A–Z</option>
+        <option value="productDesc">Product Z–A</option>
+        <option value="brand">Brand A–Z</option>
         <option value="sellingAsc">Selling: Low → High</option>
         <option value="sellingDesc">Selling: High → Low</option>
         <option value="mfgAsc">MFG: Low → High</option>
         <option value="mfgDesc">MFG: High → Low</option>
+        <option value="marketAsc">Market Avg: Low → High</option>
+        <option value="marketDesc">Market Avg: High → Low</option>
         <option value="coverage">Most Channels</option>
         <option value="spread">Largest Spread</option>
       </select>
@@ -819,11 +828,11 @@ dialog::backdrop {
   <table>
     <thead>
       <tr id="headerRow">
-        <th class="col-product">Product Name</th>
-        <th class="col-brand">Brand</th>
-        <th class="col-mfg">MFG Price</th>
-        <th class="col-market">Market Avg</th>
-        <th class="col-selling-price">Selling Price</th>
+        <th class="col-product" data-sort="product" title="Product Title and SKU details. Click to toggle sort.">Product Name ↕</th>
+        <th class="col-brand" data-sort="brand" title="Brand / Manufacturer Name. Click to toggle sort.">Brand ↕</th>
+        <th class="col-mfg" data-sort="mfg" title="Manufacturing / Sourcing Purchase Price (Internal Reference). Click to toggle sort.">MFG Price ↕</th>
+        <th class="col-market" data-sort="market" title="Market Average Selling Price across all channels, with the Average Markup % chip vs MFG Price. Click to toggle sort.">Market Avg ↕</th>
+        <th class="col-selling-price" data-sort="selling" title="Configured Selling Price with markup % vs MFG price, calculated from Simulator unit economics. Click to toggle sort.">Selling Price ↕</th>
       </tr>
     </thead>
     <tbody id="body"></tbody>
@@ -967,12 +976,27 @@ function updateHeaders(activeSources) {
     const th = document.createElement('th');
     const official = /official/i.test(source);
     th.className = 'source-col-head';
+    th.title = `${official ? 'Official Brand Flagship' : 'Third-Party E-Commerce Marketplace'} pricing for ${source}. Click to sort by this channel.`;
+    th.dataset.source = source;
     th.innerHTML = `
       <div class="source-head-wrap">
         <span>${esc(source)}</span>
         <span class="badge-channel ${official ? 'official' : 'market'}">${official ? 'Official' : 'Mkt'}</span>
       </div>
     `;
+    th.onclick = () => {
+      // Sort by this specific source
+      if (sort.value === `srcAsc:${source}`) {
+        sort.value = `srcDesc:${source}`;
+      } else {
+        if (![...sort.options].some(o => o.value === `srcAsc:${source}`)) {
+          sort.add(new Option(`${source}: Low → High`, `srcAsc:${source}`));
+          sort.add(new Option(`${source}: High → Low`, `srcDesc:${source}`));
+        }
+        sort.value = `srcAsc:${source}`;
+      }
+      render();
+    };
     headerRow.appendChild(th);
   });
 }
@@ -1041,12 +1065,26 @@ function filtered() {
   );
   
   if (sort.value === 'product') list.sort((a, b) => a.product_name.localeCompare(b.product_name));
+  if (sort.value === 'productDesc') list.sort((a, b) => b.product_name.localeCompare(a.product_name));
+  if (sort.value === 'brand') list.sort((a, b) => a.brand_name.localeCompare(b.brand_name) || a.product_name.localeCompare(b.product_name));
   if (sort.value === 'sellingAsc') list.sort((a, b) => (computeSellingPrice(a.manufactured_price) || 0) - (computeSellingPrice(b.manufactured_price) || 0));
   if (sort.value === 'sellingDesc') list.sort((a, b) => (computeSellingPrice(b.manufactured_price) || 0) - (computeSellingPrice(a.manufactured_price) || 0));
   if (sort.value === 'mfgAsc') list.sort((a, b) => a.manufactured_price - b.manufactured_price);
   if (sort.value === 'mfgDesc') list.sort((a, b) => b.manufactured_price - a.manufactured_price);
+  if (sort.value === 'marketAsc') list.sort((a, b) => a.market_average_price - b.market_average_price);
+  if (sort.value === 'marketDesc') list.sort((a, b) => b.market_average_price - a.market_average_price);
   if (sort.value === 'coverage') list.sort((a, b) => Object.keys(b.sources).length - Object.keys(a.sources).length);
   if (sort.value === 'spread') list.sort((a, b) => spread(b) - spread(a));
+  
+  if (sort.value.startsWith('srcAsc:')) {
+    const src = sort.value.split('srcAsc:')[1];
+    list.sort((a, b) => (Number(a.sources[src]?.price) || 999999) - (Number(b.sources[src]?.price) || 999999));
+  }
+  if (sort.value.startsWith('srcDesc:')) {
+    const src = sort.value.split('srcDesc:')[1];
+    list.sort((a, b) => (Number(b.sources[src]?.price) || 0) - (Number(a.sources[src]?.price) || 0));
+  }
+
   return list;
 }
 
@@ -1102,6 +1140,19 @@ function render() {
   
   empty.hidden = list.length > 0;
 }
+
+// Click header to sort
+headerRow.querySelectorAll('th[data-sort]').forEach(th => {
+  th.onclick = () => {
+    const s = th.dataset.sort;
+    if (s === 'product') sort.value = (sort.value === 'product') ? 'productDesc' : 'product';
+    else if (s === 'brand') sort.value = 'brand';
+    else if (s === 'mfg') sort.value = (sort.value === 'mfgAsc') ? 'mfgDesc' : 'mfgAsc';
+    else if (s === 'market') sort.value = (sort.value === 'marketAsc') ? 'marketDesc' : 'marketAsc';
+    else if (s === 'selling') sort.value = (sort.value === 'sellingAsc') ? 'sellingDesc' : 'sellingAsc';
+    render();
+  };
+});
 
 function openDetail(p) {
   document.getElementById('dialogBrand').textContent = p.brand_name;
