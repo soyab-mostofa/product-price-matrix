@@ -47,169 +47,188 @@ html = r'''<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Price Intelligence</title>
+<title>Price Intelligence Matrix</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #fafafa;
+  --bg: #f8fafc;
   --surface: #ffffff;
-  --text: #09090b;
-  --text-secondary: #71717a;
-  --text-tertiary: #a1a1aa;
+  --surface-subtle: #f1f5f9;
+  --surface-hover: #f8fafc;
   
-  --border: #e4e4e7;
-  --border-subtle: #f4f4f5;
-  --border-active: #18181b;
+  --text-main: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
   
-  /* Markup Tier Colors */
-  --tier-discount-bg: #fef2f2;
-  --tier-discount-border: #fca5a5;
-  --tier-discount-text: #b91c1c;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --border-strong: #cbd5e1;
+  --border-dark: #0f172a;
 
-  --tier-par-bg: #f4f4f5;
-  --tier-par-border: #e4e4e7;
-  --tier-par-text: #52525b;
+  --brand-blue: #0284c7;
+  --brand-blue-subtle: #e0f2fe;
 
-  --tier-low-bg: #eff6ff;
-  --tier-low-border: #bfdbfe;
-  --tier-low-text: #1d4ed8;
+  /* Impeccable Semantic Markup Tiers */
+  --chip-neg-bg: #fee2e2;
+  --chip-neg-text: #991b1b;
+  --chip-neg-border: #fca5a5;
 
-  --tier-mod-bg: #fffbeb;
-  --tier-mod-border: #fde68a;
-  --tier-mod-text: #b45309;
+  --chip-zero-bg: #f1f5f9;
+  --chip-zero-text: #475569;
+  --chip-zero-border: #e2e8f0;
 
-  --tier-high-bg: #fff7ed;
-  --tier-high-border: #fed7aa;
-  --tier-high-text: #c2410c;
+  --chip-tier1-bg: #e0f2fe;
+  --chip-tier1-text: #0369a1;
+  --chip-tier1-border: #bae6fd;
 
-  --tier-extreme-bg: #fef2f2;
-  --tier-extreme-border: #fca5a5;
-  --tier-extreme-text: #b91c1c;
+  --chip-tier2-bg: #fef3c7;
+  --chip-tier2-text: #92400e;
+  --chip-tier2-border: #fde68a;
+
+  --chip-tier3-bg: #ffedd5;
+  --chip-tier3-text: #9a3412;
+  --chip-tier3-border: #fed7aa;
+
+  --chip-tier4-bg: #fee2e2;
+  --chip-tier4-text: #991b1b;
+  --chip-tier4-border: #fca5a5;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-pin: 4px 0 12px rgba(15, 23, 42, 0.06);
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', var(--font-sans);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   background: var(--bg);
-  color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-main);
+  font-family: var(--font-sans);
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  letter-spacing: -0.011em;
+  letter-spacing: -0.012em;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Linear/Vercel-style Top Navigation Bar */
-header.navbar {
+/* 1. Master Control Header */
+header.app-header {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
-  height: 52px;
-  padding: 0 16px;
+  height: 56px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 16px;
   flex-shrink: 0;
   z-index: 50;
 }
 
-.nav-left {
+.header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
-.app-title {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
   display: flex;
   align-items: center;
   gap: 8px;
-  white-space: nowrap;
+  text-transform: uppercase;
 }
 
-.app-title svg {
-  color: #18181b;
+.brand-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0ea5e9;
+  box-shadow: 0 0 8px #0ea5e9;
 }
 
-.divider-v {
-  width: 1px;
-  height: 16px;
-  background: var(--border);
-}
-
-.meta-count {
-  font-size: 12px;
-  color: var(--text-secondary);
+.header-meta-pill {
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  color: var(--text-muted);
   font-weight: 500;
   white-space: nowrap;
 }
-.meta-count strong {
-  color: var(--text);
-  font-weight: 600;
+.header-meta-pill strong {
+  color: var(--text-main);
+  font-weight: 700;
 }
 
-/* Search & Filters */
-.nav-center {
+.header-center {
   display: flex;
   align-items: center;
   gap: 8px;
   flex: 1;
-  max-width: 620px;
+  max-width: 660px;
 }
 
-.search-input-wrap {
+.search-field {
   position: relative;
-  flex: 1.4;
+  flex: 1.5;
 }
-.search-input-wrap svg {
+.search-field svg {
   position: absolute;
-  left: 10px;
+  left: 11px;
   top: 50%;
   transform: translateY(-50%);
   width: 14px;
   height: 14px;
-  color: var(--text-tertiary);
+  color: var(--text-dim);
   pointer-events: none;
 }
-.search-input {
+.search-field input {
   width: 100%;
-  height: 32px;
-  padding: 0 10px 0 30px;
+  height: 34px;
+  padding: 0 10px 0 34px;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 7px;
   font-size: 12.5px;
-  color: var(--text);
+  color: var(--text-main);
   font-family: inherit;
   outline: none;
   transition: all .15s ease;
 }
-.search-input:focus {
+.search-field input:focus {
   background: #ffffff;
-  border-color: var(--border-active);
-  box-shadow: 0 0 0 1px var(--border-active);
+  border-color: var(--border-dark);
+  box-shadow: 0 0 0 1px var(--border-dark);
 }
 
-.filter-select-wrap {
+.select-field {
   position: relative;
   flex: 1;
 }
-.filter-select {
+.select-field select {
   width: 100%;
-  height: 32px;
+  height: 34px;
   padding: 0 24px 0 10px;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 7px;
   font-size: 12px;
   font-weight: 500;
-  color: var(--text);
+  color: var(--text-main);
   font-family: inherit;
   outline: none;
   cursor: pointer;
@@ -217,11 +236,11 @@ header.navbar {
   -webkit-appearance: none;
   transition: all .15s ease;
 }
-.filter-select:focus {
+.select-field select:focus {
   background: #ffffff;
-  border-color: var(--border-active);
+  border-color: var(--border-dark);
 }
-.filter-select-wrap::after {
+.select-field::after {
   content: '';
   position: absolute;
   right: 10px;
@@ -231,40 +250,45 @@ header.navbar {
   height: 0;
   border-left: 3.5px solid transparent;
   border-right: 3.5px solid transparent;
-  border-top: 4.5px solid var(--text-secondary);
+  border-top: 4.5px solid var(--text-muted);
   pointer-events: none;
 }
 
-.nav-right {
+.header-right {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.btn-simulator {
-  height: 32px;
-  padding: 0 12px;
-  border-radius: 6px;
-  border: 1px solid var(--border-active);
-  background: #18181b;
-  color: #fafafa;
+/* Premium Button Styles */
+.btn-calc {
+  height: 34px;
+  padding: 0 13px;
+  border-radius: 7px;
+  border: 1px solid var(--text-main);
+  background: var(--text-main);
+  color: #ffffff;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   transition: all .15s ease;
   white-space: nowrap;
+  box-shadow: var(--shadow-sm);
 }
-.btn-simulator:hover {
-  background: #27272a;
+.btn-calc:hover {
+  background: #1e293b;
+  border-color: #1e293b;
+  transform: translateY(-0.5px);
 }
+.btn-calc svg { width: 14px; height: 14px; }
 
-.icon-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
+.btn-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-secondary);
@@ -274,13 +298,13 @@ header.navbar {
   justify-content: center;
   transition: all .15s ease;
 }
-.icon-btn:hover {
+.btn-icon:hover {
   background: var(--bg);
-  color: var(--text);
-  border-color: #d4d4d8;
+  color: var(--text-main);
+  border-color: var(--border-strong);
 }
 
-/* Grid & Table */
+/* 2. Grid Table Viewport */
 .table-viewport {
   flex: 1;
   overflow: auto;
@@ -298,41 +322,40 @@ thead th {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: #fafafa;
+  background: #f8fafc;
   color: var(--text-secondary);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10.5px;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   padding: 10px 12px;
   border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-light);
   white-space: nowrap;
   user-select: none;
 }
 
-th.source-column-header {
+th.source-col-head {
   min-width: 200px;
   text-align: left;
 }
-.source-header-content {
+.source-head-wrap {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
-.channel-type-badge {
-  font-size: 9.5px;
+.badge-channel {
+  font-size: 9px;
   padding: 2px 5px;
   border-radius: 4px;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
 }
-.channel-type-badge.brand { background: #f4f4f5; color: #52525b; }
-.channel-type-badge.market { background: #f4f4f5; color: #71717a; }
+.badge-channel.official { background: #e0f2fe; color: #0369a1; }
+.badge-channel.market { background: #f1f5f9; color: #64748b; }
 
-/* Sticky Left Columns (6 Pinned Base Columns) */
+/* 3. Sticky Columns (6 Columns) */
 .col-product {
   position: sticky;
   left: 0;
@@ -390,13 +413,13 @@ th.source-column-header {
   max-width: 135px;
   background: #ffffff;
   text-align: right;
-  border-right: 2px solid #d4d4d8 !important;
-  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.04);
+  border-right: 2px solid #cbd5e1 !important;
+  box-shadow: var(--shadow-pin);
 }
 
 thead th.col-product, thead th.col-brand, thead th.col-mfg, thead th.col-market, thead th.col-avg-markup, thead th.col-selling-price {
   z-index: 35;
-  background: #f4f4f5;
+  background: #f1f5f9;
 }
 
 /* Rows & Cells */
@@ -405,13 +428,13 @@ tbody tr {
   transition: background-color 0.08s ease;
 }
 tbody tr:hover td {
-  background-color: #f8fafc !important;
+  background-color: var(--surface-hover) !important;
 }
 
 td {
   padding: 8px 12px;
-  border-bottom: 1px solid var(--border-subtle);
-  border-right: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-light);
   vertical-align: middle;
   height: 52px;
   background: #ffffff;
@@ -427,9 +450,9 @@ tbody tr:hover td.col-selling-price {
 }
 
 .item-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-main);
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -448,21 +471,21 @@ tbody tr:hover td.col-selling-price {
   display: block;
 }
 
-.price-text {
+.num-price {
   font-size: 13.5px;
   font-weight: 600;
-  color: #27272a;
+  color: #334155;
 }
-.price-text.mfg {
+.num-price.mfg {
   color: #0284c7;
   font-weight: 700;
 }
-.price-text.selling {
+.num-price.selling {
   color: #0f172a;
   font-weight: 700;
 }
 
-/* Marketplace Source Cells */
+/* Source Cells & Cards */
 .source-data-cell {
   padding: 5px 8px;
   min-width: 200px;
@@ -482,16 +505,16 @@ tbody tr:hover td.col-selling-price {
   align-items: center;
   gap: 7px;
 }
-.price-card-val {
-  font-size: 14px;
+.price-val {
+  font-size: 13.5px;
   font-weight: 600;
   color: #18181b;
 }
 
-/* Distinct Highlighted Markup Chips */
+/* Markup Chips with Clear Semantics */
 .markup-chip {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 10.5px;
+  font-weight: 700;
   padding: 2px 6px;
   border-radius: 5px;
   display: inline-flex;
@@ -502,39 +525,39 @@ tbody tr:hover td.col-selling-price {
   white-space: nowrap;
 }
 
-.markup-chip.chip-discount {
-  background: var(--tier-discount-bg);
-  border-color: var(--tier-discount-border);
-  color: var(--tier-discount-text);
+.markup-chip.neg {
+  background: var(--chip-neg-bg);
+  border-color: var(--chip-neg-border);
+  color: var(--chip-neg-text);
 }
-.markup-chip.chip-par {
-  background: var(--tier-par-bg);
-  border-color: var(--tier-par-border);
-  color: var(--tier-par-text);
+.markup-chip.zero {
+  background: var(--chip-zero-bg);
+  border-color: var(--chip-zero-border);
+  color: var(--chip-zero-text);
 }
-.markup-chip.chip-low {
-  background: var(--tier-low-bg);
-  border-color: var(--tier-low-border);
-  color: var(--tier-low-text);
+.markup-chip.t1 {
+  background: var(--chip-tier1-bg);
+  border-color: var(--chip-tier1-border);
+  color: var(--chip-tier1-text);
 }
-.markup-chip.chip-mod {
-  background: var(--tier-mod-bg);
-  border-color: var(--tier-mod-border);
-  color: var(--tier-mod-text);
+.markup-chip.t2 {
+  background: var(--chip-tier2-bg);
+  border-color: var(--chip-tier2-border);
+  color: var(--chip-tier2-text);
 }
-.markup-chip.chip-high {
-  background: var(--tier-high-bg);
-  border-color: var(--tier-high-border);
-  color: var(--tier-high-text);
+.markup-chip.t3 {
+  background: var(--chip-tier3-bg);
+  border-color: var(--chip-tier3-border);
+  color: var(--chip-tier3-text);
 }
-.markup-chip.chip-extreme {
-  background: var(--tier-extreme-bg);
-  border-color: var(--tier-extreme-border);
-  color: var(--tier-extreme-text);
+.markup-chip.t4 {
+  background: var(--chip-tier4-bg);
+  border-color: var(--chip-tier4-border);
+  color: var(--chip-tier4-text);
 }
 
-.open-link-btn {
-  color: var(--text-tertiary);
+.btn-open-link {
+  color: var(--text-dim);
   text-decoration: none;
   font-size: 11px;
   padding: 2px 5px;
@@ -545,72 +568,84 @@ tbody tr:hover td.col-selling-price {
   align-items: center;
   justify-content: center;
 }
-.price-card:hover .open-link-btn {
-  color: var(--text);
-  background: #f4f4f5;
+.price-card:hover .btn-open-link {
+  color: var(--text-main);
+  background: #f1f5f9;
   border-color: var(--border);
 }
 
-.empty-cell-dash {
-  color: #d4d4d8;
+.cell-dash {
+  color: #cbd5e1;
   font-size: 13px;
   text-align: center;
   display: block;
 }
 
-/* Modals & Dialogs */
+/* 4. Impeccable Modals & Dialogs */
 dialog {
   margin: auto;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   background: #ffffff;
-  color: var(--text);
-  width: min(620px, calc(100% - 32px));
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  color: var(--text-main);
+  width: min(640px, calc(100% - 32px));
+  box-shadow: var(--shadow-lg);
   outline: none;
 }
 dialog::backdrop {
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(2px);
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(3px);
 }
-.drawer-header {
-  padding: 16px 20px;
+.modal-header {
+  padding: 16px 22px;
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  background: #fafafa;
+  align-items: center;
+  background: #f8fafc;
 }
-.drawer-brand {
-  font-size: 11px;
-  font-weight: 600;
+.modal-heading-group {
+  display: flex;
+  flex-direction: column;
+}
+.modal-kicker {
+  font-size: 10.5px;
+  font-weight: 700;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  letter-spacing: 0.06em;
+  color: var(--brand-blue);
 }
-.drawer-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
   margin-top: 2px;
 }
-.drawer-close {
-  background: transparent;
-  border: none;
+.modal-btn-close {
+  background: var(--surface);
+  border: 1px solid var(--border);
   color: var(--text-secondary);
-  font-size: 18px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
-  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .12s ease;
 }
-.drawer-close:hover { color: var(--text); }
-.drawer-body {
-  padding: 20px;
+.modal-btn-close:hover { background: #f1f5f9; color: var(--text-main); }
+.modal-body {
+  padding: 22px;
   display: grid;
-  gap: 16px;
-  max-height: 70vh;
+  gap: 18px;
+  max-height: 75vh;
   overflow-y: auto;
 }
 
-/* Simulator Form */
+/* Simulator Form Controls */
 .sim-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -619,158 +654,171 @@ dialog::backdrop {
 .sim-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
 }
 .sim-field label {
   font-size: 12px;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-main);
 }
 .sim-field span.hint {
   font-size: 11px;
-  color: var(--text-secondary);
+  color: var(--text-muted);
 }
 .sim-input {
-  height: 36px;
-  padding: 0 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
   font-size: 13px;
   font-family: inherit;
   outline: none;
   background: #ffffff;
+  color: var(--text-main);
+  transition: all .12s ease;
 }
 .sim-input:focus {
-  border-color: var(--border-active);
+  border-color: var(--border-dark);
+  box-shadow: 0 0 0 1px var(--border-dark);
 }
 
-.sim-summary-box {
-  background: #fafafa;
+.sim-preview-card {
+  background: #f8fafc;
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 14px;
+  border-radius: 10px;
+  padding: 16px;
   display: grid;
-  gap: 8px;
+  gap: 10px;
 }
-.sim-summary-row {
+.sim-preview-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 12.5px;
   color: var(--text-secondary);
 }
-.sim-summary-row strong {
-  color: var(--text);
+.sim-preview-row strong {
+  color: var(--text-main);
+  font-size: 13px;
 }
-.sim-summary-row.total {
+.sim-preview-row.total-highlight {
   border-top: 1px solid var(--border);
-  padding-top: 8px;
+  padding-top: 10px;
   margin-top: 4px;
   font-size: 14px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--text-main);
+}
+.sim-preview-row.total-highlight strong {
+  font-size: 16px;
+  color: var(--brand-blue);
 }
 
-.stats-summary-grid {
+/* Detail Drawer Styles */
+.detail-stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  background: #fafafa;
-  padding: 12px;
-  border-radius: 8px;
+  background: #f8fafc;
+  padding: 14px;
+  border-radius: 10px;
   border: 1px solid var(--border);
 }
-.stat-item span {
+.detail-stat-box span {
   display: block;
   font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
 }
-.stat-item strong {
+.detail-stat-box strong {
   font-size: 16px;
   font-weight: 700;
-  color: var(--text);
+  color: var(--text-main);
   margin-top: 2px;
   display: block;
 }
-.source-items-list {
+.detail-sources-list {
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
-.source-row {
+.detail-source-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 12px;
+  padding: 11px 14px;
   background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
 }
-.source-row a {
-  color: #0284c7;
+.detail-source-row a {
+  color: var(--brand-blue);
   text-decoration: none;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
 }
-.source-row a:hover { text-decoration: underline; }
+.detail-source-row a:hover { text-decoration: underline; }
 
-.empty-state-view {
-  padding: 60px 20px;
+.empty-state {
+  padding: 80px 20px;
   text-align: center;
-  color: var(--text-secondary);
-  font-size: 13px;
+  color: var(--text-muted);
+  font-size: 13.5px;
 }
 </style>
 </head>
 <body>
 
-<header class="navbar">
-  <div class="nav-left">
-    <div class="app-title">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-      Price Intelligence
+<!-- 1. Top Navbar -->
+<header class="app-header">
+  <div class="header-left">
+    <div class="brand-title">
+      <span class="brand-dot"></span>
+      Price Matrix
     </div>
     <div class="divider-v"></div>
-    <div class="meta-count"><strong id="productTotal">0</strong> products · <strong id="listingTotal">0</strong> listings</div>
+    <div class="header-meta-pill"><strong id="productTotal">0</strong> SKUs · <strong id="listingTotal">0</strong> Listings</div>
   </div>
 
-  <div class="nav-center">
-    <div class="search-input-wrap">
+  <div class="header-center">
+    <div class="search-field">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-      <input id="search" class="search-input" type="search" placeholder="Search by product or brand..." autofocus>
+      <input id="search" type="search" placeholder="Search product or brand..." autofocus>
     </div>
     
-    <div class="filter-select-wrap">
-      <select id="brandFilter" class="filter-select"><option value="">All Brands</option></select>
+    <div class="select-field">
+      <select id="brandFilter"><option value="">All Brands</option></select>
     </div>
     
-    <div class="filter-select-wrap">
-      <select id="sourceFilter" class="filter-select"><option value="">All Channels</option></select>
+    <div class="select-field">
+      <select id="sourceFilter"><option value="">All Channels</option></select>
     </div>
     
-    <div class="filter-select-wrap">
-      <select id="sort" class="filter-select">
+    <div class="select-field">
+      <select id="sort">
         <option value="product">Product A–Z</option>
-        <option value="sellingAsc">Selling Price: Low to High</option>
-        <option value="sellingDesc">Selling Price: High to Low</option>
-        <option value="mfgAsc">MFG: Low to High</option>
-        <option value="mfgDesc">MFG: High to Low</option>
+        <option value="sellingAsc">Selling: Low → High</option>
+        <option value="sellingDesc">Selling: High → Low</option>
+        <option value="mfgAsc">MFG: Low → High</option>
+        <option value="mfgDesc">MFG: High → Low</option>
         <option value="coverage">Most Channels</option>
         <option value="spread">Largest Spread</option>
       </select>
     </div>
   </div>
 
-  <div class="nav-right">
-    <button class="btn-simulator" id="openSimulatorBtn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Cost & Margin Simulator
+  <div class="header-right">
+    <button class="btn-calc" id="openSimulatorBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Simulator
     </button>
-    <button class="icon-btn" id="download" title="Export Dataset (JSON)">
+    <button class="btn-icon" id="download" title="Export Dataset (JSON)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
     </button>
   </div>
 </header>
 
+<!-- 2. Grid Table Viewport -->
 <main class="table-viewport">
   <table>
     <thead>
@@ -785,83 +833,83 @@ dialog::backdrop {
     </thead>
     <tbody id="body"></tbody>
   </table>
-  <div id="empty" class="empty-state-view" hidden>No products found matching the current search criteria.</div>
+  <div id="empty" class="empty-state" hidden>No products match the selected criteria.</div>
 </main>
 
-<!-- Cost & Margin Simulator Modal -->
+<!-- 3. Cost & Margin Simulator Modal -->
 <dialog id="simulatorModal">
-  <div class="drawer-header">
-    <div>
-      <div class="drawer-brand">Live Simulator</div>
-      <div class="drawer-title">Cost & Margin Parameters</div>
+  <div class="modal-header">
+    <div class="modal-heading-group">
+      <span class="modal-kicker">Unit Economics</span>
+      <h2 class="modal-title">Cost & Margin Simulator</h2>
     </div>
-    <button class="drawer-close" id="closeSimModal" aria-label="Close">✕</button>
+    <button class="modal-btn-close" id="closeSimModal" aria-label="Close">✕</button>
   </div>
-  <div class="drawer-body">
+  <div class="modal-body">
     <div class="sim-grid">
       <div class="sim-field">
         <label for="inputPackaging">Packaging (BDT)</label>
         <input type="number" id="inputPackaging" class="sim-input" value="20" min="0" step="1">
-        <span class="hint">Per unit packaging cost</span>
+        <span class="hint">Per-unit box/wrap cost</span>
       </div>
       <div class="sim-field">
         <label for="inputTransport">Transport (BDT)</label>
         <input type="number" id="inputTransport" class="sim-input" value="40" min="0" step="1">
-        <span class="hint">Inbound transport & logistics</span>
+        <span class="hint">Inbound freight allocation</span>
       </div>
       <div class="sim-field">
-        <label for="inputDelivery">Delivery (BDT)</label>
+        <label for="inputDelivery">Delivery / Courier (BDT)</label>
         <input type="number" id="inputDelivery" class="sim-input" value="60" min="0" step="1">
-        <span class="hint">Last-mile fulfillment delivery</span>
+        <span class="hint">Last-mile fulfillment cost</span>
       </div>
       <div class="sim-field">
         <label for="inputCAC">CAC / Marketing (BDT)</label>
         <input type="number" id="inputCAC" class="sim-input" value="80" min="0" step="1">
-        <span class="hint">Customer acquisition cost</span>
+        <span class="hint">Acquisition cost per order</span>
       </div>
       <div class="sim-field">
         <label for="inputMarginPct">Target Margin (%)</label>
         <input type="number" id="inputMarginPct" class="sim-input" value="25" min="0" step="1">
-        <span class="hint">Profit margin on total cost</span>
+        <span class="hint">Gross target markup</span>
       </div>
       <div class="sim-field">
         <label for="inputDiscountPct">Promo Discount (%)</label>
         <input type="number" id="inputDiscountPct" class="sim-input" value="10" min="0" step="1">
-        <span class="hint">Customer promotional discount</span>
+        <span class="hint">Active promotional discount</span>
       </div>
     </div>
 
-    <div class="sim-summary-box">
-      <div class="sim-summary-row">
+    <div class="sim-preview-card">
+      <div class="sim-preview-row">
         <span>Total Variable Overhead (Pack + Trans + Deliv + CAC):</span>
         <strong id="summaryOverhead">৳200.00</strong>
       </div>
-      <div class="sim-summary-row">
-        <span>Formula:</span>
+      <div class="sim-preview-row">
+        <span>Calculation Logic:</span>
         <span>(MFG Price + Overhead) × (1 + Margin%) × (1 - Discount%)</span>
       </div>
-      <div class="sim-summary-row total">
-        <span>Sample Selling Price (at ৳1,000 MFG):</span>
+      <div class="sim-preview-row total-highlight">
+        <span>Simulated Benchmark (at ৳1,000 MFG):</span>
         <strong id="summarySample">৳1,350.00</strong>
       </div>
     </div>
 
-    <button class="btn-simulator" id="applySimBtn" style="width:100%;justify-content:center;height:38px;font-size:13px;">
+    <button class="btn-calc" id="applySimBtn" style="width:100%;justify-content:center;height:40px;font-size:13px;">
       Apply & Recalculate Matrix
     </button>
   </div>
 </dialog>
 
-<!-- Product Detail Modal -->
+<!-- 4. Product Detail Modal -->
 <dialog id="dialog">
-  <div class="drawer-header">
-    <div>
-      <div class="drawer-brand" id="dialogBrand"></div>
-      <div class="drawer-title" id="dialogName"></div>
+  <div class="modal-header">
+    <div class="modal-heading-group">
+      <span class="modal-kicker" id="dialogBrand"></span>
+      <h2 class="modal-title" id="dialogName"></h2>
     </div>
-    <button class="drawer-close" id="close" aria-label="Close">✕</button>
+    <button class="modal-btn-close" id="close" aria-label="Close">✕</button>
   </div>
-  <div class="drawer-body" id="detail"></div>
+  <div class="modal-body" id="detail"></div>
 </dialog>
 
 <script id="data" type="application/json">__DATA__</script>
@@ -872,7 +920,7 @@ const sources = data.source_columns;
 const money = new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0, maximumFractionDigits: 2 });
 const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
 
-// Cost Parameters State
+// Cost Parameters
 const costParams = {
   packaging: 20,
   transport: 40,
@@ -902,8 +950,7 @@ function computeSellingPrice(mfgPrice) {
   const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
   const totalBaseCost = mfgPrice + overhead;
   const listPriceWithMargin = totalBaseCost * (1 + costParams.targetMarginPct / 100);
-  const finalSellingPrice = listPriceWithMargin * (1 - costParams.discountPct / 100);
-  return finalSellingPrice;
+  return listPriceWithMargin * (1 - costParams.discountPct / 100);
 }
 
 function updateSimulatorSummary() {
@@ -919,16 +966,16 @@ function getVisibleSources(list) {
 }
 
 function updateHeaders(activeSources) {
-  headerRow.querySelectorAll('th.source-column-header').forEach(el => el.remove());
+  headerRow.querySelectorAll('th.source-col-head').forEach(el => el.remove());
   
   activeSources.forEach(source => {
     const th = document.createElement('th');
     const official = /official/i.test(source);
-    th.className = 'source-column-header';
+    th.className = 'source-col-head';
     th.innerHTML = `
-      <div class="source-header-content">
+      <div class="source-head-wrap">
         <span>${esc(source)}</span>
-        <span class="channel-type-badge ${official ? 'brand' : 'market'}">${official ? 'Official' : 'Mkt'}</span>
+        <span class="badge-channel ${official ? 'official' : 'market'}">${official ? 'Official' : 'Mkt'}</span>
       </div>
     `;
     headerRow.appendChild(th);
@@ -943,26 +990,26 @@ function calculateMarkup(sellingPrice, mfgPrice) {
 function getMarkupChip(pct) {
   if (pct === null) return '';
   if (pct < -0.01) {
-    return `<span class="markup-chip chip-discount" title="${Math.abs(pct).toFixed(1)}% below MFG price">↓${pct.toFixed(0)}%</span>`;
+    return `<span class="markup-chip neg" title="${Math.abs(pct).toFixed(1)}% below MFG price">↓${pct.toFixed(0)}%</span>`;
   }
   if (Math.abs(pct) <= 0.01) {
-    return `<span class="markup-chip chip-par" title="Equal to MFG price">0%</span>`;
+    return `<span class="markup-chip zero" title="Equal to MFG price">0%</span>`;
   }
   if (pct <= 15) {
-    return `<span class="markup-chip chip-low" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
+    return `<span class="markup-chip t1" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
   }
   if (pct <= 35) {
-    return `<span class="markup-chip chip-mod" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
+    return `<span class="markup-chip t2" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
   }
   if (pct <= 60) {
-    return `<span class="markup-chip chip-high" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
+    return `<span class="markup-chip t3" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
   }
-  return `<span class="markup-chip chip-extreme" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
+  return `<span class="markup-chip t4" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`;
 }
 
 function sourceCell(p, source, activeSources) {
   const listing = p.sources[source];
-  if (!listing) return '<td class="source-data-cell"><span class="empty-cell-dash">—</span></td>';
+  if (!listing) return '<td class="source-data-cell"><span class="cell-dash">—</span></td>';
   
   const price = Number(listing.price);
   const mfg = Number(p.manufactured_price);
@@ -973,10 +1020,10 @@ function sourceCell(p, source, activeSources) {
     <td class="source-data-cell" data-source="${esc(source)}">
       <div class="price-card">
         <div class="price-left-group">
-          <span class="price-card-val">${esc(money.format(price))}</span>
+          <span class="price-val">${esc(money.format(price))}</span>
           ${markupChip}
         </div>
-        <a href="${esc(listing.url)}" class="open-link-btn" target="_blank" rel="noopener" title="Open listing" onclick="event.stopPropagation()">↗</a>
+        <a href="${esc(listing.url)}" class="btn-open-link" target="_blank" rel="noopener" title="Open listing" onclick="event.stopPropagation()">↗</a>
       </div>
     </td>
   `;
@@ -1015,10 +1062,9 @@ function render() {
   updateHeaders(activeSources);
   
   body.innerHTML = list.map(p => {
-    // Calculate average markup from all matched sources
     const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
     const mfg = Number(p.manufactured_price);
-    let avgMarkupChip = '<span class="empty-cell-dash">—</span>';
+    let avgMarkupChip = '<span class="cell-dash">—</span>';
     
     if (prices.length > 0 && mfg > 0) {
       const sumPrices = prices.reduce((a, b) => a + b, 0);
@@ -1028,14 +1074,14 @@ function render() {
     }
 
     const calculatedSelling = computeSellingPrice(mfg);
-    const sellingDisplay = calculatedSelling ? `<span class="price-text selling">${esc(money.format(calculatedSelling))}</span>` : '<span class="empty-cell-dash">—</span>';
+    const sellingDisplay = calculatedSelling ? `<span class="num-price selling">${esc(money.format(calculatedSelling))}</span>` : '<span class="cell-dash">—</span>';
 
     return `
       <tr tabindex="0" data-index="${products.indexOf(p)}">
         <td class="col-product"><div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div></td>
         <td class="col-brand"><span class="brand-label">${esc(p.brand_name)}</span></td>
-        <td class="col-mfg"><span class="price-text mfg">${esc(money.format(p.manufactured_price))}</span></td>
-        <td class="col-market"><span class="price-text">${esc(money.format(p.market_average_price))}</span></td>
+        <td class="col-mfg"><span class="num-price mfg">${esc(money.format(p.manufactured_price))}</span></td>
+        <td class="col-market"><span class="num-price">${esc(money.format(p.market_average_price))}</span></td>
         <td class="col-avg-markup">${avgMarkupChip}</td>
         <td class="col-selling-price">${sellingDisplay}</td>
         ${activeSources.map(s => sourceCell(p, s, activeSources)).join('')}
@@ -1055,31 +1101,31 @@ function openDetail(p) {
   const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
   
   let out = `
-    <div class="stats-summary-grid">
-      <div class="stat-item"><span>Purchasing (MFG Price)</span><strong>${esc(money.format(mfg))}</strong></div>
-      <div class="stat-item"><span>Market Average</span><strong>${esc(money.format(p.market_average_price))}</strong></div>
-      <div class="stat-item"><span>Variable Costs (Overhead)</span><strong>${esc(money.format(overhead))}</strong></div>
-      <div class="stat-item"><span>Calculated Selling Price</span><strong style="color:#0284c7;">${calculatedSelling ? esc(money.format(calculatedSelling)) : '—'}</strong></div>
+    <div class="detail-stats-grid">
+      <div class="detail-stat-box"><span>Purchasing (MFG Price)</span><strong>${esc(money.format(mfg))}</strong></div>
+      <div class="detail-stat-box"><span>Market Average</span><strong>${esc(money.format(p.market_average_price))}</strong></div>
+      <div class="detail-stat-box"><span>Variable Costs (Overhead)</span><strong>${esc(money.format(overhead))}</strong></div>
+      <div class="detail-stat-box"><span>Calculated Selling Price</span><strong style="color:var(--brand-blue);">${calculatedSelling ? esc(money.format(calculatedSelling)) : '—'}</strong></div>
     </div>
-    <div class="source-items-list">
+    <div class="detail-sources-list">
   `;
   
   const matchedSources = sources.filter(s => p.sources[s]);
   if (!matchedSources.length) {
-    out += '<div style="color:var(--text-secondary);padding:10px 0;font-size:12px;">No external verified listings found.</div>';
+    out += '<div style="color:var(--text-muted);padding:10px 0;font-size:12px;">No external verified listings found.</div>';
   } else {
     matchedSources.forEach(s => {
       const x = p.sources[s];
       const markupPct = calculateMarkup(Number(x.price), mfg);
       const markupChip = getMarkupChip(markupPct);
       out += `
-        <div class="source-row">
+        <div class="detail-source-row">
           <div>
-            <div style="font-weight:600;font-size:13px;color:var(--text);">${esc(s)}</div>
-            <div style="font-size:11.5px;color:var(--text-secondary);margin-top:2px;">${esc(x.matched_title || '')}</div>
+            <div style="font-weight:600;font-size:13px;color:var(--text-main);">${esc(s)}</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">${esc(x.matched_title || '')}</div>
           </div>
           <div style="text-align:right;">
-            <div style="font-weight:700;font-size:15px;color:#0284c7;display:flex;align-items:center;justify-content:flex-end;gap:6px;">${esc(money.format(x.price))} ${markupChip}</div>
+            <div style="font-weight:700;font-size:15px;color:var(--brand-blue);display:flex;align-items:center;justify-content:flex-end;gap:6px;">${esc(money.format(x.price))} ${markupChip}</div>
             <a href="${esc(x.url)}" target="_blank" rel="noopener">Open link ↗</a>
           </div>
         </div>
