@@ -300,7 +300,7 @@ thead th {
 }
 
 th.source-column-header {
-  min-width: 175px;
+  min-width: 215px;
   text-align: left;
 }
 .source-header-content {
@@ -381,7 +381,7 @@ td {
   border-bottom: 1px solid var(--border-subtle);
   border-right: 1px solid var(--border-subtle);
   vertical-align: middle;
-  height: 50px;
+  height: 52px;
 }
 
 tbody tr:hover td.col-product,
@@ -424,26 +424,55 @@ tbody tr:hover td.col-market {
   font-weight: 700;
 }
 
-/* Marketplace Source Cells */
+/* Marketplace Source Cells with Markup Badge */
 .source-data-cell {
   padding: 5px 8px;
-  min-width: 175px;
+  min-width: 215px;
 }
 .price-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
+  gap: 8px;
   padding: 4px 8px;
   border-radius: 6px;
   background: transparent;
   transition: all .1s ease;
+}
+.price-left-group {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 .price-card-val {
   font-size: 14.5px;
   font-weight: 600;
   color: #3f3f46;
   letter-spacing: -0.02em;
+}
+
+/* Markup Percentage Pill */
+.markup-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  letter-spacing: -0.01em;
+}
+.markup-pill.markup-up {
+  background: rgba(220, 38, 38, 0.08);
+  color: #dc2626;
+}
+.markup-pill.markup-down {
+  background: rgba(22, 163, 74, 0.08);
+  color: #16a34a;
+}
+.markup-pill.markup-even {
+  background: #f4f4f5;
+  color: #71717a;
 }
 
 .open-link-btn {
@@ -727,11 +756,20 @@ function spread(p) {
   return v.length > 1 ? Math.max(...v) - Math.min(...v) : 0;
 }
 
+function calculateMarkup(sellingPrice, mfgPrice) {
+  if (!mfgPrice || mfgPrice <= 0 || !sellingPrice) return null;
+  const pct = ((sellingPrice - mfgPrice) / mfgPrice) * 100;
+  return pct;
+}
+
 function sourceCell(p, source, activeSources) {
   const listing = p.sources[source];
   if (!listing) return '<td class="source-data-cell"><span class="empty-cell-dash">—</span></td>';
   
   const vals = externalValues(p, activeSources), price = Number(listing.price);
+  const mfg = Number(p.manufactured_price);
+  const markupPct = calculateMarkup(price, mfg);
+  
   const sortedUniqueDesc = [...new Set(vals)].sort((a, b) => b - a);
   let rankClass = '';
   
@@ -741,10 +779,24 @@ function sourceCell(p, source, activeSources) {
     else if (price === sortedUniqueDesc[sortedUniqueDesc.length - 1]) rankClass = 'is-low';
   }
   
+  let markupBadge = '';
+  if (markupPct !== null) {
+    if (markupPct > 0) {
+      markupBadge = `<span class="markup-pill markup-up" title="${markupPct.toFixed(1)}% above MFG price">↑+${markupPct.toFixed(0)}%</span>`;
+    } else if (markupPct < 0) {
+      markupBadge = `<span class="markup-pill markup-down" title="${Math.abs(markupPct).toFixed(1)}% below MFG price">↓${markupPct.toFixed(0)}%</span>`;
+    } else {
+      markupBadge = `<span class="markup-pill markup-even" title="Equal to MFG price">0%</span>`;
+    }
+  }
+  
   return `
     <td class="source-data-cell" data-source="${esc(source)}">
       <div class="price-card ${rankClass}">
-        <span class="price-card-val">${esc(money.format(price))}</span>
+        <div class="price-left-group">
+          <span class="price-card-val">${esc(money.format(price))}</span>
+          ${markupBadge}
+        </div>
         <a href="${esc(listing.url)}" class="open-link-btn" target="_blank" rel="noopener" title="Open listing" onclick="event.stopPropagation()">↗</a>
       </div>
     </td>
@@ -807,6 +859,16 @@ function openDetail(p) {
   } else {
     matchedSources.forEach(s => {
       const x = p.sources[s];
+      const mfg = Number(p.manufactured_price);
+      const markupPct = calculateMarkup(Number(x.price), mfg);
+      let markupBadge = '';
+      if (markupPct !== null) {
+        if (markupPct > 0) {
+          markupBadge = `<span class="markup-pill markup-up" style="margin-left:6px;">↑+${markupPct.toFixed(0)}%</span>`;
+        } else if (markupPct < 0) {
+          markupBadge = `<span class="markup-pill markup-down" style="margin-left:6px;">↓${markupPct.toFixed(0)}%</span>`;
+        }
+      }
       out += `
         <div class="source-row">
           <div>
@@ -814,7 +876,7 @@ function openDetail(p) {
             <div style="font-size:11.5px;color:var(--text-secondary);margin-top:2px;">${esc(x.matched_title || '')}</div>
           </div>
           <div style="text-align:right;">
-            <div style="font-weight:700;font-size:15px;color:#0284c7;">${esc(money.format(x.price))}</div>
+            <div style="font-weight:700;font-size:15px;color:#0284c7;display:flex;align-items:center;justify-content:flex-end;">${esc(money.format(x.price))} ${markupBadge}</div>
             <a href="${esc(x.url)}" target="_blank" rel="noopener">Open link ↗</a>
           </div>
         </div>
