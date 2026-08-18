@@ -10,6 +10,8 @@ Real-time price benchmark dataset, automated multi-marketplace discovery pipelin
 ## 1. Technology Stack & Architecture
 
 - **Runtime**: Python 3.12+ (uv / pip), Node.js (Bun 1.3+)
+- **Database & Storage**: Cloudflare D1 (Serverless SQLite at the edge, DB name: `product-price-matrix-db`, UUID: `78a79d0b-20b4-4b3f-b0bf-d2d0e97c9990`)
+- **Serverless API**: Cloudflare Pages Functions (`/api/engine`, `/api/overrides`, `/api/products`)
 - **Data & Excel**: `openpyxl`, `pandas`
 - **Scraping & Networking**: `primp` (TLS fingerprint impersonation for Cloudflare bypass), `BeautifulSoup4`, `ddgs`
 - **Matching & Similarity**: `rapidfuzz`
