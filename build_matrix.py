@@ -64,9 +64,9 @@ html = r'''<!doctype html>
   --border-active: #18181b;
   
   /* Markup Tier Colors */
-  --tier-discount-bg: #ecfdf5;
-  --tier-discount-border: #a7f3d0;
-  --tier-discount-text: #047857;
+  --tier-discount-bg: #fef2f2;
+  --tier-discount-border: #fca5a5;
+  --tier-discount-text: #b91c1c;
 
   --tier-par-bg: #f4f4f5;
   --tier-par-border: #e4e4e7;
