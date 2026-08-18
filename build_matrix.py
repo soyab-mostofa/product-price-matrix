@@ -476,6 +476,10 @@ tbody tr:hover td.col-selling-price {
   color: #0f172a;
   font-weight: 700;
 }
+.num-price.custom-tuned {
+  color: #7c3aed;
+  font-weight: 700;
+}
 
 /* Dual Metric Layout for Market Avg & Selling Price */
 .dual-metric-cell {
@@ -484,6 +488,16 @@ tbody tr:hover td.col-selling-price {
   justify-content: flex-end;
   gap: 7px;
   width: 100%;
+}
+
+.custom-tune-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 4px;
+  background: #ede9fe;
+  color: #6d28d9;
+  border-radius: 4px;
+  text-transform: uppercase;
 }
 
 /* Source Cells & Cards */
@@ -715,6 +729,33 @@ dialog::backdrop {
   color: var(--brand-blue);
 }
 
+/* Discount Type Toggle Pill */
+.discount-type-group {
+  display: flex;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+.discount-type-btn {
+  flex: 1;
+  height: 28px;
+  border: none;
+  background: transparent;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .12s ease;
+}
+.discount-type-btn.active {
+  background: #ffffff;
+  color: var(--text-main);
+  box-shadow: var(--shadow-sm);
+}
+
 /* Detail Drawer Styles */
 .detail-stats-grid {
   display: grid;
@@ -759,6 +800,28 @@ dialog::backdrop {
   font-weight: 600;
 }
 .detail-source-row a:hover { text-decoration: underline; }
+
+.tab-nav {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+.tab-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.tab-btn.active {
+  background: var(--surface-subtle);
+  color: var(--text-main);
+  border-color: var(--border);
+}
 
 .empty-state {
   padding: 80px 20px;
@@ -840,11 +903,11 @@ dialog::backdrop {
   <div id="empty" class="empty-state" hidden>No products match the selected criteria.</div>
 </main>
 
-<!-- 3. Pricing Engine Modal -->
+<!-- 3. Global Pricing Engine Modal -->
 <dialog id="engineModal">
   <div class="modal-header">
     <div class="modal-heading-group">
-      <span class="modal-kicker">Unit Economics</span>
+      <span class="modal-kicker">Global Unit Economics</span>
       <h2 class="modal-title">Pricing Engine</h2>
     </div>
     <button class="modal-btn-close" id="closeEngineModal" aria-label="Close">✕</button>
@@ -877,9 +940,13 @@ dialog::backdrop {
         <span class="hint">Gross target markup</span>
       </div>
       <div class="engine-field">
-        <label for="inputDiscountPct">Promo Discount (%)</label>
-        <input type="number" id="inputDiscountPct" class="engine-input" value="10" min="0" step="1">
-        <span class="hint">Active promotional discount</span>
+        <label>Discount Type & Value</label>
+        <div class="discount-type-group">
+          <button type="button" class="discount-type-btn active" id="btnTypePct" onclick="setDiscountType('pct')">Percentage (%)</button>
+          <button type="button" class="discount-type-btn" id="btnTypeAmt" onclick="setDiscountType('amt')">Amount (BDT)</button>
+        </div>
+        <input type="number" id="inputDiscountVal" class="engine-input" value="10" min="0" step="1" style="margin-top:4px;">
+        <span class="hint" id="discountHint">Promotional discount percentage</span>
       </div>
     </div>
 
@@ -890,7 +957,7 @@ dialog::backdrop {
       </div>
       <div class="engine-preview-row">
         <span>Calculation Logic:</span>
-        <span>(MFG Price + Overhead) × (1 + Margin%) × (1 - Discount%)</span>
+        <span id="formulaDescription">(MFG + Overhead) × (1 + Margin%) - Discount</span>
       </div>
       <div class="engine-preview-row total-highlight">
         <span>Model Benchmark (at ৳1,000 MFG):</span>
@@ -898,13 +965,18 @@ dialog::backdrop {
       </div>
     </div>
 
-    <button class="btn-calc" id="applyEngineBtn" style="width:100%;justify-content:center;height:40px;font-size:13px;">
-      Apply & Recalculate Matrix
-    </button>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-calc" id="applyEngineBtn" style="flex:1;justify-content:center;height:40px;font-size:13px;">
+        Apply to All Products
+      </button>
+      <button type="button" class="btn-icon" id="resetCustomOverridesBtn" title="Reset all per-product custom overrides" style="width:40px;height:40px;color:#ef4444;" onclick="resetAllCustomOverrides()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      </button>
+    </div>
   </div>
 </dialog>
 
-<!-- 4. Product Detail Modal -->
+<!-- 4. Product Detail & Per-Product Tuning Modal -->
 <dialog id="dialog">
   <div class="modal-header">
     <div class="modal-heading-group">
@@ -913,7 +985,67 @@ dialog::backdrop {
     </div>
     <button class="modal-btn-close" id="close" aria-label="Close">✕</button>
   </div>
-  <div class="modal-body" id="detail"></div>
+  <div class="modal-body">
+    <div class="tab-nav">
+      <button class="tab-btn active" id="tabOverviewBtn" onclick="switchDetailTab('overview')">Market Overview</button>
+      <button class="tab-btn" id="tabTuneBtn" onclick="switchDetailTab('tune')">Custom Pricing Engine</button>
+    </div>
+
+    <div id="tabOverviewContent" style="display:grid;gap:16px;"></div>
+
+    <div id="tabTuneContent" style="display:none;grid-gap:16px;">
+      <div style="font-size:12.5px;color:var(--text-secondary);line-height:1.4;">
+        Customize unit costs and margins specifically for this product. Changes here override the global engine settings and persist across sessions.
+      </div>
+      
+      <div class="engine-grid">
+        <div class="engine-field">
+          <label for="prodInputPackaging">Packaging (BDT)</label>
+          <input type="number" id="prodInputPackaging" class="engine-input" min="0" step="1">
+        </div>
+        <div class="engine-field">
+          <label for="prodInputTransport">Transport (BDT)</label>
+          <input type="number" id="prodInputTransport" class="engine-input" min="0" step="1">
+        </div>
+        <div class="engine-field">
+          <label for="prodInputDelivery">Delivery (BDT)</label>
+          <input type="number" id="prodInputDelivery" class="engine-input" min="0" step="1">
+        </div>
+        <div class="engine-field">
+          <label for="prodInputCAC">CAC / Marketing (BDT)</label>
+          <input type="number" id="prodInputCAC" class="engine-input" min="0" step="1">
+        </div>
+        <div class="engine-field">
+          <label for="prodInputMarginPct">Target Margin (%)</label>
+          <input type="number" id="prodInputMarginPct" class="engine-input" min="0" step="1">
+        </div>
+        <div class="engine-field">
+          <label>Discount Type & Value</label>
+          <div class="discount-type-group">
+            <button type="button" class="discount-type-btn" id="prodBtnTypePct" onclick="setProdDiscountType('pct')">Percentage (%)</button>
+            <button type="button" class="discount-type-btn" id="prodBtnTypeAmt" onclick="setProdDiscountType('amt')">Amount (BDT)</button>
+          </div>
+          <input type="number" id="prodInputDiscountVal" class="engine-input" min="0" step="1" style="margin-top:4px;">
+        </div>
+      </div>
+
+      <div class="engine-preview-card">
+        <div class="engine-preview-row">
+          <span>This Product's Selling Price:</span>
+          <strong id="prodSummarySelling" style="font-size:16px;color:var(--brand-blue);">—</strong>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;">
+        <button class="btn-calc" style="flex:1;justify-content:center;height:38px;font-size:13px;" onclick="saveProductCustomEngine()">
+          Save Custom Product Settings
+        </button>
+        <button type="button" class="btn-calc" style="background:#f1f5f9;color:#0f172a;border-color:#e2e8f0;height:38px;font-size:12.5px;" onclick="clearProductCustomEngine()">
+          Reset to Global Defaults
+        </button>
+      </div>
+    </div>
+  </div>
 </dialog>
 
 <script id="data" type="application/json">__DATA__</script>
@@ -924,15 +1056,42 @@ const sources = data.source_columns;
 const money = new Intl.NumberFormat('en-BD', { style: 'currency', currency: 'BDT', minimumFractionDigits: 0, maximumFractionDigits: 2 });
 const esc = v => String(v ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
 
-// Cost Parameters
-const costParams = {
+// Global Cost Parameters (Persistent in localStorage)
+const STORAGE_KEY_GLOBAL = 'price_matrix_global_params';
+const STORAGE_KEY_OVERRIDES = 'price_matrix_custom_overrides';
+
+const defaultGlobalParams = {
   packaging: 20,
   transport: 40,
   delivery: 60,
   cac: 80,
   targetMarginPct: 25,
-  discountPct: 10
+  discountType: 'pct', // 'pct' | 'amt'
+  discountVal: 10
 };
+
+let globalCostParams = { ...defaultGlobalParams };
+try {
+  const saved = localStorage.getItem(STORAGE_KEY_GLOBAL);
+  if (saved) globalCostParams = { ...globalCostParams, ...JSON.parse(saved) };
+} catch (e) {}
+
+// Per-product custom overrides: { [product_name]: { packaging, transport, delivery, cac, targetMarginPct, discountType, discountVal } }
+let productOverrides = {};
+try {
+  const savedOverrides = localStorage.getItem(STORAGE_KEY_OVERRIDES);
+  if (savedOverrides) productOverrides = JSON.parse(savedOverrides);
+} catch (e) {}
+
+function saveGlobalParamsToStorage() {
+  try { localStorage.setItem(STORAGE_KEY_GLOBAL, JSON.stringify(globalCostParams)); } catch (e) {}
+}
+
+function saveProductOverridesToStorage() {
+  try { localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(productOverrides)); } catch (e) {}
+}
+
+let activeProductDetail = null;
 
 const search = document.getElementById('search');
 const brandFilter = document.getElementById('brandFilter');
@@ -949,19 +1108,45 @@ document.getElementById('listingTotal').textContent = listingTotal.toLocaleStrin
 [...new Set(products.map(p => p.brand_name))].sort().forEach(v => brandFilter.add(new Option(v, v)));
 sources.forEach(v => sourceFilter.add(new Option(v, v)));
 
-function computeSellingPrice(mfgPrice) {
+function getProductParams(productName) {
+  if (productOverrides[productName]) {
+    return { ...globalCostParams, ...productOverrides[productName], isCustom: true };
+  }
+  return { ...globalCostParams, isCustom: false };
+}
+
+function computeSellingPrice(mfgPrice, productName) {
   if (!mfgPrice || mfgPrice <= 0) return null;
-  const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
+  const p = productName ? getProductParams(productName) : globalCostParams;
+  const overhead = Number(p.packaging || 0) + Number(p.transport || 0) + Number(p.delivery || 0) + Number(p.cac || 0);
   const totalBaseCost = mfgPrice + overhead;
-  const listPriceWithMargin = totalBaseCost * (1 + costParams.targetMarginPct / 100);
-  return listPriceWithMargin * (1 - costParams.discountPct / 100);
+  const listPriceWithMargin = totalBaseCost * (1 + Number(p.targetMarginPct || 0) / 100);
+  
+  let finalSelling = listPriceWithMargin;
+  if (p.discountType === 'pct') {
+    finalSelling = listPriceWithMargin * (1 - Number(p.discountVal || 0) / 100);
+  } else {
+    finalSelling = Math.max(0, listPriceWithMargin - Number(p.discountVal || 0));
+  }
+  return finalSelling;
+}
+
+function setDiscountType(type) {
+  globalCostParams.discountType = type;
+  document.getElementById('btnTypePct').classList.toggle('active', type === 'pct');
+  document.getElementById('btnTypeAmt').classList.toggle('active', type === 'amt');
+  document.getElementById('discountHint').textContent = type === 'pct' ? 'Promotional discount percentage (%)' : 'Fixed promotional discount amount (BDT)';
+  updateEngineSummary();
 }
 
 function updateEngineSummary() {
-  const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
+  const overhead = Number(globalCostParams.packaging) + Number(globalCostParams.transport) + Number(globalCostParams.delivery) + Number(globalCostParams.cac);
   document.getElementById('summaryOverhead').textContent = `৳${overhead.toFixed(2)}`;
   const sample = computeSellingPrice(1000);
   document.getElementById('summarySample').textContent = `৳${sample.toFixed(2)}`;
+  document.getElementById('formulaDescription').textContent = globalCostParams.discountType === 'pct'
+    ? `(MFG + Overhead) × (1 + Margin%) × (1 - ${globalCostParams.discountVal}%)`
+    : `(MFG + Overhead) × (1 + Margin%) - ৳${globalCostParams.discountVal}`;
 }
 
 function getVisibleSources(list) {
@@ -1066,8 +1251,8 @@ function filtered() {
   if (sort.value === 'product') list.sort((a, b) => a.product_name.localeCompare(b.product_name));
   if (sort.value === 'productDesc') list.sort((a, b) => b.product_name.localeCompare(a.product_name));
   if (sort.value === 'brand') list.sort((a, b) => a.brand_name.localeCompare(b.brand_name) || a.product_name.localeCompare(b.product_name));
-  if (sort.value === 'sellingAsc') list.sort((a, b) => (computeSellingPrice(a.manufactured_price) || 0) - (computeSellingPrice(b.manufactured_price) || 0));
-  if (sort.value === 'sellingDesc') list.sort((a, b) => (computeSellingPrice(b.manufactured_price) || 0) - (computeSellingPrice(a.manufactured_price) || 0));
+  if (sort.value === 'sellingAsc') list.sort((a, b) => (computeSellingPrice(a.manufactured_price, a.product_name) || 0) - (computeSellingPrice(b.manufactured_price, b.product_name) || 0));
+  if (sort.value === 'sellingDesc') list.sort((a, b) => (computeSellingPrice(b.manufactured_price, b.product_name) || 0) - (computeSellingPrice(a.manufactured_price, a.product_name) || 0));
   if (sort.value === 'mfgAsc') list.sort((a, b) => a.manufactured_price - b.manufactured_price);
   if (sort.value === 'mfgDesc') list.sort((a, b) => b.manufactured_price - a.manufactured_price);
   if (sort.value === 'marketAsc') list.sort((a, b) => a.market_average_price - b.market_average_price);
@@ -1112,14 +1297,16 @@ function render() {
       </div>
     `;
 
-    const calculatedSelling = computeSellingPrice(mfg);
+    const hasOverride = !!productOverrides[p.product_name];
+    const calculatedSelling = computeSellingPrice(mfg, p.product_name);
     let sellingDisplay = '<span class="cell-dash">—</span>';
     if (calculatedSelling && mfg > 0) {
       const sellingMarkupPct = calculateMarkup(calculatedSelling, mfg);
       const sellingMarkupChip = getMarkupChip(sellingMarkupPct);
       sellingDisplay = `
         <div class="dual-metric-cell">
-          <span class="num-price selling">${esc(money.format(calculatedSelling))}</span>
+          ${hasOverride ? '<span class="custom-tune-tag" title="Custom per-product pricing engine override active">Tuned</span>' : ''}
+          <span class="num-price ${hasOverride ? 'custom-tuned' : 'selling'}">${esc(money.format(calculatedSelling))}</span>
           ${sellingMarkupChip}
         </div>
       `;
@@ -1153,13 +1340,22 @@ headerRow.querySelectorAll('th[data-sort]').forEach(th => {
   };
 });
 
+function switchDetailTab(tab) {
+  document.getElementById('tabOverviewBtn').classList.toggle('active', tab === 'overview');
+  document.getElementById('tabTuneBtn').classList.toggle('active', tab === 'tune');
+  document.getElementById('tabOverviewContent').style.display = tab === 'overview' ? 'grid' : 'none';
+  document.getElementById('tabTuneContent').style.display = tab === 'tune' ? 'grid' : 'none';
+}
+
 function openDetail(p) {
+  activeProductDetail = p;
   document.getElementById('dialogBrand').textContent = p.brand_name;
   document.getElementById('dialogName').textContent = p.product_name;
   
   const mfg = Number(p.manufactured_price);
-  const calculatedSelling = computeSellingPrice(mfg);
-  const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
+  const calculatedSelling = computeSellingPrice(mfg, p.product_name);
+  const params = getProductParams(p.product_name);
+  const overhead = Number(params.packaging) + Number(params.transport) + Number(params.delivery) + Number(params.cac);
   const sellingMarkupPct = calculatedSelling && mfg > 0 ? calculateMarkup(calculatedSelling, mfg) : null;
   
   const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
@@ -1179,9 +1375,12 @@ function openDetail(p) {
           ${avgMarketMarkupChip}
         </strong>
       </div>
-      <div class="detail-stat-box"><span>Variable Costs (Overhead)</span><strong>${esc(money.format(overhead))}</strong></div>
       <div class="detail-stat-box">
-        <span>Calculated Selling Price</span>
+        <span>Variable Overhead ${params.isCustom ? '(Custom)' : ''}</span>
+        <strong>${esc(money.format(overhead))}</strong>
+      </div>
+      <div class="detail-stat-box">
+        <span>Selling Price ${params.isCustom ? '(Custom)' : ''}</span>
         <strong style="color:var(--brand-blue);display:flex;align-items:center;gap:6px;">
           ${calculatedSelling ? esc(money.format(calculatedSelling)) : '—'}
           ${getMarkupChip(sellingMarkupPct)}
@@ -1215,8 +1414,86 @@ function openDetail(p) {
   }
   out += '</div>';
   
-  document.getElementById('detail').innerHTML = out;
+  document.getElementById('tabOverviewContent').innerHTML = out;
+
+  // Populate per-product tune inputs
+  document.getElementById('prodInputPackaging').value = params.packaging;
+  document.getElementById('prodInputTransport').value = params.transport;
+  document.getElementById('prodInputDelivery').value = params.delivery;
+  document.getElementById('prodInputCAC').value = params.cac;
+  document.getElementById('prodInputMarginPct').value = params.targetMarginPct;
+  document.getElementById('prodInputDiscountVal').value = params.discountVal;
+  setProdDiscountType(params.discountType || 'pct', false);
+  updateProdTuneSummary();
+
+  switchDetailTab('overview');
   document.getElementById('dialog').showModal();
+}
+
+let currentProdDiscountType = 'pct';
+function setProdDiscountType(type, triggerSummary = true) {
+  currentProdDiscountType = type;
+  document.getElementById('prodBtnTypePct').classList.toggle('active', type === 'pct');
+  document.getElementById('prodBtnTypeAmt').classList.toggle('active', type === 'amt');
+  if (triggerSummary) updateProdTuneSummary();
+}
+
+function updateProdTuneSummary() {
+  if (!activeProductDetail) return;
+  const mfg = Number(activeProductDetail.manufactured_price);
+  const pkg = Number(document.getElementById('prodInputPackaging').value) || 0;
+  const tr = Number(document.getElementById('prodInputTransport').value) || 0;
+  const del = Number(document.getElementById('prodInputDelivery').value) || 0;
+  const cac = Number(document.getElementById('prodInputCAC').value) || 0;
+  const margin = Number(document.getElementById('prodInputMarginPct').value) || 0;
+  const discVal = Number(document.getElementById('prodInputDiscountVal').value) || 0;
+
+  const totalBase = mfg + pkg + tr + del + cac;
+  const listPrice = totalBase * (1 + margin / 100);
+  let finalVal = listPrice;
+  if (currentProdDiscountType === 'pct') {
+    finalVal = listPrice * (1 - discVal / 100);
+  } else {
+    finalVal = Math.max(0, listPrice - discVal);
+  }
+  document.getElementById('prodSummarySelling').textContent = esc(money.format(finalVal));
+}
+
+['prodInputPackaging', 'prodInputTransport', 'prodInputDelivery', 'prodInputCAC', 'prodInputMarginPct', 'prodInputDiscountVal'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateProdTuneSummary);
+});
+
+function saveProductCustomEngine() {
+  if (!activeProductDetail) return;
+  const name = activeProductDetail.product_name;
+  productOverrides[name] = {
+    packaging: Number(document.getElementById('prodInputPackaging').value) || 0,
+    transport: Number(document.getElementById('prodInputTransport').value) || 0,
+    delivery: Number(document.getElementById('prodInputDelivery').value) || 0,
+    cac: Number(document.getElementById('prodInputCAC').value) || 0,
+    targetMarginPct: Number(document.getElementById('prodInputMarginPct').value) || 0,
+    discountType: currentProdDiscountType,
+    discountVal: Number(document.getElementById('prodInputDiscountVal').value) || 0
+  };
+  saveProductOverridesToStorage();
+  document.getElementById('dialog').close();
+  render();
+}
+
+function clearProductCustomEngine() {
+  if (!activeProductDetail) return;
+  delete productOverrides[activeProductDetail.product_name];
+  saveProductOverridesToStorage();
+  document.getElementById('dialog').close();
+  render();
+}
+
+function resetAllCustomOverrides() {
+  if (confirm('Reset all custom per-product overrides back to global Pricing Engine defaults?')) {
+    productOverrides = {};
+    saveProductOverridesToStorage();
+    render();
+  }
 }
 
 body.addEventListener('click', e => {
@@ -1232,12 +1509,13 @@ document.getElementById('dialog').addEventListener('click', e => {
 // Pricing Engine Modal Listeners
 const engineModal = document.getElementById('engineModal');
 document.getElementById('openEngineBtn').onclick = () => {
-  document.getElementById('inputPackaging').value = costParams.packaging;
-  document.getElementById('inputTransport').value = costParams.transport;
-  document.getElementById('inputDelivery').value = costParams.delivery;
-  document.getElementById('inputCAC').value = costParams.cac;
-  document.getElementById('inputMarginPct').value = costParams.targetMarginPct;
-  document.getElementById('inputDiscountPct').value = costParams.discountPct;
+  document.getElementById('inputPackaging').value = globalCostParams.packaging;
+  document.getElementById('inputTransport').value = globalCostParams.transport;
+  document.getElementById('inputDelivery').value = globalCostParams.delivery;
+  document.getElementById('inputCAC').value = globalCostParams.cac;
+  document.getElementById('inputMarginPct').value = globalCostParams.targetMarginPct;
+  document.getElementById('inputDiscountVal').value = globalCostParams.discountVal;
+  setDiscountType(globalCostParams.discountType || 'pct');
   updateEngineSummary();
   engineModal.showModal();
 };
@@ -1245,19 +1523,20 @@ document.getElementById('openEngineBtn').onclick = () => {
 document.getElementById('closeEngineModal').onclick = () => engineModal.close();
 engineModal.addEventListener('click', e => { if (e.target.id === 'engineModal') engineModal.close(); });
 
-['inputPackaging', 'inputTransport', 'inputDelivery', 'inputCAC', 'inputMarginPct', 'inputDiscountPct'].forEach(id => {
+['inputPackaging', 'inputTransport', 'inputDelivery', 'inputCAC', 'inputMarginPct', 'inputDiscountVal'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => {
-    costParams.packaging = Number(document.getElementById('inputPackaging').value) || 0;
-    costParams.transport = Number(document.getElementById('inputTransport').value) || 0;
-    costParams.delivery = Number(document.getElementById('inputDelivery').value) || 0;
-    costParams.cac = Number(document.getElementById('inputCAC').value) || 0;
-    costParams.targetMarginPct = Number(document.getElementById('inputMarginPct').value) || 0;
-    costParams.discountPct = Number(document.getElementById('inputDiscountPct').value) || 0;
+    globalCostParams.packaging = Number(document.getElementById('inputPackaging').value) || 0;
+    globalCostParams.transport = Number(document.getElementById('inputTransport').value) || 0;
+    globalCostParams.delivery = Number(document.getElementById('inputDelivery').value) || 0;
+    globalCostParams.cac = Number(document.getElementById('inputCAC').value) || 0;
+    globalCostParams.targetMarginPct = Number(document.getElementById('inputMarginPct').value) || 0;
+    globalCostParams.discountVal = Number(document.getElementById('inputDiscountVal').value) || 0;
     updateEngineSummary();
   });
 });
 
 document.getElementById('applyEngineBtn').onclick = () => {
+  saveGlobalParamsToStorage();
   engineModal.close();
   render();
 };
@@ -1267,10 +1546,12 @@ document.getElementById('applyEngineBtn').onclick = () => {
 document.getElementById('download').onclick = () => {
   const exportData = {
     ...data,
-    cost_parameters: costParams,
+    global_cost_parameters: globalCostParams,
+    product_custom_overrides: productOverrides,
     products: products.map(p => ({
       ...p,
-      calculated_selling_price: computeSellingPrice(p.manufactured_price)
+      pricing_parameters: getProductParams(p.product_name),
+      calculated_selling_price: computeSellingPrice(p.manufactured_price, p.product_name)
     }))
   };
   const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
