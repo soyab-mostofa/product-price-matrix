@@ -1300,13 +1300,13 @@ function getMarketDiscountChip(discPct) {
   if (discPct === null) return '';
   if (discPct > 0.01) {
     // Selling below market average: Green discount chip
-    return `<span class="markup-chip mkt-disc" title="${discPct.toFixed(1)}% cheaper than Market Average price">↓-${discPct.toFixed(0)}% vs Mkt</span>`;
+    return `<span class="markup-chip mkt-disc" title="${discPct.toFixed(1)}% discount off Market Average price">↓-${discPct.toFixed(0)}%</span>`;
   }
   if (Math.abs(discPct) <= 0.01) {
-    return `<span class="markup-chip zero" title="Selling at Par with Market Average price">0% vs Mkt</span>`;
+    return `<span class="markup-chip zero" title="Selling at Par with Market Average price">0%</span>`;
   }
   // Selling above market average: Premium chip
-  return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% higher than Market Average price">↑+${Math.abs(discPct).toFixed(0)}% vs Mkt</span>`;
+  return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% above Market Average price">↑+${Math.abs(discPct).toFixed(0)}%</span>`;
 }
 
 function sourceCell(p, source, activeSources) {
