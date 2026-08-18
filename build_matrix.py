@@ -646,27 +646,27 @@ dialog::backdrop {
   overflow-y: auto;
 }
 
-/* Simulator Form Controls */
-.sim-grid {
+/* Pricing Engine Form Controls */
+.engine-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
 }
-.sim-field {
+.engine-field {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-.sim-field label {
+.engine-field label {
   font-size: 12px;
   font-weight: 600;
   color: var(--text-main);
 }
-.sim-field span.hint {
+.engine-field span.hint {
   font-size: 11px;
   color: var(--text-muted);
 }
-.sim-input {
+.engine-input {
   height: 38px;
   padding: 0 12px;
   border: 1px solid var(--border-strong);
@@ -678,12 +678,12 @@ dialog::backdrop {
   color: var(--text-main);
   transition: all .12s ease;
 }
-.sim-input:focus {
+.engine-input:focus {
   border-color: var(--border-dark);
   box-shadow: 0 0 0 1px var(--border-dark);
 }
 
-.sim-preview-card {
+.engine-preview-card {
   background: #f8fafc;
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -691,18 +691,18 @@ dialog::backdrop {
   display: grid;
   gap: 10px;
 }
-.sim-preview-row {
+.engine-preview-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12.5px;
   color: var(--text-secondary);
 }
-.sim-preview-row strong {
+.engine-preview-row strong {
   color: var(--text-main);
   font-size: 13px;
 }
-.sim-preview-row.total-highlight {
+.engine-preview-row.total-highlight {
   border-top: 1px solid var(--border);
   padding-top: 10px;
   margin-top: 4px;
@@ -710,7 +710,7 @@ dialog::backdrop {
   font-weight: 700;
   color: var(--text-main);
 }
-.sim-preview-row.total-highlight strong {
+.engine-preview-row.total-highlight strong {
   font-size: 16px;
   color: var(--brand-blue);
 }
@@ -813,9 +813,9 @@ dialog::backdrop {
   </div>
 
   <div class="header-right">
-    <button class="btn-calc" id="openSimulatorBtn">
+    <button class="btn-calc" id="openEngineBtn">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      Simulator
+      Pricing Engine
     </button>
     <button class="btn-icon" id="download" title="Export Dataset (JSON)">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"></path></svg>
@@ -832,7 +832,7 @@ dialog::backdrop {
         <th class="col-brand" data-sort="brand" title="Brand / Manufacturer Name. Click to toggle sort.">Brand ↕</th>
         <th class="col-mfg" data-sort="mfg" title="Manufacturing / Sourcing Purchase Price (Internal Reference). Click to toggle sort.">MFG Price ↕</th>
         <th class="col-market" data-sort="market" title="Market Average Selling Price across all channels, with the Average Markup % chip vs MFG Price. Click to toggle sort.">Market Avg ↕</th>
-        <th class="col-selling-price" data-sort="selling" title="Configured Selling Price with markup % vs MFG price, calculated from Simulator unit economics. Click to toggle sort.">Selling Price ↕</th>
+        <th class="col-selling-price" data-sort="selling" title="Configured Selling Price with markup % vs MFG price, calculated from unit economics model. Click to toggle sort.">Selling Price ↕</th>
       </tr>
     </thead>
     <tbody id="body"></tbody>
@@ -840,65 +840,65 @@ dialog::backdrop {
   <div id="empty" class="empty-state" hidden>No products match the selected criteria.</div>
 </main>
 
-<!-- 3. Cost & Margin Simulator Modal -->
-<dialog id="simulatorModal">
+<!-- 3. Pricing Engine Modal -->
+<dialog id="engineModal">
   <div class="modal-header">
     <div class="modal-heading-group">
       <span class="modal-kicker">Unit Economics</span>
-      <h2 class="modal-title">Cost & Margin Simulator</h2>
+      <h2 class="modal-title">Pricing Engine</h2>
     </div>
-    <button class="modal-btn-close" id="closeSimModal" aria-label="Close">✕</button>
+    <button class="modal-btn-close" id="closeEngineModal" aria-label="Close">✕</button>
   </div>
   <div class="modal-body">
-    <div class="sim-grid">
-      <div class="sim-field">
+    <div class="engine-grid">
+      <div class="engine-field">
         <label for="inputPackaging">Packaging (BDT)</label>
-        <input type="number" id="inputPackaging" class="sim-input" value="20" min="0" step="1">
+        <input type="number" id="inputPackaging" class="engine-input" value="20" min="0" step="1">
         <span class="hint">Per-unit box/wrap cost</span>
       </div>
-      <div class="sim-field">
+      <div class="engine-field">
         <label for="inputTransport">Transport (BDT)</label>
-        <input type="number" id="inputTransport" class="sim-input" value="40" min="0" step="1">
+        <input type="number" id="inputTransport" class="engine-input" value="40" min="0" step="1">
         <span class="hint">Inbound freight allocation</span>
       </div>
-      <div class="sim-field">
+      <div class="engine-field">
         <label for="inputDelivery">Delivery / Courier (BDT)</label>
-        <input type="number" id="inputDelivery" class="sim-input" value="60" min="0" step="1">
+        <input type="number" id="inputDelivery" class="engine-input" value="60" min="0" step="1">
         <span class="hint">Last-mile fulfillment cost</span>
       </div>
-      <div class="sim-field">
+      <div class="engine-field">
         <label for="inputCAC">CAC / Marketing (BDT)</label>
-        <input type="number" id="inputCAC" class="sim-input" value="80" min="0" step="1">
+        <input type="number" id="inputCAC" class="engine-input" value="80" min="0" step="1">
         <span class="hint">Acquisition cost per order</span>
       </div>
-      <div class="sim-field">
+      <div class="engine-field">
         <label for="inputMarginPct">Target Margin (%)</label>
-        <input type="number" id="inputMarginPct" class="sim-input" value="25" min="0" step="1">
+        <input type="number" id="inputMarginPct" class="engine-input" value="25" min="0" step="1">
         <span class="hint">Gross target markup</span>
       </div>
-      <div class="sim-field">
+      <div class="engine-field">
         <label for="inputDiscountPct">Promo Discount (%)</label>
-        <input type="number" id="inputDiscountPct" class="sim-input" value="10" min="0" step="1">
+        <input type="number" id="inputDiscountPct" class="engine-input" value="10" min="0" step="1">
         <span class="hint">Active promotional discount</span>
       </div>
     </div>
 
-    <div class="sim-preview-card">
-      <div class="sim-preview-row">
+    <div class="engine-preview-card">
+      <div class="engine-preview-row">
         <span>Total Variable Overhead (Pack + Trans + Deliv + CAC):</span>
         <strong id="summaryOverhead">৳200.00</strong>
       </div>
-      <div class="sim-preview-row">
+      <div class="engine-preview-row">
         <span>Calculation Logic:</span>
         <span>(MFG Price + Overhead) × (1 + Margin%) × (1 - Discount%)</span>
       </div>
-      <div class="sim-preview-row total-highlight">
-        <span>Simulated Benchmark (at ৳1,000 MFG):</span>
+      <div class="engine-preview-row total-highlight">
+        <span>Model Benchmark (at ৳1,000 MFG):</span>
         <strong id="summarySample">৳1,350.00</strong>
       </div>
     </div>
 
-    <button class="btn-calc" id="applySimBtn" style="width:100%;justify-content:center;height:40px;font-size:13px;">
+    <button class="btn-calc" id="applyEngineBtn" style="width:100%;justify-content:center;height:40px;font-size:13px;">
       Apply & Recalculate Matrix
     </button>
   </div>
@@ -957,7 +957,7 @@ function computeSellingPrice(mfgPrice) {
   return listPriceWithMargin * (1 - costParams.discountPct / 100);
 }
 
-function updateSimulatorSummary() {
+function updateEngineSummary() {
   const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
   document.getElementById('summaryOverhead').textContent = `৳${overhead.toFixed(2)}`;
   const sample = computeSellingPrice(1000);
@@ -985,7 +985,6 @@ function updateHeaders(activeSources) {
       </div>
     `;
     th.onclick = () => {
-      // Sort by this specific source
       if (sort.value === `srcAsc:${source}`) {
         sort.value = `srcDesc:${source}`;
       } else {
@@ -1230,21 +1229,21 @@ document.getElementById('dialog').addEventListener('click', e => {
   if (e.target.id === 'dialog') e.target.close();
 });
 
-// Simulator Modal Listeners
-const simModal = document.getElementById('simulatorModal');
-document.getElementById('openSimulatorBtn').onclick = () => {
+// Pricing Engine Modal Listeners
+const engineModal = document.getElementById('engineModal');
+document.getElementById('openEngineBtn').onclick = () => {
   document.getElementById('inputPackaging').value = costParams.packaging;
   document.getElementById('inputTransport').value = costParams.transport;
   document.getElementById('inputDelivery').value = costParams.delivery;
   document.getElementById('inputCAC').value = costParams.cac;
   document.getElementById('inputMarginPct').value = costParams.targetMarginPct;
   document.getElementById('inputDiscountPct').value = costParams.discountPct;
-  updateSimulatorSummary();
-  simModal.showModal();
+  updateEngineSummary();
+  engineModal.showModal();
 };
 
-document.getElementById('closeSimModal').onclick = () => simModal.close();
-simModal.addEventListener('click', e => { if (e.target.id === 'simulatorModal') simModal.close(); });
+document.getElementById('closeEngineModal').onclick = () => engineModal.close();
+engineModal.addEventListener('click', e => { if (e.target.id === 'engineModal') engineModal.close(); });
 
 ['inputPackaging', 'inputTransport', 'inputDelivery', 'inputCAC', 'inputMarginPct', 'inputDiscountPct'].forEach(id => {
   document.getElementById(id).addEventListener('input', () => {
@@ -1254,12 +1253,12 @@ simModal.addEventListener('click', e => { if (e.target.id === 'simulatorModal') 
     costParams.cac = Number(document.getElementById('inputCAC').value) || 0;
     costParams.targetMarginPct = Number(document.getElementById('inputMarginPct').value) || 0;
     costParams.discountPct = Number(document.getElementById('inputDiscountPct').value) || 0;
-    updateSimulatorSummary();
+    updateEngineSummary();
   });
 });
 
-document.getElementById('applySimBtn').onclick = () => {
-  simModal.close();
+document.getElementById('applyEngineBtn').onclick = () => {
+  engineModal.close();
   render();
 };
 
