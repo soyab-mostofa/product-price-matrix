@@ -11,7 +11,7 @@
     "bundles_rejected_for_single_skus": true,
     "unverified_sources_omitted": true
   },
-  "generated_at": "2026-08-18T05:56:13.136910+00:00",
+  "generated_at": "2026-08-18T06:11:28.238361+00:00",
   "product_count": 372,
   "brand_count": 15,
   "source_columns": [
@@ -30,25 +30,25 @@
     "Nature Beauty Official"
   ],
   "source_listing_counts": {
-    "Arogga": 167,
-    "Shajgoj": 152,
-    "OhSoGo": 148,
+    "Arogga": 176,
+    "Shajgoj": 165,
+    "OhSoGo": 150,
     "Guerniss Official": 79,
-    "Daraz": 45,
+    "Daraz": 61,
     "eMartWay": 44,
-    "Bio-Xin Official": 39,
+    "Bio-Xin Official": 40,
     "PandaMart": 30,
-    "Neofarmers Official": 21,
-    "Skin Cafe Official": 20,
-    "Rokomari": 2,
+    "Neofarmers Official": 25,
+    "Skin Cafe Official": 21,
+    "Rokomari": 6,
     "Chaldal": 1,
     "Nature Beauty Official": 1
   },
   "coverage_counts": {
-    "0": 39,
-    "1": 112,
-    "2": 113,
-    "3": 48,
+    "0": 10,
+    "1": 121,
+    "2": 132,
+    "3": 49,
     "4": 38,
     "5": 17,
     "6": 5
@@ -696,7 +696,26 @@
       "brand_name": "BioCare",
       "manufactured_price": 749.25,
       "market_average_price": 999,
-      "sources": {}
+      "sources": {
+        "Bio-Xin Official": {
+          "price": 999.0,
+          "url": "https://bioxin.com/en/product/biocare-skin-glowing-&-repairing-essential-oil",
+          "matched_title": "BioCare Skin Glowing & Repairing Essential Oil",
+          "size": "30ml",
+          "seller": "Bio-Xin Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 999.0,
+          "url": "https://www.daraz.com.bd/products/biocare-i567644078.html",
+          "matched_title": "BioCare Skin Glowing & Repairing Essential Oil",
+          "size": "30ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "BioCare Ultra Hydra Non-Sticky Glycerin",
@@ -3383,7 +3402,26 @@
       "brand_name": "Guerniss",
       "manufactured_price": 228,
       "market_average_price": 380,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 380.0,
+          "url": "https://www.daraz.com.bd/products/guerniss-beauty-1-i328337351.html",
+          "matched_title": "Guerniss Beauty - Brightening Mask 1 SHEET",
+          "size": "30ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "OhSoGo": {
+          "price": 299.0,
+          "url": "https://www.ohsogo.com/products/guerniss-brightening-face-mask",
+          "matched_title": "Guerniss Brightening Face Mask",
+          "size": "30ml",
+          "seller": "OhSoGo",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Guerniss Avocado Deep Cleansing Wet Wipes",
@@ -4537,7 +4575,26 @@
       "brand_name": "Q Cosmetics",
       "manufactured_price": 63.335,
       "market_average_price": 100,
-      "sources": {}
+      "sources": {
+        "Arogga": {
+          "price": 60.0,
+          "url": "https://www.arogga.com/product/85950/apple-ammonia-free-black-semi-permanent-hair-dye-cream-shampoo-clear-water-type-black-30ml",
+          "matched_title": "Apple Ammonia Free Black Semi Permanent Hair Dye Cream Shampoo, Clear Water Type (Black) 30ml",
+          "size": "30ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 75.0,
+          "url": "https://www.daraz.com.bd/products/-i560808151.html",
+          "matched_title": "Apple Ammonia Free Black Shampoo - 30ml",
+          "size": "30ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore All Blur Pro Face Primer",
@@ -4561,7 +4618,26 @@
       "brand_name": "Q Cosmetics",
       "manufactured_price": 221.6725,
       "market_average_price": 350,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 270.0,
+          "url": "https://www.daraz.com.bd/products/-i1574599933.html",
+          "matched_title": "Qolore Black Kohl Kajal - 3.5gm",
+          "size": "0.35gm",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Rokomari": {
+          "price": 270.0,
+          "url": "https://www.rokomari.com/product/557801/qolore-black-kohl-kajal",
+          "matched_title": "Qolore Black Kohl Kajal",
+          "size": "0.35gm",
+          "seller": "Rokomari",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Cloud Soft Cotton Pads - 80pcs",
@@ -4637,7 +4713,26 @@
       "brand_name": "Q Cosmetics",
       "manufactured_price": 538.3475,
       "market_average_price": 850,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 680.0,
+          "url": "https://www.daraz.com.bd/products/-i1574625260.html",
+          "matched_title": "Qolore Compact Powder Natural 07 - 12 gm",
+          "size": "12gm",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 680.0,
+          "url": "https://shop.shajgoj.com/product/qolore-compact-powder-natural-07",
+          "matched_title": "Qolore Compact Powder - Natural 07",
+          "size": "12gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Pro Cover Concealer Ivory 05",
@@ -4661,7 +4756,26 @@
       "brand_name": "Q Cosmetics",
       "manufactured_price": 380.01,
       "market_average_price": 600,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 480.0,
+          "url": "https://www.daraz.com.bd/products/-i562330425.html",
+          "matched_title": "Qolore Pro Cover Concealer Neutral 07 - 3ml",
+          "size": "3ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 480.0,
+          "url": "https://shop.shajgoj.com/product/qolore-pro-cover-concealer-neutral-07",
+          "matched_title": "Qolore Pro Cover Concealer Neutral 07",
+          "size": "3ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Skin Glow Liquid Foundation Honey Soft-03",
@@ -4685,35 +4799,112 @@
       "brand_name": "Q Cosmetics",
       "manufactured_price": 728.3525,
       "market_average_price": 1150,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 930.0,
+          "url": "https://www.daraz.com.bd/products/qolore-05-30ml-i562339034.html",
+          "matched_title": "Qolore Skin Glow Liquid Foundation Ivory Pink-05 - 30ml",
+          "size": "30ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 920.0,
+          "url": "https://shop.shajgoj.com/product/qolore-skin-glow-liquid-foundation-ivory-pink",
+          "matched_title": "Qolore Skin Glow Liquid Foundation - Ivory Pink",
+          "size": "30ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Skin Glow Liquid Foundation Natural-07",
       "brand_name": "Q Cosmetics",
       "manufactured_price": 728.3525,
       "market_average_price": 1150,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 930.0,
+          "url": "https://www.daraz.com.bd/products/qolore-07-30ml-i562337069.html",
+          "matched_title": "Qolore Skin Glow Liquid Foundation Natural-07 - 30ml",
+          "size": "30ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Rokomari": {
+          "price": 879.0,
+          "url": "https://www.rokomari.com/product/557820/qolore-skin-glow-natural-07-liquid-foundation-30ml",
+          "matched_title": "Qolore Skin Glow Natural 07 Liquid Foundation 30ml",
+          "size": "30ml",
+          "seller": "Rokomari",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Soft Matte Liquid Lipstick Cinnamon Love-03",
       "brand_name": "Q Cosmetics",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 520.0,
+          "url": "https://www.daraz.com.bd/products/qolore-03-8-i562330431.html",
+          "matched_title": "Qolore Soft Matte Liquid Lipstick Cinnamon Love-03 - 6gm",
+          "size": "6gm",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Soft Matte Liquid Lipstick Scarlet Red-05",
       "brand_name": "Q Cosmetics",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 520.0,
+          "url": "https://www.daraz.com.bd/products/05-6-i562326753.html",
+          "matched_title": "Qolore Soft Matte Liquid Lipstick Scarlet Red-05 - 6gm",
+          "size": "6gm",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 520.0,
+          "url": "https://shop.shajgoj.com/product/qolore-soft-matte-liquid-lipstick-scarlet-red-05",
+          "matched_title": "Qolore Soft Matte Liquid Lipstick Scarlet Red -  05",
+          "size": "6gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Soft Matte Liquid Lipstick Dark Mauve-07",
       "brand_name": "Q Cosmetics",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
-      "sources": {}
+      "sources": {
+        "Shajgoj": {
+          "price": 520.0,
+          "url": "https://shop.shajgoj.com/product/qolore-soft-matte-liquid-lipstick-dark-mauve-07",
+          "matched_title": "Qolore Soft Matte Liquid Lipstick Dark Mauve - 07",
+          "size": "6gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Soft Matte Liquid Lipstick Brown Mocha-09",
@@ -4727,14 +4918,52 @@
       "brand_name": "Q Cosmetics",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
-      "sources": {}
+      "sources": {
+        "Shajgoj": {
+          "price": 520.0,
+          "url": "https://shop.shajgoj.com/product/qolore-soft-matte-liquid-lipstick-berry-drop-11",
+          "matched_title": "Qolore Soft Matte Liquid Lipstick Berry Drop - 11",
+          "size": "6gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Rokomari": {
+          "price": 479.0,
+          "url": "https://www.rokomari.com/product/557780/qolore-soft-matte-liquid-lipstick-berry-11-drop-6gm-1pcs",
+          "matched_title": "Qolore Soft Matte Liquid Lipstick Berry 11 Drop 6gm 1Pc",
+          "size": "6gm",
+          "seller": "Rokomari",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Qolore Soft Matte Liquid Lipstick Coral Silk-13",
       "brand_name": "Q Cosmetics",
       "manufactured_price": 411.6775,
       "market_average_price": 650,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 520.0,
+          "url": "https://www.daraz.com.bd/products/qolore-13-6-i562324792.html",
+          "matched_title": "Qolore Soft Matte Liquid Lipstick Coral Silk-13 - 6gm",
+          "size": "6gm",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 520.0,
+          "url": "https://shop.shajgoj.com/product/qolore-soft-matte-liquid-lipstick-coral-silk-13",
+          "matched_title": "Qolore Soft Matte Liquid Lipstick Coral Silk - 13",
+          "size": "6gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Quinsia 2% Salicylic Acid Moisturizer",
@@ -5401,7 +5630,26 @@
       "brand_name": "Neofarmers",
       "manufactured_price": 142.5,
       "market_average_price": 190,
-      "sources": {}
+      "sources": {
+        "Neofarmers Official": {
+          "price": 190.0,
+          "url": "https://neofarmers.com.bd/product/reetha-powder/",
+          "matched_title": "Reetha Powder - hacked by trenggalek6etar",
+          "size": "100g",
+          "seller": "Neofarmers Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Arogga": {
+          "price": 167.2,
+          "url": "https://www.arogga.com/product/72331/neofarmers-reetha-powder-120g",
+          "matched_title": "Neofarmers Reetha Powder (রিঠা গুড়া) 120g",
+          "size": "100g",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Fenugreek Powder/ মেথি গুঁড়া",
@@ -5478,14 +5726,52 @@
       "brand_name": "Neofarmers",
       "manufactured_price": 592.5,
       "market_average_price": 790,
-      "sources": {}
+      "sources": {
+        "Neofarmers Official": {
+          "price": 790.0,
+          "url": "https://neofarmers.com.bd/product/coconut-oil-big/",
+          "matched_title": "Coconut Oil (Big | 400 ML) - hacked by trenggalek6etar",
+          "size": "360ml",
+          "seller": "Neofarmers Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Arogga": {
+          "price": 651.75,
+          "url": "https://www.arogga.com/product/73752/neofarmers-coconut-oil-400ml",
+          "matched_title": "Neofarmers Coconut Oil 400ml",
+          "size": "360ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Coconut Oil/ নারিকেল তেল (Small)",
       "brand_name": "Neofarmers",
       "manufactured_price": 374.25,
       "market_average_price": 499,
-      "sources": {}
+      "sources": {
+        "Neofarmers Official": {
+          "price": 499.0,
+          "url": "https://neofarmers.com.bd/product/coconut-oil/",
+          "matched_title": "Coconut oil",
+          "size": "180ml",
+          "seller": "Neofarmers Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Arogga": {
+          "price": 449.1,
+          "url": "https://www.arogga.com/product/73751/neofarmers-coconut-oil-200ml",
+          "matched_title": "Neofarmers Coconut Oil 200ml",
+          "size": "180ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Black seed Oil/ কালিজিরা তেল (Big)",
@@ -5647,7 +5933,17 @@
       "brand_name": "Neofarmers",
       "manufactured_price": 315,
       "market_average_price": 450,
-      "sources": {}
+      "sources": {
+        "Neofarmers Official": {
+          "price": 450.0,
+          "url": "https://neofarmers.com.bd/product/hibiscus-oil-35ml/",
+          "matched_title": "Hibiscus Oil (Small) - hacked by trenggalek6etar",
+          "size": "30ml",
+          "seller": "Neofarmers Official",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Pistachio Oil/ পেস্তাবাদামের তেল",
@@ -5757,7 +6053,17 @@
       "brand_name": "Neofarmers",
       "manufactured_price": 553,
       "market_average_price": 790,
-      "sources": {}
+      "sources": {
+        "Arogga": {
+          "price": 565.0,
+          "url": "https://www.arogga.com/product/61973/neofarmers-mixed-oil-75ml",
+          "matched_title": "Neofarmers Mixed  Oil 75ml",
+          "size": "75ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Mixed Oil/ মিক্সড অয়েল",
@@ -6354,7 +6660,26 @@
       "brand_name": "Skin Cafe",
       "manufactured_price": 165,
       "market_average_price": 275,
-      "sources": {}
+      "sources": {
+        "Arogga": {
+          "price": 233.0,
+          "url": "https://www.arogga.com/product/65178/skin-cafe-silky-tresses-moisturizing-conditioner-good-argan-oil-flow-oil-biotin-120ml",
+          "matched_title": "Skin Cafe Silky Tresses Moisturizing Conditioner Good Argan Oil, Flow Oil & Biotin 120ml",
+          "size": "120ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Skin Cafe Official": {
+          "price": 295.0,
+          "url": "https://skincafe.co/product/silky-tresses-moisturizing-conditioner-120ml/",
+          "matched_title": "Skin Cafe Silky Tresses Moisturizing Conditioner 120ml",
+          "size": "120ml",
+          "seller": "Skin Cafe Official",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Skincafe Banana shampoo",
@@ -7850,14 +8175,43 @@
       "brand_name": "Nirvana",
       "manufactured_price": 570,
       "market_average_price": 950,
-      "sources": {}
+      "sources": {
+        "Shajgoj": {
+          "price": 810.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-face-palette-windy-monsoon-2",
+          "matched_title": "Nirvana Color Face Palette - Windy Monsoon",
+          "size": "15gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 855.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-18-i228729376.html",
+          "matched_title": "Nirvana Color Face Palette - WINDY MONSOON (18gm)",
+          "size": "15gm",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Liquid Matte Lipstick- Infatuated",
       "brand_name": "Nirvana",
       "manufactured_price": 348,
       "market_average_price": 580,
-      "sources": {}
+      "sources": {
+        "Shajgoj": {
+          "price": 493.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-liquid-matte-lipstick-infatuated-l03",
+          "matched_title": "Nirvana Color Liquid Matte Lipstick - Infatuated L03",
+          "size": "5gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Liquid Matte Lipstick- Kiss me",
@@ -7871,14 +8225,34 @@
       "brand_name": "Nirvana",
       "manufactured_price": 348,
       "market_average_price": 580,
-      "sources": {}
+      "sources": {
+        "Rokomari": {
+          "price": 459.0,
+          "url": "https://www.rokomari.com/product/376400/nirvana-color-liquid-matte-lipstick-5ml-love-me-45561",
+          "matched_title": "Nirvana Color Liquid Matte Lipstick 5ml – Love Me  - 45561",
+          "size": "5gm",
+          "seller": "Rokomari",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Liquid Matte Lipstick- Sweet Raisin",
       "brand_name": "Nirvana",
       "manufactured_price": 348,
       "market_average_price": 580,
-      "sources": {}
+      "sources": {
+        "Shajgoj": {
+          "price": 493.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-liquid-matte-lipstick-sweet-raisin-l05",
+          "matched_title": "Nirvana Color Liquid Matte Lipstick - Sweet Raisin L05",
+          "size": "5gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Liquid Matte Lipstick- Sweet Sin",
@@ -7919,7 +8293,26 @@
       "brand_name": "Nirvana",
       "manufactured_price": 210,
       "market_average_price": 350,
-      "sources": {}
+      "sources": {
+        "Daraz": {
+          "price": 306.0,
+          "url": "https://www.daraz.com.bd/products/-i390541573.html",
+          "matched_title": "Nirvana Color No Smudge Retractable Eyeliner – Coal Black",
+          "size": "5 gm",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "OhSoGo": {
+          "price": 275.0,
+          "url": "https://www.ohsogo.com/products/nirvana-color-no-smudge-retractable-eyeliner-coal-black-1gm-1",
+          "matched_title": "Nirvana Color No Smudge Retractable Kajal - Coal Black (1gm)",
+          "size": "5 gm",
+          "seller": "OhSoGo",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Nail Enamel – Feeling Blue – 35",
@@ -8087,7 +8480,17 @@
       "brand_name": "Nirvana",
       "manufactured_price": 144,
       "market_average_price": 240,
-      "sources": {}
+      "sources": {
+        "Shajgoj": {
+          "price": 187.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-nail-enamel-pastel-bloom-29",
+          "matched_title": "Nirvana Color Nail Enamel - Pastel Bloom - 29",
+          "size": "8ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Glitter Nail Enamel – Touched Angel -25",
@@ -8281,7 +8684,17 @@
       "brand_name": "Nirvana",
       "manufactured_price": 144,
       "market_average_price": 240,
-      "sources": {}
+      "sources": {
+        "Shajgoj": {
+          "price": 204.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-glitter-nail-enamel-hold-me-24",
+          "matched_title": "Nirvana Color Glitter Nail Enamel - Hold Me -24",
+          "size": "8ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Matte Color Bullet – Honey Crush",
@@ -8651,21 +9064,87 @@
       "brand_name": "Nirvana",
       "manufactured_price": 510,
       "market_average_price": 850,
-      "sources": {}
+      "sources": {
+        "Arogga": {
+          "price": 720.0,
+          "url": "https://www.arogga.com/product/65489/nirvana-color-mattifying-poreless-pressed-powder-light-beige",
+          "matched_title": "Nirvana Color Mattifying & Poreless Pressed Powder (Light Beige)",
+          "size": "25ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 765.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-i256464417.html",
+          "matched_title": "Nirvana Color Mattifying and Poreless Pressed Powder - Light Beige",
+          "size": "25ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 649.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-mattifying-and-poreless-pressed-powder-light-beige",
+          "matched_title": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Beige)",
+          "size": "25ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Natural)",
       "brand_name": "Nirvana",
       "manufactured_price": 510,
       "market_average_price": 850,
-      "sources": {}
+      "sources": {
+        "Arogga": {
+          "price": 701.25,
+          "url": "https://www.arogga.com/product/65452/nirvana-color-mattifying-poreless-pressed-powder-light-natural",
+          "matched_title": "Nirvana Color Mattifying & Poreless Pressed Powder (Light Natural)",
+          "size": "25ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 765.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-i256196141.html",
+          "matched_title": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Natural)",
+          "size": "25ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Golden)",
       "brand_name": "Nirvana",
       "manufactured_price": 510,
       "market_average_price": 850,
-      "sources": {}
+      "sources": {
+        "Arogga": {
+          "price": 701.25,
+          "url": "https://www.arogga.com/product/65453/nirvana-color-mattifying-poreless-pressed-powder-light-golden-p03",
+          "matched_title": "Nirvana Color Mattifying & Poreless Pressed Powder- Light Golden P03",
+          "size": "25ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 765.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-i256457349.html",
+          "matched_title": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Golden)",
+          "size": "25ml",
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        }
+      }
     },
     {
       "product_name": "Groome Tea Tree Purifying & Deep Cleansing Nose Strips (Monthly Pack) 6 pcs",
