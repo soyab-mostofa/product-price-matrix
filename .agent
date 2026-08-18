@@ -1,0 +1,77 @@
+# Price Intelligence Matrix & SKU Benchmarking Agent Guidelines
+
+This repository manages multi-marketplace pricing intelligence, automated scraping pipelines, strict SKU-matching validation, and an interactive pricing matrix dashboard for 372 beauty & personal care products across Bangladesh.
+
+---
+
+## 1. Architecture & Core Artifacts
+
+- **`product_marketplace_price_comparison.xlsx`**: Primary spreadsheet with exact formula calculations for internal benchmarks (`MFG price`, `Mkt (Avg) Price`) and verified external listings populated into Marketplace 1 & 2.
+- **`verified_marketplace_research.json`**: Master JSON research database containing all scraped candidate records, raw pricing tokens, and multi-channel mappings.
+- **`verified_match_audit.json`**: Complete audit trail logging every accepted match and rejected candidate with explicit reasons.
+- **`sku_matcher.py`**: Strict validation engine enforcing brand ownership, sub-brand hierarchy, category disambiguation, exact volume normalization, and cosmetic shade matching.
+- **`build_matrix.py`**: Compiles research data into `product_pricing_data.json`, `product_pricing_dashboard.html`, and static deployment assets in `public/`.
+- **`public/`**: Static output directory (`index.html` and `product_pricing_data.json`) deployed to Cloudflare Pages.
+
+---
+
+## 2. Core Business & SKU Matching Rules
+
+1. **Strict Brand & SKU Integrity:**
+   - Never match generic keyword overlaps or substitute alternative brands.
+   - Respect brand and sub-brand hierarchy (e.g. *Nature Beauty*, *Quinsia*, *Qolore* under *Q Cosmetics*; *Bio-Screen* under *Bio-Xin*).
+   - Require exact category matching: Serums ≠ Toners, Conditioners ≠ Shampoos, Face Wash ≠ Moisturizers.
+   - Reject multi-item combos, bundles, or BOGO promotions unless the target SKU is explicitly a bundle.
+   - Enforce exact volume and weight matching (`ml`, `gm`, `g`).
+   - Match cosmetic shades (lipsticks, foundations, concealers, compacts) by exact shade names and codes (e.g. `03`, `05`, `Natural 07`, `Ivory Pink`).
+
+2. **Active Selling / Discounted Price Priority:**
+   - Always extract the live customer checkout price (active discounted selling price) over the pre-discount list price or MSRP whenever promotions are active.
+
+3. **Internal Pricing Parity:**
+   - Keep internal Excel pricing columns (`MFG price`, `Mkt (Avg) Price`) 100% faithful to the source workbook without drift.
+   - Do not include internal cost breakdown columns (e.g. packaging, transport, product cost) in user-facing matrices unless explicitly requested.
+
+---
+
+## 3. UI/UX Design System & Conventions
+
+- **Typography:** Standard clean sans-serif (**Inter** across all labels, headers, and numeric prices). Never use monospace fonts.
+- **Base Pinned Columns (Sticky Freeze):**
+  1. `Product Name` (310px)
+  2. `Brand` (120px)
+  3. `MFG Price` (120px)
+  4. `Market Avg` (120px)
+  5. `Avg Markup` (130px with right border shadow)
+- **Dynamic Channel Column Visibility:**
+  - Automatically hide marketplace columns that have 0 listings across the currently filtered rows (e.g. filtering by *Neofarmers* keeps only channels selling Neofarmers products).
+  - Keep any column that has $\ge 1$ listing.
+- **Markup Percentage Chip Highlights (vs MFG Price):**
+  - **Below MFG (Discount):** Soft green pill (`#ecfdf5` bg, `#047857` text) with down arrow `↓-XX%`.
+  - **At Par (0%):** Neutral gray pill (`#f4f4f5` bg, `#52525b` text) `0%`.
+  - **+1% to +15%:** Soft blue pill (`#eff6ff` bg, `#1d4ed8` text) `↑+XX%`.
+  - **+15% to +35%:** Soft amber pill (`#fffbeb` bg, `#b45309` text) `↑+XX%`.
+  - **+35% to +60%:** Warm orange pill (`#fff7ed` bg, `#c2410c` text) `↑+XX%`.
+  - **>+60% Extreme:** Soft red pill (`#fef2f2` bg, `#b91c1c` text) `↑+XX%`.
+- **Toolbar & Actions:**
+  - Minimal top navigation bar with integrated search, brand filter, channel filter, sorting, and status metrics.
+  - Icon-only JSON export button (no text labels).
+
+---
+
+## 4. Maintenance & Deployment Workflows
+
+- **Rebuild Dashboard & JSON:**
+  ```bash
+  python3 build_matrix.py
+  ```
+- **Deploy to Cloudflare Pages:**
+  ```bash
+  bunx wrangler pages deploy public --project-name product-price-matrix
+  ```
+- **Git Sync:**
+  ```bash
+  git add .
+  git commit -m "<descriptive message>"
+  git push origin main
+  ```
