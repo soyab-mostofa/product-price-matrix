@@ -355,7 +355,7 @@ th.source-col-head {
 .badge-channel.official { background: #e0f2fe; color: #0369a1; }
 .badge-channel.market { background: #f1f5f9; color: #64748b; }
 
-/* 3. Sticky Columns (6 Columns) */
+/* 3. Sticky Columns (5 Base Columns) */
 .col-product {
   position: sticky;
   left: 0;
@@ -388,35 +388,24 @@ th.source-col-head {
   position: sticky;
   left: 510px;
   z-index: 20;
-  width: 115px;
-  min-width: 115px;
-  max-width: 115px;
+  width: 185px;
+  min-width: 185px;
+  max-width: 185px;
   background: #ffffff;
-  text-align: right;
-}
-.col-avg-markup {
-  position: sticky;
-  left: 625px;
-  z-index: 20;
-  width: 110px;
-  min-width: 110px;
-  max-width: 110px;
-  background: #ffffff;
-  text-align: center;
 }
 .col-selling-price {
   position: sticky;
-  left: 735px;
+  left: 695px;
   z-index: 20;
-  width: 180px;
-  min-width: 180px;
-  max-width: 180px;
+  width: 185px;
+  min-width: 185px;
+  max-width: 185px;
   background: #ffffff;
   border-right: 2px solid #cbd5e1 !important;
   box-shadow: var(--shadow-pin);
 }
 
-thead th.col-product, thead th.col-brand, thead th.col-mfg, thead th.col-market, thead th.col-avg-markup, thead th.col-selling-price {
+thead th.col-product, thead th.col-brand, thead th.col-mfg, thead th.col-market, thead th.col-selling-price {
   z-index: 35;
   background: #f1f5f9;
 }
@@ -443,7 +432,6 @@ tbody tr:hover td.col-product,
 tbody tr:hover td.col-brand,
 tbody tr:hover td.col-mfg,
 tbody tr:hover td.col-market,
-tbody tr:hover td.col-avg-markup,
 tbody tr:hover td.col-selling-price {
   background-color: #f1f5f9 !important;
 }
@@ -484,12 +472,12 @@ tbody tr:hover td.col-selling-price {
   font-weight: 700;
 }
 
-/* Selling Price Cell Layout */
-.selling-price-cell-wrap {
+/* Dual Metric Layout for Market Avg & Selling Price */
+.dual-metric-cell {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 7px;
   width: 100%;
 }
 
@@ -835,7 +823,6 @@ dialog::backdrop {
         <th class="col-brand">Brand</th>
         <th class="col-mfg">MFG Price</th>
         <th class="col-market">Market Avg</th>
-        <th class="col-avg-markup">Avg Markup</th>
         <th class="col-selling-price">Selling Price</th>
       </tr>
     </thead>
@@ -1072,7 +1059,7 @@ function render() {
   body.innerHTML = list.map(p => {
     const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
     const mfg = Number(p.manufactured_price);
-    let avgMarkupChip = '<span class="cell-dash">—</span>';
+    let avgMarkupChip = '';
     
     if (prices.length > 0 && mfg > 0) {
       const sumPrices = prices.reduce((a, b) => a + b, 0);
@@ -1081,13 +1068,20 @@ function render() {
       avgMarkupChip = getMarkupChip(avgMarkupPct);
     }
 
+    const marketAvgDisplay = `
+      <div class="dual-metric-cell">
+        <span class="num-price">${esc(money.format(p.market_average_price))}</span>
+        ${avgMarkupChip}
+      </div>
+    `;
+
     const calculatedSelling = computeSellingPrice(mfg);
     let sellingDisplay = '<span class="cell-dash">—</span>';
     if (calculatedSelling && mfg > 0) {
       const sellingMarkupPct = calculateMarkup(calculatedSelling, mfg);
       const sellingMarkupChip = getMarkupChip(sellingMarkupPct);
       sellingDisplay = `
-        <div class="selling-price-cell-wrap">
+        <div class="dual-metric-cell">
           <span class="num-price selling">${esc(money.format(calculatedSelling))}</span>
           ${sellingMarkupChip}
         </div>
@@ -1099,8 +1093,7 @@ function render() {
         <td class="col-product"><div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div></td>
         <td class="col-brand"><span class="brand-label">${esc(p.brand_name)}</span></td>
         <td class="col-mfg"><span class="num-price mfg">${esc(money.format(p.manufactured_price))}</span></td>
-        <td class="col-market"><span class="num-price">${esc(money.format(p.market_average_price))}</span></td>
-        <td class="col-avg-markup">${avgMarkupChip}</td>
+        <td class="col-market">${marketAvgDisplay}</td>
         <td class="col-selling-price">${sellingDisplay}</td>
         ${activeSources.map(s => sourceCell(p, s, activeSources)).join('')}
       </tr>
@@ -1119,10 +1112,23 @@ function openDetail(p) {
   const overhead = costParams.packaging + costParams.transport + costParams.delivery + costParams.cac;
   const sellingMarkupPct = calculatedSelling && mfg > 0 ? calculateMarkup(calculatedSelling, mfg) : null;
   
+  const prices = Object.values(p.sources).map(x => Number(x.price)).filter(v => !isNaN(v) && v > 0);
+  let avgMarketMarkupChip = '';
+  if (prices.length > 0 && mfg > 0) {
+    const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+    avgMarketMarkupChip = getMarkupChip(calculateMarkup(avgPrice, mfg));
+  }
+
   let out = `
     <div class="detail-stats-grid">
       <div class="detail-stat-box"><span>Purchasing (MFG Price)</span><strong>${esc(money.format(mfg))}</strong></div>
-      <div class="detail-stat-box"><span>Market Average</span><strong>${esc(money.format(p.market_average_price))}</strong></div>
+      <div class="detail-stat-box">
+        <span>Market Average</span>
+        <strong style="display:flex;align-items:center;gap:6px;">
+          ${esc(money.format(p.market_average_price))}
+          ${avgMarketMarkupChip}
+        </strong>
+      </div>
       <div class="detail-stat-box"><span>Variable Costs (Overhead)</span><strong>${esc(money.format(overhead))}</strong></div>
       <div class="detail-stat-box">
         <span>Calculated Selling Price</span>
