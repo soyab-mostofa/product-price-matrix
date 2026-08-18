@@ -1232,6 +1232,30 @@ function computeSellingPrice(mfgPrice, productName) {
 }
 
 function setDiscountType(type) {
+  const oldType = globalCostParams.discountType || 'pct';
+  const valInput = document.getElementById('inputDiscountVal');
+  let currentVal = Number(valInput.value) || 0;
+
+  if (oldType !== type) {
+    const overhead = Number(globalCostParams.packaging) + Number(globalCostParams.transport) + Number(globalCostParams.delivery) + Number(globalCostParams.cac);
+    const sampleBase = 1000 + overhead;
+    const sampleList = sampleBase * (1 + Number(globalCostParams.targetMarginPct || 0) / 100);
+
+    if (type === 'amt') {
+      // Pct -> Amt: Convert percentage of list price to BDT amount
+      if (sampleList > 0) {
+        currentVal = Math.round((sampleList * currentVal) / 100);
+      }
+    } else {
+      // Amt -> Pct: Convert BDT amount to percentage of list price
+      if (sampleList > 0) {
+        currentVal = Math.round((currentVal / sampleList) * 100);
+      }
+    }
+    valInput.value = currentVal;
+    globalCostParams.discountVal = currentVal;
+  }
+
   globalCostParams.discountType = type;
   document.getElementById('btnTypePct').classList.toggle('active', type === 'pct');
   document.getElementById('btnTypeAmt').classList.toggle('active', type === 'amt');
@@ -1561,6 +1585,34 @@ function openDetail(p) {
 
 let currentProdDiscountType = 'pct';
 function setProdDiscountType(type, triggerSummary = true) {
+  const oldType = currentProdDiscountType || 'pct';
+  const valInput = document.getElementById('prodInputDiscountVal');
+  let currentVal = Number(valInput.value) || 0;
+
+  if (oldType !== type && activeProductDetail) {
+    const mfg = Number(activeProductDetail.manufactured_price) || 0;
+    const pkg = Number(document.getElementById('prodInputPackaging').value) || 0;
+    const tr = Number(document.getElementById('prodInputTransport').value) || 0;
+    const del = Number(document.getElementById('prodInputDelivery').value) || 0;
+    const cac = Number(document.getElementById('prodInputCAC').value) || 0;
+    const margin = Number(document.getElementById('prodInputMarginPct').value) || 0;
+
+    const listPrice = (mfg + pkg + tr + del + cac) * (1 + margin / 100);
+
+    if (type === 'amt') {
+      // Pct -> Amt: Convert % to BDT amount based on product's list price
+      if (listPrice > 0) {
+        currentVal = Math.round((listPrice * currentVal) / 100);
+      }
+    } else {
+      // Amt -> Pct: Convert BDT amount to % of product's list price
+      if (listPrice > 0) {
+        currentVal = Math.round((currentVal / listPrice) * 100);
+      }
+    }
+    valInput.value = currentVal;
+  }
+
   currentProdDiscountType = type;
   document.getElementById('prodBtnTypePct').classList.toggle('active', type === 'pct');
   document.getElementById('prodBtnTypeAmt').classList.toggle('active', type === 'amt');
