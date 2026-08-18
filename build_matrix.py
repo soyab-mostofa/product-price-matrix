@@ -1190,10 +1190,8 @@ async function syncFromD1() {
           globalCostParams = { ...globalCostParams, ...eData.globalParams };
           try { localStorage.setItem(STORAGE_KEY_GLOBAL, JSON.stringify(globalCostParams)); } catch(e){}
         }
-        if (eData.overrides) {
-          productOverrides = { ...productOverrides, ...eData.overrides };
-          try { localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(productOverrides)); } catch(e){}
-        }
+        productOverrides = eData.overrides || {};
+        try { localStorage.setItem(STORAGE_KEY_OVERRIDES, JSON.stringify(productOverrides)); } catch(e){}
       }
     }
     render();
