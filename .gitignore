@@ -4,24 +4,31 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
-venv/
-.venv/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
+/env/
+/venv/
+/.venv/
+/develop-eggs/
+/eggs/
+/.eggs/
+/sdist/
+/wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+.ruff_cache/
+
+# JavaScript and browser tooling
+node_modules/
+/dist/
+/public/static/app.js
+/test-results/
+/playwright-report/
+/coverage/
+
+# Cloudflare and local agent state
+/.wrangler/
+/.hermes/
+/_worker.bundle
 
 # System & Editor
 .DS_Store
@@ -32,5 +39,5 @@ Thumbs.db
 *.swo
 
 # Scraper Caches
-cache/
+/cache/
 *.log

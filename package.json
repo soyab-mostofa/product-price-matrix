@@ -1,0 +1,35 @@
+{
+  "name": "product-price-matrix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python3 scripts/migrate_local_d1.py && bun run build:client && vite",
+    "db:local:migrate": "python3 scripts/migrate_local_d1.py",
+    "db:local:sync": "python3 scripts/sync_local_d1.py",
+    "build:client": "bun build src/client/app.ts --outfile public/static/app.js --target browser --minify",
+    "build": "bun run build:client && vite build",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "bun test tests/*.test.ts",
+    "test:python": "uv run --with rapidfuzz python3 -m unittest discover -s tests -p 'test_*.py' -v",
+    "test": "bun run test:unit && bun run test:python",
+    "test:browser": "playwright test",
+    "preview": "wrangler pages dev dist --ip 0.0.0.0 --port 8788",
+    "deploy": "bun run build && wrangler pages deploy dist --project-name product-price-matrix --commit-dirty=true",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.7.6",
+    "hono": "^4.13.5",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260902.1",
+    "@hono/vite-build": "^1.11.1",
+    "@hono/vite-dev-server": "^0.26.1",
+    "@playwright/test": "^1.62.1",
+    "@types/bun": "^1.4.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.4",
+    "wrangler": "^4.128.0"
+  }
+}

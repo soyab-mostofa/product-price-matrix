@@ -38,6 +38,7 @@ BRAND_MAP = {
     'Lavino': [('lavino',)],
     'Ombre': [('ombre',)],
     'Panam': [('panam',)],
+    'Orgagenic': [('orgagenic',)],
 }
 Q_SUBBRANDS = {
     'nature beauty': [('nature beauty',)],
@@ -116,6 +117,11 @@ TYPE_PATTERNS = [
     ('powder', [r'\bpowder\b']),
 ]
 VARIANT_TYPES = {'lip_gloss', 'lip_balm', 'lipstick', 'foundation', 'pressed_powder', 'concealer', 'nail_enamel', 'face_palette', 'body_mist', 'perfume'}
+SHADE_TOKENS = {
+    'natural', 'ivory', 'pink', 'porcelain', 'beige', 'medium', 'tan', 'warm',
+    'light', 'fair', 'deep', 'dark', 'nude', 'rose', 'red', 'coral', 'brown',
+    'plum', 'mauve', 'peach', 'orange', 'maroon', 'berry', 'wine', 'golden',
+}
 
 
 def normalize(value: str | None) -> str:
@@ -127,7 +133,7 @@ def normalize(value: str | None) -> str:
     # Guerniss concealer codes are commonly typed as GO21/GO22/GO23 in sheets,
     # while official catalogs use G021/G022/G023 (zero, not letter O).
     text = re.sub(r'\bgo(?=\d)', 'g0', text)
-    text = re.sub(r'(?<=\d)\s*%\b', ' percent', text)
+    text = re.sub(r'(?<=\d)\s*%', ' percent', text)
     text = re.sub(r'[^a-z0-9.]+', ' ', text)
     return re.sub(r'\s+', ' ', text).strip()
 
@@ -140,7 +146,7 @@ def brand_aliases(brand: str, product_name: str) -> list[str]:
     if brand == 'Q Cosmetics':
         n = normalize(product_name)
         for subbrand, aliases in Q_SUBBRANDS.items():
-            if subbrand in n:
+            if normalize(subbrand) in n:
                 return [a[0] for a in aliases]
         return ['q cosmetics']
     options = BRAND_MAP.get(brand, [(normalize(brand),)])
@@ -151,6 +157,27 @@ def brand_matches(brand: str, product_name: str, candidate_text: str) -> bool:
     c_norm = normalize(candidate_text)
     c_compact = compact(candidate_text)
     return any(alias in c_norm or compact(alias) in c_compact for alias in brand_aliases(brand, product_name))
+
+
+def has_conflicting_title_brand(brand: str, product_name: str, candidate_name: str) -> bool:
+    if brand_matches(brand, product_name, candidate_name):
+        return False
+    candidate_norm = normalize(candidate_name)
+    candidate_compact = compact(candidate_name)
+    expected = {normalize(alias) for alias in brand_aliases(brand, product_name)}
+    known_groups = [
+        {normalize(option[0]) for option in options}
+        for options in BRAND_MAP.values()
+    ] + [
+        {normalize(option[0]) for option in options}
+        for options in Q_SUBBRANDS.values()
+    ]
+    for aliases in known_groups:
+        if aliases & expected:
+            continue
+        if any(alias in candidate_norm or compact(alias) in candidate_compact for alias in aliases):
+            return True
+    return False
 
 
 def parse_sizes(value: str | None) -> set[tuple[Decimal, str]]:
@@ -188,20 +215,30 @@ def detect_type(value: str | None) -> str | None:
 
 
 def types_compatible(target_type: str | None, candidate_type: str | None) -> bool:
-    if not target_type or not candidate_type:
-        return target_type == candidate_type or candidate_type is None
+    if target_type is None:
+        return candidate_type is None
+    if candidate_type is None:
+        return False
     if target_type == candidate_type:
         return True
-    compatible_groups = [
-        {'cream', 'moisturizer'},
-        {'oil', 'body_oil', 'essential_oil', 'hair_oil'},
-    ]
-    return any(target_type in group and candidate_type in group for group in compatible_groups)
+    if {target_type, candidate_type} <= {'cream', 'moisturizer'}:
+        return True
+    oil_types = {'oil', 'body_oil', 'hair_oil', 'essential_oil'}
+    return 'oil' in {target_type, candidate_type} and {target_type, candidate_type} <= oil_types
 
 
 def is_bundle(value: str | None) -> bool:
     text = normalize(value)
-    return bool(re.search(r'\b(combo|duo|set|buy 1|get 1|b1g1|pack of [2-9]|[2-9] ?pcs combo)\b', text))
+    patterns = [
+        r'\b(combo|duo|bundle|set)\b',
+        r'\bbogo(?: offer)?\b',
+        r'\bbuy\b.{0,80}\bget\b.{0,80}\bfree\b',
+        r'\bwith\s+(?:a\s+)?free\b',
+        r'\bfree\s+(?:gift|loofah|conditioner|shampoo|item|product)\b',
+        r'\bpack of\s+(?:[2-9]|\d{2,})\b',
+        r'\b(?:[2-9]|\d{2,})\s*pcs?\b',
+    ]
+    return any(re.search(pattern, text) for pattern in patterns)
 
 
 def critical_markers(value: str | None, size: tuple[Decimal, str] | None = None) -> set[str]:
@@ -214,7 +251,18 @@ def critical_markers(value: str | None, size: tuple[Decimal, str] | None = None)
     for prefix, number in re.findall(r'\b(nc|bb|go|g|wlg)\s*(\d{1,3})\b', text):
         markers.add(f'{prefix}{number}')
     if detect_type(text) in VARIANT_TYPES:
-        for number in re.findall(r'(?<![a-z])\b(\d{1,3}(?:\.\d+)?)\b', text):
+        text_without_sizes = re.sub(
+            r'\b\d+(?:\.\d+)?\s*(?:milliliters?|ml|grams?|grammes?|gm|g|kilograms?|kg|liters?|litres?|l|pieces?|pcs?|pc)\b',
+            ' ',
+            text,
+        )
+        prefixed_numbers = {
+            match.group(2)
+            for match in re.finditer(r'\b(nc|bb|go|g|wlg|spf)\s*(\d{1,3})\b', text)
+        }
+        for number in re.findall(r'(?<![a-z])\b(\d{1,3}(?:\.\d+)?)\b', text_without_sizes):
+            if number in prefixed_numbers:
+                continue
             if size is None or Decimal(number) != size[0]:
                 markers.add(number)
     return markers
@@ -259,19 +307,28 @@ class MatchResult:
 def validate_match(*, brand: str, product_name: str, target_size_text: str | None, candidate_name: str, candidate_context: str = '', candidate_size_text: str | None = None) -> MatchResult:
     reasons: list[str] = []
     target_size = primary_size(target_size_text)
-    candidate_sizes = parse_sizes(' '.join(filter(None, [candidate_name, candidate_size_text])))
+    candidate_title_sizes = parse_sizes(candidate_name)
+    candidate_declared_sizes = parse_sizes(candidate_size_text)
+    candidate_sizes = candidate_title_sizes | candidate_declared_sizes
     target_type = detect_type(product_name)
     candidate_type = detect_type(candidate_name)
     all_candidate_text = f'{candidate_name} {candidate_context}'
 
     if not brand_matches(brand, product_name, all_candidate_text):
         reasons.append('brand mismatch')
+    if has_conflicting_title_brand(brand, product_name, candidate_name):
+        reasons.append('conflicting brand in candidate title')
     if is_bundle(candidate_name) != is_bundle(product_name):
         reasons.append('bundle/single mismatch')
+    candidate_package_sizes = {size for size in candidate_title_sizes if size[1] != 'pcs'}
+    if not is_bundle(product_name) and len(candidate_package_sizes) > 1:
+        reasons.append('multiple package sizes for single SKU')
     if target_type and not types_compatible(target_type, candidate_type):
         reasons.append(f'product type mismatch ({target_type} != {candidate_type})')
     if target_size is not None:
-        if not candidate_sizes:
+        if candidate_title_sizes and target_size not in candidate_title_sizes:
+            reasons.append(f'title size mismatch ({target_size} not in {sorted(candidate_title_sizes)})')
+        elif not candidate_title_sizes and not candidate_declared_sizes:
             reasons.append('candidate size missing')
         elif target_size not in candidate_sizes:
             reasons.append(f'size mismatch ({target_size} not in {sorted(candidate_sizes)})')
@@ -281,6 +338,15 @@ def validate_match(*, brand: str, product_name: str, target_size_text: str | Non
     missing_markers = sorted(marker for marker in markers if compact(marker) not in c_compact)
     if missing_markers:
         reasons.append(f'missing critical markers: {missing_markers}')
+    candidate_marker_size = primary_size(candidate_name)
+    candidate_markers = critical_markers(candidate_name, candidate_marker_size)
+    unexpected_markers = sorted(candidate_markers - markers)
+    target_words = set(normalize(product_name).split())
+    candidate_words = set(normalize(candidate_name).split())
+    unexpected_shade_words = (candidate_words & SHADE_TOKENS) - (target_words & SHADE_TOKENS)
+    unexpected_variant_marker = target_type in VARIANT_TYPES and bool(unexpected_shade_words)
+    if unexpected_markers and (markers or unexpected_variant_marker):
+        reasons.append(f'unexpected critical markers: {unexpected_markers}')
 
     variants = variant_tokens(brand, product_name, target_size)
     c_tokens = set(normalize(candidate_name).split())
@@ -289,10 +355,20 @@ def validate_match(*, brand: str, product_name: str, target_size_text: str | Non
         reasons.append(f'variant mismatch: {missing_variants}')
 
     target_tokens = significant_tokens(brand, product_name, target_size)
-    coverage = len(target_tokens & c_tokens) / len(target_tokens) if target_tokens else 1.0
+    matched_tokens = {
+        target_token
+        for target_token in target_tokens
+        if any(
+            target_token == candidate_token or fuzz.ratio(target_token, candidate_token) >= 88
+            for candidate_token in c_tokens
+        )
+    }
+    coverage = len(matched_tokens) / len(target_tokens) if target_tokens else 1.0
     similarity = fuzz.token_set_ratio(normalize(product_name), normalize(candidate_name)) / 100.0
     score = round((coverage * 0.68 + similarity * 0.32) * 100, 2)
     if coverage < 0.66 and similarity < 0.90:
         reasons.append(f'name coverage too low ({coverage:.2f}, similarity {similarity:.2f})')
+    if score < 65:
+        reasons.append(f'match score below threshold ({score:.2f} < 65.00)')
 
     return MatchResult(not reasons, score, reasons)

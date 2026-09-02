@@ -1,0 +1,4 @@
+/static/app.js
+  Cache-Control: no-store, no-cache, must-revalidate, max-age=0
+/static/app.css
+  Cache-Control: public, max-age=3600

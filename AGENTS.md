@@ -1,6 +1,6 @@
 # Project: Product Price Intelligence & Marketplace Benchmark Matrix
 
-Real-time price benchmark dataset, automated multi-marketplace discovery pipeline, and interactive dashboard for 372 personal care and beauty SKUs across major Bangladeshi D2C brand flagships and third-party e-commerce channels.
+Real-time price benchmark dataset, automated multi-marketplace discovery pipeline, and interactive dashboard for 407 personal care and beauty SKUs across major Bangladeshi D2C brand flagships and third-party e-commerce channels.
 
 - **Live Production URL**: https://product-price-matrix.pages.dev
 - **Repository**: https://github.com/soyab-mostofa/product-price-matrix
@@ -11,7 +11,7 @@ Real-time price benchmark dataset, automated multi-marketplace discovery pipelin
 
 - **Runtime**: Python 3.12+ (uv / pip), Node.js (Bun 1.3+)
 - **Database & Storage**: Cloudflare D1 (Serverless SQLite at the edge, DB name: `product-price-matrix-db`, UUID: `78a79d0b-20b4-4b3f-b0bf-d2d0e97c9990`)
-- **Serverless API**: Cloudflare Pages Functions (`/api/engine`, `/api/overrides`, `/api/products`)
+- **Serverless API**: Hono Cloudflare Pages Worker (`src/index.tsx`) with routes for `/api/auth`, `/api/engine`, `/api/overrides`, and `/api/products`
 - **Data & Excel**: `openpyxl`, `pandas`
 - **Scraping & Networking**: `primp` (TLS fingerprint impersonation for Cloudflare bypass), `BeautifulSoup4`, `ddgs`
 - **Matching & Similarity**: `rapidfuzz`
@@ -21,10 +21,11 @@ Real-time price benchmark dataset, automated multi-marketplace discovery pipelin
 - `product_marketplace_price_comparison.xlsx` — Canonical source spreadsheet containing formulas and populated Marketplace 1 & 2 listings.
 - `verified_marketplace_research.json` — Comprehensive JSON dataset with candidate records, tokens, and multi-channel mappings.
 - `verified_match_audit.json` — Full audit log of accepted matches and rejected candidates with explicit reasons.
-- `build_matrix.py` — Pipeline script that compiles datasets, calculates markups, evaluates unit economics, and generates static build assets.
-- `sku_matcher.py` — Strict brand, category, volume, and cosmetic shade validation engine.
-- `public/` — Production build directory (`index.html` & `product_pricing_data.json`) deployed to Cloudflare Pages.
-- `product_pricing_dashboard.html` — Standalone HTML dashboard.
+- `build_matrix.py` / `catalog_builder.py` — Pipeline that validates listings and regenerates canonical JSON, audit, and D1 seed artifacts (`seed.sql`).
+- `sku_matcher.py` — Strict brand, category, volume, bundle, concentration, and cosmetic shade validation engine.
+- `src/` — Hono JSX application, API routes, browser client, and server domain modules.
+- `public/static/app.css` — Authored browser stylesheet; `public/static/app.js` is generated and ignored.
+- `dist/` — Generated production Worker bundle and static assets, deployed to Cloudflare Pages.
 - `product_pricing_data.json` — Clean JSON data schema for frontend consumption.
 
 ---
@@ -37,11 +38,11 @@ The interactive matrix presents a frozen multi-column view with 5 sticky base co
 1. **`Product Name` (280px)**: Product title and SKU details with two-line clamp and full title tooltip (`left: 0px`).
 2. **`Brand` (115px)**: Brand or parent manufacturer name (`left: 280px`).
 3. **`MFG Price` (115px)**: Sourcing/manufacturing purchase price in BDT (`left: 395px`, right-aligned, blue emphasis).
-4. **`Market Avg` (185px)**: Arithmetic mean of all active external listings for that SKU, paired with the **Average Markup % chip** relative to the MFG price (`left: 510px`, dual-metric cell).
+4. **`MRP` (185px)**: Official Store price when available, otherwise the arithmetic mean of active third-party listings, otherwise the workbook reference benchmark; paired with the markup chip relative to MFG price (`left: 510px`, dual-metric cell).
 5. **`Selling Price` (185px)**: Recommended selling price calculated by the Pricing Engine, accompanied by its **Target Markup % chip** vs MFG price and an optional purple `TUNED` pill when custom per-SKU parameters are active (`left: 695px`, dual-metric cell, elevated shadow divider).
 
 ### Dynamic Marketplace Columns (Right)
-- Channels: *Arogga, Shajgoj, OhSoGo, Guerniss Official, Bio-Xin Official, Daraz, PandaMart, Neofarmers Official, Skin Cafe Official, Rokomari, Chaldal, Nature Beauty Official, eMartWay*.
+- Channels: *Official Store, Arogga, Shajgoj, OhSoGo, Daraz, eMartWay, PandaMart, Rokomari*.
 - Each cell contains:
   - **Active Selling Price (BDT)**
   - **Semantic Markup % Chip** (relative to MFG Price)
@@ -63,8 +64,8 @@ The model computes the recommended selling price from variable overheads, target
    $$\text{Overhead} = \text{Packaging} + \text{Transport} + \text{Delivery} + \text{CAC}$$
    $$\text{Total Base Cost} = P_{\text{MFG}} + \text{Overhead}$$
 
-2. **List Price with Margin**:
-   $$\text{List Price} = \text{Total Base Cost} \times \left(1 + \frac{\text{Target Margin \%}}{100}\right)$$
+2. **List Price with Gross Margin**:
+   $$\text{List Price} = \frac{\text{Total Base Cost}}{1 - \frac{\text{Target Margin \%}}{100}}$$
 
 3. **Final Selling Price**:
    - **Percentage Discount Mode (`pct`)**:
@@ -73,9 +74,9 @@ The model computes the recommended selling price from variable overheads, target
      $$\text{Selling Price} = \max\left(0, \text{List Price} - \text{Discount BDT}\right)$$
 
 ### C. Global vs. Per-Product Override Persistence
-- **Global Defaults**: Managed via the top navbar `Pricing Engine` modal (`localStorage` key: `price_matrix_global_params`).
-  - Default: Packaging = ৳20, Transport = ৳40, Delivery = ৳60, CAC = ৳80, Margin = 25%, Discount = 10% (pct).
-- **Per-Product Custom Overrides**: Configurable inside each product's detail modal under the *Custom Pricing Engine* tab (`localStorage` key: `price_matrix_custom_overrides`). Overrides take immediate precedence for that SKU and persist across browser reloads.
+- **Global Defaults**: Managed via the top navbar `Pricing Engine` modal (`localStorage` key: `price_matrix_global_params`, persisted to D1 `global_pricing_params`).
+  - Default: Packaging = ৳20, Transport = ৳0, Delivery = ৳60, CAC = ৳0, Margin = 0%, Discount = 0% (pct).
+- **Per-Product Custom Overrides**: Configurable inside each product's detail modal under the *Custom Pricing Engine* tab (`localStorage` key: `price_matrix_custom_overrides`, persisted to D1 `product_pricing_overrides` by immutable row ID). Overrides take immediate precedence for that SKU and persist across browser reloads.
 
 ---
 
@@ -140,8 +141,11 @@ uv run --with primp --with beautifulsoup4 --with rapidfuzz --with ddgs python3 /
 
 ### Deployment Commands
 ```bash
+# Build production bundle and artifacts
+bun run build
+
 # Deploy to Cloudflare Pages production
-bunx wrangler pages deploy public --project-name product-price-matrix --commit-dirty=true
+bunx wrangler pages deploy dist --project-name product-price-matrix --commit-dirty=true
 ```
 
 ---

@@ -1,0 +1,899 @@
+import type { CatalogPayload, PricingParams, Product } from '../types'
+import {
+  calculateMarketDiscount,
+  calculateMarkup,
+  calculateSellingPrice,
+  filterProducts,
+  nextPinnedSort,
+  PINNED_SORT_VALUES,
+  sortProducts,
+  type SortValue,
+} from './model'
+
+interface EngineResponse {
+  success: boolean
+  globalParams?: PricingParams
+  overrides?: Record<string, PricingParams>
+  error?: string
+}
+
+interface AuthStatusResponse {
+  success: boolean
+  configured: boolean
+  authenticated: boolean
+  error?: string
+}
+
+const money = new Intl.NumberFormat('en-BD', {
+  style: 'currency',
+  currency: 'BDT',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+})
+
+const defaultGlobalParams: PricingParams = {
+  packaging: 20,
+  transport: 0,
+  delivery: 60,
+  cac: 0,
+  targetMarginPct: 0,
+  discountType: 'pct',
+  discountVal: 0,
+}
+
+let products: Product[] = []
+let sources: string[] = []
+let globalCostParams: PricingParams = { ...defaultGlobalParams }
+let productOverrides: Record<string, PricingParams> = {}
+let sellingChipMode: 'markup' | 'discount' = 'markup'
+let activeProductDetail: Product | null = null
+let currentGlobalDiscountType: 'pct' | 'amt' = 'pct'
+let currentProdDiscountType: 'pct' | 'amt' = 'pct'
+let isAdminAuthenticated = false
+let adminConfigured = false
+let catalogLoaded = false
+let pricingLoaded = false
+
+const searchInput = document.getElementById('search') as HTMLInputElement | null
+const brandFilter = document.getElementById('brandFilter') as HTMLSelectElement | null
+const sourceFilter = document.getElementById('sourceFilter') as HTMLSelectElement | null
+const sortSelect = document.getElementById('sort') as HTMLSelectElement | null
+const bodyElement = document.getElementById('body') as HTMLTableSectionElement | null
+const emptyElement = document.getElementById('empty') as HTMLDivElement | null
+const headerRow = document.getElementById('headerRow') as HTMLTableRowElement | null
+const matrixViewport = document.getElementById('matrixViewport') as HTMLElement | null
+const syncError = document.getElementById('syncError') as HTMLElement | null
+const liveSyncDot = document.getElementById('liveSyncDot') as HTMLElement | null
+const productTotal = document.getElementById('productTotal') as HTMLElement | null
+const listingTotal = document.getElementById('listingTotal') as HTMLElement | null
+const toggleSellingChipBtn = document.getElementById('toggleSellingChipModeBtn') as HTMLButtonElement | null
+const sellingChipBtnLabel = document.getElementById('sellingChipBtnLabel') as HTMLElement | null
+const openEngineBtn = document.getElementById('openEngineBtn') as HTMLButtonElement | null
+const adminLoginBtn = document.getElementById('adminLoginBtn') as HTMLButtonElement | null
+const authModal = document.getElementById('authModal') as HTMLDialogElement | null
+const engineModal = document.getElementById('engineModal') as HTMLDialogElement | null
+const productModal = document.getElementById('dialog') as HTMLDialogElement | null
+
+function esc(value: unknown): string {
+  return String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;',
+  }[char] || char))
+}
+
+function getMarkupChip(pct: number | null): string {
+  if (pct === null) return ''
+  if (pct < -0.01) {
+    return `<span class="markup-chip neg" title="${Math.abs(pct).toFixed(1)}% below MFG price">↓${pct.toFixed(0)}%</span>`
+  }
+  if (Math.abs(pct) <= 0.01) {
+    return '<span class="markup-chip zero" title="Equal to MFG price">0%</span>'
+  }
+  if (pct <= 15) return `<span class="markup-chip t1" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`
+  if (pct <= 35) return `<span class="markup-chip t2" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`
+  if (pct <= 60) return `<span class="markup-chip t3" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`
+  return `<span class="markup-chip t4" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`
+}
+
+function getMarketDiscountChip(discPct: number | null): string {
+  if (discPct === null) return ''
+  if (discPct > 0.01) {
+    return `<span class="markup-chip mkt-disc" title="${discPct.toFixed(1)}% discount off Market Average price">↓-${discPct.toFixed(0)}%</span>`
+  }
+  if (Math.abs(discPct) <= 0.01) {
+    return '<span class="markup-chip zero" title="Selling at Par with Market Average price">0%</span>'
+  }
+  return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% above Market Average price">↑+${Math.abs(discPct).toFixed(0)}%</span>`
+}
+
+function getProductParams(rowId: number): PricingParams & { isCustom: boolean } {
+  const custom = productOverrides[String(rowId)]
+  if (custom) return { ...globalCostParams, ...custom, isCustom: true }
+  return { ...globalCostParams, isCustom: false }
+}
+
+function computeSellingPrice(mfgPrice: number, rowId?: number): number | null {
+  if (!pricingLoaded) return null
+  const params = rowId ? getProductParams(rowId) : globalCostParams
+  return calculateSellingPrice(mfgPrice, params)
+}
+
+function updateSellingChipToggleUI() {
+  if (!toggleSellingChipBtn || !sellingChipBtnLabel) return
+  if (sellingChipMode === 'discount') {
+    toggleSellingChipBtn.classList.add('active-mode')
+    toggleSellingChipBtn.setAttribute('aria-pressed', 'true')
+    toggleSellingChipBtn.setAttribute('aria-label', 'Show product markup percentage')
+    sellingChipBtnLabel.textContent = 'View Product Markup %'
+  } else {
+    toggleSellingChipBtn.classList.remove('active-mode')
+    toggleSellingChipBtn.setAttribute('aria-pressed', 'false')
+    toggleSellingChipBtn.setAttribute('aria-label', 'Show market discount percentage')
+    sellingChipBtnLabel.textContent = 'View Market Discount %'
+  }
+}
+
+function updateAdminUI() {
+  if (adminLoginBtn) {
+    adminLoginBtn.textContent = !adminConfigured
+      ? 'Admin Unavailable'
+      : isAdminAuthenticated ? 'Admin Logout' : 'Admin Login'
+    adminLoginBtn.disabled = !adminConfigured
+  }
+  if (openEngineBtn) {
+    openEngineBtn.hidden = !isAdminAuthenticated
+  }
+  const engineBanner = document.getElementById('engineReadOnlyBanner')
+  if (engineBanner) engineBanner.hidden = isAdminAuthenticated
+  const productBanner = document.getElementById('productReadOnlyBanner')
+  if (productBanner) productBanner.hidden = isAdminAuthenticated
+
+  const saveProductBtn = document.getElementById('saveProductCustomEngineBtn') as HTMLButtonElement | null
+  const clearProductBtn = document.getElementById('clearProductCustomEngineBtn') as HTMLButtonElement | null
+  const applyEngineBtn = document.getElementById('applyEngineBtn') as HTMLButtonElement | null
+  const resetCustomOverridesBtn = document.getElementById('resetCustomOverridesBtn') as HTMLButtonElement | null
+
+  if (saveProductBtn) saveProductBtn.disabled = !isAdminAuthenticated
+  if (clearProductBtn) clearProductBtn.disabled = !isAdminAuthenticated
+  if (applyEngineBtn) applyEngineBtn.disabled = !isAdminAuthenticated
+  if (resetCustomOverridesBtn) resetCustomOverridesBtn.disabled = !isAdminAuthenticated
+}
+
+function getVisibleSources(list: Product[]): string[] {
+  if (!list.length) return []
+  return sources.filter((source) => list.some((p) => p.sources[source]?.price !== undefined && p.sources[source]?.price !== null))
+}
+
+function updateHeaders(activeSources: string[]) {
+  if (!headerRow) return
+  headerRow.querySelectorAll('th.source-col-head').forEach((el) => el.remove())
+
+  activeSources.forEach((source) => {
+    const th = document.createElement('th')
+    th.className = 'source-col-head'
+    th.dataset.source = source
+    th.setAttribute('aria-sort', 'none')
+    th.innerHTML = `
+      <button type="button" class="sort-button source-head-wrap" title="Sort ${esc(source)} prices">
+        <span>${esc(source)}</span>
+      </button>
+    `
+    th.querySelector('button')?.addEventListener('click', () => {
+      if (!sortSelect) return
+      if (sortSelect.value === `srcAsc:${source}`) {
+        sortSelect.value = `srcDesc:${source}`
+      } else {
+        if (![...sortSelect.options].some((opt) => opt.value === `srcAsc:${source}`)) {
+          sortSelect.add(new Option(`${source}: Low → High`, `srcAsc:${source}`))
+          sortSelect.add(new Option(`${source}: High → Low`, `srcDesc:${source}`))
+        }
+        sortSelect.value = `srcAsc:${source}`
+      }
+      render()
+    })
+    headerRow.appendChild(th)
+  })
+}
+
+function mrpProvenance(p: Product): { label: string; tooltip: string; className: string } {
+  const mktAvg = Number(p.market_average_price)
+  const official = p.sources['Official Store']
+  if (p.mrp_source_type === 'official' && official) {
+    const seller = official.seller || `${p.brand_name} Official Store`
+    return {
+      label: 'Official Store',
+      tooltip: `Official Brand MRP: ${money.format(mktAvg)} (${seller})`,
+      className: 'num-price',
+    }
+  }
+  if (p.mrp_source_type === 'third_party_avg') {
+    return {
+      label: '3rd-Party Avg',
+      tooltip: `3rd-Party Market Average: ${money.format(mktAvg)} (No official store listing; calculated across active 3rd-party channels)`,
+      className: 'num-price mrp-thirdparty',
+    }
+  }
+  return {
+    label: 'Reference Benchmark',
+    tooltip: `Reference Benchmark MRP: ${money.format(mktAvg)} (No verified marketplace listings; sourced from the internal workbook benchmark)`,
+    className: 'num-price mrp-ref',
+  }
+}
+
+function sourceCell(p: Product, source: string): string {
+  const listing = p.sources[source]
+  if (!listing) return '<td class="source-data-cell"><span class="cell-dash">—</span></td>'
+  const price = Number(listing.price)
+  const mfg = Number(p.manufactured_price)
+  const markupPct = calculateMarkup(price, mfg)
+  const markupChip = getMarkupChip(markupPct)
+
+  return `
+    <td class="source-data-cell" data-source="${esc(source)}">
+      <div class="price-card">
+        <div class="price-left-group">
+          <span class="price-val">${esc(money.format(price))}</span>
+          ${markupChip}
+        </div>
+        <a href="${esc(listing.url)}" class="btn-open-link" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.product_name)} on ${esc(source)} in a new tab" title="Open listing on ${esc(source)}" onclick="event.stopPropagation()">↗</a>
+      </div>
+    </td>
+  `
+}
+
+function filtered(): Product[] {
+  const list = filterProducts(products, {
+    query: searchInput?.value || '',
+    brand: brandFilter?.value || '',
+    source: sourceFilter?.value || '',
+  })
+  return sortProducts(
+    list,
+    (sortSelect?.value || 'product') as SortValue,
+    (product) => computeSellingPrice(product.manufactured_price, product.row),
+    sources,
+  )
+}
+
+function updateSortIndicators(): void {
+  if (!headerRow) return
+  const current = sortSelect?.value || 'product'
+  headerRow.querySelectorAll<HTMLTableCellElement>('th').forEach((header) => header.setAttribute('aria-sort', 'none'))
+
+  headerRow.querySelectorAll<HTMLButtonElement>('button[data-sort]').forEach((button) => {
+    const key = button.dataset.sort
+    if (!key || !(key in PINNED_SORT_VALUES)) return
+    const [ascending, descending] = PINNED_SORT_VALUES[key as keyof typeof PINNED_SORT_VALUES]
+    const header = button.closest('th')
+    if (current === ascending) header?.setAttribute('aria-sort', 'ascending')
+    if (current === descending) header?.setAttribute('aria-sort', 'descending')
+  })
+
+  headerRow.querySelectorAll<HTMLTableCellElement>('th[data-source]').forEach((header) => {
+    const source = header.dataset.source
+    if (current === `srcAsc:${source}`) header.setAttribute('aria-sort', 'ascending')
+    if (current === `srcDesc:${source}`) header.setAttribute('aria-sort', 'descending')
+  })
+}
+
+function render() {
+  if (!bodyElement || !emptyElement) return
+  const list = filtered()
+  const activeSources = getVisibleSources(list)
+
+  updateHeaders(activeSources)
+  updateSortIndicators()
+  updateSellingChipToggleUI()
+
+  bodyElement.innerHTML = list.map((p) => {
+    const mfg = Number(p.manufactured_price)
+    const mktAvg = Number(p.market_average_price)
+    let avgMarkupChip = ''
+
+    if (mktAvg > 0 && mfg > 0) {
+      const mrpMarkupPct = calculateMarkup(mktAvg, mfg)
+      avgMarkupChip = getMarkupChip(mrpMarkupPct)
+    }
+
+    const provenance = mrpProvenance(p)
+    const mrpTooltip = provenance.tooltip
+    const mrpClass = provenance.className
+
+    const marketAvgDisplay = `
+      <div class="dual-metric-cell" title="${esc(mrpTooltip)}">
+        <span class="${mrpClass}">${esc(money.format(mktAvg))}</span>
+        ${avgMarkupChip}
+      </div>
+    `
+
+    const hasOverride = !!productOverrides[String(p.row)]
+    const calculatedSelling = computeSellingPrice(mfg, p.row)
+    let sellingDisplay = '<span class="cell-dash">—</span>'
+
+    if (calculatedSelling !== null && mfg > 0) {
+      let activeChipHtml = ''
+      if (sellingChipMode === 'discount' && mktAvg > 0) {
+        const mktDiscPct = calculateMarketDiscount(calculatedSelling, mktAvg)
+        activeChipHtml = getMarketDiscountChip(mktDiscPct)
+      } else {
+        const sellingMarkupPct = calculateMarkup(calculatedSelling, mfg)
+        activeChipHtml = getMarkupChip(sellingMarkupPct)
+      }
+
+      sellingDisplay = `
+        <div class="dual-metric-cell">
+          ${hasOverride ? '<span class="custom-tune-tag" title="Custom per-product pricing engine override active">Tuned</span>' : ''}
+          <span class="num-price ${hasOverride ? 'custom-tuned' : 'selling'}">${esc(money.format(calculatedSelling))}</span>
+          ${activeChipHtml}
+        </div>
+      `
+    }
+
+    return `
+      <tr tabindex="0" data-row-id="${p.row}">
+        <td class="col-product"><div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div></td>
+        <td class="col-brand"><span class="brand-label">${esc(p.brand_name)}</span></td>
+        <td class="col-mfg"><span class="num-price mfg">${esc(money.format(p.manufactured_price))}</span></td>
+        <td class="col-market">${marketAvgDisplay}</td>
+        <td class="col-selling-price">${sellingDisplay}</td>
+        ${activeSources.map((s) => sourceCell(p, s)).join('')}
+      </tr>
+    `
+  }).join('')
+
+  emptyElement.hidden = list.length > 0
+}
+
+function openDetail(p: Product) {
+  activeProductDetail = p
+  const dialogBrand = document.getElementById('dialogBrand')
+  const dialogName = document.getElementById('dialogName')
+  if (dialogBrand) dialogBrand.textContent = p.brand_name
+  if (dialogName) dialogName.textContent = p.product_name
+
+  const mfg = Number(p.manufactured_price)
+  const mktAvg = Number(p.market_average_price)
+  const calculatedSelling = computeSellingPrice(mfg, p.row)
+  const params = getProductParams(p.row)
+  const overhead = Number(params.packaging) + Number(params.transport) + Number(params.delivery) + Number(params.cac)
+  const sellingMarkupPct = calculatedSelling !== null && mfg > 0 ? calculateMarkup(calculatedSelling, mfg) : null
+  const marketDiscPct = calculatedSelling !== null && mktAvg > 0 ? calculateMarketDiscount(calculatedSelling, mktAvg) : null
+  const detailProvenance = mrpProvenance(p)
+
+  let out = `
+    <div class="detail-stats-grid">
+      <div class="detail-stat-box"><span>Purchasing (MFG Price)</span><strong>${esc(money.format(mfg))}</strong></div>
+      <div class="detail-stat-box" title="${esc(detailProvenance.tooltip)}">
+        <span>MRP (${esc(detailProvenance.label)})</span>
+        <strong style="display:flex;align-items:center;gap:6px;">
+          ${esc(money.format(mktAvg))}
+          ${getMarkupChip(calculateMarkup(mktAvg, mfg))}
+        </strong>
+      </div>
+      <div class="detail-stat-box">
+        <span>Variable Overhead ${params.isCustom ? '(Custom)' : ''}</span>
+        <strong>${esc(money.format(overhead))}</strong>
+      </div>
+      <div class="detail-stat-box">
+        <span>Selling Price ${params.isCustom ? '(Custom)' : ''}</span>
+        <strong style="color:var(--brand-blue);display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
+          ${calculatedSelling !== null ? esc(money.format(calculatedSelling)) : '—'}
+          ${getMarkupChip(sellingMarkupPct)}
+          ${marketDiscPct !== null ? getMarketDiscountChip(marketDiscPct) : ''}
+        </strong>
+      </div>
+    </div>
+    <div class="detail-sources-list">
+  `
+
+  const matchedSources = sources.filter((s) => p.sources[s])
+  if (!matchedSources.length) {
+    out += '<div style="color:var(--text-muted);padding:10px 0;font-size:12px;">No external verified listings found.</div>'
+  } else {
+    matchedSources.forEach((s) => {
+      const item = p.sources[s]
+      if (!item) return
+      const markupPct = calculateMarkup(Number(item.price), mfg)
+      const markupChip = getMarkupChip(markupPct)
+      out += `
+        <div class="detail-source-row">
+          <div>
+            <div style="font-weight:600;font-size:13px;color:var(--text-main);">${esc(s)}</div>
+            <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">${esc(item.matched_title || '')}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:700;font-size:15px;color:var(--brand-blue);display:flex;align-items:center;justify-content:flex-end;gap:6px;">
+              ${esc(money.format(item.price))} ${markupChip}
+            </div>
+            <a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">Open link ↗</a>
+          </div>
+        </div>
+      `
+    })
+  }
+  out += '</div>'
+
+  const tabOverviewContent = document.getElementById('tabOverviewContent')
+  if (tabOverviewContent) tabOverviewContent.innerHTML = out
+
+  // Populate per-product inputs
+  const inputs: Record<string, number> = {
+    prodInputPackaging: params.packaging,
+    prodInputTransport: params.transport,
+    prodInputDelivery: params.delivery,
+    prodInputCAC: params.cac,
+    prodInputMarginPct: params.targetMarginPct,
+    prodInputDiscountVal: params.discountVal,
+  }
+  Object.entries(inputs).forEach(([id, val]) => {
+    const input = document.getElementById(id) as HTMLInputElement | null
+    if (input) input.value = String(val)
+  })
+
+  setProductDiscountType(params.discountType || 'pct')
+
+  updateProdTuneSummary()
+  switchDetailTab('overview')
+  productModal?.showModal()
+}
+
+function switchDetailTab(tab: 'overview' | 'tune') {
+  const tabOverviewBtn = document.getElementById('tabOverviewBtn')
+  const tabTuneBtn = document.getElementById('tabTuneBtn')
+  const tabOverviewContent = document.getElementById('tabOverviewContent')
+  const tabTuneContent = document.getElementById('tabTuneContent')
+
+  tabOverviewBtn?.classList.toggle('active', tab === 'overview')
+  tabOverviewBtn?.setAttribute('aria-selected', String(tab === 'overview'))
+  if (tabOverviewBtn instanceof HTMLElement) tabOverviewBtn.tabIndex = tab === 'overview' ? 0 : -1
+  tabTuneBtn?.classList.toggle('active', tab === 'tune')
+  tabTuneBtn?.setAttribute('aria-selected', String(tab === 'tune'))
+  if (tabTuneBtn instanceof HTMLElement) tabTuneBtn.tabIndex = tab === 'tune' ? 0 : -1
+
+  if (tabOverviewContent) tabOverviewContent.style.display = tab === 'overview' ? 'grid' : 'none'
+  if (tabTuneContent) tabTuneContent.style.display = tab === 'tune' ? 'grid' : 'none'
+}
+
+function setGlobalDiscountType(type: 'pct' | 'amt'): void {
+  currentGlobalDiscountType = type
+  const pct = document.getElementById('btnTypePct')
+  const amt = document.getElementById('btnTypeAmt')
+  const hint = document.getElementById('discountHint')
+  pct?.classList.toggle('active', type === 'pct')
+  pct?.setAttribute('aria-checked', String(type === 'pct'))
+  amt?.classList.toggle('active', type === 'amt')
+  amt?.setAttribute('aria-checked', String(type === 'amt'))
+  if (hint) hint.textContent = type === 'pct' ? 'Promotional discount percentage' : 'Fixed promotional discount in BDT'
+  updateEngineSummary()
+}
+
+function setProductDiscountType(type: 'pct' | 'amt'): void {
+  currentProdDiscountType = type
+  const pct = document.getElementById('prodBtnTypePct')
+  const amt = document.getElementById('prodBtnTypeAmt')
+  pct?.classList.toggle('active', type === 'pct')
+  pct?.setAttribute('aria-checked', String(type === 'pct'))
+  amt?.classList.toggle('active', type === 'amt')
+  amt?.setAttribute('aria-checked', String(type === 'amt'))
+  updateProdTuneSummary()
+}
+
+function updateProdTuneSummary() {
+  if (!activeProductDetail) return
+  const mfg = Number(activeProductDetail.manufactured_price)
+  const pkg = Number((document.getElementById('prodInputPackaging') as HTMLInputElement)?.value) || 0
+  const tr = Number((document.getElementById('prodInputTransport') as HTMLInputElement)?.value) || 0
+  const del = Number((document.getElementById('prodInputDelivery') as HTMLInputElement)?.value) || 0
+  const cac = Number((document.getElementById('prodInputCAC') as HTMLInputElement)?.value) || 0
+  const margin = Number((document.getElementById('prodInputMarginPct') as HTMLInputElement)?.value) || 0
+  const discVal = Number((document.getElementById('prodInputDiscountVal') as HTMLInputElement)?.value) || 0
+
+  const totalCost = mfg + pkg + tr + del + cac
+  const marginRate = margin / 100
+  if (marginRate >= 1) {
+    const summary = document.getElementById('prodSummarySelling')
+    if (summary) summary.textContent = 'Invalid margin'
+    return
+  }
+  const listPrice = totalCost / (1 - marginRate)
+  const finalVal = currentProdDiscountType === 'pct'
+    ? listPrice * (1 - discVal / 100)
+    : Math.max(0, listPrice - discVal)
+
+  const summary = document.getElementById('prodSummarySelling')
+  if (summary) summary.textContent = esc(money.format(Math.round(Math.max(0, finalVal))))
+}
+
+function updateEngineSummary() {
+  const params: PricingParams = {
+    packaging: Number((document.getElementById('inputPackaging') as HTMLInputElement | null)?.value) || 0,
+    transport: Number((document.getElementById('inputTransport') as HTMLInputElement | null)?.value) || 0,
+    delivery: Number((document.getElementById('inputDelivery') as HTMLInputElement | null)?.value) || 0,
+    cac: Number((document.getElementById('inputCAC') as HTMLInputElement | null)?.value) || 0,
+    targetMarginPct: Number((document.getElementById('inputMarginPct') as HTMLInputElement | null)?.value) || 0,
+    discountType: currentGlobalDiscountType,
+    discountVal: Number((document.getElementById('inputDiscountVal') as HTMLInputElement | null)?.value) || 0,
+  }
+  const overhead = params.packaging + params.transport + params.delivery + params.cac
+  const summaryOverhead = document.getElementById('summaryOverhead')
+  if (summaryOverhead) summaryOverhead.textContent = money.format(overhead)
+  const sample = calculateSellingPrice(1000, params)
+  const summarySample = document.getElementById('summarySample')
+  if (summarySample) summarySample.textContent = sample === null ? '—' : money.format(sample)
+}
+
+async function syncAuth() {
+  try {
+    const res = await fetch('/api/auth')
+    if (res.ok) {
+      const data = await res.json() as AuthStatusResponse
+      adminConfigured = data.configured
+      isAdminAuthenticated = data.authenticated
+      updateAdminUI()
+    }
+  } catch {}
+}
+
+async function syncData() {
+  const messages: string[] = []
+  try {
+    const [pRes, eRes] = await Promise.allSettled([
+      fetch('/api/products'),
+      fetch('/api/engine'),
+    ])
+
+    if (pRes.status === 'fulfilled' && pRes.value.ok) {
+      try {
+        const data = await pRes.value.json() as CatalogPayload
+        if (data.success && Array.isArray(data.products)) {
+          products = data.products
+          sources = data.source_columns
+          catalogLoaded = true
+          if (productTotal) productTotal.textContent = products.length.toLocaleString()
+          if (listingTotal) listingTotal.textContent = data.listing_count.toLocaleString()
+
+          if (brandFilter) {
+            const currentBrand = brandFilter.value
+            const brands = [...new Set(products.map((p) => p.brand_name))].sort()
+            brandFilter.innerHTML = '<option value="">All Brands</option>'
+            brands.forEach((brand) => brandFilter.add(new Option(brand, brand)))
+            brandFilter.value = currentBrand
+          }
+
+          if (sourceFilter) {
+            const currentSource = sourceFilter.value
+            sourceFilter.innerHTML = '<option value="">All Channels</option>'
+            sources.forEach((source) => sourceFilter.add(new Option(source, source)))
+            sourceFilter.value = currentSource
+          }
+        } else {
+          messages.push('Catalog data is unavailable or invalid.')
+        }
+      } catch {
+        messages.push('Catalog data could not be decoded.')
+      }
+    } else {
+      messages.push('Catalog data could not be loaded.')
+    }
+
+    if (eRes.status === 'fulfilled' && eRes.value.ok) {
+      try {
+        const eData = await eRes.value.json() as EngineResponse
+        if (eData.success && eData.globalParams) {
+          globalCostParams = { ...globalCostParams, ...eData.globalParams }
+          productOverrides = eData.overrides || {}
+          pricingLoaded = true
+        } else {
+          messages.push('Pricing settings are unavailable; selling prices are hidden.')
+        }
+      } catch {
+        messages.push('Pricing settings could not be decoded; selling prices are hidden.')
+      }
+    } else {
+      messages.push('Pricing settings could not be loaded; selling prices are hidden.')
+    }
+
+    liveSyncDot?.classList.toggle('synced', catalogLoaded && pricingLoaded)
+  } catch (err) {
+    console.error('Data synchronization failed', err)
+    messages.push('Live data synchronization failed.')
+  } finally {
+    if (syncError) {
+      syncError.textContent = messages.join(' ')
+      syncError.hidden = messages.length === 0
+    }
+    if (catalogLoaded) {
+      render()
+    } else if (bodyElement) {
+      bodyElement.innerHTML = '<tr><td colspan="5" class="empty-state">Unable to load the live catalog. Please refresh to retry.</td></tr>'
+    }
+    matrixViewport?.setAttribute('aria-busy', 'false')
+  }
+}
+
+// Attach event listeners on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  syncAuth()
+  syncData()
+
+  searchInput?.addEventListener('input', render)
+  brandFilter?.addEventListener('change', render)
+  sourceFilter?.addEventListener('change', render)
+  sortSelect?.addEventListener('change', render)
+  headerRow?.querySelectorAll<HTMLButtonElement>('button[data-sort]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!sortSelect) return
+      const key = button.dataset.sort
+      if (!key || !(key in PINNED_SORT_VALUES)) return
+      sortSelect.value = nextPinnedSort(sortSelect.value, key as keyof typeof PINNED_SORT_VALUES)
+      render()
+    })
+  })
+
+  toggleSellingChipBtn?.addEventListener('click', () => {
+    sellingChipMode = sellingChipMode === 'markup' ? 'discount' : 'markup'
+    updateSellingChipToggleUI()
+    render()
+  })
+
+  // Table row click
+  bodyElement?.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null
+    const row = target?.closest('tr[data-row-id]') as HTMLElement | null
+    if (row && !target?.closest('a')) {
+      const rowId = Number(row.dataset.rowId)
+      const found = products.find((p) => p.row === rowId)
+      if (found) openDetail(found)
+    }
+  })
+
+  bodyElement?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      const target = e.target as HTMLElement | null
+      if (target?.closest('a, button, input, select, textarea')) return
+      const row = target?.closest('tr[data-row-id]') as HTMLElement | null
+      if (row) {
+        e.preventDefault()
+        const rowId = Number(row.dataset.rowId)
+        const found = products.find((p) => p.row === rowId)
+        if (found) openDetail(found)
+      }
+    }
+  })
+
+  // Modals close buttons
+  document.getElementById('close')?.addEventListener('click', () => productModal?.close())
+  document.getElementById('closeEngineModal')?.addEventListener('click', () => engineModal?.close())
+  document.getElementById('closeAuthModal')?.addEventListener('click', () => authModal?.close())
+
+  // Tab switching inside product modal
+  document.getElementById('tabOverviewBtn')?.addEventListener('click', () => switchDetailTab('overview'))
+  document.getElementById('tabTuneBtn')?.addEventListener('click', () => switchDetailTab('tune'))
+  document.querySelector('.tab-nav')?.addEventListener('keydown', (event) => {
+    if (!(event instanceof KeyboardEvent) || !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
+    const tabs = [
+      document.getElementById('tabOverviewBtn'),
+      document.getElementById('tabTuneBtn'),
+    ].filter((tab): tab is HTMLElement => tab instanceof HTMLElement)
+    if (!tabs.length) return
+    const currentIndex = tabs.indexOf(document.activeElement as HTMLElement)
+    let nextIndex = currentIndex
+    if (event.key === 'Home') nextIndex = 0
+    if (event.key === 'End') nextIndex = tabs.length - 1
+    if (event.key === 'ArrowRight') nextIndex = (Math.max(currentIndex, 0) + 1) % tabs.length
+    if (event.key === 'ArrowLeft') nextIndex = (currentIndex <= 0 ? tabs.length : currentIndex) - 1
+    event.preventDefault()
+    const nextTab = tabs[nextIndex]
+    switchDetailTab(nextTab?.id === 'tabTuneBtn' ? 'tune' : 'overview')
+    nextTab?.focus()
+  })
+  document.getElementById('btnTypePct')?.addEventListener('click', () => setGlobalDiscountType('pct'))
+  document.getElementById('btnTypeAmt')?.addEventListener('click', () => setGlobalDiscountType('amt'))
+  document.getElementById('prodBtnTypePct')?.addEventListener('click', () => setProductDiscountType('pct'))
+  document.getElementById('prodBtnTypeAmt')?.addEventListener('click', () => setProductDiscountType('amt'))
+
+  for (const id of ['inputPackaging', 'inputTransport', 'inputDelivery', 'inputCAC', 'inputMarginPct', 'inputDiscountVal']) {
+    document.getElementById(id)?.addEventListener('input', updateEngineSummary)
+  }
+  for (const id of ['prodInputPackaging', 'prodInputTransport', 'prodInputDelivery', 'prodInputCAC', 'prodInputMarginPct', 'prodInputDiscountVal']) {
+    document.getElementById(id)?.addEventListener('input', updateProdTuneSummary)
+  }
+
+  // Engine open
+  openEngineBtn?.addEventListener('click', () => {
+    if (!isAdminAuthenticated) return
+    const inputs: Record<string, number> = {
+      inputPackaging: globalCostParams.packaging,
+      inputTransport: globalCostParams.transport,
+      inputDelivery: globalCostParams.delivery,
+      inputCAC: globalCostParams.cac,
+      inputMarginPct: globalCostParams.targetMarginPct,
+      inputDiscountVal: globalCostParams.discountVal,
+    }
+    Object.entries(inputs).forEach(([id, val]) => {
+      const input = document.getElementById(id) as HTMLInputElement | null
+      if (input) input.value = String(val)
+    })
+    setGlobalDiscountType(globalCostParams.discountType)
+    updateEngineSummary()
+    engineModal?.showModal()
+  })
+
+  // Admin login button
+  adminLoginBtn?.addEventListener('click', async () => {
+    if (isAdminAuthenticated) {
+      // Logout
+      await fetch('/api/auth', { method: 'DELETE', headers: { 'X-Price-Matrix-Admin': '1' } })
+      isAdminAuthenticated = false
+      updateAdminUI()
+    } else {
+      authModal?.showModal()
+    }
+  })
+
+  // Admin login form submit
+  document.getElementById('authForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const passwordInput = document.getElementById('adminPassword') as HTMLInputElement | null
+    const authStatus = document.getElementById('authStatus')
+    if (!passwordInput || !authStatus) return
+    authStatus.textContent = 'Verifying…'
+    authStatus.className = 'status-message'
+
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Price-Matrix-Admin': '1' },
+        body: JSON.stringify({ password: passwordInput.value }),
+      })
+      const data = await res.json() as { success: boolean; error?: string }
+      if (data.success) {
+        isAdminAuthenticated = true
+        updateAdminUI()
+        authModal?.close()
+        passwordInput.value = ''
+        authStatus.textContent = ''
+      } else {
+        authStatus.textContent = data.error || 'Authentication failed'
+        authStatus.className = 'status-message error'
+      }
+    } catch {
+      authStatus.textContent = 'Network error'
+      authStatus.className = 'status-message error'
+    }
+  })
+
+  // Global Engine form submit
+  document.getElementById('engineForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    if (!isAdminAuthenticated) return
+    const engineStatus = document.getElementById('engineStatus')
+    if (engineStatus) engineStatus.textContent = 'Saving…'
+
+    const payload: PricingParams = {
+      packaging: Number((document.getElementById('inputPackaging') as HTMLInputElement).value) || 0,
+      transport: Number((document.getElementById('inputTransport') as HTMLInputElement).value) || 0,
+      delivery: Number((document.getElementById('inputDelivery') as HTMLInputElement).value) || 0,
+      cac: Number((document.getElementById('inputCAC') as HTMLInputElement).value) || 0,
+      targetMarginPct: Number((document.getElementById('inputMarginPct') as HTMLInputElement).value) || 0,
+      discountType: currentGlobalDiscountType,
+      discountVal: Number((document.getElementById('inputDiscountVal') as HTMLInputElement).value) || 0,
+    }
+
+    try {
+      const res = await fetch('/api/engine', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Price-Matrix-Admin': '1' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json() as { success: boolean; error?: string }
+      if (data.success) {
+        globalCostParams = { ...payload }
+        engineModal?.close()
+        render()
+      } else if (engineStatus) {
+        engineStatus.textContent = data.error || 'Save failed'
+        engineStatus.className = 'status-message error'
+      }
+    } catch {
+      if (engineStatus) {
+        engineStatus.textContent = 'Network error'
+        engineStatus.className = 'status-message error'
+      }
+    }
+  })
+
+  // Reset all overrides
+  document.getElementById('resetCustomOverridesBtn')?.addEventListener('click', async () => {
+    if (!isAdminAuthenticated || !confirm('Reset all custom SKU overrides?')) return
+    try {
+      const res = await fetch('/api/overrides?all=true', {
+        method: 'DELETE',
+        headers: { 'X-Price-Matrix-Admin': '1' },
+      })
+      if (res.ok) {
+        productOverrides = {}
+        render()
+      }
+    } catch {}
+  })
+
+  // Product Tune form submit
+  document.getElementById('tabTuneContent')?.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    if (!isAdminAuthenticated || !activeProductDetail) return
+    const status = document.getElementById('productTuneStatus')
+    if (status) status.textContent = 'Saving…'
+
+    const rowId = activeProductDetail.row
+    const payload: PricingParams & { productRowId: number } = {
+      productRowId: rowId,
+      packaging: Number((document.getElementById('prodInputPackaging') as HTMLInputElement).value) || 0,
+      transport: Number((document.getElementById('prodInputTransport') as HTMLInputElement).value) || 0,
+      delivery: Number((document.getElementById('prodInputDelivery') as HTMLInputElement).value) || 0,
+      cac: Number((document.getElementById('prodInputCAC') as HTMLInputElement).value) || 0,
+      targetMarginPct: Number((document.getElementById('prodInputMarginPct') as HTMLInputElement).value) || 0,
+      discountType: currentProdDiscountType,
+      discountVal: Number((document.getElementById('prodInputDiscountVal') as HTMLInputElement).value) || 0,
+    }
+
+    try {
+      const res = await fetch('/api/overrides', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Price-Matrix-Admin': '1' },
+        body: JSON.stringify(payload),
+      })
+      const data = await res.json() as { success: boolean; error?: string }
+      if (data.success) {
+        productOverrides[String(rowId)] = { ...payload }
+        productModal?.close()
+        render()
+      } else if (status) {
+        status.textContent = data.error || 'Save failed'
+        status.className = 'status-message error'
+      }
+    } catch {
+      if (status) {
+        status.textContent = 'Network error'
+        status.className = 'status-message error'
+      }
+    }
+  })
+
+  // Clear single product override
+  document.getElementById('clearProductCustomEngineBtn')?.addEventListener('click', async () => {
+    if (!isAdminAuthenticated || !activeProductDetail) return
+    const rowId = activeProductDetail.row
+    try {
+      const res = await fetch(`/api/overrides?productRowId=${rowId}`, {
+        method: 'DELETE',
+        headers: { 'X-Price-Matrix-Admin': '1' },
+      })
+      if (res.ok) {
+        delete productOverrides[String(rowId)]
+        productModal?.close()
+        render()
+      }
+    } catch {}
+  })
+
+  // Export JSON
+  document.getElementById('download')?.addEventListener('click', () => {
+    const exportData = {
+      generated_at: new Date().toISOString(),
+      global_cost_parameters: globalCostParams,
+      product_custom_overrides: productOverrides,
+      products: products.map((p) => ({
+        ...p,
+        pricing_parameters: getProductParams(p.row),
+        calculated_selling_price: computeSellingPrice(p.manufactured_price, p.row),
+      })),
+    }
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = 'product_pricing_data.json'
+    anchor.click()
+    URL.revokeObjectURL(url)
+  })
+})
