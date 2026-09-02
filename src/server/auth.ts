@@ -101,6 +101,13 @@ export const requireAdmin: MiddlewareHandler<AppEnv> = async (c, next) => {
 
 export async function loginRateLimitKey(c: Context<AppEnv>): Promise<string> {
   if (!authConfigured(c.env)) throw new Error('Admin authentication is not configured')
-  const address = c.req.header('CF-Connecting-IP') ?? 'unknown'
+  // Cloudflare always sets CF-Connecting-IP in production. When it is absent
+  // (local dev, direct origin hits) fall back to a per-connection hint rather
+  // than a single shared 'unknown' bucket, which would let one client's failed
+  // attempts lock out every other client.
+  const address = c.req.header('CF-Connecting-IP')
+    ?? c.req.header('X-Forwarded-For')?.split(',')[0]?.trim()
+    ?? c.req.header('User-Agent')
+    ?? 'unknown'
   return sign(c.env.SESSION_SECRET, `login:${address}`)
 }

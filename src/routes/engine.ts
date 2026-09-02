@@ -25,7 +25,8 @@ engine.get('/', async (c) => {
       discount_val AS discountVal FROM global_pricing_params WHERE id = 1`),
     c.env.DB.prepare(`SELECT product_row_id AS productRowId, packaging, transport, delivery, cac,
       target_margin_pct AS targetMarginPct, discount_type AS discountType,
-      discount_val AS discountVal FROM product_pricing_overrides`),
+      discount_val AS discountVal FROM product_pricing_overrides
+      WHERE product_row_id IS NOT NULL`),
   ])
   const globalRow = globalResult?.results[0] as unknown as GlobalRow | undefined
   const globalParams = globalRow ?? PRICING_DEFAULTS

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
-import type { CatalogPayload, PricingParams } from '../src/types'
-import { calculateMarketDiscount, calculateMarkup, calculateSellingPrice } from '../src/client/model'
+import type { CatalogPayload, PricingParams } from '../../src/types'
+import { calculateMarketDiscount, calculateMarkup, calculateSellingPrice } from '../../src/client/model'
 
 const parseBdt = (text: string): number => {
   const match = text.match(/BDT\s*([\d,]+)/)

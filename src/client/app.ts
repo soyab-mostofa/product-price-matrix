@@ -202,7 +202,7 @@ function mrpProvenance(p: Product): { label: string; tooltip: string; className:
     return {
       label: 'Official Store',
       tooltip: `Official Brand MRP: ${money.format(mktAvg)} (${seller})`,
-      className: 'num-price',
+      className: 'num-price mrp-official',
     }
   }
   if (p.mrp_source_type === 'third_party_avg') {

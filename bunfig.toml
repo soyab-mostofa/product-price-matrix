@@ -1,0 +1,5 @@
+[test]
+# tests/e2e holds Playwright specs; Playwright throws if bun's runner collects
+# them. Ignoring the directory keeps a bare `bun test` at the repo root working.
+# Browser specs run via `bun run test:browser` (playwright.config.ts).
+pathIgnorePatterns = ["**/tests/e2e/**"]
