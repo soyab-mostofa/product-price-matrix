@@ -222,8 +222,8 @@ def main() -> None:
                 stats.get("no-valid-match" if hits else "no-results", 0) + 1
 
         done.add(key)
-        if index % 20 == 0:
-            PROGRESS.write_text(json.dumps({"done": sorted(done)}))
+        PROGRESS.write_text(json.dumps({"done": sorted(done)}))
+        if index % 10 == 0:
             print(f"  … {index}/{len(skus)} scanned, {verified} verified")
         time.sleep(args.delay)
 
