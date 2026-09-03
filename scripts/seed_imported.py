@@ -96,22 +96,23 @@ def seed(path: Path) -> dict[str, int]:
                 )
                 listings += 1
 
-        # Recompute authoritative MRP from active listings
+        # Recompute authoritative MRP from active verified listings
         connection.execute(
             """
             UPDATE products
                SET market_average_price = COALESCE(
                      (SELECT price FROM marketplace_listings
-                       WHERE row_id = products.row_id AND channel_name = 'Official Store' AND available = 1),
+                       WHERE row_id = products.row_id AND channel_name = 'Official Store' AND available = 1 AND verified = 1),
                      (SELECT AVG(price) FROM marketplace_listings
-                       WHERE row_id = products.row_id AND available = 1),
+                       WHERE row_id = products.row_id AND available = 1 AND verified = 1),
+                     products.market_average_price,
                      products.manufactured_price
                    ),
                    mrp_source_type = CASE
                      WHEN EXISTS (SELECT 1 FROM marketplace_listings
-                                   WHERE row_id = products.row_id AND channel_name = 'Official Store' AND available = 1) THEN 'official'
+                                   WHERE row_id = products.row_id AND channel_name = 'Official Store' AND available = 1 AND verified = 1) THEN 'official'
                      WHEN EXISTS (SELECT 1 FROM marketplace_listings
-                                   WHERE row_id = products.row_id AND available = 1) THEN 'third_party_avg'
+                                   WHERE row_id = products.row_id AND available = 1 AND verified = 1) THEN 'third_party_avg'
                      ELSE 'reference'
                    END
              WHERE sourcing_origin = 'imported'

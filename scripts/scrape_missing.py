@@ -246,16 +246,17 @@ def record_match(connections: list[sqlite3.Connection], row_id: int, channel: st
             UPDATE products
                SET market_average_price = COALESCE(
                      (SELECT price FROM marketplace_listings
-                       WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1),
+                       WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1 AND verified = 1),
                      (SELECT AVG(price) FROM marketplace_listings
-                       WHERE row_id = ?1 AND available = 1),
+                       WHERE row_id = ?1 AND available = 1 AND verified = 1),
+                     market_average_price,
                      manufactured_price
                    ),
                    mrp_source_type = CASE
                      WHEN EXISTS (SELECT 1 FROM marketplace_listings
-                                   WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1) THEN 'official'
+                                   WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1 AND verified = 1) THEN 'official'
                      WHEN EXISTS (SELECT 1 FROM marketplace_listings
-                                   WHERE row_id = ?1 AND available = 1) THEN 'third_party_avg'
+                                   WHERE row_id = ?1 AND available = 1 AND verified = 1) THEN 'third_party_avg'
                      ELSE 'reference'
                    END
              WHERE row_id = ?1
@@ -320,7 +321,7 @@ def main() -> None:
 
     new_matches = 0
 
-    for idx, (row_id, name, brand, size, origin, curr_v) in enumerate(targets, start=1):
+    for idx, (row_id, name, brand, size, origin, verified_count) in enumerate(targets, start=1):
         clean_q = clean_search_query(name, brand)
 
         # Skip channels the product already has verified listings for
@@ -363,10 +364,10 @@ def main() -> None:
                     break
 
             if matched:
-                t, p, u, conf = matched
-                record_match(connections, row_id, ch_name, t, p, u, conf)
+                matched_title, matched_price, matched_url, confidence = matched
+                record_match(connections, row_id, ch_name, matched_title, matched_price, matched_url, confidence)
                 new_matches += 1
-                print(f"  [{idx}/{len(targets)}] [{origin}] {ch_name:8} ৳{p:>7.0f} ({conf:.0f}%) -> {name[:40]}")
+                print(f"  [{idx}/{len(targets)}] [{origin}] {ch_name:8} ৳{matched_price:>7.0f} ({confidence:.0f}%) -> {name[:40]}")
 
             done.add(key)
             PROGRESS_PATH.write_text(json.dumps({"done": sorted(done)}))

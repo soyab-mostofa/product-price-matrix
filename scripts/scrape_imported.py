@@ -235,16 +235,17 @@ def record_match(connections: list[sqlite3.Connection], row_id: int, channel: st
             UPDATE products
                SET market_average_price = COALESCE(
                      (SELECT price FROM marketplace_listings
-                       WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1),
+                       WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1 AND verified = 1),
                      (SELECT AVG(price) FROM marketplace_listings
-                       WHERE row_id = ?1 AND available = 1),
+                       WHERE row_id = ?1 AND available = 1 AND verified = 1),
+                     market_average_price,
                      manufactured_price
                    ),
                    mrp_source_type = CASE
                      WHEN EXISTS (SELECT 1 FROM marketplace_listings
-                                   WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1) THEN 'official'
+                                   WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1 AND verified = 1) THEN 'official'
                      WHEN EXISTS (SELECT 1 FROM marketplace_listings
-                                   WHERE row_id = ?1 AND available = 1) THEN 'third_party_avg'
+                                   WHERE row_id = ?1 AND available = 1 AND verified = 1) THEN 'third_party_avg'
                      ELSE 'reference'
                    END
              WHERE row_id = ?1
