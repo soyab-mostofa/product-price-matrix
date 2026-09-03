@@ -37,6 +37,9 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+# Windows "mark of the web" metadata streams, created when a file is
+# downloaded and copied into WSL.
+*:Zone.Identifier
 
 # Scraper Caches
 /cache/
