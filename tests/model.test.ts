@@ -118,6 +118,24 @@ describe('header filters and sorts', () => {
     expect(filterProducts(products, { query: 'gamma', brand: 'Brand A', source: 'Daraz' }).map((item) => item.row)).toEqual([3])
   })
 
+  test('category narrows the view and combines with the other filters', () => {
+    const catalogue = [
+      product(10, 'CeraVe Cleanser', 'CeraVe', 800, 1100, { Shajgoj: listing(1100) }),
+      product(11, 'Sunsilk Shampoo', 'Sunsilk', 200, 320, { Shajgoj: listing(320) }),
+      product(12, 'CeraVe Cream', 'CeraVe', 900, 1400),
+    ]
+    catalogue[0]!.category = 'Skincare'
+    catalogue[1]!.category = 'Haircare'
+    catalogue[2]!.category = 'Skincare'
+
+    expect(filterProducts(catalogue, { query: '', brand: '', source: '', category: 'Skincare' }).map((p) => p.row)).toEqual([10, 12])
+    expect(filterProducts(catalogue, { query: '', brand: '', source: '', category: 'Haircare' }).map((p) => p.row)).toEqual([11])
+    // Combines with brand and channel rather than replacing them.
+    expect(filterProducts(catalogue, { query: '', brand: 'CeraVe', source: 'Shajgoj', category: 'Skincare' }).map((p) => p.row)).toEqual([10])
+    // An absent category means "all", so local SKUs are never filtered out.
+    expect(filterProducts(catalogue, { query: '', brand: '', source: '' })).toHaveLength(3)
+  })
+
   test('every select sort is ordered correctly', () => {
     const cases: Array<[SortValue, number[]]> = [
       ['product', [2, 1, 4, 3]], ['productDesc', [3, 4, 1, 2]],

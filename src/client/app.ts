@@ -60,6 +60,7 @@ let pricingLoaded = false
 const searchInput = document.getElementById('search') as HTMLInputElement | null
 const brandFilter = document.getElementById('brandFilter') as HTMLSelectElement | null
 const sourceFilter = document.getElementById('sourceFilter') as HTMLSelectElement | null
+const categoryFilter = document.getElementById('categoryFilter') as HTMLSelectElement | null
 const sortSelect = document.getElementById('sort') as HTMLSelectElement | null
 const bodyElement = document.getElementById('body') as HTMLTableSectionElement | null
 const emptyElement = document.getElementById('empty') as HTMLDivElement | null
@@ -272,6 +273,7 @@ function filtered(): Product[] {
     query: searchInput?.value || '',
     brand: brandFilter?.value || '',
     source: sourceFilter?.value || '',
+    category: categoryFilter?.value || '',
   })
   return sortProducts(
     list,
@@ -662,6 +664,16 @@ async function syncData() {
             sources.forEach((source) => sourceFilter.add(new Option(source, source)))
             sourceFilter.value = currentSource
           }
+
+          // Local SKUs carry no category, so the control stays hidden on that book.
+          if (categoryFilter) {
+            const currentCategory = categoryFilter.value
+            const categories = data.categories ?? []
+            categoryFilter.innerHTML = '<option value="">All Categories</option>'
+            categories.forEach((category) => categoryFilter.add(new Option(category, category)))
+            categoryFilter.value = currentCategory
+            categoryFilter.hidden = categories.length === 0
+          }
         } else {
           messages.push('Catalog data is unavailable or invalid.')
         }
@@ -727,6 +739,7 @@ document.addEventListener('DOMContentLoaded', () => {
   searchInput?.addEventListener('input', render)
   brandFilter?.addEventListener('change', render)
   sourceFilter?.addEventListener('change', render)
+  categoryFilter?.addEventListener('change', render)
   sortSelect?.addEventListener('change', render)
   headerRow?.querySelectorAll<HTMLButtonElement>('button[data-sort]').forEach((button) => {
     button.addEventListener('click', () => {

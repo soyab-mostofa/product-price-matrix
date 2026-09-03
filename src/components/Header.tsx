@@ -30,6 +30,13 @@ export function Header({ meta }: { meta: DashboardMeta }) {
           <select id="sourceFilter"><option value="">All Channels</option>{meta.channels.map((channel) => <option value={channel}>{channel}</option>)}</select>
         </div>
         <div class="select-field">
+          <label class="sr-only" for="categoryFilter">Filter by category</label>
+          <select id="categoryFilter" hidden={meta.categories.length === 0}>
+            <option value="">All Categories</option>
+            {meta.categories.map((category) => <option value={category}>{category}</option>)}
+          </select>
+        </div>
+        <div class="select-field">
           <label class="sr-only" for="sort">Sort products</label>
           <select id="sort">
             <option value="product">Product A–Z</option><option value="productDesc">Product Z–A</option>

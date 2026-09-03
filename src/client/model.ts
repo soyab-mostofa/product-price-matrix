@@ -24,6 +24,7 @@ export interface ProductFilters {
   query: string
   brand: string
   source: string
+  category?: string
 }
 
 export function calculateMarkup(price: number | null, manufacturedPrice: number | null): number | null {
@@ -45,6 +46,7 @@ export function filterProducts(products: readonly Product[], filters: ProductFil
   return products.filter((product) =>
     (!query || product.product_name.toLocaleLowerCase().includes(query) || product.brand_name.toLocaleLowerCase().includes(query)) &&
     (!filters.brand || product.brand_name === filters.brand) &&
+    (!filters.category || product.category === filters.category) &&
     (!filters.source || product.sources[filters.source] !== undefined)
   )
 }

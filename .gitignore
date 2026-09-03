@@ -44,3 +44,6 @@ Thumbs.db
 # Scraper Caches
 /cache/
 *.log
+
+# Seeding artefacts
+/imported_seed_report.json
