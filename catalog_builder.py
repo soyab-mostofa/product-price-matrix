@@ -31,10 +31,10 @@ CHANNEL_ORDER = [
 CHANNEL_RANK = {channel: index for index, channel in enumerate(CHANNEL_ORDER)}
 
 DEFAULT_GLOBAL_PARAMS = {
-    "packaging": 20.0,
+    "packaging": 45.0,
     "transport": 0.0,
     "delivery": 60.0,
-    "cac": 0.0,
+    "cac": 40.0,
     "targetMarginPct": 0.0,
     "discountType": "pct",
     "discountVal": 0.0,

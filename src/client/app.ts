@@ -53,7 +53,6 @@ let currentGlobalDiscountType: 'pct' | 'amt' = 'pct'
 /** 'global' = inherit the global discount; 'pct'/'amt' pin it for this SKU. */
 let currentProdDiscountType: 'global' | 'pct' | 'amt' = 'global'
 let isAdminAuthenticated = false
-let adminConfigured = false
 let catalogLoaded = false
 let pricingLoaded = false
 
@@ -109,6 +108,27 @@ function getMarketDiscountChip(discPct: number | null): string {
   return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% above Market Average price">↑+${Math.abs(discPct).toFixed(0)}%</span>`
 }
 
+function parseApiError(data: unknown, fallback: string): string {
+  if (!data || typeof data !== 'object') return fallback
+  const err = (data as { error?: unknown }).error
+  if (typeof err === 'string' && err.trim()) return err
+  if (err && typeof err === 'object') {
+    if ('message' in err && typeof (err as { message: unknown }).message === 'string') {
+      const msg = (err as { message: string }).message
+      try {
+        const parsed = JSON.parse(msg)
+        if (Array.isArray(parsed) && parsed[0]?.message) return String(parsed[0].message)
+      } catch {}
+      return msg
+    }
+    if ('issues' in err && Array.isArray((err as { issues: unknown[] }).issues)) {
+      const first = (err as { issues: Array<{ message?: string }> }).issues[0]
+      if (first?.message) return first.message
+    }
+  }
+  return fallback
+}
+
 /** Human labels for the tunable fields, used in the Tuned pill tooltip. */
 const FIELD_LABELS: Record<string, string> = {
   packaging: 'Packaging',
@@ -157,28 +177,25 @@ function updateSellingChipToggleUI() {
 
 function updateAdminUI() {
   if (adminLoginBtn) {
-    adminLoginBtn.textContent = !adminConfigured
-      ? 'Admin Unavailable'
-      : isAdminAuthenticated ? 'Admin Logout' : 'Admin Login'
-    adminLoginBtn.disabled = !adminConfigured
+    adminLoginBtn.hidden = true
   }
   if (openEngineBtn) {
-    openEngineBtn.hidden = !isAdminAuthenticated
+    openEngineBtn.hidden = false
   }
   const engineBanner = document.getElementById('engineReadOnlyBanner')
-  if (engineBanner) engineBanner.hidden = isAdminAuthenticated
+  if (engineBanner) engineBanner.hidden = true
   const productBanner = document.getElementById('productReadOnlyBanner')
-  if (productBanner) productBanner.hidden = isAdminAuthenticated
+  if (productBanner) productBanner.hidden = true
 
   const saveProductBtn = document.getElementById('saveProductCustomEngineBtn') as HTMLButtonElement | null
   const clearProductBtn = document.getElementById('clearProductCustomEngineBtn') as HTMLButtonElement | null
   const applyEngineBtn = document.getElementById('applyEngineBtn') as HTMLButtonElement | null
   const resetCustomOverridesBtn = document.getElementById('resetCustomOverridesBtn') as HTMLButtonElement | null
 
-  if (saveProductBtn) saveProductBtn.disabled = !isAdminAuthenticated
-  if (clearProductBtn) clearProductBtn.disabled = !isAdminAuthenticated
-  if (applyEngineBtn) applyEngineBtn.disabled = !isAdminAuthenticated
-  if (resetCustomOverridesBtn) resetCustomOverridesBtn.disabled = !isAdminAuthenticated
+  if (saveProductBtn) saveProductBtn.disabled = false
+  if (clearProductBtn) clearProductBtn.disabled = false
+  if (applyEngineBtn) applyEngineBtn.disabled = false
+  if (resetCustomOverridesBtn) resetCustomOverridesBtn.disabled = false
 }
 
 function getVisibleSources(list: Product[]): string[] {
@@ -487,6 +504,12 @@ function openDetail(p: Product) {
 
   setProductDiscountType(discountPinned ? (overrideForForm?.discountType ?? 'pct') : 'global')
 
+  const productTuneStatus = document.getElementById('productTuneStatus')
+  if (productTuneStatus) {
+    productTuneStatus.textContent = ''
+    productTuneStatus.className = 'status-message'
+  }
+
   updateProdTuneSummary()
   switchDetailTab('overview')
   productModal?.showModal()
@@ -519,6 +542,10 @@ function setGlobalDiscountType(type: 'pct' | 'amt'): void {
   amt?.classList.toggle('active', type === 'amt')
   amt?.setAttribute('aria-checked', String(type === 'amt'))
   if (hint) hint.textContent = type === 'pct' ? 'Promotional discount percentage' : 'Fixed promotional discount in BDT'
+  const input = document.getElementById('inputDiscountVal') as HTMLInputElement | null
+  if (input) {
+    input.max = type === 'pct' ? '100' : '1000000'
+  }
   updateEngineSummary()
 }
 
@@ -540,7 +567,15 @@ function setProductDiscountType(type: 'global' | 'pct' | 'amt'): void {
     input.disabled = type === 'global'
     if (type === 'global') {
       input.value = ''
+      input.removeAttribute('max')
       input.classList.remove('is-pinned')
+      input.placeholder = `Global: ${globalCostParams.discountVal}${globalCostParams.discountType === 'pct' ? '%' : ' BDT'}`
+    } else if (type === 'pct') {
+      input.max = '100'
+      input.placeholder = 'Discount % (0-100)'
+    } else {
+      input.max = '1000000'
+      input.placeholder = 'Discount in BDT'
     }
   }
   updateProdTuneSummary()
@@ -622,7 +657,6 @@ async function syncAuth() {
     const res = await fetch('/api/auth')
     if (res.ok) {
       const data = await res.json() as AuthStatusResponse
-      adminConfigured = data.configured
       isAdminAuthenticated = data.authenticated
       updateAdminUI()
     }
@@ -832,7 +866,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Engine open
   openEngineBtn?.addEventListener('click', () => {
-    if (!isAdminAuthenticated) return
+    const engineStatus = document.getElementById('engineStatus')
+    if (engineStatus) {
+      engineStatus.textContent = ''
+      engineStatus.className = 'status-message'
+    }
     const inputs: Record<string, number> = {
       inputPackaging: globalCostParams.packaging,
       inputTransport: globalCostParams.transport,
@@ -897,9 +935,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Global Engine form submit
   document.getElementById('engineForm')?.addEventListener('submit', async (e) => {
     e.preventDefault()
-    if (!isAdminAuthenticated) return
     const engineStatus = document.getElementById('engineStatus')
-    if (engineStatus) engineStatus.textContent = 'Saving…'
+    if (engineStatus) {
+      engineStatus.textContent = 'Saving…'
+      engineStatus.className = 'status-message'
+    }
 
     const payload: PricingParams = {
       packaging: Number((document.getElementById('inputPackaging') as HTMLInputElement).value) || 0,
@@ -923,7 +963,7 @@ document.addEventListener('DOMContentLoaded', () => {
         engineModal?.close()
         render()
       } else if (engineStatus) {
-        engineStatus.textContent = data.error || 'Save failed'
+        engineStatus.textContent = parseApiError(data, 'Save failed')
         engineStatus.className = 'status-message error'
       }
     } catch {
@@ -936,7 +976,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset all overrides
   document.getElementById('resetCustomOverridesBtn')?.addEventListener('click', async () => {
-    if (!isAdminAuthenticated || !confirm('Reset all custom SKU overrides?')) return
+    if (!confirm('Reset all custom SKU overrides?')) return
     try {
       const res = await fetch('/api/overrides?all=true', {
         method: 'DELETE',
@@ -952,9 +992,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Product Tune form submit
   document.getElementById('tabTuneContent')?.addEventListener('submit', async (e) => {
     e.preventDefault()
-    if (!isAdminAuthenticated || !activeProductDetail) return
+    if (!activeProductDetail) return
     const status = document.getElementById('productTuneStatus')
-    if (status) status.textContent = 'Saving…'
+    if (status) {
+      status.textContent = 'Saving…'
+      status.className = 'status-message'
+    }
 
     const rowId = activeProductDetail.row
     const override = readTuneForm()
@@ -981,7 +1024,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productModal?.close()
         render()
       } else if (status) {
-        status.textContent = data.error || 'Save failed'
+        status.textContent = parseApiError(data, 'Save failed')
         status.className = 'status-message error'
       }
     } catch {
@@ -994,8 +1037,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Clear single product override
   document.getElementById('clearProductCustomEngineBtn')?.addEventListener('click', async () => {
-    if (!isAdminAuthenticated || !activeProductDetail) return
+    if (!activeProductDetail) return
     const rowId = activeProductDetail.row
+    const status = document.getElementById('productTuneStatus')
+    if (status) {
+      status.textContent = 'Resetting…'
+      status.className = 'status-message'
+    }
     try {
       const res = await fetch(`/api/overrides?productRowId=${rowId}`, {
         method: 'DELETE',
@@ -1005,8 +1053,19 @@ document.addEventListener('DOMContentLoaded', () => {
         delete productOverrides[String(rowId)]
         productModal?.close()
         render()
+      } else {
+        const data = await res.json().catch(() => ({})) as unknown
+        if (status) {
+          status.textContent = parseApiError(data, 'Reset failed')
+          status.className = 'status-message error'
+        }
       }
-    } catch {}
+    } catch {
+      if (status) {
+        status.textContent = 'Network error'
+        status.className = 'status-message error'
+      }
+    }
   })
 
   // Export JSON

@@ -136,7 +136,7 @@ class CatalogBuilderTests(unittest.TestCase):
         sql = generate_seed_sql(output)
 
         self.assertIn("row_id", sql)
-        self.assertIn("20.0, 0.0, 60.0, 0.0, 0.0, 'pct', 0.0", sql)
+        self.assertIn("45.0, 0.0, 60.0, 40.0, 0.0, 'pct', 0.0", sql)
         self.assertEqual(0, DEFAULT_GLOBAL_PARAMS["targetMarginPct"])
 
     def test_seed_preserves_saved_global_pricing_configuration(self) -> None:
@@ -184,7 +184,7 @@ class CatalogBuilderTests(unittest.TestCase):
         listings = connection.execute("SELECT COUNT(*) FROM marketplace_listings").fetchone()[0]
         connection.close()
 
-        self.assertEqual((20.0, 0.0, 60.0, 0.0, 0.0, "pct", 0.0), saved)
+        self.assertEqual((45.0, 0.0, 60.0, 40.0, 0.0, "pct", 0.0), saved)
         self.assertEqual(1, products)
         self.assertEqual(1, listings)
 

@@ -12,10 +12,10 @@ import {
  */
 
 export const PRICING_DEFAULTS: Readonly<PricingParams> = Object.freeze({
-  packaging: 20,
+  packaging: 45,
   transport: 0,
   delivery: 60,
-  cac: 0,
+  cac: 40,
   targetMarginPct: 0,
   discountType: 'pct',
   discountVal: 0,

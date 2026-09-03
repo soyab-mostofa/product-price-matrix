@@ -1,6 +1,6 @@
 PRAGMA foreign_keys = ON;
 BEGIN TRANSACTION;
-INSERT INTO global_pricing_params (id, packaging, transport, delivery, cac, target_margin_pct, discount_type, discount_val) VALUES (1, 20.0, 0.0, 60.0, 0.0, 0.0, 'pct', 0.0) ON CONFLICT(id) DO NOTHING;
+INSERT INTO global_pricing_params (id, packaging, transport, delivery, cac, target_margin_pct, discount_type, discount_val) VALUES (1, 45.0, 0.0, 60.0, 40.0, 0.0, 'pct', 0.0) ON CONFLICT(id) DO NOTHING;
 DELETE FROM marketplace_listings WHERE row_id IN (SELECT row_id FROM products WHERE sourcing_origin = 'local');
 INSERT INTO products (row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin) VALUES (2, 'Bio-Screen Powder Sunblock SPF 50+', 'Bio-Screen', '12gm', 1237.5, 1402.0, 'Bio-Screen Powder Sunblock SPF 50+', 'official', 'local') ON CONFLICT(row_id) DO UPDATE SET product_name=excluded.product_name, brand_name=excluded.brand_name, size=excluded.size, manufactured_price=excluded.manufactured_price, market_average_price=excluded.market_average_price, canonical_name=excluded.canonical_name, mrp_source_type=excluded.mrp_source_type, sourcing_origin=excluded.sourcing_origin;
 INSERT INTO marketplace_listings (row_id, channel_name, price, url, matched_title, size, seller, confidence, available) VALUES (2, 'Official Store', 1402.0, 'https://bioxin.com/en/product/bio-screen-powder-sunblock-spf-50', 'Bio-Screen Powder Sunblock SPF 50+', '"12 g"', 'Bio-Xin Official', 100.0, 1);

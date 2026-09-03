@@ -29,7 +29,7 @@ export function Modals() {
           <button class="modal-btn-close" id="closeEngineModal" type="button" aria-label="Close pricing engine modal">✕</button>
         </div>
         <form id="engineForm" class="modal-body">
-          <div class="read-only-note" id="engineReadOnlyBanner" hidden>Public read-only mode. Authenticate as admin to save shared parameters.</div>
+          <div class="read-only-note" id="engineReadOnlyBanner" hidden></div>
           <div class="engine-grid">
             <div class="engine-field"><label for="inputPackaging">Packaging (BDT)</label><input id="inputPackaging" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
             <div class="engine-field"><label for="inputTransport">Transport (BDT)</label><input id="inputTransport" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
@@ -74,7 +74,7 @@ export function Modals() {
           </div>
           <div id="tabOverviewContent" role="tabpanel" aria-labelledby="tabOverviewBtn" style="display:grid;gap:16px;"></div>
           <form id="tabTuneContent" role="tabpanel" aria-labelledby="tabTuneBtn" style="display:none;grid-gap:16px;">
-            <div class="read-only-note" id="productReadOnlyBanner" hidden>Public read-only mode. Authenticate to save custom SKU parameters.</div>
+            <div class="read-only-note" id="productReadOnlyBanner" hidden></div>
             <p class="tune-inherit-note">Leave a field blank to follow the global engine — blank fields keep tracking later global changes. Fill one only to pin it for this SKU.</p>
             <div class="engine-grid">
               <div class="engine-field"><label for="prodInputPackaging">Packaging (BDT)</label><input id="prodInputPackaging" class="engine-input" type="number" min="0" max="100000" step="1" /></div>

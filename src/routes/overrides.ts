@@ -1,7 +1,6 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
-import { requireAdmin } from '../server/auth'
 import {
   PRICING_DEFAULTS,
   isEmptyOverride,
@@ -15,7 +14,6 @@ const overrides = new Hono<AppEnv>()
 const overrideSchema = z.object({ productRowId: productRowIdSchema, override: pricingOverrideSchema })
 const deleteSchema = z.object({ productRowId: productRowIdSchema.optional(), all: z.enum(['true']).optional() })
 
-overrides.use('*', requireAdmin)
 
 async function readGlobalParams(db: D1Database): Promise<PricingParams> {
   const row = await db.prepare(
@@ -26,7 +24,12 @@ async function readGlobalParams(db: D1Database): Promise<PricingParams> {
   return row ?? { ...PRICING_DEFAULTS }
 }
 
-overrides.post('/', zValidator('json', overrideSchema), async (c) => {
+overrides.post('/', zValidator('json', overrideSchema, (result, c) => {
+  if (!result.success) {
+    const issue = result.error.issues[0]
+    return c.json({ success: false, error: issue?.message || 'Validation failed' }, 400)
+  }
+}), async (c) => {
   const { productRowId, override } = c.req.valid('json')
 
   const product = await c.env.DB.prepare('SELECT row_id FROM products WHERE row_id = ?').bind(productRowId).first()
@@ -69,7 +72,12 @@ overrides.post('/', zValidator('json', overrideSchema), async (c) => {
   return c.json({ success: true, productRowId, override: { ...sparse, updatedAt } })
 })
 
-overrides.delete('/', zValidator('query', deleteSchema), async (c) => {
+overrides.delete('/', zValidator('query', deleteSchema, (result, c) => {
+  if (!result.success) {
+    const issue = result.error.issues[0]
+    return c.json({ success: false, error: issue?.message || 'Invalid query parameters' }, 400)
+  }
+}), async (c) => {
   const query = c.req.valid('query')
   if (query.all === 'true') {
     await c.env.DB.prepare('DELETE FROM product_pricing_overrides').run()

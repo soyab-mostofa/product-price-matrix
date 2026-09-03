@@ -12,10 +12,10 @@ import {
 import { calculateSellingPrice as calculateServerSellingPrice } from '../src/server/pricing'
 
 const defaults: PricingParams = {
-  packaging: 20,
+  packaging: 45,
   transport: 0,
   delivery: 60,
-  cac: 0,
+  cac: 40,
   targetMarginPct: 0,
   discountType: 'pct',
   discountVal: 0,
@@ -60,17 +60,17 @@ describe('pricing arithmetic', () => {
   })
 
   test('supports true gross margin and both discount modes', () => {
-    expect(calculateSellingPrice(1000, defaults)).toBe(1080)
-    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25 })).toBe(1440)
-    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25, discountVal: 10 })).toBe(1296)
-    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25, discountType: 'amt', discountVal: 200 })).toBe(1240)
+    expect(calculateSellingPrice(1000, defaults)).toBe(1145)
+    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25 })).toBe(1527)
+    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25, discountVal: 10 })).toBe(1374)
+    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25, discountType: 'amt', discountVal: 200 })).toBe(1327)
   })
 
   test('client and server calculations are identical across the canonical dataset', async () => {
     const catalog = await Bun.file('product_pricing_data.json').json() as { products: Product[] }
     const parameterSets: PricingParams[] = [
       defaults,
-      { packaging: 20, transport: 40, delivery: 60, cac: 80, targetMarginPct: 25, discountType: 'pct', discountVal: 10 },
+      { packaging: 45, transport: 40, delivery: 60, cac: 80, targetMarginPct: 25, discountType: 'pct', discountVal: 10 },
       { packaging: 12.5, transport: 7.5, delivery: 40, cac: 30, targetMarginPct: 37.5, discountType: 'amt', discountVal: 55 },
     ]
 

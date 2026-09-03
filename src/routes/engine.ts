@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
-import { requireAdmin } from '../server/auth'
 import { PRICING_DEFAULTS, pricingSchema } from '../server/pricing'
 import type { AppEnv, StoredPricingOverride } from '../types'
 
@@ -60,7 +59,12 @@ engine.get('/', async (c) => {
   return c.json({ success: true, globalParams, overrides })
 })
 
-engine.post('/', requireAdmin, zValidator('json', pricingSchema), async (c) => {
+engine.post('/', zValidator('json', pricingSchema, (result, c) => {
+  if (!result.success) {
+    const issue = result.error.issues[0]
+    return c.json({ success: false, error: issue?.message || 'Validation failed' }, 400)
+  }
+}), async (c) => {
   const params = c.req.valid('json')
   await c.env.DB.prepare(
     `INSERT INTO global_pricing_params

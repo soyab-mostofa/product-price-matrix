@@ -299,39 +299,17 @@ describe('Hono application', () => {
     expect(db.seen).toHaveLength(0)
   })
 
-  test('blocks unauthenticated POST /api/engine with same-origin header', async () => {
+  test('allows public unauthenticated pricing writes to POST /api/engine', async () => {
     const res = await app.request('https://matrix.example/api/engine', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: 'https://matrix.example',
-        'X-Price-Matrix-Admin': '1',
       },
       body: JSON.stringify(PRICING_DEFAULTS),
     }, env)
-    expect(res.status).toBe(401)
-  })
-
-  test('blocks cross-origin or missing header POST /api/engine with 403', async () => {
-    const res = await app.request('/api/engine', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(PRICING_DEFAULTS),
-    }, env)
-    expect(res.status).toBe(403)
-  })
-
-  test('rejects malformed mutation referrers instead of throwing', async () => {
-    const res = await app.request('https://matrix.example/api/engine', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Referer: 'not a valid URL',
-        'X-Price-Matrix-Admin': '1',
-      },
-      body: JSON.stringify(PRICING_DEFAULTS),
-    }, env)
-    expect(res.status).toBe(403)
+    expect(res.status).toBe(200)
+    const data = await res.json() as any
+    expect(data.success).toBe(true)
   })
 })
 
@@ -380,7 +358,7 @@ describe('sparse per-product overrides', () => {
     // Packaging echoes the global default; only the margin is a real tune.
     const res = await postOverride(testEnv, cookie, {
       productRowId: 1,
-      override: { packaging: 20, targetMarginPct: 30 },
+      override: { packaging: 45, targetMarginPct: 30 },
     })
     expect(res.status).toBe(200)
     const data = await res.json() as any
@@ -397,7 +375,7 @@ describe('sparse per-product overrides', () => {
 
     const res = await postOverride(testEnv, cookie, {
       productRowId: 1,
-      override: { packaging: 20, delivery: 60 }, // both identical to global
+      override: { packaging: 45, delivery: 60 }, // both identical to global
     })
     expect(res.status).toBe(200)
     const data = await res.json() as any
@@ -420,17 +398,18 @@ describe('sparse per-product overrides', () => {
     expect(db.seen).toHaveLength(0)
   })
 
-  test('blocks unauthenticated override writes', async () => {
+  test('allows public unauthenticated override writes', async () => {
     const { env: testEnv } = overrideEnv()
     const res = await app.request('https://matrix.example/api/overrides', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Origin: 'https://matrix.example',
-        'X-Price-Matrix-Admin': '1',
       },
       body: JSON.stringify({ productRowId: 1, override: { targetMarginPct: 30 } }),
     }, testEnv)
-    expect(res.status).toBe(401)
+    expect(res.status).toBe(200)
+    const data = await res.json() as any
+    expect(data.success).toBe(true)
+    expect(data.override.targetMarginPct).toBe(30)
   })
 })

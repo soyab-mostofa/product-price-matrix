@@ -54,8 +54,8 @@ export function Header({ meta }: { meta: DashboardMeta }) {
           <span id="sellingChipBtnLabel">View Market Discount %</span>
           <span class="selling-chip-btn-short" aria-hidden="true">Compare</span>
         </button>
-        <button class="btn-admin" id="adminLoginBtn" type="button">Admin Login</button>
-        <button class="btn-calc" id="openEngineBtn" type="button" hidden>Pricing Engine</button>
+        <button class="btn-admin" id="adminLoginBtn" type="button" hidden>Admin Login</button>
+        <button class="btn-calc" id="openEngineBtn" type="button">Pricing Engine</button>
         <button class="btn-icon" id="download" type="button" aria-label="Export dataset as JSON" title="Export Dataset (JSON)">⇩</button>
       </div>
     </header>
