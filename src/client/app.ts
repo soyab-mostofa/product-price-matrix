@@ -248,6 +248,11 @@ function sourceCell(p: Product, source: string): string {
   const mfg = Number(p.manufactured_price)
   const markupPct = calculateMarkup(price, mfg)
   const markupChip = getMarkupChip(markupPct)
+  // A price seeded from the workbook has no product page to open yet, so it
+  // shows an unverified marker in place of the deep link.
+  const link = listing.verified && listing.url
+    ? `<a href="${esc(listing.url)}" class="btn-open-link" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.product_name)} on ${esc(source)} in a new tab" title="Open listing on ${esc(source)}" onclick="event.stopPropagation()">↗</a>`
+    : `<span class="listing-unverified" role="img" aria-label="Unverified price on ${esc(source)} — no confirmed product page yet" title="Unverified: price recorded from research, no confirmed product page yet">◌</span>`
 
   return `
     <td class="source-data-cell" data-source="${esc(source)}">
@@ -256,7 +261,7 @@ function sourceCell(p: Product, source: string): string {
           <span class="price-val">${esc(money.format(price))}</span>
           ${markupChip}
         </div>
-        <a href="${esc(listing.url)}" class="btn-open-link" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.product_name)} on ${esc(source)} in a new tab" title="Open listing on ${esc(source)}" onclick="event.stopPropagation()">↗</a>
+        ${link}
       </div>
     </td>
   `
@@ -426,6 +431,9 @@ function openDetail(p: Product) {
       if (!item) return
       const markupPct = calculateMarkup(Number(item.price), mfg)
       const markupChip = getMarkupChip(markupPct)
+      const detailLink = item.verified && item.url
+        ? `<a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">Open link ↗</a>`
+        : '<span class="listing-unverified-text">Unverified — no confirmed product page</span>'
       out += `
         <div class="detail-source-row">
           <div>
@@ -436,7 +444,7 @@ function openDetail(p: Product) {
             <div style="font-weight:700;font-size:15px;color:var(--brand-blue);display:flex;align-items:center;justify-content:flex-end;gap:6px;">
               ${esc(money.format(item.price))} ${markupChip}
             </div>
-            <a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">Open link ↗</a>
+            ${detailLink}
           </div>
         </div>
       `

@@ -641,6 +641,24 @@ tbody tr:hover td.col-selling-price {
   border-color: var(--border);
 }
 
+/* A price recorded from research, with no confirmed product page to open. */
+.listing-unverified {
+  color: #cbd5e1;
+  font-size: 11px;
+  padding: 2px 5px;
+  min-width: 32px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+}
+.listing-unverified-text {
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-style: italic;
+}
+
 .cell-dash {
   color: #cbd5e1;
   font-size: 13px;

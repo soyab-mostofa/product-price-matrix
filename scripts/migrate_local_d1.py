@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 D1_DIR = ROOT / ".wrangler/state/v3/d1/miniflare-D1DatabaseObject"
 SPARSE_OVERRIDES_MIGRATION_PATH = ROOT / "migrations/0003_sparse_pricing_overrides.sql"
 SOURCING_ORIGIN_MIGRATION_PATH = ROOT / "migrations/0004_sourcing_origin.sql"
+UNVERIFIED_LISTINGS_MIGRATION_PATH = ROOT / "migrations/0005_unverified_listings.sql"
 
 
 def _unwrapped(path: Path) -> str:
@@ -39,6 +40,11 @@ def _sparse_overrides_migration() -> str:
 def _sourcing_origin_migration() -> str:
     """The 0004 migration body, minus the transaction/pragma wrapper."""
     return _unwrapped(SOURCING_ORIGIN_MIGRATION_PATH)
+
+
+def _unverified_listings_migration() -> str:
+    """The 0005 migration body, minus the transaction/pragma wrapper."""
+    return _unwrapped(UNVERIFIED_LISTINGS_MIGRATION_PATH)
 
 
 def columns(connection: sqlite3.Connection, table: str) -> set[str]:
@@ -148,6 +154,10 @@ def migrate_database(path: Path) -> list[str]:
         if "sourcing_origin" not in columns(connection, "products"):
             connection.executescript(_sourcing_origin_migration())
             changes.append("products.sourcing_origin")
+
+        if "verified" not in columns(connection, "marketplace_listings"):
+            connection.executescript(_unverified_listings_migration())
+            changes.append("marketplace_listings.verified")
 
         connection.execute(
             """

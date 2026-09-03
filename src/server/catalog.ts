@@ -20,10 +20,11 @@ interface ListingRow {
   row_id: number
   channel_name: string
   price: number
-  url: string
+  url: string | null
   matched_title: string | null
   seller: string | null
   confidence: number
+  verified: number
 }
 
 export async function fetchCatalog(db: D1Database): Promise<CatalogPayload> {
@@ -31,7 +32,7 @@ export async function fetchCatalog(db: D1Database): Promise<CatalogPayload> {
     db.prepare(`SELECT row_id, product_name, brand_name, size, manufactured_price,
                        market_average_price, canonical_name, mrp_source_type
                   FROM products ORDER BY row_id ASC`),
-    db.prepare(`SELECT row_id, channel_name, price, url, matched_title, seller, confidence
+    db.prepare(`SELECT row_id, channel_name, price, url, matched_title, seller, confidence, verified
                   FROM marketplace_listings WHERE available = 1`),
   ])
 
@@ -49,6 +50,7 @@ export async function fetchCatalog(db: D1Database): Promise<CatalogPayload> {
       seller: raw.seller,
       confidence: raw.confidence,
       available: true,
+      verified: raw.verified === 1,
     }
     listingsByRow.set(raw.row_id, sources)
     counts.set(raw.channel_name, (counts.get(raw.channel_name) ?? 0) + 1)

@@ -39,13 +39,17 @@ CREATE TABLE IF NOT EXISTS marketplace_listings (
   row_id INTEGER NOT NULL,
   channel_name TEXT NOT NULL,
   price REAL NOT NULL CHECK (price > 0),
-  url TEXT NOT NULL CHECK (url LIKE 'http://%' OR url LIKE 'https://%'),
+  -- Null while a price is known but its product page is not.
+  url TEXT CHECK (url IS NULL OR url LIKE 'http://%' OR url LIKE 'https://%'),
   matched_title TEXT,
   size TEXT,
   seller TEXT,
   confidence REAL NOT NULL DEFAULT 100.0 CHECK (confidence >= 0 AND confidence <= 100),
   available INTEGER NOT NULL DEFAULT 1 CHECK (available IN (0, 1)),
+  -- Confirmed against a live product page, rather than seeded from a workbook.
+  verified INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CHECK (verified = 0 OR url IS NOT NULL),
   FOREIGN KEY (row_id) REFERENCES products(row_id) ON DELETE CASCADE,
   UNIQUE(row_id, channel_name)
 );

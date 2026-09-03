@@ -60,6 +60,7 @@ const env: EnvBindings = {
       seller: 'Guerniss Official',
       confidence: 100,
       available: 1,
+      verified: 1,
     }],
     globalParams: PRICING_DEFAULTS,
   }) as any,
@@ -98,6 +99,63 @@ describe('Hono application', () => {
     expect(data.product_count).toBe(1)
     expect(data.listing_count).toBe(1)
     expect(data.source_columns).toEqual(['Official Store'])
+  })
+
+  test('carries listing verification through to the catalog payload', async () => {
+    const mixedEnv = {
+      ...env,
+      DB: fakeDb({
+        products: [{
+          row_id: 1,
+          product_name: 'CeraVe Moisturizing Cream 56ml',
+          brand_name: 'CeraVe',
+          size: '56ml',
+          manufactured_price: 930,
+          market_average_price: 1465,
+          canonical_name: 'CeraVe Moisturizing Cream 56ml',
+          mrp_source_type: 'third_party_avg',
+        }],
+        listings: [
+          {
+            row_id: 1,
+            channel_name: 'Shajgoj',
+            price: 1465,
+            url: 'https://shajgoj.com/cerave',
+            matched_title: 'CeraVe Moisturizing Cream',
+            seller: 'Shajgoj',
+            confidence: 100,
+            available: 1,
+            verified: 1,
+          },
+          {
+            // Seeded from the workbook: a real price with no product page yet.
+            row_id: 1,
+            channel_name: 'Klassy Missy',
+            price: 1450,
+            url: null,
+            matched_title: null,
+            seller: null,
+            confidence: 100,
+            available: 1,
+            verified: 0,
+          },
+        ],
+        globalParams: PRICING_DEFAULTS,
+      }) as any,
+    }
+
+    const res = await app.request('/api/products', {}, mixedEnv)
+    expect(res.status).toBe(200)
+    const data = await res.json() as any
+    const sources = data.products[0].sources
+
+    expect(sources['Shajgoj'].verified).toBe(true)
+    expect(sources['Shajgoj'].url).toBe('https://shajgoj.com/cerave')
+
+    // An unverified listing still carries its price — that research is real.
+    expect(sources['Klassy Missy'].verified).toBe(false)
+    expect(sources['Klassy Missy'].price).toBe(1450)
+    expect(sources['Klassy Missy'].url).toBeNull()
   })
 
   test('creates signed admin sessions and rejects tampered cookies', async () => {

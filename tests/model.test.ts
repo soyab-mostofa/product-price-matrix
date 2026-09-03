@@ -40,6 +40,7 @@ const listing = (price: number) => ({
   seller: null,
   confidence: 100,
   available: true as const,
+  verified: true,
 })
 
 describe('pricing arithmetic', () => {

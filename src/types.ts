@@ -51,12 +51,15 @@ export interface StoredPricingOverride extends PricingOverride {
 
 export interface MarketplaceListing {
   price: number
-  url: string
+  /** Null while the price is known but its product page is not. */
+  url: string | null
   matched_title: string | null
   size?: string | null
   seller: string | null
   confidence: number
   available: true
+  /** Confirmed against a live product page, rather than seeded from a workbook. */
+  verified: boolean
 }
 
 export interface Product {
