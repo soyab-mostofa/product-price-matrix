@@ -1,11 +1,13 @@
-import type { CatalogPayload, PricingParams, Product } from '../types'
+import type { CatalogPayload, PricingOverride, PricingParams, Product, StoredPricingOverride } from '../types'
 import {
   calculateMarketDiscount,
   calculateMarkup,
   calculateSellingPrice,
   filterProducts,
   nextPinnedSort,
+  overriddenFields,
   PINNED_SORT_VALUES,
+  resolvePricingParams,
   sortProducts,
   type SortValue,
 } from './model'
@@ -13,7 +15,7 @@ import {
 interface EngineResponse {
   success: boolean
   globalParams?: PricingParams
-  overrides?: Record<string, PricingParams>
+  overrides?: Record<string, StoredPricingOverride>
   error?: string
 }
 
@@ -44,11 +46,12 @@ const defaultGlobalParams: PricingParams = {
 let products: Product[] = []
 let sources: string[] = []
 let globalCostParams: PricingParams = { ...defaultGlobalParams }
-let productOverrides: Record<string, PricingParams> = {}
+let productOverrides: Record<string, StoredPricingOverride> = {}
 let sellingChipMode: 'markup' | 'discount' = 'markup'
 let activeProductDetail: Product | null = null
 let currentGlobalDiscountType: 'pct' | 'amt' = 'pct'
-let currentProdDiscountType: 'pct' | 'amt' = 'pct'
+/** 'global' = inherit the global discount; 'pct'/'amt' pin it for this SKU. */
+let currentProdDiscountType: 'global' | 'pct' | 'amt' = 'global'
 let isAdminAuthenticated = false
 let adminConfigured = false
 let catalogLoaded = false
@@ -105,10 +108,29 @@ function getMarketDiscountChip(discPct: number | null): string {
   return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% above Market Average price">↑+${Math.abs(discPct).toFixed(0)}%</span>`
 }
 
-function getProductParams(rowId: number): PricingParams & { isCustom: boolean } {
-  const custom = productOverrides[String(rowId)]
-  if (custom) return { ...globalCostParams, ...custom, isCustom: true }
-  return { ...globalCostParams, isCustom: false }
+/** Human labels for the tunable fields, used in the Tuned pill tooltip. */
+const FIELD_LABELS: Record<string, string> = {
+  packaging: 'Packaging',
+  transport: 'Transport',
+  delivery: 'Delivery',
+  cac: 'CAC',
+  targetMarginPct: 'Target Margin',
+  discountType: 'Discount',
+  discountVal: 'Discount',
+}
+
+/**
+ * Effective parameters for one SKU: the live global engine with this product's
+ * pinned fields laid over it. Un-pinned fields keep tracking global.
+ */
+function getProductParams(rowId: number): PricingParams {
+  return resolvePricingParams(globalCostParams, productOverrides[String(rowId)])
+}
+
+/** e.g. "Target Margin, Discount" — what this SKU pins against the global engine. */
+function describeOverride(override: StoredPricingOverride | undefined): string {
+  const labels = overriddenFields(override).map((field) => FIELD_LABELS[field] ?? field)
+  return [...new Set(labels)].join(', ')
 }
 
 function computeSellingPrice(mfgPrice: number, rowId?: number): number | null {
@@ -305,7 +327,9 @@ function render() {
       </div>
     `
 
-    const hasOverride = !!productOverrides[String(p.row)]
+    const override = productOverrides[String(p.row)]
+    const pinnedFields = describeOverride(override)
+    const hasOverride = pinnedFields.length > 0
     const calculatedSelling = computeSellingPrice(mfg, p.row)
     let sellingDisplay = '<span class="cell-dash">—</span>'
 
@@ -319,9 +343,11 @@ function render() {
         activeChipHtml = getMarkupChip(sellingMarkupPct)
       }
 
+      const tunedOn = override?.updatedAt ? ` · tuned ${new Date(override.updatedAt).toLocaleDateString()}` : ''
+      const tuneTitle = `Custom pricing for this SKU — pinned: ${pinnedFields}${tunedOn}. Everything else follows the global engine.`
       sellingDisplay = `
         <div class="dual-metric-cell">
-          ${hasOverride ? '<span class="custom-tune-tag" title="Custom per-product pricing engine override active">Tuned</span>' : ''}
+          ${hasOverride ? `<span class="custom-tune-tag" title="${esc(tuneTitle)}">Tuned</span>` : ''}
           <span class="num-price ${hasOverride ? 'custom-tuned' : 'selling'}">${esc(money.format(calculatedSelling))}</span>
           ${activeChipHtml}
         </div>
@@ -355,6 +381,12 @@ function openDetail(p: Product) {
   const calculatedSelling = computeSellingPrice(mfg, p.row)
   const params = getProductParams(p.row)
   const overhead = Number(params.packaging) + Number(params.transport) + Number(params.delivery) + Number(params.cac)
+  // Label each stat by what is actually pinned: a margin-only tune must not
+  // claim the overhead is custom when every cost field still follows global.
+  const detailOverride = productOverrides[String(p.row)]
+  const detailPinned = describeOverride(detailOverride)
+  const overheadIsTuned = overriddenFields(detailOverride)
+    .some((field) => field === 'packaging' || field === 'transport' || field === 'delivery' || field === 'cac')
   const sellingMarkupPct = calculatedSelling !== null && mfg > 0 ? calculateMarkup(calculatedSelling, mfg) : null
   const marketDiscPct = calculatedSelling !== null && mktAvg > 0 ? calculateMarketDiscount(calculatedSelling, mktAvg) : null
   const detailProvenance = mrpProvenance(p)
@@ -370,11 +402,11 @@ function openDetail(p: Product) {
         </strong>
       </div>
       <div class="detail-stat-box">
-        <span>Variable Overhead ${params.isCustom ? '(Custom)' : ''}</span>
+        <span>Variable Overhead ${overheadIsTuned ? '(Tuned)' : ''}</span>
         <strong>${esc(money.format(overhead))}</strong>
       </div>
-      <div class="detail-stat-box">
-        <span>Selling Price ${params.isCustom ? '(Custom)' : ''}</span>
+      <div class="detail-stat-box"${detailPinned ? ` title="${esc(`Pinned for this SKU: ${detailPinned}. Everything else follows the global engine.`)}"` : ''}>
+        <span>Selling Price ${detailPinned ? '(Tuned)' : ''}</span>
         <strong style="color:var(--brand-blue);display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
           ${calculatedSelling !== null ? esc(money.format(calculatedSelling)) : '—'}
           ${getMarkupChip(sellingMarkupPct)}
@@ -415,21 +447,35 @@ function openDetail(p: Product) {
   const tabOverviewContent = document.getElementById('tabOverviewContent')
   if (tabOverviewContent) tabOverviewContent.innerHTML = out
 
-  // Populate per-product inputs
-  const inputs: Record<string, number> = {
-    prodInputPackaging: params.packaging,
-    prodInputTransport: params.transport,
-    prodInputDelivery: params.delivery,
-    prodInputCAC: params.cac,
-    prodInputMarginPct: params.targetMarginPct,
-    prodInputDiscountVal: params.discountVal,
-  }
-  Object.entries(inputs).forEach(([id, val]) => {
+  // Populate per-product inputs. A pinned field shows its value; an inherited
+  // field stays blank and advertises the live global value as its placeholder,
+  // so "blank = follows global" is legible at a glance.
+  const overrideForForm = productOverrides[String(p.row)]
+  const tunableInputs: Array<[string, keyof PricingParams]> = [
+    ['prodInputPackaging', 'packaging'],
+    ['prodInputTransport', 'transport'],
+    ['prodInputDelivery', 'delivery'],
+    ['prodInputCAC', 'cac'],
+    ['prodInputMarginPct', 'targetMarginPct'],
+  ]
+  for (const [id, field] of tunableInputs) {
     const input = document.getElementById(id) as HTMLInputElement | null
-    if (input) input.value = String(val)
-  })
+    if (!input) continue
+    const pinned = overrideForForm?.[field]
+    input.value = pinned === undefined || pinned === null ? '' : String(pinned)
+    input.placeholder = `Global: ${globalCostParams[field]}`
+    input.classList.toggle('is-pinned', input.value !== '')
+  }
 
-  setProductDiscountType(params.discountType || 'pct')
+  const discountInput = document.getElementById('prodInputDiscountVal') as HTMLInputElement | null
+  const discountPinned = overrideForForm?.discountType !== undefined && overrideForForm?.discountVal !== undefined
+  if (discountInput) {
+    discountInput.value = discountPinned ? String(overrideForForm?.discountVal) : ''
+    discountInput.placeholder = `Global: ${globalCostParams.discountVal}${globalCostParams.discountType === 'pct' ? '%' : ' BDT'}`
+    discountInput.classList.toggle('is-pinned', discountPinned)
+  }
+
+  setProductDiscountType(discountPinned ? (overrideForForm?.discountType ?? 'pct') : 'global')
 
   updateProdTuneSummary()
   switchDetailTab('overview')
@@ -466,41 +512,81 @@ function setGlobalDiscountType(type: 'pct' | 'amt'): void {
   updateEngineSummary()
 }
 
-function setProductDiscountType(type: 'pct' | 'amt'): void {
+function setProductDiscountType(type: 'global' | 'pct' | 'amt'): void {
   currentProdDiscountType = type
+  const global = document.getElementById('prodBtnTypeGlobal')
   const pct = document.getElementById('prodBtnTypePct')
   const amt = document.getElementById('prodBtnTypeAmt')
+  global?.classList.toggle('active', type === 'global')
+  global?.setAttribute('aria-checked', String(type === 'global'))
   pct?.classList.toggle('active', type === 'pct')
   pct?.setAttribute('aria-checked', String(type === 'pct'))
   amt?.classList.toggle('active', type === 'amt')
   amt?.setAttribute('aria-checked', String(type === 'amt'))
+
+  // Inheriting the global discount means there is no per-SKU value to type.
+  const input = document.getElementById('prodInputDiscountVal') as HTMLInputElement | null
+  if (input) {
+    input.disabled = type === 'global'
+    if (type === 'global') {
+      input.value = ''
+      input.classList.remove('is-pinned')
+    }
+  }
   updateProdTuneSummary()
+}
+
+/**
+ * Read the tune form as a sparse override: blank input = inherit global.
+ */
+function readTuneForm(): PricingOverride {
+  const numeric = (id: string): number | undefined => {
+    const input = document.getElementById(id) as HTMLInputElement | null
+    const raw = input?.value.trim()
+    if (!raw) return undefined
+    const parsed = Number(raw)
+    return Number.isFinite(parsed) ? parsed : undefined
+  }
+
+  const override: PricingOverride = {}
+  const packaging = numeric('prodInputPackaging')
+  const transport = numeric('prodInputTransport')
+  const delivery = numeric('prodInputDelivery')
+  const cac = numeric('prodInputCAC')
+  const margin = numeric('prodInputMarginPct')
+  if (packaging !== undefined) override.packaging = packaging
+  if (transport !== undefined) override.transport = transport
+  if (delivery !== undefined) override.delivery = delivery
+  if (cac !== undefined) override.cac = cac
+  if (margin !== undefined) override.targetMarginPct = margin
+
+  // Discount pins as a pair, and only when a concrete mode is selected.
+  if (currentProdDiscountType !== 'global') {
+    const discountVal = numeric('prodInputDiscountVal') ?? 0
+    override.discountType = currentProdDiscountType
+    override.discountVal = discountVal
+  }
+  return override
 }
 
 function updateProdTuneSummary() {
   if (!activeProductDetail) return
   const mfg = Number(activeProductDetail.manufactured_price)
-  const pkg = Number((document.getElementById('prodInputPackaging') as HTMLInputElement)?.value) || 0
-  const tr = Number((document.getElementById('prodInputTransport') as HTMLInputElement)?.value) || 0
-  const del = Number((document.getElementById('prodInputDelivery') as HTMLInputElement)?.value) || 0
-  const cac = Number((document.getElementById('prodInputCAC') as HTMLInputElement)?.value) || 0
-  const margin = Number((document.getElementById('prodInputMarginPct') as HTMLInputElement)?.value) || 0
-  const discVal = Number((document.getElementById('prodInputDiscountVal') as HTMLInputElement)?.value) || 0
+  const override = readTuneForm()
+  const resolved = resolvePricingParams(globalCostParams, override)
 
-  const totalCost = mfg + pkg + tr + del + cac
-  const marginRate = margin / 100
-  if (marginRate >= 1) {
-    const summary = document.getElementById('prodSummarySelling')
-    if (summary) summary.textContent = 'Invalid margin'
-    return
-  }
-  const listPrice = totalCost / (1 - marginRate)
-  const finalVal = currentProdDiscountType === 'pct'
-    ? listPrice * (1 - discVal / 100)
-    : Math.max(0, listPrice - discVal)
+  const pinnedLabels = [...new Set(overriddenFields(override).map((field) => FIELD_LABELS[field] ?? field))]
+  const pinnedEl = document.getElementById('prodSummaryPinned')
+  if (pinnedEl) pinnedEl.textContent = pinnedLabels.length ? pinnedLabels.join(', ') : 'Nothing — follows global'
+
+  const globalPrice = calculateSellingPrice(mfg, globalCostParams)
+  const globalEl = document.getElementById('prodSummaryGlobalPrice')
+  if (globalEl) globalEl.textContent = globalPrice === null ? '—' : money.format(globalPrice)
 
   const summary = document.getElementById('prodSummarySelling')
-  if (summary) summary.textContent = esc(money.format(Math.round(Math.max(0, finalVal))))
+  if (!summary) return
+  const price = calculateSellingPrice(mfg, resolved)
+  summary.textContent = price === null ? 'Invalid margin' : money.format(price)
 }
 
 function updateEngineSummary() {
@@ -688,6 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
   document.getElementById('btnTypePct')?.addEventListener('click', () => setGlobalDiscountType('pct'))
   document.getElementById('btnTypeAmt')?.addEventListener('click', () => setGlobalDiscountType('amt'))
+  document.getElementById('prodBtnTypeGlobal')?.addEventListener('click', () => setProductDiscountType('global'))
   document.getElementById('prodBtnTypePct')?.addEventListener('click', () => setProductDiscountType('pct'))
   document.getElementById('prodBtnTypeAmt')?.addEventListener('click', () => setProductDiscountType('amt'))
 
@@ -695,7 +782,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById(id)?.addEventListener('input', updateEngineSummary)
   }
   for (const id of ['prodInputPackaging', 'prodInputTransport', 'prodInputDelivery', 'prodInputCAC', 'prodInputMarginPct', 'prodInputDiscountVal']) {
-    document.getElementById(id)?.addEventListener('input', updateProdTuneSummary)
+    document.getElementById(id)?.addEventListener('input', (event) => {
+      // Mark the field as pinned the moment it holds a value, so operators can
+      // see at a glance which knobs have left the global engine.
+      const input = event.currentTarget as HTMLInputElement | null
+      input?.classList.toggle('is-pinned', !!input.value.trim())
+      updateProdTuneSummary()
+    })
   }
 
   // Engine open
@@ -825,26 +918,27 @@ document.addEventListener('DOMContentLoaded', () => {
     if (status) status.textContent = 'Saving…'
 
     const rowId = activeProductDetail.row
-    const payload: PricingParams & { productRowId: number } = {
-      productRowId: rowId,
-      packaging: Number((document.getElementById('prodInputPackaging') as HTMLInputElement).value) || 0,
-      transport: Number((document.getElementById('prodInputTransport') as HTMLInputElement).value) || 0,
-      delivery: Number((document.getElementById('prodInputDelivery') as HTMLInputElement).value) || 0,
-      cac: Number((document.getElementById('prodInputCAC') as HTMLInputElement).value) || 0,
-      targetMarginPct: Number((document.getElementById('prodInputMarginPct') as HTMLInputElement).value) || 0,
-      discountType: currentProdDiscountType,
-      discountVal: Number((document.getElementById('prodInputDiscountVal') as HTMLInputElement).value) || 0,
-    }
+    const override = readTuneForm()
 
     try {
       const res = await fetch('/api/overrides', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'X-Price-Matrix-Admin': '1' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ productRowId: rowId, override }),
       })
-      const data = await res.json() as { success: boolean; error?: string }
+      const data = await res.json() as {
+        success: boolean
+        error?: string
+        override?: StoredPricingOverride | null
+      }
       if (data.success) {
-        productOverrides[String(rowId)] = { ...payload }
+        // The worker strips fields that merely echo global, so trust its
+        // response rather than the raw form: an all-inherit save clears the row.
+        if (data.override) {
+          productOverrides[String(rowId)] = data.override
+        } else {
+          delete productOverrides[String(rowId)]
+        }
         productModal?.close()
         render()
       } else if (status) {
@@ -885,6 +979,7 @@ document.addEventListener('DOMContentLoaded', () => {
       products: products.map((p) => ({
         ...p,
         pricing_parameters: getProductParams(p.row),
+        pinned_parameters: overriddenFields(productOverrides[String(p.row)]),
         calculated_selling_price: computeSellingPrice(p.manufactured_price, p.row),
       })),
     }

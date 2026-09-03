@@ -1,38 +1,69 @@
 import { z } from 'zod'
-import type { PricingParams } from '../types'
 
-export const PRICING_DEFAULTS: Readonly<PricingParams> = Object.freeze({
-  packaging: 20,
-  transport: 0,
-  delivery: 60,
-  cac: 0,
-  targetMarginPct: 0,
-  discountType: 'pct',
-  discountVal: 0,
-})
+/**
+ * Request validation for the pricing endpoints. Kept separate from
+ * `shared/pricing.ts` so the browser bundle never pulls zod in; the worker
+ * re-exports the shared domain helpers for convenience.
+ */
+
+export {
+  PRICING_DEFAULTS,
+  calculateSellingPrice,
+  isEmptyOverride,
+  overriddenFields,
+  resolvePricingParams,
+  sparsifyOverride,
+} from '../shared/pricing'
+
+const costField = z.coerce.number().finite().min(0).max(100_000)
+const marginField = z.coerce.number().finite().min(0).max(99.99)
+const discountValField = z.coerce.number().finite().min(0).max(1_000_000)
 
 export const pricingSchema = z.object({
-  packaging: z.coerce.number().finite().min(0).max(100_000),
-  transport: z.coerce.number().finite().min(0).max(100_000),
-  delivery: z.coerce.number().finite().min(0).max(100_000),
-  cac: z.coerce.number().finite().min(0).max(100_000),
-  targetMarginPct: z.coerce.number().finite().min(0).max(99.99),
+  packaging: costField,
+  transport: costField,
+  delivery: costField,
+  cac: costField,
+  targetMarginPct: marginField,
   discountType: z.enum(['pct', 'amt']),
-  discountVal: z.coerce.number().finite().min(0).max(1_000_000),
+  discountVal: discountValField,
 }).superRefine((value, context) => {
   if (value.discountType === 'pct' && value.discountVal > 100) {
     context.addIssue({ code: 'custom', path: ['discountVal'], message: 'Percentage discount cannot exceed 100' })
   }
 })
 
-export const productRowIdSchema = z.coerce.number().int().positive()
+/**
+ * A sparse tune. Omitted (or explicitly null) fields inherit the global engine,
+ * which is what keeps a tuned SKU tracking later global cost changes.
+ *
+ * `null` is accepted alongside `undefined` so the client can clear one pinned
+ * field without having to resend the whole override.
+ */
+const optional = <T extends z.ZodType>(schema: T) =>
+  schema.nullish().transform((value) => (value === null ? undefined : value))
 
-export function calculateSellingPrice(manufacturedPrice: number, params: PricingParams): number | null {
-  if (!Number.isFinite(manufacturedPrice) || manufacturedPrice <= 0) return null
-  const totalCost = manufacturedPrice + params.packaging + params.transport + params.delivery + params.cac
-  const listPrice = totalCost / (1 - params.targetMarginPct / 100)
-  const discounted = params.discountType === 'pct'
-    ? listPrice * (1 - params.discountVal / 100)
-    : listPrice - params.discountVal
-  return Math.round(Math.max(0, discounted))
-}
+export const pricingOverrideSchema = z.object({
+  packaging: optional(costField),
+  transport: optional(costField),
+  delivery: optional(costField),
+  cac: optional(costField),
+  targetMarginPct: optional(marginField),
+  discountType: optional(z.enum(['pct', 'amt'])),
+  discountVal: optional(discountValField),
+}).superRefine((value, context) => {
+  const hasType = value.discountType !== undefined
+  const hasVal = value.discountVal !== undefined
+  if (hasType !== hasVal) {
+    context.addIssue({
+      code: 'custom',
+      path: [hasType ? 'discountVal' : 'discountType'],
+      message: 'Pin discount type and value together, or neither',
+    })
+  }
+  if (value.discountType === 'pct' && value.discountVal !== undefined && value.discountVal > 100) {
+    context.addIssue({ code: 'custom', path: ['discountVal'], message: 'Percentage discount cannot exceed 100' })
+  }
+})
+
+export const productRowIdSchema = z.coerce.number().int().positive()

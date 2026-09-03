@@ -45,19 +45,31 @@ CREATE TABLE IF NOT EXISTS marketplace_listings (
   UNIQUE(row_id, channel_name)
 );
 
+-- Sparse per-product overrides: NULL means "inherit the current global value",
+-- so a tuned SKU keeps tracking global cost changes for knobs it never pinned.
 CREATE TABLE IF NOT EXISTS product_pricing_overrides (
   product_row_id INTEGER PRIMARY KEY,
-  packaging REAL NOT NULL CHECK (packaging >= 0 AND packaging <= 100000),
-  transport REAL NOT NULL CHECK (transport >= 0 AND transport <= 100000),
-  delivery REAL NOT NULL CHECK (delivery >= 0 AND delivery <= 100000),
-  cac REAL NOT NULL CHECK (cac >= 0 AND cac <= 100000),
-  target_margin_pct REAL NOT NULL CHECK (target_margin_pct >= 0 AND target_margin_pct < 100),
-  discount_type TEXT NOT NULL CHECK (discount_type IN ('pct', 'amt')),
-  discount_val REAL NOT NULL CHECK (
-    discount_val >= 0 AND
-    ((discount_type = 'pct' AND discount_val <= 100) OR (discount_type = 'amt' AND discount_val <= 1000000))
+  packaging REAL CHECK (packaging IS NULL OR (packaging >= 0 AND packaging <= 100000)),
+  transport REAL CHECK (transport IS NULL OR (transport >= 0 AND transport <= 100000)),
+  delivery REAL CHECK (delivery IS NULL OR (delivery >= 0 AND delivery <= 100000)),
+  cac REAL CHECK (cac IS NULL OR (cac >= 0 AND cac <= 100000)),
+  target_margin_pct REAL CHECK (target_margin_pct IS NULL OR (target_margin_pct >= 0 AND target_margin_pct < 100)),
+  discount_type TEXT CHECK (discount_type IS NULL OR discount_type IN ('pct', 'amt')),
+  discount_val REAL CHECK (
+    discount_val IS NULL OR (
+      discount_val >= 0 AND
+      ((discount_type = 'pct' AND discount_val <= 100) OR
+       (discount_type = 'amt' AND discount_val <= 1000000))
+    )
   ),
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  -- Discount is pinned as a pair or not at all.
+  CHECK ((discount_type IS NULL) = (discount_val IS NULL)),
+  -- An override row must pin at least one field; otherwise it should not exist.
+  CHECK (
+    packaging IS NOT NULL OR transport IS NOT NULL OR delivery IS NOT NULL OR
+    cac IS NOT NULL OR target_margin_pct IS NOT NULL OR discount_type IS NOT NULL
+  ),
   FOREIGN KEY (product_row_id) REFERENCES products(row_id) ON DELETE CASCADE
 );
 

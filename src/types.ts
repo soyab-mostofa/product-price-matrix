@@ -11,6 +11,44 @@ export interface PricingParams {
   discountVal: number
 }
 
+/**
+ * A sparse per-product tune. Every field is optional and an absent field means
+ * "inherit whatever the global engine currently says", so raising a global cost
+ * still reaches tuned SKUs for the knobs they never pinned.
+ *
+ * discountType/discountVal move as a pair: an amount is meaningless under a
+ * percentage mode, so a tune either pins both or neither.
+ */
+export interface PricingOverride {
+  // `| undefined` is explicit because exactOptionalPropertyTypes is on and
+  // validated payloads carry undefined values for fields left un-pinned.
+  packaging?: number | undefined
+  transport?: number | undefined
+  delivery?: number | undefined
+  cac?: number | undefined
+  targetMarginPct?: number | undefined
+  discountType?: DiscountType | undefined
+  discountVal?: number | undefined
+}
+
+/** Tunable keys, in the order the UI presents them. */
+export const PRICING_FIELDS = [
+  'packaging',
+  'transport',
+  'delivery',
+  'cac',
+  'targetMarginPct',
+  'discountType',
+  'discountVal',
+] as const satisfies readonly (keyof PricingParams)[]
+
+export type PricingField = (typeof PRICING_FIELDS)[number]
+
+/** An override as stored, plus the audit stamp the UI surfaces on the Tuned pill. */
+export interface StoredPricingOverride extends PricingOverride {
+  updatedAt?: string | null
+}
+
 export interface MarketplaceListing {
   price: number
   url: string

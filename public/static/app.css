@@ -506,6 +506,27 @@ tbody tr:hover td.col-selling-price {
   text-transform: uppercase;
 }
 
+/* Per-SKU tune form: blank inputs inherit the global engine, pinned ones don't. */
+.tune-inherit-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.engine-input.is-pinned {
+  border-color: #a78bfa;
+  background: #faf5ff;
+  font-weight: 600;
+  color: #5b21b6;
+}
+
+.engine-input:disabled {
+  background: #f8fafc;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
 .num-price.mrp-official {
   color: #0f172a;
   font-weight: 700;

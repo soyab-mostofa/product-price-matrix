@@ -75,23 +75,27 @@ export function Modals() {
           <div id="tabOverviewContent" role="tabpanel" aria-labelledby="tabOverviewBtn" style="display:grid;gap:16px;"></div>
           <form id="tabTuneContent" role="tabpanel" aria-labelledby="tabTuneBtn" style="display:none;grid-gap:16px;">
             <div class="read-only-note" id="productReadOnlyBanner" hidden>Public read-only mode. Authenticate to save custom SKU parameters.</div>
+            <p class="tune-inherit-note">Leave a field blank to follow the global engine — blank fields keep tracking later global changes. Fill one only to pin it for this SKU.</p>
             <div class="engine-grid">
-              <div class="engine-field"><label for="prodInputPackaging">Packaging (BDT)</label><input id="prodInputPackaging" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
-              <div class="engine-field"><label for="prodInputTransport">Transport (BDT)</label><input id="prodInputTransport" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
-              <div class="engine-field"><label for="prodInputDelivery">Delivery (BDT)</label><input id="prodInputDelivery" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
-              <div class="engine-field"><label for="prodInputCAC">CAC (BDT)</label><input id="prodInputCAC" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
-              <div class="engine-field"><label for="prodInputMarginPct">Target Margin (%)</label><input id="prodInputMarginPct" class="engine-input" type="number" min="0" max="99.99" step="0.1" required /></div>
+              <div class="engine-field"><label for="prodInputPackaging">Packaging (BDT)</label><input id="prodInputPackaging" class="engine-input" type="number" min="0" max="100000" step="1" /></div>
+              <div class="engine-field"><label for="prodInputTransport">Transport (BDT)</label><input id="prodInputTransport" class="engine-input" type="number" min="0" max="100000" step="1" /></div>
+              <div class="engine-field"><label for="prodInputDelivery">Delivery (BDT)</label><input id="prodInputDelivery" class="engine-input" type="number" min="0" max="100000" step="1" /></div>
+              <div class="engine-field"><label for="prodInputCAC">CAC (BDT)</label><input id="prodInputCAC" class="engine-input" type="number" min="0" max="100000" step="1" /></div>
+              <div class="engine-field"><label for="prodInputMarginPct">Target Margin (%)</label><input id="prodInputMarginPct" class="engine-input" type="number" min="0" max="99.99" step="0.1" /></div>
               <fieldset class="engine-field" style="border:0;padding:0;margin:0;">
                 <legend style="font-weight:600;font-size:12px;margin-bottom:5px;">Discount Type & Value</legend>
                 <div class="discount-type-group" role="radiogroup" aria-label="Product discount mode">
-                  <button type="button" class="discount-type-btn active" id="prodBtnTypePct" role="radio" aria-checked="true">Percentage (%)</button>
+                  <button type="button" class="discount-type-btn active" id="prodBtnTypeGlobal" role="radio" aria-checked="true">Global</button>
+                  <button type="button" class="discount-type-btn" id="prodBtnTypePct" role="radio" aria-checked="false">Percentage (%)</button>
                   <button type="button" class="discount-type-btn" id="prodBtnTypeAmt" role="radio" aria-checked="false">Amount (BDT)</button>
                 </div>
-                <input id="prodInputDiscountVal" class="engine-input" type="number" min="0" step="1" style="margin-top:4px;" required />
+                <input id="prodInputDiscountVal" class="engine-input" type="number" min="0" step="1" style="margin-top:4px;" />
               </fieldset>
             </div>
             <div class="engine-preview-card">
-              <div class="engine-preview-row"><span>Selling Price for this SKU:</span><strong id="prodSummarySelling" style="font-size:16px;color:var(--brand-blue);">—</strong></div>
+              <div class="engine-preview-row"><span>Pinned for this SKU:</span><strong id="prodSummaryPinned">Nothing — follows global</strong></div>
+              <div class="engine-preview-row"><span>Global engine price:</span><strong id="prodSummaryGlobalPrice">—</strong></div>
+              <div class="engine-preview-row total-highlight"><span>Selling Price for this SKU:</span><strong id="prodSummarySelling" style="font-size:16px;color:var(--brand-blue);">—</strong></div>
             </div>
             <div id="productTuneStatus" class="status-message" role="status" aria-live="polite"></div>
             <div style="display:flex;gap:10px;">

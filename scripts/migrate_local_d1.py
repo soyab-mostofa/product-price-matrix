@@ -12,10 +12,38 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 D1_DIR = ROOT / ".wrangler/state/v3/d1/miniflare-D1DatabaseObject"
+SPARSE_OVERRIDES_MIGRATION_PATH = ROOT / "migrations/0003_sparse_pricing_overrides.sql"
+
+
+def _sparse_overrides_migration() -> str:
+    """The 0003 migration body, minus the transaction/pragma wrapper.
+
+    migrate_database() already owns the transaction, and sqlite3 refuses a
+    nested BEGIN, so the file's own BEGIN/COMMIT lines are stripped here rather
+    than duplicated in Python.
+    """
+    text = SPARSE_OVERRIDES_MIGRATION_PATH.read_text(encoding="utf-8")
+    skipped = ("PRAGMA foreign_keys", "BEGIN TRANSACTION;", "COMMIT;")
+    return "\n".join(
+        line for line in text.splitlines()
+        if not line.strip().startswith(skipped)
+    )
 
 
 def columns(connection: sqlite3.Connection, table: str) -> set[str]:
     return {str(row[1]) for row in connection.execute(f"PRAGMA table_info({table})")}
+
+
+def _overrides_are_dense(connection: sqlite3.Connection) -> bool:
+    """True while product_pricing_overrides still forces all seven fields.
+
+    PRAGMA table_info reports notnull=1 for the pre-0003 shape; the sparse
+    table leaves every tunable column nullable.
+    """
+    return any(
+        str(row[1]) != "product_row_id" and str(row[1]) != "updated_at" and row[3] == 1
+        for row in connection.execute("PRAGMA table_info(product_pricing_overrides)")
+    )
 
 
 def table_exists(connection: sqlite3.Connection, table: str) -> bool:
@@ -101,6 +129,10 @@ def migrate_database(path: Path) -> list[str]:
                     """
                 )
                 changes.append("product_pricing_overrides.product_row_id")
+
+            if _overrides_are_dense(connection):
+                connection.executescript(_sparse_overrides_migration())
+                changes.append("product_pricing_overrides.sparse")
 
         connection.execute(
             """

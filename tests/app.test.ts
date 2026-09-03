@@ -188,3 +188,103 @@ describe('Hono application', () => {
     expect(res.status).toBe(403)
   })
 })
+
+describe('sparse per-product overrides', () => {
+  function overrideEnv() {
+    const db = fakeDb({
+      products: [{ row_id: 1, product_name: 'Test Serum', brand_name: 'Guerniss', manufactured_price: 100, market_average_price: 200 }],
+      globalParams: PRICING_DEFAULTS,
+    })
+    // The route looks the product up by row_id before writing.
+    const originalPrepare = db.prepare.bind(db)
+    db.prepare = (sql: string) => {
+      const statement = originalPrepare(sql)
+      if (sql.includes('SELECT row_id FROM products')) {
+        return { ...statement, bind: () => ({ ...statement, first: async () => ({ row_id: 1 }) }) }
+      }
+      return statement
+    }
+    return {
+      db,
+      env: {
+        DB: db as any,
+        ADMIN_PASSWORD: 'correct-horse-battery-staple',
+        SESSION_SECRET: 'long-secret-key-for-testing-hono-app',
+      } satisfies EnvBindings,
+    }
+  }
+
+  async function postOverride(testEnv: EnvBindings, cookie: string, body: unknown) {
+    return app.request('https://matrix.example/api/overrides', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Origin: 'https://matrix.example',
+        Cookie: cookie,
+        'X-Price-Matrix-Admin': '1',
+      },
+      body: JSON.stringify(body),
+    }, testEnv)
+  }
+
+  test('stores only the fields that differ from global', async () => {
+    const { env: testEnv } = overrideEnv()
+    const cookie = await loginCookie(testEnv)
+
+    // Packaging echoes the global default; only the margin is a real tune.
+    const res = await postOverride(testEnv, cookie, {
+      productRowId: 1,
+      override: { packaging: 20, targetMarginPct: 30 },
+    })
+    expect(res.status).toBe(200)
+    const data = await res.json() as any
+    expect(data.success).toBe(true)
+    expect(data.override.targetMarginPct).toBe(30)
+    expect(data.override.packaging).toBeUndefined()
+    expect(data.override.updatedAt).toBeString()
+  })
+
+  test('clears the row when a tune pins nothing', async () => {
+    const { db, env: testEnv } = overrideEnv()
+    const cookie = await loginCookie(testEnv)
+    db.seen.length = 0
+
+    const res = await postOverride(testEnv, cookie, {
+      productRowId: 1,
+      override: { packaging: 20, delivery: 60 }, // both identical to global
+    })
+    expect(res.status).toBe(200)
+    const data = await res.json() as any
+    expect(data.cleared).toBe(true)
+    expect(data.override).toBeNull()
+    expect(db.seen.some((sql) => sql.includes('DELETE FROM product_pricing_overrides'))).toBe(true)
+    expect(db.seen.some((sql) => sql.includes('INSERT INTO product_pricing_overrides'))).toBe(false)
+  })
+
+  test('rejects half a discount pair before touching D1', async () => {
+    const { db, env: testEnv } = overrideEnv()
+    const cookie = await loginCookie(testEnv)
+    db.seen.length = 0
+
+    const res = await postOverride(testEnv, cookie, {
+      productRowId: 1,
+      override: { discountType: 'amt' },
+    })
+    expect(res.status).toBe(400)
+    expect(db.seen).toHaveLength(0)
+  })
+
+  test('blocks unauthenticated override writes', async () => {
+    const { env: testEnv } = overrideEnv()
+    const res = await app.request('https://matrix.example/api/overrides', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Origin: 'https://matrix.example',
+        'X-Price-Matrix-Admin': '1',
+      },
+      body: JSON.stringify({ productRowId: 1, override: { targetMarginPct: 30 } }),
+    }, testEnv)
+    expect(res.status).toBe(401)
+  })
+})

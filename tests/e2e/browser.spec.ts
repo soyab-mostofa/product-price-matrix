@@ -1,6 +1,11 @@
 import { expect, test } from '@playwright/test'
-import type { CatalogPayload, PricingParams } from '../../src/types'
-import { calculateMarketDiscount, calculateMarkup, calculateSellingPrice } from '../../src/client/model'
+import type { CatalogPayload, PricingParams, StoredPricingOverride } from '../../src/types'
+import {
+  calculateMarketDiscount,
+  calculateMarkup,
+  calculateSellingPrice,
+  resolvePricingParams,
+} from '../../src/client/model'
 
 const parseBdt = (text: string): number => {
   const match = text.match(/BDT\s*([\d,]+)/)
@@ -88,10 +93,17 @@ test('select and clickable header sorts work in both directions', async ({ page 
 test('product discount mode controls update the live calculation preview', async ({ page }) => {
   await page.locator('#body tr[data-row-id]').first().click()
   await page.locator('#tabTuneBtn').click()
-  await page.locator('#prodInputDiscountVal').fill('10')
+
+  // A fresh SKU inherits the global discount, so the value input is inert
+  // until a concrete mode pins it for this product.
+  await expect(page.locator('#prodBtnTypeGlobal')).toHaveAttribute('aria-checked', 'true')
+  await expect(page.locator('#prodInputDiscountVal')).toBeDisabled()
+  await expect(page.locator('#prodSummaryPinned')).toContainText('follows global')
 
   await page.locator('#prodBtnTypePct').click()
   await expect(page.locator('#prodBtnTypePct')).toHaveAttribute('aria-checked', 'true')
+  await expect(page.locator('#prodInputDiscountVal')).toBeEnabled()
+  await page.locator('#prodInputDiscountVal').fill('10')
   const percentagePrice = parseBdt(await page.locator('#prodSummarySelling').innerText())
 
   await page.locator('#prodBtnTypeAmt').click()
@@ -99,6 +111,59 @@ test('product discount mode controls update the live calculation preview', async
   const amountPrice = parseBdt(await page.locator('#prodSummarySelling').innerText())
 
   expect(amountPrice).toBeGreaterThan(percentagePrice)
+
+  // Returning to Global un-pins the discount entirely.
+  await page.locator('#prodBtnTypeGlobal').click()
+  await expect(page.locator('#prodInputDiscountVal')).toBeDisabled()
+  await expect(page.locator('#prodSummaryPinned')).toContainText('follows global')
+})
+
+test('an un-pinned tune field keeps following the global engine', async ({ page, request }) => {
+  // A SKU tuned only on margin must still absorb a global delivery change.
+  const catalog = await (await request.get('/api/products')).json() as CatalogPayload
+  const product = catalog.products[0]!
+  const tunedRowId = String(product.row)
+
+  const engineResponse = (delivery: number) => JSON.stringify({
+    success: true,
+    globalParams: {
+      packaging: 20, transport: 0, delivery, cac: 0,
+      targetMarginPct: 0, discountType: 'pct', discountVal: 0,
+    } satisfies PricingParams,
+    overrides: { [tunedRowId]: { targetMarginPct: 50, updatedAt: '2026-01-01T00:00:00.000Z' } },
+  })
+
+  await page.route('**/api/engine', (route) => route.fulfill({
+    contentType: 'application/json',
+    body: engineResponse(60),
+  }))
+  await page.reload()
+  await page.waitForLoadState('networkidle')
+
+  const tunedRow = page.locator(`#body tr[data-row-id="${tunedRowId}"] .col-selling-price`)
+  await expect(tunedRow.locator('.custom-tune-tag')).toHaveText('Tuned')
+  await expect(tunedRow.locator('.custom-tune-tag')).toHaveAttribute('title', /Target Margin/)
+
+  const withCheapDelivery = calculateSellingPrice(product.manufactured_price, {
+    packaging: 20, transport: 0, delivery: 60, cac: 0,
+    targetMarginPct: 50, discountType: 'pct', discountVal: 0,
+  })
+  expect(parseBdt(await tunedRow.innerText())).toBe(withCheapDelivery)
+
+  // Raise global delivery; the pinned margin stays, the delivery flows through.
+  await page.route('**/api/engine', (route) => route.fulfill({
+    contentType: 'application/json',
+    body: engineResponse(200),
+  }))
+  await page.reload()
+  await page.waitForLoadState('networkidle')
+
+  const withPriceyDelivery = calculateSellingPrice(product.manufactured_price, {
+    packaging: 20, transport: 0, delivery: 200, cac: 0,
+    targetMarginPct: 50, discountType: 'pct', discountVal: 0,
+  })
+  expect(withPriceyDelivery).toBeGreaterThan(withCheapDelivery!)
+  expect(parseBdt(await tunedRow.innerText())).toBe(withPriceyDelivery)
 })
 
 test('marketplace links remain keyboard-operable and clearly named', async ({ page }) => {
@@ -166,7 +231,7 @@ test('all rendered prices and markup chips match the authoritative API', async (
   const catalog = await (await request.get('/api/products')).json() as CatalogPayload
   const engine = await (await request.get('/api/engine')).json() as {
     globalParams: PricingParams
-    overrides: Record<string, PricingParams>
+    overrides: Record<string, StoredPricingOverride>
   }
   const rendered = await page.locator('#body tr[data-row-id]').evaluateAll((rows) => Object.fromEntries(rows.map((row) => {
     const sourceCells = [...row.querySelectorAll<HTMLElement>('td[data-source]')].map((cell) => [
@@ -198,7 +263,8 @@ test('all rendered prices and markup chips match the authoritative API', async (
     expect(parseBdt(row!.mfg)).toBe(Math.round(product.manufactured_price))
     expect(parseBdt(row!.market)).toBe(Math.round(product.market_average_price))
 
-    const params = engine.overrides[String(product.row)] ?? engine.globalParams
+    // Overrides are sparse: un-pinned fields resolve against the global engine.
+    const params = resolvePricingParams(engine.globalParams, engine.overrides[String(product.row)])
     const sellingPrice = calculateSellingPrice(product.manufactured_price, params)
     expect(sellingPrice).not.toBeNull()
     expect(parseBdt(row!.selling)).toBe(sellingPrice)
@@ -221,12 +287,17 @@ test('all rendered prices and markup chips match the authoritative API', async (
 
 test('market-discount toggle recalculates displayed comparison chips', async ({ page, request }) => {
   const catalog = await (await request.get('/api/products')).json() as CatalogPayload
-  const engine = await (await request.get('/api/engine')).json() as { globalParams: PricingParams }
+  const engine = await (await request.get('/api/engine')).json() as {
+    globalParams: PricingParams
+    overrides: Record<string, StoredPricingOverride>
+  }
   await page.locator('#toggleSellingChipModeBtn').click()
   await expect(page.locator('#toggleSellingChipModeBtn')).toHaveAttribute('aria-pressed', 'true')
 
   for (const product of catalog.products.slice(0, 30)) {
-    const selling = calculateSellingPrice(product.manufactured_price, engine.globalParams)
+    // Tuned SKUs resolve their sparse override over the global engine.
+    const params = resolvePricingParams(engine.globalParams, engine.overrides[String(product.row)])
+    const selling = calculateSellingPrice(product.manufactured_price, params)
     const discount = calculateMarketDiscount(selling, product.market_average_price)
     const chip = await page.locator(`#body tr[data-row-id="${product.row}"] .col-selling-price .markup-chip`).innerText()
     expect(chip).toContain(String(Math.abs(Number(discount!.toFixed(0)))))

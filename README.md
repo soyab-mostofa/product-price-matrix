@@ -25,7 +25,8 @@ src/
 ├── components/       Hono JSX page components
 ├── client/           Browser state, rendering, filters, sorting, and pricing UI
 ├── routes/           Auth, products, pricing engine, and override APIs
-├── server/           D1 catalog, authentication, and pricing domain logic
+├── server/           D1 catalog, authentication, and pricing request validation
+├── shared/           Dependency-free pricing domain logic (worker + browser)
 └── index.tsx         Hono application entry point
 
 tests/                TypeScript, Python, and Playwright tests
@@ -40,6 +41,39 @@ verified_match_audit.json
 schema.sql
 seed.sql
 ```
+
+## Pricing engine
+
+The recommended selling price for a SKU is:
+
+```text
+list  = (MFG + packaging + transport + delivery + CAC) / (1 - margin%)
+final = list × (1 - discount%)      # percentage mode
+final = list − discountBDT          # amount mode
+```
+
+Parameters resolve in two layers, both persisted in Cloudflare D1 (there is no
+`localStorage` state — a tune survives reloads, browsers, and devices):
+
+1. **Global defaults** — `global_pricing_params`, edited in the navbar *Pricing Engine* modal.
+2. **Per-product tunes** — `product_pricing_overrides`, edited in a product's *Custom Pricing Engine* tab.
+
+A tune is **sparse**: it pins only the fields you actually change, and every
+other field keeps following the global engine. Leave an input blank to inherit
+(the placeholder shows the live global value); fill it to pin it. Rows carrying
+a pinned field show a purple `Tuned` pill whose tooltip names what is pinned.
+
+So a SKU tuned to a 30% margin still absorbs a later global delivery increase,
+while its margin stays put. Rules enforced in the schema, the worker, and tests:
+
+- `discount_type` and `discount_val` pin as a pair or not at all.
+- A tune that pins nothing is deleted, never stored as an all-`NULL` row.
+- A field submitted equal to the current global value is stripped before the
+  write, so it cannot silently freeze against future global changes.
+
+`src/shared/pricing.ts` holds the merge and formula logic used verbatim by both
+the worker and the browser bundle; `src/server/pricing.ts` adds the zod request
+schemas and is never imported by the client, keeping zod out of `app.js`.
 
 ## Development
 

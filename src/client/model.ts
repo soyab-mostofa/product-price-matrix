@@ -1,4 +1,15 @@
-import type { PricingParams, Product } from '../types'
+import type { Product } from '../types'
+
+// The pricing formula and override-merge rules live in one dependency-free
+// module shared by the worker and the browser bundle; re-exported here so
+// existing client imports keep working without a second, drifting implementation.
+export {
+  calculateSellingPrice,
+  isEmptyOverride,
+  overriddenFields,
+  resolvePricingParams,
+  sparsifyOverride,
+} from '../shared/pricing'
 
 export type SortValue =
   | 'product' | 'productDesc'
@@ -27,19 +38,6 @@ export function calculateMarketDiscount(sellingPrice: number | null, benchmarkPr
     return null
   }
   return ((benchmarkPrice - sellingPrice) / benchmarkPrice) * 100
-}
-
-export function calculateSellingPrice(manufacturedPrice: number, params: PricingParams): number | null {
-  if (!Number.isFinite(manufacturedPrice) || manufacturedPrice <= 0) return null
-  const overhead = params.packaging + params.transport + params.delivery + params.cac
-  const marginRate = params.targetMarginPct / 100
-  if (!Number.isFinite(overhead) || marginRate < 0 || marginRate >= 1) return null
-
-  const listPrice = (manufacturedPrice + overhead) / (1 - marginRate)
-  const discounted = params.discountType === 'pct'
-    ? listPrice * (1 - params.discountVal / 100)
-    : listPrice - params.discountVal
-  return Math.round(Math.max(0, discounted))
 }
 
 export function filterProducts(products: readonly Product[], filters: ProductFilters): Product[] {
