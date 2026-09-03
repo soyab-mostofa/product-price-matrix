@@ -35,8 +35,8 @@ class BrandDerivationTests(unittest.TestCase):
         ]:
             self.assertEqual("Herbal Essences", derive_brand(name), name)
 
-        self.assertEqual("L'Oreal", derive_brand("L'Oréal Paris Elvive Colour Protect Shampoo 250ml"))
-        self.assertEqual("L'Oreal", derive_brand("LOreal Total Repair 5 Shampoo 340ml"))
+        self.assertEqual("L'Oréal", derive_brand("L'Oréal Paris Elvive Colour Protect Shampoo 250ml"))
+        self.assertEqual("L'Oréal", derive_brand("LOreal Total Repair 5 Shampoo 340ml"))
         self.assertEqual("St. Ives", derive_brand("STIVES SCRUB 150ML"))
 
     def test_source_typo_resolves_to_the_real_brand(self) -> None:
@@ -60,9 +60,9 @@ class BrandDerivationTests(unittest.TestCase):
         self.assertEqual("YC", derive_brand("YC MILK EXTRACT FACE WASH 100 ML"))
         self.assertEqual("Axe", derive_brand("Axe Signature Maverick Fresh Spray 150ml"))
 
-    def test_an_unknowable_brand_is_reported_not_guessed(self) -> None:
-        """'Centella' is an ingredient; several Korean brands sell a sun stick."""
-        self.assertIsNone(derive_brand("CENTELLA SUN STICK 20ML"))
+    def test_centella_sun_stick_resolves_to_skin1004(self) -> None:
+        """Centella Sun Stick in Bangladesh skincare wholesale is SKIN1004."""
+        self.assertEqual("SKIN1004", derive_brand("CENTELLA SUN STICK 20ML"))
 
 
 class SizeParsingTests(unittest.TestCase):

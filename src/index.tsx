@@ -1,4 +1,4 @@
-import { Hono } from 'hono'
+import { Hono, type Context } from 'hono'
 import { Header } from './components/Header'
 import { Layout } from './components/Layout'
 import { Modals } from './components/Modals'
@@ -19,7 +19,7 @@ app.route('/api/engine', engine)
 app.route('/api/overrides', overrides)
 
 /** Both books render the same matrix; only the dataset behind it differs. */
-const dashboard = (origin: SourcingOrigin) => async (c: any) => {
+const dashboard = (origin: SourcingOrigin) => async (c: Context<AppEnv>) => {
   const meta = await fetchDashboardMeta(c.env.DB, origin)
   return c.html(
     <Layout>

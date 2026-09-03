@@ -8,8 +8,10 @@ later upgrades once it finds and confirms the live page.
 
 from __future__ import annotations
 
+import json
 import sqlite3
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -18,6 +20,7 @@ from imported_seed import find_overlaps, read_workbook  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 D1_DIR = ROOT / ".wrangler/state/v3/d1/miniflare-D1DatabaseObject"
+REPORT_PATH = ROOT / "imported_seed_report.json"
 
 # A brand is required by the schema; one SKU genuinely cannot be resolved and
 # is parked here rather than guessed at. See tests/test_imported_seed.py.
@@ -93,7 +96,41 @@ def seed(path: Path) -> dict[str, int]:
                 )
                 listings += 1
 
+        # Recompute authoritative MRP from active listings
+        connection.execute(
+            """
+            UPDATE products
+               SET market_average_price = COALESCE(
+                     (SELECT price FROM marketplace_listings
+                       WHERE row_id = products.row_id AND channel_name = 'Official Store' AND available = 1),
+                     (SELECT AVG(price) FROM marketplace_listings
+                       WHERE row_id = products.row_id AND available = 1),
+                     products.manufactured_price
+                   ),
+                   mrp_source_type = CASE
+                     WHEN EXISTS (SELECT 1 FROM marketplace_listings
+                                   WHERE row_id = products.row_id AND channel_name = 'Official Store' AND available = 1) THEN 'official'
+                     WHEN EXISTS (SELECT 1 FROM marketplace_listings
+                                   WHERE row_id = products.row_id AND available = 1) THEN 'third_party_avg'
+                     ELSE 'reference'
+                   END
+             WHERE sourcing_origin = 'imported'
+            """
+        )
+
         connection.commit()
+
+        report_data = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "products_total": len(report.skus),
+            "listings_total": report.listing_count,
+            "unresolved_brands": report.unresolved_brands,
+            "missing_sizes": report.missing_sizes,
+            "overlaps": [list(o) for o in report.overlaps],
+            "rejected_prices": [list(r) for r in report.rejected_prices],
+        }
+        REPORT_PATH.write_text(json.dumps(report_data, indent=2), encoding="utf-8")
+
         return {
             "products_inserted": products,
             "products_written": written,

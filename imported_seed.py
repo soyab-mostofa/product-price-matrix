@@ -44,21 +44,23 @@ BRANDS = [
     "Kodomo", "Missha", "Cosrx", "Nivea", "Simple", "Streax", "Vatika", "Rasasi",
     "Ossum", "Havoc", "Havex", "Jaguar", "Denver", "Fiama", "Sesa", "Anua",
     "Axis-Y", "APLB", "Dabo", "Boots", "Olay", "Veet", "Fogg", "Axe", "Lux",
-    "Dove", "Ponds", "L'Oreal", "YC", "Skinfood", "Innisfree", "Laneige",
+    "Dove", "Pond's", "L'Oréal", "YC", "Skinfood", "Innisfree", "Laneige",
     "Etude", "Nykaa", "Plum", "Ustraa", "Beardo", "Khadi", "Vega", "Kama",
-    "Q Cosmetics", "Nature Beauty",
+    "Q Cosmetics", "Nature Beauty", "SKIN1004",
 ]
 
 # Source spellings that mean an existing brand. Matched after normalisation
 # (case-folded, punctuation-stripped), so only genuine variants need listing.
 BRAND_ALIASES = {
-    "loreal": "L'Oreal",
-    "l oreal paris elvive": "L'Oreal",
+    "loreal": "L'Oréal",
+    "l oreal": "L'Oréal",
+    "l oreal paris elvive": "L'Oréal",
     "head shoulder": "Head & Shoulders",
     "head shoulders": "Head & Shoulders",
     "head and shoulders": "Head & Shoulders",
     "herbal essence": "Herbal Essences",
-    "pond s": "Ponds",
+    "ponds": "Pond's",
+    "pond s": "Pond's",
     "johnson": "Johnson's",
     "stives": "St. Ives",
     "st ives": "St. Ives",
@@ -69,7 +71,8 @@ BRAND_ALIASES = {
     "palmers": "Palmer's",
     "johnsons": "Johnson's",
     "tresemme": "TRESemme",
-    "secret tone": "Secret Tone",
+    "secret tone": "Christian Dean",
+    "centella sun stick": "SKIN1004",
 }
 
 # Sub-brands answer to their parent, per the catalog's brand hierarchy.

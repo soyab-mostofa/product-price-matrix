@@ -666,13 +666,16 @@ async function syncData() {
           }
 
           // Local SKUs carry no category, so the control stays hidden on that book.
+          const categoryField = document.getElementById('categoryField')
           if (categoryFilter) {
             const currentCategory = categoryFilter.value
             const categories = data.categories ?? []
             categoryFilter.innerHTML = '<option value="">All Categories</option>'
             categories.forEach((category) => categoryFilter.add(new Option(category, category)))
             categoryFilter.value = currentCategory
-            categoryFilter.hidden = categories.length === 0
+            const isHidden = categories.length === 0
+            categoryFilter.hidden = isHidden
+            if (categoryField) categoryField.hidden = isHidden
           }
         } else {
           messages.push('Catalog data is unavailable or invalid.')
@@ -1009,6 +1012,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Export JSON
   document.getElementById('download')?.addEventListener('click', () => {
     const exportData = {
+      origin: pageOrigin,
       generated_at: new Date().toISOString(),
       global_cost_parameters: globalCostParams,
       product_custom_overrides: productOverrides,
@@ -1023,7 +1027,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const url = URL.createObjectURL(blob)
     const anchor = document.createElement('a')
     anchor.href = url
-    anchor.download = 'product_pricing_data.json'
+    anchor.download = `product_pricing_data_${pageOrigin}.json`
     anchor.click()
     URL.revokeObjectURL(url)
   })

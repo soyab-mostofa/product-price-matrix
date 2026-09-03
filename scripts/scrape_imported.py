@@ -115,6 +115,28 @@ def record(connection: sqlite3.Connection, row_id: int, channel: str,
         "  confidence = excluded.confidence, verified = 1",
         (row_id, channel, price, url, title, channel, confidence),
     )
+    # Recompute authoritative MRP from active listings
+    connection.execute(
+        """
+        UPDATE products
+           SET market_average_price = COALESCE(
+                 (SELECT price FROM marketplace_listings
+                   WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1),
+                 (SELECT AVG(price) FROM marketplace_listings
+                   WHERE row_id = ?1 AND available = 1),
+                 manufactured_price
+               ),
+               mrp_source_type = CASE
+                 WHEN EXISTS (SELECT 1 FROM marketplace_listings
+                               WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1) THEN 'official'
+                 WHEN EXISTS (SELECT 1 FROM marketplace_listings
+                               WHERE row_id = ?1 AND available = 1) THEN 'third_party_avg'
+                 ELSE 'reference'
+               END
+         WHERE row_id = ?1
+        """,
+        (row_id,),
+    )
 
 
 def replica_paths(explicit: Path | None) -> list[Path]:

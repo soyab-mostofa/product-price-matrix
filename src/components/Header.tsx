@@ -29,9 +29,9 @@ export function Header({ meta }: { meta: DashboardMeta }) {
           <label class="sr-only" for="sourceFilter">Filter by marketplace</label>
           <select id="sourceFilter"><option value="">All Channels</option>{meta.channels.map((channel) => <option value={channel}>{channel}</option>)}</select>
         </div>
-        <div class="select-field">
+        <div class="select-field" id="categoryField" hidden={meta.categories.length === 0}>
           <label class="sr-only" for="categoryFilter">Filter by category</label>
-          <select id="categoryFilter" hidden={meta.categories.length === 0}>
+          <select id="categoryFilter">
             <option value="">All Categories</option>
             {meta.categories.map((category) => <option value={category}>{category}</option>)}
           </select>
