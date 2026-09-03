@@ -2,9 +2,6 @@
 -- Keep product_name until the authenticated Hono worker is deployed and verified;
 -- a later contract migration may remove it.
 
-PRAGMA foreign_keys = OFF;
-BEGIN TRANSACTION;
-
 ALTER TABLE products ADD COLUMN mrp_source_type TEXT NOT NULL DEFAULT 'reference';
 UPDATE products
    SET mrp_source_type = CASE
@@ -48,5 +45,3 @@ CREATE TABLE IF NOT EXISTS admin_login_attempts (
 
 CREATE INDEX IF NOT EXISTS idx_listings_available ON marketplace_listings(available);
 
-COMMIT;
-PRAGMA foreign_keys = ON;

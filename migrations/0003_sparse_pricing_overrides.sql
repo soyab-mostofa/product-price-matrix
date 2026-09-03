@@ -11,7 +11,6 @@
 -- because an amount is meaningless under a percentage mode and vice versa.
 
 PRAGMA foreign_keys = OFF;
-BEGIN TRANSACTION;
 
 CREATE TABLE product_pricing_overrides_sparse (
   product_row_id INTEGER PRIMARY KEY,
@@ -87,5 +86,5 @@ WHERE override.product_row_id IS NOT NULL
 DROP TABLE product_pricing_overrides;
 ALTER TABLE product_pricing_overrides_sparse RENAME TO product_pricing_overrides;
 
-COMMIT;
 PRAGMA foreign_keys = ON;
+

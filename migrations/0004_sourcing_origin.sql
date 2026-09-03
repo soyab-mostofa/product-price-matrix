@@ -15,7 +15,6 @@
 -- keys are held off for the swap and the child rows are left untouched.
 
 PRAGMA foreign_keys = OFF;
-BEGIN TRANSACTION;
 
 CREATE TABLE products_with_origin (
   row_id INTEGER PRIMARY KEY,
@@ -49,5 +48,5 @@ ALTER TABLE products_with_origin RENAME TO products;
 CREATE INDEX IF NOT EXISTS idx_products_brand ON products(brand_name);
 CREATE INDEX IF NOT EXISTS idx_products_origin ON products(sourcing_origin);
 
-COMMIT;
 PRAGMA foreign_keys = ON;
+

@@ -14,7 +14,6 @@
 -- unverified listing may have one (a link found but not yet confirmed) or not.
 
 PRAGMA foreign_keys = OFF;
-BEGIN TRANSACTION;
 
 CREATE TABLE marketplace_listings_with_verification (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,5 +51,4 @@ CREATE INDEX IF NOT EXISTS idx_listings_channel ON marketplace_listings(channel_
 CREATE INDEX IF NOT EXISTS idx_listings_row ON marketplace_listings(row_id);
 CREATE INDEX IF NOT EXISTS idx_listings_available ON marketplace_listings(available);
 
-COMMIT;
 PRAGMA foreign_keys = ON;
