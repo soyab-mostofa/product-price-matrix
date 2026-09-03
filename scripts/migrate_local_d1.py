@@ -195,6 +195,12 @@ def bootstrap_database(path: Path) -> None:
     finally:
         connection.close()
 
+    try:
+        from seed_imported import seed as seed_imported
+        seed_imported(path)
+    except Exception as exc:
+        print(f"Warning: imported seed failed during bootstrap: {exc}")
+
 
 def main() -> None:
     database_paths = sorted(D1_DIR.glob("*.sqlite")) if D1_DIR.exists() else []

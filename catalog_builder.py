@@ -253,7 +253,7 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
             f"{_sql_text(defaults['discountType'])}, {defaults['discountVal']}) "
             "ON CONFLICT(id) DO NOTHING;"
         ),
-        "DELETE FROM marketplace_listings;",
+        "DELETE FROM marketplace_listings WHERE row_id IN (SELECT row_id FROM products WHERE sourcing_origin = 'local');",
     ]
 
     row_ids: list[str] = []
@@ -262,16 +262,17 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
         row_ids.append(str(row_id))
         lines.append(
             "INSERT INTO products "
-            "(row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type) "
+            "(row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin) "
             f"VALUES ({row_id}, {_sql_text(product['product_name'])}, {_sql_text(product['brand_name'])}, "
             f"{_sql_text(product.get('size'))}, {_sql_number(product['manufactured_price'])}, "
             f"{_sql_number(product['market_average_price'])}, {_sql_text(product.get('canonical_name'))}, "
-            f"{_sql_text(product.get('mrp_source_type'))}) "
+            f"{_sql_text(product.get('mrp_source_type'))}, 'local') "
             "ON CONFLICT(row_id) DO UPDATE SET product_name=excluded.product_name, "
             "brand_name=excluded.brand_name, size=excluded.size, "
             "manufactured_price=excluded.manufactured_price, "
             "market_average_price=excluded.market_average_price, "
-            "canonical_name=excluded.canonical_name, mrp_source_type=excluded.mrp_source_type;"
+            "canonical_name=excluded.canonical_name, mrp_source_type=excluded.mrp_source_type, "
+            "sourcing_origin=excluded.sourcing_origin;"
         )
         for channel, listing in product.get("sources", {}).items():
             lines.append(
@@ -283,7 +284,7 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
                 f"{_sql_number(listing.get('confidence', 100))}, 1);"
             )
 
-    lines.append(f"DELETE FROM products WHERE row_id NOT IN ({', '.join(row_ids)});")
+    lines.append(f"DELETE FROM products WHERE sourcing_origin = 'local' AND row_id NOT IN ({', '.join(row_ids)});")
     lines.extend(["COMMIT;", ""])
     return "\n".join(lines)
 

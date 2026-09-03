@@ -1,28 +1,41 @@
-"""Discover marketplace listings for Imported SKUs.
+"""Multi-channel marketplace discovery engine for Imported SKUs.
 
-Storefronts here are JavaScript apps, not server-rendered HTML, so scraping the
-search page yields nothing. Shajgoj is a Next.js site backed by an Algolia
-index; its shop route exposes that index's results as structured JSON through
-Next's own data endpoint, which is both cheaper and more reliable than parsing
-markup. Every candidate still passes the project's strict matcher — brand,
-category, volume, bundle and shade — before it is recorded.
+Queries live e-commerce search APIs across Bangladesh's major beauty channels:
+  1. Shajgoj  (Next.js / Algolia SSR index endpoint)
+  2. Arogga   (Direct REST catalog search API: api.arogga.com)
+  3. OhSoGo   (Storefront catalog search API: ohsogo.com)
+  4. Daraz    (Direct marketplace AJAX catalog endpoint: daraz.com.bd)
 
-A confirmed live page upgrades the SKU's seeded workbook price in place rather
-than adding a second listing for the same channel.
+Every discovered candidate is evaluated through `sku_matcher.validate_match` to enforce
+strict brand, volume, category, bundle, and variant integrity. Accepted matches upgrade
+seeded workbook prices in place or insert verified listings with actual composite
+confidence scores.
 
-Run:  uv run --with primp --with rapidfuzz python3 scripts/scrape_imported.py
+Recomputes authoritative `market_average_price` and `mrp_source_type` across all
+replicas after every match, and writes an audit log to `imported_scrape_audit.json`
+and `imported_scrape_summary.json`.
+
+Usage:
+  uv run --with primp --with rapidfuzz python3 scripts/scrape_imported.py
+  uv run --with primp --with rapidfuzz python3 scripts/scrape_imported.py --channel Arogga
+  uv run --with primp --with rapidfuzz python3 scripts/scrape_imported.py --channel OhSoGo
+  uv run --with primp --with rapidfuzz python3 scripts/scrape_imported.py --channel Daraz
 """
 
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
+from pathlib import Path
 import re
 import sqlite3
 import sys
 import time
-from pathlib import Path
-from urllib.parse import quote_plus
+import urllib.error
+import urllib.parse
+import urllib.request
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -30,49 +43,54 @@ from sku_matcher import validate_match  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 D1_DIR = ROOT / ".wrangler/state/v3/d1/miniflare-D1DatabaseObject"
-PROGRESS = ROOT / "imported_scrape_progress.json"
+PROGRESS_PATH = ROOT / "imported_scrape_progress.json"
+AUDIT_PATH = ROOT / "imported_scrape_audit.json"
+SUMMARY_PATH = ROOT / "imported_scrape_summary.json"
 
-SHAJGOJ_HOST = "https://shop.shajgoj.com"
-_BUILD_ID = re.compile(r'"buildId":"([^"]+)"')
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 
 
-class Shajgoj:
-    """Reads the storefront's Algolia index through Next.js's data route."""
+def _http_get_json(url: str, timeout: int = 15) -> Any:
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return json.loads(resp.read().decode("utf-8", errors="replace"))
 
+
+class ShajgojChannel:
     name = "Shajgoj"
+    host = "https://shop.shajgoj.com"
+    _build_id_re = re.compile(r'"buildId":"([^"]+)"')
 
-    def __init__(self, client) -> None:
-        self.client = client
+    def __init__(self) -> None:
         self.build_id = self._read_build_id()
 
     def _read_build_id(self) -> str:
-        page = self.client.get(f"{SHAJGOJ_HOST}/shop", timeout=30).text
-        found = _BUILD_ID.search(page)
+        req = urllib.request.Request(f"{self.host}/shop", headers={"User-Agent": USER_AGENT})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            html = resp.read().decode("utf-8", errors="replace")
+        found = self._build_id_re.search(html)
         if not found:
-            raise RuntimeError("Shajgoj build id not found; the storefront changed shape")
+            raise RuntimeError("Shajgoj build ID not found on /shop")
         return found.group(1)
 
     def search(self, query: str) -> list[dict]:
-        """Hits for a query, or [] when the build id has rotated mid-crawl."""
-        url = f"{SHAJGOJ_HOST}/_next/data/{self.build_id}/shop.json?query={quote_plus(query[:90])}"
-        response = self.client.get(url, timeout=30)
-        if response.status_code == 404:
-            self.build_id = self._read_build_id()
-            response = self.client.get(
-                f"{SHAJGOJ_HOST}/_next/data/{self.build_id}/shop.json?query={quote_plus(query[:90])}",
-                timeout=30,
-            )
-        if response.status_code != 200:
-            raise RuntimeError(f"HTTP {response.status_code}")
+        url = f"{self.host}/_next/data/{self.build_id}/shop.json?query={urllib.parse.quote_plus(query[:80])}"
+        try:
+            payload = _http_get_json(url, timeout=12)
+        except urllib.error.HTTPError as exc:
+            if exc.code == 404:
+                self.build_id = self._read_build_id()
+                url = f"{self.host}/_next/data/{self.build_id}/shop.json?query={urllib.parse.quote_plus(query[:80])}"
+                payload = _http_get_json(url, timeout=12)
+            else:
+                raise
+        results = payload.get("pageProps", {}).get("serverState", {}).get("initialResults", {})
+        if not results:
+            return []
+        first = next(iter(results.values()))
+        return (first.get("results") or [{}])[0].get("hits", [])[:15]
 
-        payload = json.loads(response.text)
-        results = payload["pageProps"]["serverState"]["initialResults"]
-        first = next(iter(results.values()))["results"][0]
-        return first.get("hits", [])[:15]
-
-    @staticmethod
-    def listing(hit: dict) -> tuple[str, float, str, str] | None:
-        """(title, active price, url, size) — the discounted price when on sale."""
+    def extract(self, hit: dict) -> tuple[str, float, str, str | None] | None:
         name = str(hit.get("name") or "").strip()
         slug = str(hit.get("slug") or "").strip()
         if not name or not slug:
@@ -81,179 +99,316 @@ class Shajgoj:
         if price in (None, ""):
             price = hit.get("price")
         try:
-            value = float(price)  # type: ignore[arg-type]
+            val = float(price)  # type: ignore[arg-type]
         except (TypeError, ValueError):
             return None
-        if value <= 0:
+        if val <= 0:
             return None
-        return name, value, f"{SHAJGOJ_HOST}/product/{slug}", str(hit.get("size") or "")
+        return name, val, f"{self.host}/product/{slug}", str(hit.get("size") or "") or None
 
 
-def imported_skus(connection: sqlite3.Connection, limit: int | None) -> list[dict]:
-    rows = connection.execute(
-        "SELECT row_id, product_name, brand_name, size FROM products "
-        "WHERE sourcing_origin = 'imported' ORDER BY row_id"
-    ).fetchall()
-    skus = [dict(zip(("row_id", "product_name", "brand_name", "size"), row)) for row in rows]
-    return skus[:limit] if limit else skus
+class AroggaChannel:
+    name = "Arogga"
+
+    def search(self, query: str) -> list[dict]:
+        url = f"https://api.arogga.com/general/v3/search?_search={urllib.parse.quote_plus(query[:60])}&_page=1&_perPage=10"
+        payload = _http_get_json(url, timeout=12)
+        return payload.get("data", [])[:10]
+
+    def extract(self, hit: dict) -> tuple[str, float, str, str | None] | None:
+        name = str(hit.get("p_name") or "").strip()
+        pv_list = hit.get("pv") or []
+        if not name or not pv_list:
+            return None
+        pv = pv_list[0]
+        price = pv.get("pv_b2c_discounted_price") or pv.get("pv_b2c_price") or pv.get("pv_mrp")
+        pv_id = pv.get("pv_id") or hit.get("id")
+        if not price or not pv_id:
+            return None
+        try:
+            val = float(price)
+        except (TypeError, ValueError):
+            return None
+        if val <= 0:
+            return None
+        slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+        url = f"https://www.arogga.com/product/{pv_id}/{slug}"
+        size = str(pv.get("pu_b2c_sales_unit_label") or pv.get("pu_base_unit_label") or "") or None
+        return name, val, url, size
 
 
-def record(connection: sqlite3.Connection, row_id: int, channel: str,
-           title: str, price: float, url: str, confidence: float) -> None:
-    """Upgrade a seeded price in place; never duplicate a channel for one SKU.
+class OhSoGoChannel:
+    name = "OhSoGo"
+    host = "https://www.ohsogo.com"
 
-    The matcher's own score is stored rather than a flat 100, so a listing that
-    only just cleared the bar is distinguishable from an exact hit.
-    """
-    connection.execute(
-        "INSERT INTO marketplace_listings "
-        "  (row_id, channel_name, price, url, matched_title, seller, confidence, available, verified) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, 1, 1) "
-        "ON CONFLICT(row_id, channel_name) DO UPDATE SET "
-        "  price = excluded.price, url = excluded.url, "
-        "  matched_title = excluded.matched_title, "
-        "  confidence = excluded.confidence, verified = 1",
-        (row_id, channel, price, url, title, channel, confidence),
-    )
-    # Recompute authoritative MRP from active listings
-    connection.execute(
-        """
-        UPDATE products
-           SET market_average_price = COALESCE(
-                 (SELECT price FROM marketplace_listings
-                   WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1),
-                 (SELECT AVG(price) FROM marketplace_listings
-                   WHERE row_id = ?1 AND available = 1),
-                 manufactured_price
-               ),
-               mrp_source_type = CASE
-                 WHEN EXISTS (SELECT 1 FROM marketplace_listings
-                               WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1) THEN 'official'
-                 WHEN EXISTS (SELECT 1 FROM marketplace_listings
-                               WHERE row_id = ?1 AND available = 1) THEN 'third_party_avg'
-                 ELSE 'reference'
-               END
-         WHERE row_id = ?1
-        """,
-        (row_id,),
-    )
+    def search(self, query: str) -> list[dict]:
+        url = f"{self.host}/search/suggest.json?q={urllib.parse.quote_plus(query[:60])}&resources[type]=product"
+        payload = _http_get_json(url, timeout=12)
+        return payload.get("resources", {}).get("results", {}).get("products", [])[:10]
+
+    def extract(self, hit: dict) -> tuple[str, float, str, str | None] | None:
+        title = str(hit.get("title") or "").strip()
+        raw_url = str(hit.get("url") or "").strip()
+        raw_price = hit.get("price")
+        if not title or not raw_url or raw_price is None:
+            return None
+        try:
+            val = float(raw_price)
+        except (TypeError, ValueError):
+            return None
+        if val <= 0:
+            return None
+        clean_url = raw_url.split("?")[0]
+        full_url = f"{self.host}{clean_url}" if clean_url.startswith("/") else clean_url
+        return title, val, full_url, None
+
+
+class DarazChannel:
+    name = "Daraz"
+
+    def search(self, query: str) -> list[dict]:
+        url = f"https://www.daraz.com.bd/catalog/?q={urllib.parse.quote_plus(query[:60])}&ajax=true"
+        payload = _http_get_json(url, timeout=15)
+        return payload.get("mods", {}).get("listItems", [])[:15]
+
+    def extract(self, hit: dict) -> tuple[str, float, str, str | None] | None:
+        name = str(hit.get("name") or "").strip()
+        raw_item_url = str(hit.get("itemUrl") or "").strip()
+        raw_price = hit.get("price")
+        if not name or not raw_item_url or raw_price is None:
+            return None
+        try:
+            val = float(raw_price)
+        except (TypeError, ValueError):
+            return None
+        if val <= 0:
+            return None
+        url = f"https:{raw_item_url}" if raw_item_url.startswith("//") else raw_item_url
+        return name, val, url, None
+
+
+CHANNELS = {
+    "Shajgoj": ShajgojChannel,
+    "Arogga": AroggaChannel,
+    "OhSoGo": OhSoGoChannel,
+    "Daraz": DarazChannel,
+}
 
 
 def replica_paths(explicit: Path | None) -> list[Path]:
-    """Every initialised local replica.
-
-    Vite and `wrangler d1 execute --local` resolve the same binding to
-    different hashed files, so writing to just one leaves the other stale.
-    Picking by file size is worse than arbitrary — it changes as they grow.
-    """
     if explicit:
         return [explicit]
     found = []
     for path in sorted(D1_DIR.glob("*.sqlite")):
         if path.name == "metadata.sqlite":
             continue
-        connection = sqlite3.connect(path)
         try:
-            has_products = connection.execute(
-                "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='products'"
-            ).fetchone()[0]
-        finally:
-            connection.close()
-        if has_products:
-            found.append(path)
+            con = sqlite3.connect(path, timeout=5)
+            count = con.execute("SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='products'").fetchone()[0]
+            con.close()
+            if count:
+                found.append(path)
+        except Exception:
+            pass
     return found
+
+
+def record_match(connections: list[sqlite3.Connection], row_id: int, channel: str,
+                 title: str, price: float, url: str, confidence: float) -> None:
+    for con in connections:
+        con.execute(
+            """
+            INSERT INTO marketplace_listings
+              (row_id, channel_name, price, url, matched_title, seller, confidence, available, verified)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1, 1)
+            ON CONFLICT(row_id, channel_name) DO UPDATE SET
+              price = excluded.price,
+              url = excluded.url,
+              matched_title = excluded.matched_title,
+              confidence = excluded.confidence,
+              verified = 1
+            """,
+            (row_id, channel, price, url, title, channel, confidence),
+        )
+        con.execute(
+            """
+            UPDATE products
+               SET market_average_price = COALESCE(
+                     (SELECT price FROM marketplace_listings
+                       WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1),
+                     (SELECT AVG(price) FROM marketplace_listings
+                       WHERE row_id = ?1 AND available = 1),
+                     manufactured_price
+                   ),
+                   mrp_source_type = CASE
+                     WHEN EXISTS (SELECT 1 FROM marketplace_listings
+                                   WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1) THEN 'official'
+                     WHEN EXISTS (SELECT 1 FROM marketplace_listings
+                                   WHERE row_id = ?1 AND available = 1) THEN 'third_party_avg'
+                     ELSE 'reference'
+                   END
+             WHERE row_id = ?1
+            """,
+            (row_id,),
+        )
+        con.commit()
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--limit", type=int, default=None, help="only the first N SKUs")
-    parser.add_argument("--delay", type=float, default=0.8, help="seconds between requests")
-    parser.add_argument("--db", type=Path, default=None)
-    parser.add_argument("--reset", action="store_true", help="ignore saved progress")
-    parser.add_argument("--retries", type=int, default=2, help="attempts per SKU on network errors")
+    parser.add_argument("--channel", choices=list(CHANNELS.keys()) + ["all"], default="all",
+                        help="Specific marketplace channel to scrape (default: all)")
+    parser.add_argument("--limit", type=int, default=None, help="Limit to N products")
+    parser.add_argument("--delay", type=float, default=0.3, help="Delay between requests in seconds")
+    parser.add_argument("--retries", type=int, default=2, help="Network retry attempts")
+    parser.add_argument("--reset", action="store_true", help="Clear progress checkpoint")
     args = parser.parse_args()
 
-    import primp
-
-    databases = replica_paths(args.db)
+    databases = replica_paths(None)
     if not databases:
-        print("No local D1 replica found; run `bun run db:local:migrate` first.")
+        print("Error: No local D1 replicas found.")
         return
-    connections = [sqlite3.connect(path, timeout=30) for path in databases]
-    for connection in connections:
-        connection.execute("PRAGMA busy_timeout = 30000")
 
-    client = primp.Client(impersonate="chrome_130", timeout=30, verify=False)
-    channel = Shajgoj(client)
-    skus = imported_skus(connections[0], args.limit)
+    connections = [sqlite3.connect(p, timeout=30) for p in databases]
+    for c in connections:
+        c.execute("PRAGMA busy_timeout = 30000")
 
-    progress = {} if args.reset or not PROGRESS.exists() else json.loads(PROGRESS.read_text())
+    primary = connections[0]
+    skus = primary.execute(
+        """SELECT row_id, product_name, brand_name, size, category, manufactured_price
+             FROM products WHERE sourcing_origin = 'imported' ORDER BY row_id"""
+    ).fetchall()
+    if args.limit:
+        skus = skus[:args.limit]
+
+    # Baseline coverage check
+    before_coverage = primary.execute(
+        """SELECT count(DISTINCT row_id) FROM marketplace_listings l
+            WHERE EXISTS (SELECT 1 FROM products p WHERE p.row_id=l.row_id AND p.sourcing_origin='imported')
+              AND l.verified = 1"""
+    ).fetchone()[0]
+
+    progress: dict[str, Any] = {} if args.reset or not PROGRESS_PATH.exists() else json.loads(PROGRESS_PATH.read_text())
     done: set[str] = set(progress.get("done", []))
-    stats: dict[str, int] = {}
-    verified = 0
+    audit_log: list[dict[str, Any]] = []
 
-    print(f"Scraping {len(skus)} imported SKUs on {channel.name} (build {channel.build_id})")
-    print(f"Writing to {len(connections)} local replica(s)\n")
-    for index, sku in enumerate(skus, start=1):
-        key = f"{sku['row_id']}:{channel.name}"
-        if key in done:
-            continue
-        query = f"{sku['brand_name']} {sku['product_name']}"
+    active_channel_names = list(CHANNELS.keys()) if args.channel == "all" else [args.channel]
+    channel_instances = {}
+    for name in active_channel_names:
+        try:
+            channel_instances[name] = CHANNELS[name]()
+        except Exception as exc:
+            print(f"Failed to initialize channel {name}: {exc}")
 
-        # DNS and timeouts here are transient; a single blip should not cost a
-        # SKU its listing for the whole run.
-        hits, failure = [], None
-        for attempt in range(args.retries + 1):
-            try:
-                hits, failure = channel.search(query), None
-                break
-            except Exception as error:
-                failure = type(error).__name__
-                time.sleep(args.delay * (2 ** attempt))
-        if failure:
-            stats[f"error:{failure}"] = stats.get(f"error:{failure}", 0) + 1
-            continue
+    print(f"Starting imported catalog discovery:")
+    print(f"  Products: {len(skus)}")
+    print(f"  Channels: {', '.join(channel_instances.keys())}")
+    print(f"  Replicas: {len(connections)} databases synced")
+    print(f"  Pre-scrape verified coverage: {before_coverage}/{len(skus)} SKUs\n")
 
-        accepted = None
-        for hit in hits:
-            parsed = channel.listing(hit)
-            if not parsed:
+    verified_new = 0
+
+    for idx, (row_id, name, brand, size, cat, mfg_price) in enumerate(skus, start=1):
+        for ch_name, ch in channel_instances.items():
+            key = f"{row_id}:{ch_name}"
+            if key in done and not args.reset:
                 continue
-            title, price, url, size = parsed
-            verdict = validate_match(
-                brand=sku["brand_name"],
-                product_name=sku["product_name"],
-                target_size_text=sku["size"],
-                candidate_name=title,
-                candidate_context=channel.name,
-                candidate_size_text=size or None,
-            )
-            if verdict.accepted:
-                accepted = (title, price, url, max(0.0, min(100.0, float(verdict.score))))
-                break
 
-        if accepted:
-            for connection in connections:
-                record(connection, sku["row_id"], channel.name, *accepted)
-                connection.commit()
-            verified += 1
-            stats["matched"] = stats.get("matched", 0) + 1
-            print(f"  [{index}/{len(skus)}] {accepted[1]:>7.0f}  {accepted[0][:56]}  ({accepted[3]:.0f}%)")
-        else:
-            stats["no-valid-match" if hits else "no-results"] = \
-                stats.get("no-valid-match" if hits else "no-results", 0) + 1
+            query = f"{brand} {name}"
+            hits, error_str = [], None
+            for attempt in range(args.retries + 1):
+                try:
+                    hits = ch.search(query)
+                    break
+                except Exception as exc:
+                    error_str = type(exc).__name__
+                    time.sleep(args.delay * (2 ** attempt))
 
-        done.add(key)
-        PROGRESS.write_text(json.dumps({"done": sorted(done)}))
-        if index % 10 == 0:
-            print(f"  … {index}/{len(skus)} scanned, {verified} verified")
-        time.sleep(args.delay)
+            if error_str:
+                audit_log.append({
+                    "row_id": row_id, "brand": brand, "product": name, "channel": ch_name,
+                    "accepted": False, "reason": f"API error: {error_str}"
+                })
+                done.add(key)
+                continue
 
-    PROGRESS.write_text(json.dumps({"done": sorted(done)}))
-    for connection in connections:
-        connection.close()
-    print(f"\nVerified listings written: {verified}")
-    print("Outcomes: " + ", ".join(f"{k}={v}" for k, v in sorted(stats.items())))
+            matched_candidate = None
+            for hit in hits:
+                parsed = ch.extract(hit)
+                if not parsed:
+                    continue
+                cand_title, cand_price, cand_url, cand_size = parsed
+                verdict = validate_match(
+                    brand=brand,
+                    product_name=name,
+                    target_size_text=size,
+                    candidate_name=cand_title,
+                    candidate_context=ch_name,
+                    candidate_size_text=cand_size,
+                )
+                audit_log.append({
+                    "row_id": row_id, "brand": brand, "product": name, "channel": ch_name,
+                    "candidate_title": cand_title, "candidate_price": cand_price,
+                    "accepted": verdict.accepted, "reasons": verdict.reasons,
+                    "score": round(verdict.score, 2),
+                })
+                if verdict.accepted:
+                    matched_candidate = (cand_title, cand_price, cand_url, max(0.0, min(100.0, float(verdict.score))))
+                    break
+
+            if matched_candidate:
+                c_title, c_price, c_url, c_conf = matched_candidate
+                record_match(connections, row_id, ch_name, c_title, c_price, c_url, c_conf)
+                verified_new += 1
+                print(f"  [{idx}/{len(skus)}] {ch_name:10} ৳{c_price:>7.0f} ({c_conf:.0f}%) -> {c_title[:50]}")
+
+            done.add(key)
+            PROGRESS_PATH.write_text(json.dumps({"done": sorted(done)}))
+            time.sleep(args.delay)
+
+        if idx % 10 == 0:
+            print(f"  … processed {idx}/{len(skus)} SKUs ({verified_new} new verified listings added)")
+
+    # Post-scrape audit & summary
+    after_coverage = primary.execute(
+        """SELECT count(DISTINCT row_id) FROM marketplace_listings l
+            WHERE EXISTS (SELECT 1 FROM products p WHERE p.row_id=l.row_id AND p.sourcing_origin='imported')
+              AND l.verified = 1"""
+    ).fetchone()[0]
+
+    unlisted_skus = primary.execute(
+        """SELECT row_id, product_name, brand_name, size, category FROM products p
+            WHERE sourcing_origin = 'imported'
+              AND NOT EXISTS (SELECT 1 FROM marketplace_listings l WHERE l.row_id = p.row_id AND l.available = 1)"""
+    ).fetchall()
+
+    summary = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "total_imported_skus": len(skus),
+        "pre_scrape_verified_skus": before_coverage,
+        "post_scrape_verified_skus": after_coverage,
+        "new_verified_listings": verified_new,
+        "unlisted_skus_count": len(unlisted_skus),
+        "unlisted_skus": [
+            {"row_id": r[0], "product_name": r[1], "brand": r[2], "size": r[3], "category": r[4]}
+            for r in unlisted_skus
+        ],
+    }
+
+    SUMMARY_PATH.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    AUDIT_PATH.write_text(json.dumps(audit_log, indent=2), encoding="utf-8")
+
+    for c in connections:
+        c.close()
+
+    print(f"\n========================================================")
+    print(f"Multi-Channel Discovery Run Completed:")
+    print(f"  Verified SKU Coverage: {before_coverage} -> {after_coverage} / {len(skus)}")
+    print(f"  New Verified Listings: +{verified_new}")
+    print(f"  Remaining Unlisted SKUs: {len(unlisted_skus)}")
+    print(f"  Audit Log: {AUDIT_PATH.name}")
+    print(f"  Run Summary: {SUMMARY_PATH.name}")
+    print(f"========================================================")
 
 
 if __name__ == "__main__":

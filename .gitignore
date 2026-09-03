@@ -50,3 +50,5 @@ Thumbs.db
 
 # Scraper checkpoint
 /imported_scrape_progress.json
+/imported_scrape_audit.json
+/imported_scrape_summary.json

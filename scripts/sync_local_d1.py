@@ -19,9 +19,18 @@ def sync_database(path: Path, seed_sql: str) -> bool:
         if not table_exists(connection, "products"):
             return False
         connection.executescript(seed_sql)
-        return True
     finally:
         connection.close()
+
+    # Re-seed imported products into the replica so syncing canonical local seed
+    # never leaves the replica missing the imported book.
+    try:
+        from seed_imported import seed as seed_imported
+        seed_imported(path)
+    except Exception as exc:
+        print(f"Warning: imported seed failed for {path.name}: {exc}")
+
+    return True
 
 
 def main() -> None:
