@@ -10,7 +10,7 @@
     "build": "bun run build:client && vite build",
     "typecheck": "tsc --noEmit",
     "test:unit": "bun test tests/*.test.ts",
-    "test:python": "uv run --with rapidfuzz python3 -m unittest discover -s tests -p 'test_*.py' -v",
+    "test:python": "uv run --with rapidfuzz --with openpyxl python3 -m unittest discover -s tests -p 'test_*.py' -v",
     "test": "bun run test:unit && bun run test:python",
     "test:browser": "playwright test",
     "preview": "wrangler pages dev dist --ip 0.0.0.0 --port 8788",

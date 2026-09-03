@@ -47,3 +47,6 @@ Thumbs.db
 
 # Seeding artefacts
 /imported_seed_report.json
+
+# Scraper checkpoint
+/imported_scrape_progress.json

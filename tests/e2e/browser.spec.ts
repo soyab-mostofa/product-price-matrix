@@ -31,6 +31,33 @@ test.beforeEach(async ({ page, request }) => {
   await expect(page.locator('#matrixViewport')).toHaveAttribute('aria-busy', 'false')
 })
 
+test('the origin switch moves between the two sourcing books', async ({ page, request }) => {
+  const local = await (await request.get('/api/products?origin=local')).json() as CatalogPayload
+  const imported = await (await request.get('/api/products?origin=imported')).json() as CatalogPayload
+
+  // Both counts are visible from either book, so the switch advertises the size
+  // of the side you are not on.
+  const localOption = page.locator('.origin-option[data-origin="local"]')
+  const importedOption = page.locator('.origin-option[data-origin="imported"]')
+  await expect(localOption).toHaveClass(/is-active/)
+  await expect(localOption.locator('.origin-count')).toHaveText(String(local.product_count))
+  await expect(importedOption.locator('.origin-count')).toHaveText(String(imported.product_count))
+
+  await importedOption.click()
+  await page.waitForURL('**/imported')
+  await page.waitForLoadState('networkidle')
+
+  await expect(page.locator('#body tr[data-row-id]')).toHaveCount(imported.product_count)
+  await expect(page.locator('.origin-option[data-origin="imported"]')).toHaveClass(/is-active/)
+  // Category only exists on the imported book, so its filter appears here.
+  await expect(page.locator('#categoryFilter')).toBeVisible()
+
+  await page.locator('.origin-option[data-origin="local"]').click()
+  await page.waitForURL((url) => !url.pathname.startsWith('/imported'))
+  await page.waitForLoadState('networkidle')
+  await expect(page.locator('#body tr[data-row-id]')).toHaveCount(local.product_count)
+})
+
 test('header search and filters combine correctly', async ({ page }) => {
   await page.locator('#search').fill('Amla Powder')
   await expect(page.locator('#body tr[data-row-id]')).toHaveCount(2)
