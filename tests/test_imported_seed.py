@@ -47,6 +47,19 @@ class BrandDerivationTests(unittest.TestCase):
         """Nature Beauty sits under Q Cosmetics in the catalog's hierarchy."""
         self.assertEqual("Q Cosmetics", derive_brand("Nature Beauty Sunscreen 70ml (Q)"))
 
+    def test_a_short_brand_never_matches_inside_a_longer_word(self) -> None:
+        """'YC' must not match inside 'glycolic', nor 'Axe' inside 'waxed'.
+
+        Longest-match ordering happens to save the real catalog today, but a
+        substring test is a landmine for any future short brand.
+        """
+        self.assertEqual("The Ordinary", derive_brand("The Ordinary Glycolic Acid 7% Exfoliating Toner 100ml"))
+        self.assertIsNone(derive_brand("Generic Glycolic Acid Toner 100ml"))
+        self.assertIsNone(derive_brand("Generic Waxed Strips 20pcs"))
+        # The real brands still resolve on their own.
+        self.assertEqual("YC", derive_brand("YC MILK EXTRACT FACE WASH 100 ML"))
+        self.assertEqual("Axe", derive_brand("Axe Signature Maverick Fresh Spray 150ml"))
+
     def test_an_unknowable_brand_is_reported_not_guessed(self) -> None:
         """'Centella' is an ingredient; several Korean brands sell a sun stick."""
         self.assertIsNone(derive_brand("CENTELLA SUN STICK 20ML"))

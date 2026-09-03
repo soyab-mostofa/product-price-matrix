@@ -99,17 +99,47 @@ def imported_skus(connection: sqlite3.Connection, limit: int | None) -> list[dic
 
 
 def record(connection: sqlite3.Connection, row_id: int, channel: str,
-           title: str, price: float, url: str) -> None:
-    """Upgrade a seeded price in place; never duplicate a channel for one SKU."""
+           title: str, price: float, url: str, confidence: float) -> None:
+    """Upgrade a seeded price in place; never duplicate a channel for one SKU.
+
+    The matcher's own score is stored rather than a flat 100, so a listing that
+    only just cleared the bar is distinguishable from an exact hit.
+    """
     connection.execute(
         "INSERT INTO marketplace_listings "
         "  (row_id, channel_name, price, url, matched_title, seller, confidence, available, verified) "
-        "VALUES (?, ?, ?, ?, ?, ?, 100.0, 1, 1) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, 1, 1) "
         "ON CONFLICT(row_id, channel_name) DO UPDATE SET "
         "  price = excluded.price, url = excluded.url, "
-        "  matched_title = excluded.matched_title, verified = 1",
-        (row_id, channel, price, url, title, channel),
+        "  matched_title = excluded.matched_title, "
+        "  confidence = excluded.confidence, verified = 1",
+        (row_id, channel, price, url, title, channel, confidence),
     )
+
+
+def replica_paths(explicit: Path | None) -> list[Path]:
+    """Every initialised local replica.
+
+    Vite and `wrangler d1 execute --local` resolve the same binding to
+    different hashed files, so writing to just one leaves the other stale.
+    Picking by file size is worse than arbitrary — it changes as they grow.
+    """
+    if explicit:
+        return [explicit]
+    found = []
+    for path in sorted(D1_DIR.glob("*.sqlite")):
+        if path.name == "metadata.sqlite":
+            continue
+        connection = sqlite3.connect(path)
+        try:
+            has_products = connection.execute(
+                "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='products'"
+            ).fetchone()[0]
+        finally:
+            connection.close()
+        if has_products:
+            found.append(path)
+    return found
 
 
 def main() -> None:
@@ -118,37 +148,48 @@ def main() -> None:
     parser.add_argument("--delay", type=float, default=0.8, help="seconds between requests")
     parser.add_argument("--db", type=Path, default=None)
     parser.add_argument("--reset", action="store_true", help="ignore saved progress")
+    parser.add_argument("--retries", type=int, default=2, help="attempts per SKU on network errors")
     args = parser.parse_args()
 
     import primp
 
-    database = args.db or max(
-        (p for p in D1_DIR.glob("*.sqlite") if p.name != "metadata.sqlite"),
-        key=lambda p: p.stat().st_size,
-    )
-    connection = sqlite3.connect(database, timeout=30)
-    connection.execute("PRAGMA busy_timeout = 30000")
+    databases = replica_paths(args.db)
+    if not databases:
+        print("No local D1 replica found; run `bun run db:local:migrate` first.")
+        return
+    connections = [sqlite3.connect(path, timeout=30) for path in databases]
+    for connection in connections:
+        connection.execute("PRAGMA busy_timeout = 30000")
 
     client = primp.Client(impersonate="chrome_130", timeout=30, verify=False)
     channel = Shajgoj(client)
-    skus = imported_skus(connection, args.limit)
+    skus = imported_skus(connections[0], args.limit)
 
     progress = {} if args.reset or not PROGRESS.exists() else json.loads(PROGRESS.read_text())
     done: set[str] = set(progress.get("done", []))
     stats: dict[str, int] = {}
     verified = 0
 
-    print(f"Scraping {len(skus)} imported SKUs on {channel.name} (build {channel.build_id})\n")
+    print(f"Scraping {len(skus)} imported SKUs on {channel.name} (build {channel.build_id})")
+    print(f"Writing to {len(connections)} local replica(s)\n")
     for index, sku in enumerate(skus, start=1):
         key = f"{sku['row_id']}:{channel.name}"
         if key in done:
             continue
         query = f"{sku['brand_name']} {sku['product_name']}"
-        try:
-            hits = channel.search(query)
-        except Exception as error:
-            stats[f"error:{type(error).__name__}"] = stats.get(f"error:{type(error).__name__}", 0) + 1
-            time.sleep(args.delay * 2)
+
+        # DNS and timeouts here are transient; a single blip should not cost a
+        # SKU its listing for the whole run.
+        hits, failure = [], None
+        for attempt in range(args.retries + 1):
+            try:
+                hits, failure = channel.search(query), None
+                break
+            except Exception as error:
+                failure = type(error).__name__
+                time.sleep(args.delay * (2 ** attempt))
+        if failure:
+            stats[f"error:{failure}"] = stats.get(f"error:{failure}", 0) + 1
             continue
 
         accepted = None
@@ -166,15 +207,16 @@ def main() -> None:
                 candidate_size_text=size or None,
             )
             if verdict.accepted:
-                accepted = (title, price, url)
+                accepted = (title, price, url, max(0.0, min(100.0, float(verdict.score))))
                 break
 
         if accepted:
-            record(connection, sku["row_id"], channel.name, *accepted)
-            connection.commit()
+            for connection in connections:
+                record(connection, sku["row_id"], channel.name, *accepted)
+                connection.commit()
             verified += 1
             stats["matched"] = stats.get("matched", 0) + 1
-            print(f"  [{index}/{len(skus)}] {accepted[1]:>7.0f}  {accepted[0][:64]}")
+            print(f"  [{index}/{len(skus)}] {accepted[1]:>7.0f}  {accepted[0][:56]}  ({accepted[3]:.0f}%)")
         else:
             stats["no-valid-match" if hits else "no-results"] = \
                 stats.get("no-valid-match" if hits else "no-results", 0) + 1
@@ -186,7 +228,8 @@ def main() -> None:
         time.sleep(args.delay)
 
     PROGRESS.write_text(json.dumps({"done": sorted(done)}))
-    connection.close()
+    for connection in connections:
+        connection.close()
     print(f"\nVerified listings written: {verified}")
     print("Outcomes: " + ", ".join(f"{k}={v}" for k, v in sorted(stats.items())))
 

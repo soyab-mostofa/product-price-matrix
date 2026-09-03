@@ -116,14 +116,24 @@ def parse_size(name: str) -> str | None:
     return f"{text}{unit}"
 
 
+def _contains_word(haystack: str, needle: str) -> bool:
+    """True when `needle` appears in `haystack` on whole-word boundaries.
+
+    Both are already normalised to space-separated tokens, so a plain substring
+    test would let a short brand match mid-word — "YC" inside "glycolic",
+    "Axe" inside "waxed". Padding both sides forces a token boundary.
+    """
+    return f" {needle} " in f" {haystack} "
+
+
 def derive_brand(name: str) -> str | None:
     """The canonical brand for a product name, or None when it cannot be told."""
     flat = _normalise(name)
     for alias in sorted(BRAND_ALIASES, key=len, reverse=True):
-        if alias in flat:
+        if _contains_word(flat, alias):
             return PARENT_BRAND.get(BRAND_ALIASES[alias], BRAND_ALIASES[alias])
     for brand in sorted(BRANDS, key=len, reverse=True):
-        if _normalise(brand) in flat:
+        if _contains_word(flat, _normalise(brand)):
             return PARENT_BRAND.get(brand, brand)
     return None
 
