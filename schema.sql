@@ -26,6 +26,11 @@ CREATE TABLE IF NOT EXISTS products (
   market_average_price REAL NOT NULL CHECK (market_average_price >= 0),
   canonical_name TEXT,
   mrp_source_type TEXT NOT NULL DEFAULT 'reference' CHECK (mrp_source_type IN ('official', 'third_party_avg', 'reference')),
+  -- How this SKU reaches us: manufactured locally and bought from the
+  -- manufacturer, or brought in and bought from an importer.
+  sourcing_origin TEXT NOT NULL DEFAULT 'local' CHECK (sourcing_origin IN ('local', 'imported')),
+  -- Skincare / Haircare / Fragrance for imported SKUs; local SKUs have none.
+  category TEXT,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -82,6 +87,7 @@ CREATE TABLE IF NOT EXISTS admin_login_attempts (
 );
 
 CREATE INDEX IF NOT EXISTS idx_products_brand ON products(brand_name);
+CREATE INDEX IF NOT EXISTS idx_products_origin ON products(sourcing_origin);
 CREATE INDEX IF NOT EXISTS idx_listings_channel ON marketplace_listings(channel_name);
 CREATE INDEX IF NOT EXISTS idx_listings_row ON marketplace_listings(row_id);
 CREATE INDEX IF NOT EXISTS idx_listings_available ON marketplace_listings(available);

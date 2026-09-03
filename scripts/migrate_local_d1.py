@@ -13,21 +13,32 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 D1_DIR = ROOT / ".wrangler/state/v3/d1/miniflare-D1DatabaseObject"
 SPARSE_OVERRIDES_MIGRATION_PATH = ROOT / "migrations/0003_sparse_pricing_overrides.sql"
+SOURCING_ORIGIN_MIGRATION_PATH = ROOT / "migrations/0004_sourcing_origin.sql"
 
 
-def _sparse_overrides_migration() -> str:
-    """The 0003 migration body, minus the transaction/pragma wrapper.
+def _unwrapped(path: Path) -> str:
+    """A migration body, minus its transaction/pragma wrapper.
 
     migrate_database() already owns the transaction, and sqlite3 refuses a
     nested BEGIN, so the file's own BEGIN/COMMIT lines are stripped here rather
     than duplicated in Python.
     """
-    text = SPARSE_OVERRIDES_MIGRATION_PATH.read_text(encoding="utf-8")
+    text = path.read_text(encoding="utf-8")
     skipped = ("PRAGMA foreign_keys", "BEGIN TRANSACTION;", "COMMIT;")
     return "\n".join(
         line for line in text.splitlines()
         if not line.strip().startswith(skipped)
     )
+
+
+def _sparse_overrides_migration() -> str:
+    """The 0003 migration body, minus the transaction/pragma wrapper."""
+    return _unwrapped(SPARSE_OVERRIDES_MIGRATION_PATH)
+
+
+def _sourcing_origin_migration() -> str:
+    """The 0004 migration body, minus the transaction/pragma wrapper."""
+    return _unwrapped(SOURCING_ORIGIN_MIGRATION_PATH)
 
 
 def columns(connection: sqlite3.Connection, table: str) -> set[str]:
@@ -133,6 +144,10 @@ def migrate_database(path: Path) -> list[str]:
             if _overrides_are_dense(connection):
                 connection.executescript(_sparse_overrides_migration())
                 changes.append("product_pricing_overrides.sparse")
+
+        if "sourcing_origin" not in columns(connection, "products"):
+            connection.executescript(_sourcing_origin_migration())
+            changes.append("products.sourcing_origin")
 
         connection.execute(
             """
