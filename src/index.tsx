@@ -2,13 +2,14 @@ import { Hono } from 'hono'
 import { Header } from './components/Header'
 import { Layout } from './components/Layout'
 import { Modals } from './components/Modals'
+import { OriginSwitch } from './components/OriginSwitch'
 import { PriceMatrix } from './components/PriceMatrix'
 import auth from './routes/auth'
 import engine from './routes/engine'
 import overrides from './routes/overrides'
 import products from './routes/products'
 import { fetchDashboardMeta } from './server/catalog'
-import type { AppEnv } from './types'
+import type { AppEnv, SourcingOrigin } from './types'
 
 const app = new Hono<AppEnv>()
 
@@ -17,15 +18,20 @@ app.route('/api/products', products)
 app.route('/api/engine', engine)
 app.route('/api/overrides', overrides)
 
-app.get('/', async (c) => {
-  const meta = await fetchDashboardMeta(c.env.DB)
+/** Both books render the same matrix; only the dataset behind it differs. */
+const dashboard = (origin: SourcingOrigin) => async (c: any) => {
+  const meta = await fetchDashboardMeta(c.env.DB, origin)
   return c.html(
     <Layout>
       <Header meta={meta} />
       <PriceMatrix />
+      <OriginSwitch meta={meta} />
       <Modals />
     </Layout>,
   )
-})
+}
+
+app.get('/', dashboard('local'))
+app.get('/imported', dashboard('imported'))
 
 export default app

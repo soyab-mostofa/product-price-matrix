@@ -30,6 +30,8 @@ const product = (row: number, name: string, brand: string, mfg: number, mrp: num
   market_average_price: mrp,
   canonical_name: name,
   mrp_source_type: sources['Official Store'] ? 'official' : Object.keys(sources).length ? 'third_party_avg' : 'reference',
+  sourcing_origin: 'local',
+  category: null,
   sources,
 })
 

@@ -1,9 +1,25 @@
-import type { CatalogPayload, DashboardMeta, MarketplaceListing, MrpSourceType, Product } from '../types'
+import type {
+  CatalogPayload,
+  DashboardMeta,
+  MarketplaceListing,
+  MrpSourceType,
+  Product,
+  SourcingOrigin,
+} from '../types'
 
 const CHANNEL_ORDER = [
   'Official Store', 'Arogga', 'Shajgoj', 'OhSoGo', 'Daraz',
   'eMartWay', 'PandaMart', 'Rokomari', 'Chaldal',
+  'Klassy Missy', 'Skincarebd', 'themallbd', 'Skinplus',
 ] as const
+
+/** Known channels first, then anything discovery has since turned up. */
+function orderChannels(discovered: Iterable<string>): string[] {
+  const found = new Set(discovered)
+  const ordered = CHANNEL_ORDER.filter((channel) => found.has(channel)) as string[]
+  ordered.push(...[...found].filter((channel) => !ordered.includes(channel)).sort())
+  return ordered
+}
 
 interface ProductRow {
   row_id: number
@@ -14,6 +30,8 @@ interface ProductRow {
   market_average_price: number
   canonical_name: string | null
   mrp_source_type: MrpSourceType
+  sourcing_origin: SourcingOrigin
+  category: string | null
 }
 
 interface ListingRow {
@@ -27,13 +45,17 @@ interface ListingRow {
   verified: number
 }
 
-export async function fetchCatalog(db: D1Database): Promise<CatalogPayload> {
+export async function fetchCatalog(db: D1Database, origin: SourcingOrigin = 'local'): Promise<CatalogPayload> {
   const [productsResult, listingsResult] = await db.batch([
     db.prepare(`SELECT row_id, product_name, brand_name, size, manufactured_price,
-                       market_average_price, canonical_name, mrp_source_type
-                  FROM products ORDER BY row_id ASC`),
-    db.prepare(`SELECT row_id, channel_name, price, url, matched_title, seller, confidence, verified
-                  FROM marketplace_listings WHERE available = 1`),
+                       market_average_price, canonical_name, mrp_source_type,
+                       sourcing_origin, category
+                  FROM products WHERE sourcing_origin = ? ORDER BY row_id ASC`).bind(origin),
+    db.prepare(`SELECT listing.row_id, listing.channel_name, listing.price, listing.url,
+                       listing.matched_title, listing.seller, listing.confidence, listing.verified
+                  FROM marketplace_listings listing
+                  JOIN products product ON product.row_id = listing.row_id
+                 WHERE listing.available = 1 AND product.sourcing_origin = ?`).bind(origin),
   ])
 
   const productRows = (productsResult?.results ?? []) as unknown as ProductRow[]
@@ -65,43 +87,61 @@ export async function fetchCatalog(db: D1Database): Promise<CatalogPayload> {
     market_average_price: row.market_average_price,
     canonical_name: row.canonical_name,
     mrp_source_type: row.mrp_source_type,
+    sourcing_origin: row.sourcing_origin ?? origin,
+    category: row.category ?? null,
     sources: listingsByRow.get(row.row_id) ?? {},
   }))
 
-  const discovered = [...counts.keys()]
-  const channels = CHANNEL_ORDER.filter((channel) => counts.has(channel)) as string[]
-  channels.push(...discovered.filter((channel) => !channels.includes(channel)).sort())
+  const channels = orderChannels(counts.keys())
 
   return {
     success: true,
+    origin,
     product_count: products.length,
     listing_count: listingRows.length,
     source_columns: channels,
     source_listing_counts: Object.fromEntries(channels.map((channel) => [channel, counts.get(channel) ?? 0])),
+    categories: [...new Set(products.map((p) => p.category).filter((c): c is string => !!c))].sort(),
     products,
   }
 }
 
-export async function fetchDashboardMeta(db: D1Database): Promise<DashboardMeta> {
-  const [countsResult, brandsResult, channelsResult] = await db.batch([
-    db.prepare(`SELECT (SELECT COUNT(*) FROM products) AS product_count,
-                       (SELECT COUNT(*) FROM marketplace_listings WHERE available = 1) AS listing_count`),
-    db.prepare('SELECT DISTINCT brand_name FROM products ORDER BY brand_name'),
-    db.prepare(`SELECT channel_name, COUNT(*) AS listing_count
-                  FROM marketplace_listings WHERE available = 1
-                 GROUP BY channel_name`),
+export async function fetchDashboardMeta(db: D1Database, origin: SourcingOrigin = 'local'): Promise<DashboardMeta> {
+  const [countsResult, brandsResult, channelsResult, originsResult, categoriesResult] = await db.batch([
+    db.prepare(`SELECT (SELECT COUNT(*) FROM products WHERE sourcing_origin = ?1) AS product_count,
+                       (SELECT COUNT(*) FROM marketplace_listings listing
+                          JOIN products product ON product.row_id = listing.row_id
+                         WHERE listing.available = 1 AND product.sourcing_origin = ?1) AS listing_count`).bind(origin),
+    db.prepare('SELECT DISTINCT brand_name FROM products WHERE sourcing_origin = ? ORDER BY brand_name').bind(origin),
+    db.prepare(`SELECT listing.channel_name, COUNT(*) AS listing_count
+                  FROM marketplace_listings listing
+                  JOIN products product ON product.row_id = listing.row_id
+                 WHERE listing.available = 1 AND product.sourcing_origin = ?
+                 GROUP BY listing.channel_name`).bind(origin),
+    // Both sides at once: the origin switch shows the size of the book it isn't on.
+    db.prepare('SELECT sourcing_origin, COUNT(*) AS product_count FROM products GROUP BY sourcing_origin'),
+    db.prepare(`SELECT DISTINCT category FROM products
+                 WHERE sourcing_origin = ? AND category IS NOT NULL ORDER BY category`).bind(origin),
   ])
+
   const counts = countsResult?.results[0] as { product_count?: number; listing_count?: number } | undefined
-  const channelCounts = new Map(
-    ((channelsResult?.results ?? []) as Array<{ channel_name: string; listing_count: number }>).map((row) => [row.channel_name, row.listing_count]),
-  )
-  const discovered = [...channelCounts.keys()]
-  const channels = CHANNEL_ORDER.filter((channel) => channelCounts.has(channel)) as string[]
-  channels.push(...discovered.filter((channel) => !channels.includes(channel)).sort())
+  const channelCounts = (channelsResult?.results ?? []) as Array<{ channel_name: string }>
+  const originRows = (originsResult?.results ?? []) as Array<{ sourcing_origin: SourcingOrigin; product_count: number }>
+
+  const originCounts: Record<SourcingOrigin, number> = { local: 0, imported: 0 }
+  for (const row of originRows) {
+    if (row.sourcing_origin === 'local' || row.sourcing_origin === 'imported') {
+      originCounts[row.sourcing_origin] = Number(row.product_count ?? 0)
+    }
+  }
+
   return {
+    origin,
     productCount: Number(counts?.product_count ?? 0),
     listingCount: Number(counts?.listing_count ?? 0),
+    originCounts,
     brands: ((brandsResult?.results ?? []) as Array<{ brand_name: string }>).map((row) => row.brand_name),
-    channels,
+    channels: orderChannels(channelCounts.map((row) => row.channel_name)),
+    categories: ((categoriesResult?.results ?? []) as Array<{ category: string }>).map((row) => row.category),
   }
 }

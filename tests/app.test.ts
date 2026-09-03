@@ -11,22 +11,49 @@ function fakeDb({ products = [], listings = [], globalParams = null, overrides =
       return Promise.all(statements.map((stmt) => stmt.all ? stmt.all() : stmt.first()))
     },
     prepare(sql: string) {
+      // Origin filtering happens in SQL, so the fake binds the same way the
+      // worker does: whatever origin is bound narrows both products and their
+      // listings, exactly as the real WHERE clause would.
+      let bound: any[] = []
+      const origin = () => bound.find((value) => value === 'local' || value === 'imported')
+      const visibleProducts = () => {
+        const wanted = origin()
+        return wanted ? products.filter((p: any) => p.sourcing_origin === wanted) : products
+      }
+      const visibleListings = () => {
+        const rows = new Set(visibleProducts().map((p: any) => p.row_id))
+        return origin() ? listings.filter((l: any) => rows.has(l.row_id)) : listings
+      }
       return {
-        bind() {
+        bind(...args: any[]) {
+          bound = args
           return this
         },
         async first() {
           seen.push(sql)
           if (sql.includes('FROM global_pricing_params')) return globalParams
-          if (sql.includes('SELECT (SELECT COUNT(*)')) return { product_count: products.length, listing_count: listings.length }
+          if (sql.includes('SELECT (SELECT COUNT(*)')) {
+            return { product_count: visibleProducts().length, listing_count: visibleListings().length }
+          }
           return null
         },
         async all() {
           seen.push(sql)
-          if (sql.includes('FROM products ORDER BY row_id')) return { results: products }
-          if (sql.includes('FROM marketplace_listings WHERE available = 1')) return { results: listings }
-          if (sql.includes('DISTINCT brand_name')) return { results: [...new Set(products.map((p: any) => ({ brand_name: p.brand_name })))] }
-          if (sql.includes('GROUP BY channel_name')) return { results: listings.map((l: any) => ({ channel_name: l.channel_name, listing_count: 1 })) }
+          if (sql.includes('FROM products') && sql.includes('ORDER BY row_id')) return { results: visibleProducts() }
+          if (sql.includes('DISTINCT brand_name')) return { results: [...new Set(visibleProducts().map((p: any) => ({ brand_name: p.brand_name })))] }
+          if (sql.includes('GROUP BY sourcing_origin')) {
+            const tally = new Map<string, number>()
+            for (const p of products) tally.set(p.sourcing_origin, (tally.get(p.sourcing_origin) ?? 0) + 1)
+            return { results: [...tally].map(([sourcing_origin, product_count]) => ({ sourcing_origin, product_count })) }
+          }
+          if (sql.includes('DISTINCT category')) {
+            const found = [...new Set(visibleProducts().map((p: any) => p.category).filter(Boolean))].sort()
+            return { results: found.map((category) => ({ category })) }
+          }
+          if (sql.includes('GROUP BY listing.channel_name') || sql.includes('GROUP BY channel_name')) {
+            return { results: visibleListings().map((l: any) => ({ channel_name: l.channel_name, listing_count: 1 })) }
+          }
+          if (sql.includes('marketplace_listings')) return { results: visibleListings() }
           if (sql.includes('FROM product_pricing_overrides')) return { results: overrides }
           return { results: [] }
         },
@@ -50,6 +77,8 @@ const env: EnvBindings = {
       market_average_price: 200,
       canonical_name: 'Test Serum',
       mrp_source_type: 'official',
+      sourcing_origin: 'local',
+      category: null,
     }],
     listings: [{
       row_id: 1,
@@ -114,6 +143,8 @@ describe('Hono application', () => {
           market_average_price: 1465,
           canonical_name: 'CeraVe Moisturizing Cream 56ml',
           mrp_source_type: 'third_party_avg',
+          sourcing_origin: 'local',
+          category: null,
         }],
         listings: [
           {
@@ -156,6 +187,63 @@ describe('Hono application', () => {
     expect(sources['Klassy Missy'].verified).toBe(false)
     expect(sources['Klassy Missy'].price).toBe(1450)
     expect(sources['Klassy Missy'].url).toBeNull()
+  })
+
+  test('serves only local SKUs from / and only imported SKUs from /imported', async () => {
+    const splitDb = () => fakeDb({
+      products: [
+        {
+          row_id: 1, product_name: 'Guerniss Matte Lipstick 03', brand_name: 'Guerniss',
+          size: '4g', manufactured_price: 100, market_average_price: 200,
+          canonical_name: 'Guerniss Matte Lipstick 03', mrp_source_type: 'official',
+          sourcing_origin: 'local', category: null,
+        },
+        {
+          row_id: 2, product_name: 'CeraVe Moisturizing Cream 56ml', brand_name: 'CeraVe',
+          size: '56ml', manufactured_price: 930, market_average_price: 1465,
+          canonical_name: 'CeraVe Moisturizing Cream 56ml', mrp_source_type: 'third_party_avg',
+          sourcing_origin: 'imported', category: 'Skincare',
+        },
+      ],
+      listings: [
+        {
+          row_id: 1, channel_name: 'Official Store', price: 200, url: 'https://guerniss.com/x',
+          matched_title: null, seller: null, confidence: 100, available: 1, verified: 1,
+        },
+        {
+          row_id: 2, channel_name: 'Klassy Missy', price: 1450, url: null,
+          matched_title: null, seller: null, confidence: 100, available: 1, verified: 0,
+        },
+      ],
+      globalParams: PRICING_DEFAULTS,
+    }) as any
+
+    const localRes = await app.request('/api/products', {}, { ...env, DB: splitDb() })
+    const local = await localRes.json() as any
+    expect(local.product_count).toBe(1)
+    expect(local.products[0].product_name).toBe('Guerniss Matte Lipstick 03')
+    // A channel that only carries imported SKUs must not pad the local view.
+    expect(local.source_columns).toEqual(['Official Store'])
+
+    const importedRes = await app.request('/api/products?origin=imported', {}, { ...env, DB: splitDb() })
+    const imported = await importedRes.json() as any
+    expect(imported.product_count).toBe(1)
+    expect(imported.products[0].product_name).toBe('CeraVe Moisturizing Cream 56ml')
+    expect(imported.products[0].category).toBe('Skincare')
+    expect(imported.source_columns).toEqual(['Klassy Missy'])
+  })
+
+  test('serves the imported dashboard at GET /imported', async () => {
+    const res = await app.request('/imported', {}, env)
+    expect(res.status).toBe(200)
+    const text = await res.text()
+    expect(text).toContain('Price Matrix')
+    expect(text).toContain('/static/app.js')
+  })
+
+  test('rejects an unknown origin rather than silently serving everything', async () => {
+    const res = await app.request('/api/products?origin=wholesale', {}, env)
+    expect(res.status).toBe(400)
   })
 
   test('creates signed admin sessions and rejects tampered cookies', async () => {

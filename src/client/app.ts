@@ -627,11 +627,14 @@ async function syncAuth() {
   } catch {}
 }
 
+// The page decides which book it shows; the API call follows the route.
+const pageOrigin = window.location.pathname.startsWith('/imported') ? 'imported' : 'local'
+
 async function syncData() {
   const messages: string[] = []
   try {
     const [pRes, eRes] = await Promise.allSettled([
-      fetch('/api/products'),
+      fetch(`/api/products?origin=${pageOrigin}`),
       fetch('/api/engine'),
     ])
 
@@ -704,10 +707,22 @@ async function syncData() {
   }
 }
 
+// Warm the other book once this one is painted, so switching origin is served
+// from cache. Best-effort: a failed prefetch costs nothing but a cache miss.
+function prefetchOtherOrigin() {
+  const other = pageOrigin === 'imported' ? 'local' : 'imported'
+  void fetch(`/api/products?origin=${other}`).catch(() => {})
+}
+
 // Attach event listeners on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
   syncAuth()
   syncData()
+  if ('requestIdleCallback' in window) {
+    (window as any).requestIdleCallback(prefetchOtherOrigin, { timeout: 3000 })
+  } else {
+    setTimeout(prefetchOtherOrigin, 1200)
+  }
 
   searchInput?.addEventListener('input', render)
   brandFilter?.addEventListener('change', render)

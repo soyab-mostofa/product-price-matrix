@@ -1,6 +1,15 @@
 export type DiscountType = 'pct' | 'amt'
 export type MrpSourceType = 'official' | 'third_party_avg' | 'reference'
 
+/** How a SKU reaches us: made here and bought from the maker, or brought in via an importer. */
+export type SourcingOrigin = 'local' | 'imported'
+
+export const SOURCING_ORIGINS = ['local', 'imported'] as const satisfies readonly SourcingOrigin[]
+
+export function isSourcingOrigin(value: unknown): value is SourcingOrigin {
+  return value === 'local' || value === 'imported'
+}
+
 export interface PricingParams {
   packaging: number
   transport: number
@@ -71,23 +80,32 @@ export interface Product {
   market_average_price: number
   canonical_name: string | null
   mrp_source_type: MrpSourceType
+  sourcing_origin: SourcingOrigin
+  /** Skincare / Haircare / Fragrance for imported SKUs; local SKUs have none. */
+  category: string | null
   sources: Record<string, MarketplaceListing>
 }
 
 export interface CatalogPayload {
   success: true
+  origin: SourcingOrigin
   product_count: number
   listing_count: number
   source_columns: string[]
   source_listing_counts: Record<string, number>
+  categories: string[]
   products: Product[]
 }
 
 export interface DashboardMeta {
+  origin: SourcingOrigin
   productCount: number
   listingCount: number
+  /** Per-origin SKU totals, so the origin switch can show both sides at once. */
+  originCounts: Record<SourcingOrigin, number>
   brands: string[]
   channels: string[]
+  categories: string[]
 }
 
 export interface EnvBindings {
