@@ -50,7 +50,7 @@ The interactive matrix presents a frozen multi-column view with 5 sticky base co
 2. **`Brand` (115px)**: Brand or parent manufacturer name (`left: 280px`).
 3. **`Source Cost` (115px)**: What we pay to acquire one unit, in BDT — the discounted manufacturer price for a Local SKU, the importer's quoted price for an Imported SKU (`left: 395px`, right-aligned, blue emphasis). Stored in the `manufactured_price` column for historical reasons; see `CONTEXT.md`.
 4. **`MRP` (185px)**: The market reference price, paired with a markup chip relative to Source Cost (`left: 510px`, dual-metric cell). For a **Local SKU this is always the workbook benchmark** (`mrp_source_type = 'workbook'`); for an **Imported SKU** it resolves official → third-party average → reference.
-5. **`Selling Price` (185px)**: Recommended selling price from the Pricing Engine, with its **Target Markup % chip** vs Source Cost, an optional purple `TUNED` pill when per-SKU parameters are active, and a red `ABOVE MARKET` flag when the recommendation exceeds the MRP (`left: 695px`, dual-metric cell, elevated shadow divider).
+5. **`Selling Price` (185px)**: Recommended selling price from the Pricing Engine, with its **Target Markup % chip** vs Source Cost (which turns solid red with white text when the recommendation exceeds the MRP), and an optional purple `TUNED` pill when per-SKU parameters are active (`left: 695px`, dual-metric cell, elevated shadow divider).
 
 ### Dynamic Marketplace Columns (Right)
 - Channel order (`CHANNEL_ORDER` in `catalog_builder.py` and `src/server/catalog.ts`): *Official Store, Arogga, Shajgoj, OhSoGo, Daraz, eMartWay, PandaMart, Rokomari, Chaldal, Klassy Missy, Skincarebd, themallbd, Skinplus*. Unknown channels discovered later sort alphabetically after these.
@@ -142,7 +142,7 @@ Both are persisted **in Cloudflare D1 only** — there is no `localStorage` anyw
   - `+15% to +35%`: Soft amber pill (`#fef3c7` bg, `#92400e` text) `↑+XX%`.
   - `+35% to +60%`: Warm orange pill (`#ffedd5` bg, `#9a3412` text) `↑+XX%`.
   - `>+60% Extreme`: Soft red pill (`#fee2e2` bg, `#991b1b` text) `↑+XX%`.
-- **Above-Market Warning**: When a recommended Selling Price exceeds the MRP, the price turns red and gains an `ABOVE MARKET` flag; a catalog-level amber banner reports how many of the shown SKUs are affected. Never render an unsellable recommendation as if it were valid.
+- **Above-Market Warning**: When a recommended Selling Price exceeds the MRP, its percentage chip turns solid red with white text (clearly signaling an above-market recommendation without crowding the cell with an extra text badge); a catalog-level amber banner reports how many of the shown SKUs are affected. Never render an unsellable recommendation as if it were valid.
 - **Top Navigation Bar (56px)**:
   - Brand header with active indicator dot.
   - SKU & listing count metadata pill.

@@ -87,8 +87,12 @@ function esc(value: unknown): string {
   }[char] || char))
 }
 
-function getMarkupChip(pct: number | null): string {
+function getMarkupChip(pct: number | null, isAboveMarket = false, aboveMarketTitle = ''): string {
   if (pct === null) return ''
+  if (isAboveMarket) {
+    const defaultTitle = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}% vs source cost · Above market reference`
+    return `<span class="markup-chip above-market" title="${esc(aboveMarketTitle || defaultTitle)}">${pct >= 0 ? '↑+' : '↓'}${pct.toFixed(0)}%</span>`
+  }
   if (pct < -0.01) {
     return `<span class="markup-chip neg" title="${Math.abs(pct).toFixed(1)}% below source cost">↓${pct.toFixed(0)}%</span>`
   }
@@ -101,8 +105,12 @@ function getMarkupChip(pct: number | null): string {
   return `<span class="markup-chip t4" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
 }
 
-function getMarketDiscountChip(discPct: number | null): string {
+function getMarketDiscountChip(discPct: number | null, isAboveMarket = false, aboveMarketTitle = ''): string {
   if (discPct === null) return ''
+  if (isAboveMarket) {
+    const defaultTitle = `${Math.abs(discPct).toFixed(1)}% above market reference`
+    return `<span class="markup-chip above-market" title="${esc(aboveMarketTitle || defaultTitle)}">↑+${Math.abs(discPct).toFixed(0)}%</span>`
+  }
   if (discPct > 0.01) {
     return `<span class="markup-chip mkt-disc" title="${discPct.toFixed(1)}% discount off Market Average price">↓-${discPct.toFixed(0)}%</span>`
   }
@@ -388,34 +396,29 @@ function render() {
     let sellingDisplay = '<span class="cell-dash">—</span>'
 
     if (calculatedSelling !== null && mfg > 0) {
+      const aboveMarket = mktAvg > 0 && calculatedSelling > mktAvg
+      const overBy = aboveMarket ? Math.round(((calculatedSelling - mktAvg) / mktAvg) * 100) : 0
+      const aboveTitle = aboveMarket
+        ? `Above market: Recommended price ${money.format(calculatedSelling)} is ${overBy}% above ${provenance.label} reference (${money.format(mktAvg)})`
+        : ''
+
       let activeChipHtml = ''
       if (sellingChipMode === 'discount' && mktAvg > 0) {
         const mktDiscPct = calculateMarketDiscount(calculatedSelling, mktAvg)
-        activeChipHtml = getMarketDiscountChip(mktDiscPct)
+        activeChipHtml = getMarketDiscountChip(mktDiscPct, aboveMarket, aboveTitle)
       } else {
         const sellingMarkupPct = calculateMarkup(calculatedSelling, mfg)
-        activeChipHtml = getMarkupChip(sellingMarkupPct)
+        activeChipHtml = getMarkupChip(sellingMarkupPct, aboveMarket, aboveTitle)
       }
-
-      // A recommendation above the market reference is not sellable. Say so on
-      // the cell rather than rendering an impossible number in confident blue.
-      const aboveMarket = mktAvg > 0 && calculatedSelling > mktAvg
-      const overBy = aboveMarket ? Math.round(((calculatedSelling - mktAvg) / mktAvg) * 100) : 0
-      const aboveFlag = aboveMarket
-        ? `<span class="above-market-flag" title="${esc(
-            `Recommended price is ${money.format(calculatedSelling)}, which is ${overBy}% above the ${provenance.label} reference of ${money.format(mktAvg)}. This SKU cannot absorb the current overhead — lower the per-unit costs or tune it individually.`,
-          )}">Above market</span>`
-        : ''
 
       const tunedOn = override?.updatedAt ? ` · tuned ${new Date(override.updatedAt).toLocaleDateString()}` : ''
       const tuneTitle = `Custom pricing for this SKU — pinned: ${pinnedFields}${tunedOn}. Everything else follows the global engine.`
-      const priceClass = aboveMarket ? 'above-market' : (hasOverride ? 'custom-tuned' : 'selling')
+      const priceClass = hasOverride ? 'custom-tuned' : 'selling'
       sellingDisplay = `
-        <div class="dual-metric-cell${aboveMarket ? ' is-above-market' : ''}">
+        <div class="dual-metric-cell">
           ${hasOverride ? `<span class="custom-tune-tag" title="${esc(tuneTitle)}">Tuned</span>` : ''}
           <span class="num-price ${priceClass}">${esc(money.format(calculatedSelling))}</span>
           ${activeChipHtml}
-          ${aboveFlag}
         </div>
       `
       if (aboveMarket) aboveMarketCount += 1
@@ -480,6 +483,11 @@ function openDetail(p: Product) {
   const sellingMarkupPct = calculatedSelling !== null && mfg > 0 ? calculateMarkup(calculatedSelling, mfg) : null
   const marketDiscPct = calculatedSelling !== null && mktAvg > 0 ? calculateMarketDiscount(calculatedSelling, mktAvg) : null
   const detailProvenance = mrpProvenance(p)
+  const detailAboveMarket = mktAvg > 0 && calculatedSelling !== null && calculatedSelling > mktAvg
+  const detailOverBy = detailAboveMarket ? Math.round(((calculatedSelling - mktAvg) / mktAvg) * 100) : 0
+  const detailAboveTitle = detailAboveMarket
+    ? `Above market: Recommended price ${money.format(calculatedSelling)} is ${detailOverBy}% above ${detailProvenance.label} (${money.format(mktAvg)})`
+    : ''
 
   let out = `
     <div class="detail-stats-grid">
@@ -499,8 +507,8 @@ function openDetail(p: Product) {
         <span>Selling Price ${detailPinned ? '(Tuned)' : ''}</span>
         <strong style="color:var(--brand-blue);display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
           ${calculatedSelling !== null ? esc(money.format(calculatedSelling)) : '—'}
-          ${getMarkupChip(sellingMarkupPct)}
-          ${marketDiscPct !== null ? getMarketDiscountChip(marketDiscPct) : ''}
+          ${getMarkupChip(sellingMarkupPct, detailAboveMarket, detailAboveTitle)}
+          ${marketDiscPct !== null ? getMarketDiscountChip(marketDiscPct, detailAboveMarket, detailAboveTitle) : ''}
         </strong>
       </div>
     </div>
