@@ -8,11 +8,12 @@ export function PriceMatrix() {
   return (
     <main class="table-viewport" aria-busy="true" id="matrixViewport">
       <div id="syncError" class="sync-error" role="alert" hidden></div>
+      <div id="aboveMarketBanner" class="above-market-banner" role="status" aria-live="polite" hidden></div>
       <table>
         <thead><tr id="headerRow">
           <SortHeader className="col-product" sort="product" title="Sort by product title">Product Name</SortHeader>
           <SortHeader className="col-brand" sort="brand" title="Sort by brand">Brand</SortHeader>
-          <SortHeader className="col-mfg" sort="mfg" title="Sort by manufacturing price">MFG Price</SortHeader>
+          <SortHeader className="col-mfg" sort="mfg" title="Sort by the price we pay to acquire one unit">Source Cost</SortHeader>
           <SortHeader className="col-market" sort="market" title="Sort by official MRP or third-party benchmark">MRP</SortHeader>
           <SortHeader className="col-selling-price" sort="selling" title="Sort by configured selling price">Selling Price</SortHeader>
         </tr></thead>

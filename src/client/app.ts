@@ -7,6 +7,7 @@ import {
   nextPinnedSort,
   overriddenFields,
   PINNED_SORT_VALUES,
+  PRICING_DEFAULTS,
   resolvePricingParams,
   sortProducts,
   type SortValue,
@@ -33,19 +34,11 @@ const money = new Intl.NumberFormat('en-BD', {
   maximumFractionDigits: 0,
 })
 
-const defaultGlobalParams: PricingParams = {
-  packaging: 20,
-  transport: 0,
-  delivery: 60,
-  cac: 0,
-  targetMarginPct: 0,
-  discountType: 'pct',
-  discountVal: 0,
-}
-
 let products: Product[] = []
+/** row id -> product, so row clicks don't linear-scan the catalog. */
+let productsByRow = new Map<number, Product>()
 let sources: string[] = []
-let globalCostParams: PricingParams = { ...defaultGlobalParams }
+let globalCostParams: PricingParams = { ...PRICING_DEFAULTS }
 let productOverrides: Record<string, StoredPricingOverride> = {}
 let sellingChipMode: 'markup' | 'discount' = 'markup'
 let activeProductDetail: Product | null = null
@@ -53,8 +46,18 @@ let currentGlobalDiscountType: 'pct' | 'amt' = 'pct'
 /** 'global' = inherit the global discount; 'pct'/'amt' pin it for this SKU. */
 let currentProdDiscountType: 'global' | 'pct' | 'amt' = 'global'
 let isAdminAuthenticated = false
+let authConfigured = false
 let catalogLoaded = false
 let pricingLoaded = false
+
+/** Tunable input IDs, kept in one place so the modal markup and the client agree. */
+const ENGINE_INPUT_IDS = [
+  'inputPackaging', 'inputTransport', 'inputDelivery', 'inputCAC', 'inputMarginPct', 'inputDiscountVal',
+] as const
+const PRODUCT_INPUT_IDS = [
+  'prodInputPackaging', 'prodInputTransport', 'prodInputDelivery', 'prodInputCAC',
+  'prodInputMarginPct', 'prodInputDiscountVal',
+] as const
 
 const searchInput = document.getElementById('search') as HTMLInputElement | null
 const brandFilter = document.getElementById('brandFilter') as HTMLSelectElement | null
@@ -66,6 +69,7 @@ const emptyElement = document.getElementById('empty') as HTMLDivElement | null
 const headerRow = document.getElementById('headerRow') as HTMLTableRowElement | null
 const matrixViewport = document.getElementById('matrixViewport') as HTMLElement | null
 const syncError = document.getElementById('syncError') as HTMLElement | null
+const aboveMarketBanner = document.getElementById('aboveMarketBanner') as HTMLElement | null
 const liveSyncDot = document.getElementById('liveSyncDot') as HTMLElement | null
 const productTotal = document.getElementById('productTotal') as HTMLElement | null
 const listingTotal = document.getElementById('listingTotal') as HTMLElement | null
@@ -86,15 +90,15 @@ function esc(value: unknown): string {
 function getMarkupChip(pct: number | null): string {
   if (pct === null) return ''
   if (pct < -0.01) {
-    return `<span class="markup-chip neg" title="${Math.abs(pct).toFixed(1)}% below MFG price">↓${pct.toFixed(0)}%</span>`
+    return `<span class="markup-chip neg" title="${Math.abs(pct).toFixed(1)}% below source cost">↓${pct.toFixed(0)}%</span>`
   }
   if (Math.abs(pct) <= 0.01) {
-    return '<span class="markup-chip zero" title="Equal to MFG price">0%</span>'
+    return '<span class="markup-chip zero" title="Equal to source cost">0%</span>'
   }
-  if (pct <= 15) return `<span class="markup-chip t1" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`
-  if (pct <= 35) return `<span class="markup-chip t2" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`
-  if (pct <= 60) return `<span class="markup-chip t3" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`
-  return `<span class="markup-chip t4" title="+${pct.toFixed(1)}% markup over MFG">↑+${pct.toFixed(0)}%</span>`
+  if (pct <= 15) return `<span class="markup-chip t1" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
+  if (pct <= 35) return `<span class="markup-chip t2" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
+  if (pct <= 60) return `<span class="markup-chip t3" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
+  return `<span class="markup-chip t4" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
 }
 
 function getMarketDiscountChip(discPct: number | null): string {
@@ -175,27 +179,45 @@ function updateSellingChipToggleUI() {
   }
 }
 
+/**
+ * Reflect the current admin state across the UI.
+ *
+ * Reading is public: the matrix, the engine values, and every tune are visible
+ * to anyone. Writing is admin-only, so without a session the inputs stay
+ * readable but disabled and a banner says why.
+ */
 function updateAdminUI() {
   if (adminLoginBtn) {
-    adminLoginBtn.hidden = true
+    adminLoginBtn.hidden = !authConfigured
+    adminLoginBtn.textContent = isAdminAuthenticated ? 'Log out' : 'Admin Login'
   }
-  if (openEngineBtn) {
-    openEngineBtn.hidden = false
+  if (openEngineBtn) openEngineBtn.hidden = false
+
+  const readOnly = !isAdminAuthenticated
+  const notice = authConfigured
+    ? 'Read-only view. Log in as admin to change pricing.'
+    : 'Read-only view. Admin authentication is not configured on this deployment.'
+
+  for (const id of ['engineReadOnlyBanner', 'productReadOnlyBanner']) {
+    const banner = document.getElementById(id)
+    if (!banner) continue
+    banner.hidden = !readOnly
+    banner.textContent = notice
   }
-  const engineBanner = document.getElementById('engineReadOnlyBanner')
-  if (engineBanner) engineBanner.hidden = true
-  const productBanner = document.getElementById('productReadOnlyBanner')
-  if (productBanner) productBanner.hidden = true
 
-  const saveProductBtn = document.getElementById('saveProductCustomEngineBtn') as HTMLButtonElement | null
-  const clearProductBtn = document.getElementById('clearProductCustomEngineBtn') as HTMLButtonElement | null
-  const applyEngineBtn = document.getElementById('applyEngineBtn') as HTMLButtonElement | null
-  const resetCustomOverridesBtn = document.getElementById('resetCustomOverridesBtn') as HTMLButtonElement | null
+  for (const id of ['saveProductCustomEngineBtn', 'clearProductCustomEngineBtn', 'applyEngineBtn', 'resetCustomOverridesBtn']) {
+    const button = document.getElementById(id) as HTMLButtonElement | null
+    if (button) button.disabled = readOnly
+  }
 
-  if (saveProductBtn) saveProductBtn.disabled = false
-  if (clearProductBtn) clearProductBtn.disabled = false
-  if (applyEngineBtn) applyEngineBtn.disabled = false
-  if (resetCustomOverridesBtn) resetCustomOverridesBtn.disabled = false
+  // Inputs stay readable so the numbers behind a price are always inspectable.
+  for (const id of [...ENGINE_INPUT_IDS, ...PRODUCT_INPUT_IDS]) {
+    const input = document.getElementById(id) as HTMLInputElement | null
+    if (input) input.readOnly = readOnly
+  }
+  for (const button of document.querySelectorAll<HTMLButtonElement>('.discount-type-btn')) {
+    button.disabled = readOnly
+  }
 }
 
 function getVisibleSources(list: Product[]): string[] {
@@ -237,6 +259,13 @@ function updateHeaders(activeSources: string[]) {
 function mrpProvenance(p: Product): { label: string; tooltip: string; className: string } {
   const mktAvg = Number(p.market_average_price)
   const official = p.sources['Official Store']
+  if (p.mrp_source_type === 'workbook') {
+    return {
+      label: 'Workbook MRP',
+      tooltip: `Workbook MRP: ${money.format(mktAvg)} — the agreed retail benchmark this SKU was sourced against. Channel prices on the right are live listings and may sit above or below it.`,
+      className: 'num-price mrp-ref',
+    }
+  }
   if (p.mrp_source_type === 'official' && official) {
     const seller = official.seller || `${p.brand_name} Official Store`
     return {
@@ -325,6 +354,7 @@ function render() {
   if (!bodyElement || !emptyElement) return
   const list = filtered()
   const activeSources = getVisibleSources(list)
+  let aboveMarketCount = 0
 
   updateHeaders(activeSources)
   updateSortIndicators()
@@ -367,20 +397,36 @@ function render() {
         activeChipHtml = getMarkupChip(sellingMarkupPct)
       }
 
+      // A recommendation above the market reference is not sellable. Say so on
+      // the cell rather than rendering an impossible number in confident blue.
+      const aboveMarket = mktAvg > 0 && calculatedSelling > mktAvg
+      const overBy = aboveMarket ? Math.round(((calculatedSelling - mktAvg) / mktAvg) * 100) : 0
+      const aboveFlag = aboveMarket
+        ? `<span class="above-market-flag" title="${esc(
+            `Recommended price is ${money.format(calculatedSelling)}, which is ${overBy}% above the ${provenance.label} reference of ${money.format(mktAvg)}. This SKU cannot absorb the current overhead — lower the per-unit costs or tune it individually.`,
+          )}">Above market</span>`
+        : ''
+
       const tunedOn = override?.updatedAt ? ` · tuned ${new Date(override.updatedAt).toLocaleDateString()}` : ''
       const tuneTitle = `Custom pricing for this SKU — pinned: ${pinnedFields}${tunedOn}. Everything else follows the global engine.`
+      const priceClass = aboveMarket ? 'above-market' : (hasOverride ? 'custom-tuned' : 'selling')
       sellingDisplay = `
-        <div class="dual-metric-cell">
+        <div class="dual-metric-cell${aboveMarket ? ' is-above-market' : ''}">
           ${hasOverride ? `<span class="custom-tune-tag" title="${esc(tuneTitle)}">Tuned</span>` : ''}
-          <span class="num-price ${hasOverride ? 'custom-tuned' : 'selling'}">${esc(money.format(calculatedSelling))}</span>
+          <span class="num-price ${priceClass}">${esc(money.format(calculatedSelling))}</span>
           ${activeChipHtml}
+          ${aboveFlag}
         </div>
       `
+      if (aboveMarket) aboveMarketCount += 1
     }
 
     return `
       <tr tabindex="0" data-row-id="${p.row}">
-        <td class="col-product"><div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div></td>
+        <td class="col-product">
+          <div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div>
+          ${p.size ? `<div class="item-size">${esc(p.size)}</div>` : ''}
+        </td>
         <td class="col-brand"><span class="brand-label">${esc(p.brand_name)}</span></td>
         <td class="col-mfg"><span class="num-price mfg">${esc(money.format(p.manufactured_price))}</span></td>
         <td class="col-market">${marketAvgDisplay}</td>
@@ -391,13 +437,33 @@ function render() {
   }).join('')
 
   emptyElement.hidden = list.length > 0
+
+  // Catalog-level summary: one over-market SKU is a tuning job, a hundred is a
+  // broken global model, and the operator should not have to scroll to find out.
+  if (aboveMarketBanner) {
+    if (aboveMarketCount > 0) {
+      const noun = aboveMarketCount === 1 ? 'SKU prices' : 'SKUs price'
+      aboveMarketBanner.textContent =
+        `${aboveMarketCount.toLocaleString()} of ${list.length.toLocaleString()} shown ${noun} above the market reference at the current engine settings.`
+      aboveMarketBanner.hidden = false
+    } else {
+      aboveMarketBanner.hidden = true
+    }
+  }
+}
+
+/** Coalesce burst input (typing) into a single repaint. */
+let renderTimer: ReturnType<typeof setTimeout> | undefined
+function debouncedRender(): void {
+  clearTimeout(renderTimer)
+  renderTimer = setTimeout(render, 140)
 }
 
 function openDetail(p: Product) {
   activeProductDetail = p
   const dialogBrand = document.getElementById('dialogBrand')
   const dialogName = document.getElementById('dialogName')
-  if (dialogBrand) dialogBrand.textContent = p.brand_name
+  if (dialogBrand) dialogBrand.textContent = p.size ? `${p.brand_name} · ${p.size}` : p.brand_name
   if (dialogName) dialogName.textContent = p.product_name
 
   const mfg = Number(p.manufactured_price)
@@ -417,7 +483,7 @@ function openDetail(p: Product) {
 
   let out = `
     <div class="detail-stats-grid">
-      <div class="detail-stat-box"><span>Purchasing (MFG Price)</span><strong>${esc(money.format(mfg))}</strong></div>
+      <div class="detail-stat-box"><span>Source Cost</span><strong>${esc(money.format(mfg))}</strong></div>
       <div class="detail-stat-box" title="${esc(detailProvenance.tooltip)}">
         <span>MRP (${esc(detailProvenance.label)})</span>
         <strong style="display:flex;align-items:center;gap:6px;">
@@ -658,9 +724,12 @@ async function syncAuth() {
     if (res.ok) {
       const data = await res.json() as AuthStatusResponse
       isAdminAuthenticated = data.authenticated
-      updateAdminUI()
+      authConfigured = data.configured
     }
-  } catch {}
+  } catch {
+    // Treat an unreachable auth endpoint as logged-out: the UI stays read-only.
+  }
+  updateAdminUI()
 }
 
 // The page decides which book it shows; the API call follows the route.
@@ -679,6 +748,7 @@ async function syncData() {
         const data = await pRes.value.json() as CatalogPayload
         if (data.success && Array.isArray(data.products)) {
           products = data.products
+          productsByRow = new Map(products.map((product) => [product.row, product]))
           sources = data.source_columns
           catalogLoaded = true
           if (productTotal) productTotal.textContent = products.length.toLocaleString()
@@ -773,7 +843,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(prefetchOtherOrigin, 1200)
   }
 
-  searchInput?.addEventListener('input', render)
+  // Typing rebuilds every visible cell, so coalesce keystrokes into one paint.
+  searchInput?.addEventListener('input', debouncedRender)
   brandFilter?.addEventListener('change', render)
   sourceFilter?.addEventListener('change', render)
   categoryFilter?.addEventListener('change', render)
@@ -799,8 +870,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const target = e.target as HTMLElement | null
     const row = target?.closest('tr[data-row-id]') as HTMLElement | null
     if (row && !target?.closest('a')) {
-      const rowId = Number(row.dataset.rowId)
-      const found = products.find((p) => p.row === rowId)
+      const found = productsByRow.get(Number(row.dataset.rowId))
       if (found) openDetail(found)
     }
   })
@@ -812,8 +882,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const row = target?.closest('tr[data-row-id]') as HTMLElement | null
       if (row) {
         e.preventDefault()
-        const rowId = Number(row.dataset.rowId)
-        const found = products.find((p) => p.row === rowId)
+        const found = productsByRow.get(Number(row.dataset.rowId))
         if (found) openDetail(found)
       }
     }
@@ -851,10 +920,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('prodBtnTypePct')?.addEventListener('click', () => setProductDiscountType('pct'))
   document.getElementById('prodBtnTypeAmt')?.addEventListener('click', () => setProductDiscountType('amt'))
 
-  for (const id of ['inputPackaging', 'inputTransport', 'inputDelivery', 'inputCAC', 'inputMarginPct', 'inputDiscountVal']) {
+  for (const id of ENGINE_INPUT_IDS) {
     document.getElementById(id)?.addEventListener('input', updateEngineSummary)
   }
-  for (const id of ['prodInputPackaging', 'prodInputTransport', 'prodInputDelivery', 'prodInputCAC', 'prodInputMarginPct', 'prodInputDiscountVal']) {
+  for (const id of PRODUCT_INPUT_IDS) {
     document.getElementById(id)?.addEventListener('input', (event) => {
       // Mark the field as pinned the moment it holds a value, so operators can
       // see at a glance which knobs have left the global engine.
@@ -976,7 +1045,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset all overrides
   document.getElementById('resetCustomOverridesBtn')?.addEventListener('click', async () => {
-    if (!confirm('Reset all custom SKU overrides?')) return
+    const tuned = Object.keys(productOverrides).length
+    const engineStatus = document.getElementById('engineStatus')
+    if (!tuned) {
+      if (engineStatus) {
+        engineStatus.textContent = 'No custom SKU tunes to reset.'
+        engineStatus.className = 'status-message'
+      }
+      return
+    }
+    // Irreversible and catalog-wide, so make the operator name the scale of it.
+    const answer = prompt(
+      `This deletes ${tuned} custom SKU tune${tuned === 1 ? '' : 's'} and cannot be undone.\n\nType RESET to confirm:`,
+    )
+    if (answer?.trim().toUpperCase() !== 'RESET') return
     try {
       const res = await fetch('/api/overrides?all=true', {
         method: 'DELETE',
@@ -985,8 +1067,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (res.ok) {
         productOverrides = {}
         render()
+        if (engineStatus) {
+          engineStatus.textContent = `Reset ${tuned} SKU tune${tuned === 1 ? '' : 's'}.`
+          engineStatus.className = 'status-message'
+        }
+      } else if (engineStatus) {
+        const data = await res.json().catch(() => ({})) as unknown
+        engineStatus.textContent = parseApiError(data, 'Reset failed')
+        engineStatus.className = 'status-message error'
       }
-    } catch {}
+    } catch {
+      if (engineStatus) {
+        engineStatus.textContent = 'Network error'
+        engineStatus.className = 'status-message error'
+      }
+    }
   })
 
   // Product Tune form submit

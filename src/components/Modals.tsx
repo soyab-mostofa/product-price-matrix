@@ -32,8 +32,8 @@ export function Modals() {
           <div class="read-only-note" id="engineReadOnlyBanner" hidden></div>
           <div class="engine-grid">
             <div class="engine-field"><label for="inputPackaging">Packaging (BDT)</label><input id="inputPackaging" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
-            <div class="engine-field"><label for="inputTransport">Transport (BDT)</label><input id="inputTransport" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
-            <div class="engine-field"><label for="inputDelivery">Delivery (BDT)</label><input id="inputDelivery" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
+            <div class="engine-field"><label for="inputTransport">Transport (BDT)</label><input id="inputTransport" class="engine-input" type="number" min="0" max="100000" step="1" required /><span class="hint">Per unit. Leave 0 unless inbound freight is charged per item.</span></div>
+            <div class="engine-field"><label for="inputDelivery">Delivery (BDT)</label><input id="inputDelivery" class="engine-input" type="number" min="0" max="100000" step="1" required /><span class="hint">Per unit. Delivery is an order-level cost — charging it here prices low-value SKUs above market.</span></div>
             <div class="engine-field"><label for="inputCAC">CAC (BDT)</label><input id="inputCAC" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
             <div class="engine-field"><label for="inputMarginPct">Target Margin (%)</label><input id="inputMarginPct" class="engine-input" type="number" min="0" max="99.99" step="0.1" required /></div>
             <fieldset class="engine-field" style="border:0;padding:0;margin:0;">
@@ -48,13 +48,19 @@ export function Modals() {
           </div>
           <div class="engine-preview-card">
             <div class="engine-preview-row"><span>Total Variable Overhead:</span><strong id="summaryOverhead">—</strong></div>
-            <div class="engine-preview-row"><span>Formula:</span><span id="formulaDescription">(MFG + Overhead) / (1 - Margin%) - Discount</span></div>
-            <div class="engine-preview-row total-highlight"><span>Model Benchmark (৳1,000 MFG):</span><strong id="summarySample">—</strong></div>
+            <div class="engine-preview-row"><span>Formula:</span><span id="formulaDescription">(Source Cost + Overhead) / (1 - Margin%) - Discount</span></div>
+            <div class="engine-preview-row total-highlight"><span>Model Benchmark (৳1,000 Source Cost):</span><strong id="summarySample">—</strong></div>
           </div>
           <div id="engineStatus" class="status-message" role="status" aria-live="polite"></div>
           <div style="display:flex;gap:10px;">
-            <button class="btn-calc" id="applyEngineBtn" type="submit" style="flex:1;justify-content:center;height:40px;">Apply to All Products</button>
-            <button class="btn-icon" id="resetCustomOverridesBtn" type="button" title="Reset all custom SKU overrides" style="width:40px;height:40px;color:#ef4444;">✕</button>
+            <button class="btn-calc" id="applyEngineBtn" type="submit" style="flex:1;justify-content:center;height:40px;">Save Global Defaults</button>
+          </div>
+          <div class="danger-zone">
+            <div class="danger-zone-copy">
+              <strong>Reset every SKU tune</strong>
+              <span>Deletes all per-product overrides across the catalog. This cannot be undone.</span>
+            </div>
+            <button class="btn-danger" id="resetCustomOverridesBtn" type="button">Reset all tunes</button>
           </div>
         </form>
       </dialog>

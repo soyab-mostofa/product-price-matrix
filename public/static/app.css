@@ -999,15 +999,22 @@ select:focus-visible {
     left: auto;
     box-shadow: none;
   }
+  /* `thead th` sets position:sticky globally; unpinning the columns above must
+     not unpin the header ROW, or the header tears in half on vertical scroll. */
+  thead th.col-brand,
+  thead th.col-mfg,
+  thead th.col-market,
+  thead th.col-selling-price {
+    position: sticky;
+    top: 0;
+    left: auto;
+    z-index: 30;
+  }
   .col-product { width: 240px; min-width: 240px; max-width: 240px; }
   .col-brand { width: 110px; min-width: 110px; max-width: 110px; }
   .col-mfg { width: 110px; min-width: 110px; max-width: 110px; }
   .col-market,
   .col-selling-price { width: 165px; min-width: 165px; max-width: 165px; }
-  thead th.col-brand,
-  thead th.col-mfg,
-  thead th.col-market,
-  thead th.col-selling-price { z-index: 30; }
 }
 
 @media (max-width: 600px) {
@@ -1082,3 +1089,94 @@ select:focus-visible {
   .origin-switch { bottom: 12px; }
   .origin-option { min-height: 40px; padding: 0 13px; }
 }
+
+/* ── Above-market warning ──────────────────────────────────────────────────
+   A recommended price above the market reference is not sellable. The cell
+   says so instead of rendering an impossible number in confident blue. */
+.above-market-banner {
+  position: sticky;
+  left: 0;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-bottom: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 12px;
+  font-weight: 600;
+}
+.above-market-banner::before {
+  content: "!";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #9a3412;
+  color: #fff7ed;
+  font-size: 11px;
+  font-weight: 800;
+}
+.num-price.above-market { color: #b91c1c; }
+.above-market-flag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border: 1px solid #fca5a5;
+  border-radius: 3px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Size qualifier under the product title: the catalog contains same-name SKUs
+   that differ only by pack size, so the title alone is ambiguous. */
+.item-size {
+  margin-top: 2px;
+  color: var(--text-dim);
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Danger zone ───────────────────────────────────────────────────────────
+   Irreversible, catalog-wide actions get their own labelled region rather than
+   sitting as a bare icon beside the save button. */
+.danger-zone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 4px;
+  padding: 12px 14px;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  background: #fef2f2;
+}
+.danger-zone-copy { display: grid; gap: 2px; }
+.danger-zone-copy strong { color: #991b1b; font-size: 12.5px; font-weight: 700; }
+.danger-zone-copy span { color: #b91c1c; font-size: 11.5px; }
+.btn-danger {
+  flex: 0 0 auto;
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid #dc2626;
+  border-radius: 5px;
+  background: #fff;
+  color: #b91c1c;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .12s, color .12s;
+}
+.btn-danger:hover:not(:disabled) { background: #dc2626; color: #fff; }
+.btn-danger:disabled { opacity: .5; cursor: not-allowed; }
