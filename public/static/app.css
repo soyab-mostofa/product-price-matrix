@@ -1,136 +1,238 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Price Matrix — certificate-of-analysis assay sheet
+   Every SKU is a specimen: a measured value (recommended selling price), a
+   specification limit (MRP benchmark), and replicate measurements (channel
+   listings). Ruled paper, hairline graphite, one committed assay green.
+   ══════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  --bg: #f8fafc;
-  --surface: #ffffff;
-  --surface-subtle: #f1f5f9;
-  --surface-hover: #f8fafc;
-  
-  --text-main: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
-  --text-dim: #94a3b8;
-  
-  --border: #e2e8f0;
-  --border-light: #f1f5f9;
-  --border-strong: #cbd5e1;
-  --border-dark: #0f172a;
+  /* Paper stock ─ warm lab-report white against sheet white cells */
+  --paper: #fbfbf9;
+  --sheet: #ffffff;
+  --sheet-alt: #f6f6f3;
+  --sheet-hover: #f4f5f1;
+  --sheet-sunk: #efefea;
 
-  --brand-blue: #0284c7;
-  --brand-blue-subtle: #e0f2fe;
+  /* Graphite ink */
+  --ink: #16181c;
+  --ink-2: #3f444c;
+  --ink-3: #5d636b;
+  /* Reserved for non-text marks only — below the 4.5:1 floor for body copy. */
+  --ink-4: #8f959d;
 
-  /* Impeccable Semantic Markup Tiers */
-  --chip-neg-bg: #fee2e2;
-  --chip-neg-text: #991b1b;
-  --chip-neg-border: #fca5a5;
+  /* Hairline rules — the only structure this sheet has */
+  --rule: #e6e5e0;
+  --rule-2: #d4d3cc;
+  --rule-3: #b8b7ae;
+  --rule-datum: #16181c;
 
-  --chip-zero-bg: #f1f5f9;
-  --chip-zero-text: #475569;
-  --chip-zero-border: #e2e8f0;
+  /* Assay green — brand, action, in-spec */
+  --assay-900: #0b4d39;
+  --assay-800: #08402f;
+  --assay-700: #0f6b4f;
+  --assay-600: #158a66;
+  --assay-100: #d6e9df;
+  --assay-50: #edf6f1;
 
-  --chip-tier1-bg: #e0f2fe;
-  --chip-tier1-text: #0369a1;
-  --chip-tier1-border: #bae6fd;
+  /* Brass — the rich-margin band of the chip ramp */
+  --brass-700: #78530f;
 
-  --chip-tier2-bg: #fef3c7;
-  --chip-tier2-text: #92400e;
-  --chip-tier2-border: #fde68a;
+  /* Out of spec */
+  --spec-700: #8f1d1d;
+  --spec-600: #b32020;
+  --spec-100: #eecfcb;
+  --spec-50: #fbedec;
 
-  --chip-tier3-bg: #ffedd5;
-  --chip-tier3-text: #9a3412;
-  --chip-tier3-border: #fed7aa;
+  /* Pinned tune (a specimen with operator-set parameters) */
+  --tune-700: #5b3fa8;
+  --tune-100: #e2dcf4;
+  --tune-50: #f2eefb;
 
-  --chip-tier4-bg: #fee2e2;
-  --chip-tier4-text: #991b1b;
-  --chip-tier4-border: #fca5a5;
+  /* ── Chip ramp ──────────────────────────────────────────────────────────
+     Not six unrelated pastels: an ordered measurement scale. Both ends of
+     the ramp are alarming (selling under cost, or so far over it the price
+     will not clear), the healthy band sits in assay green, and the ramp
+     warms through brass as margin gets rich. */
+  --chip-neg-bg: var(--spec-50);
+  --chip-neg-text: var(--spec-700);
+  --chip-neg-border: var(--spec-100);
 
-  /* Market Discount Chip Colors (Green when selling below market average) */
-  --chip-mkt-disc-bg: #ecfdf5;
-  --chip-mkt-disc-text: #047857;
-  --chip-mkt-disc-border: #a7f3d0;
+  --chip-zero-bg: #f1f1ee;
+  --chip-zero-text: #4a4f56;
+  --chip-zero-border: #dedcd5;
 
-  --chip-mkt-prem-bg: #fef2f2;
-  --chip-mkt-prem-text: #b91c1c;
-  --chip-mkt-prem-border: #fca5a5;
+  --chip-tier1-bg: #eef4f1;
+  --chip-tier1-text: #2c5f4d;
+  --chip-tier1-border: #cee1d8;
 
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --shadow-pin: 4px 0 12px rgba(15, 23, 42, 0.06);
+  --chip-tier2-bg: #e2f0e8;
+  --chip-tier2-text: #14614a;
+  --chip-tier2-border: #b5d9c7;
+
+  --chip-tier3-bg: #f6eedb;
+  --chip-tier3-text: var(--brass-700);
+  --chip-tier3-border: #e3d1a6;
+
+  --chip-tier4-bg: #f6e4da;
+  --chip-tier4-text: #8a3b14;
+  --chip-tier4-border: #e5c1ab;
+
+  --chip-mkt-disc-bg: #e2f0e8;
+  --chip-mkt-disc-text: #14614a;
+  --chip-mkt-disc-border: #b5d9c7;
+
+  --chip-mkt-prem-bg: var(--spec-50);
+  --chip-mkt-prem-text: var(--spec-700);
+  --chip-mkt-prem-border: var(--spec-100);
+
+  /* Depth exists in exactly two places: the datum rule that closes the
+     pinned columns, and the dialog lifting off the sheet. */
+  --shadow-datum: 6px 0 14px -8px rgba(22, 24, 28, 0.4);
+  --shadow-dialog: 0 24px 56px -12px rgba(22, 24, 28, 0.28), 0 2px 8px rgba(22, 24, 28, 0.08);
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: 'Plus Jakarta Sans', var(--font-sans);
+
+  --head-1: 46px;   /* register tier */
+  --head-2: 46px;   /* instrument tier */
+
+  --col-product: 300px;
+  --col-brand: 128px;
+  --col-mfg: 124px;
+  --col-market: 196px;
+  --col-selling: 210px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html { color-scheme: light; }
+
 body {
-  background: var(--bg);
-  color: var(--text-main);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-sans);
+  font-size: 14px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  letter-spacing: -0.012em;
+  letter-spacing: -0.006em;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Lining tabular figures everywhere: this sheet is read down its columns. */
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1, 'cv05' 1;
 }
 
-/* 1. Master Control Header */
+/* Browser surfaces belong to the design system too. */
+::selection { background: var(--assay-700); color: #fff; }
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--sheet-alt); }
+::-webkit-scrollbar-thumb { background: var(--rule-3); border: 3px solid var(--sheet-alt); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-4); }
+::-webkit-scrollbar-corner { background: var(--sheet-alt); }
+* { scrollbar-color: var(--rule-3) var(--sheet-alt); scrollbar-width: thin; }
+
+:focus-visible {
+  outline: 2px solid var(--assay-700);
+  outline-offset: 1px;
+}
+
+a { color: var(--assay-700); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
+/* ══ 1. Sheet header ══════════════════════════════════════════════════════
+   Two ruled tiers. Register (who/what/how much) over instrument (how to
+   read it). Nothing floats; nothing is a card. */
+
 header.app-header {
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  height: 56px;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
   flex-shrink: 0;
+  background: var(--sheet);
+  border-bottom: 1px solid var(--rule-2);
   z-index: 50;
+}
+
+.header-register {
+  height: var(--head-1);
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--rule);
 }
 
 .header-left {
   display: flex;
   align-items: center;
   gap: 14px;
+  padding: 0 18px;
+  border-right: 1px solid var(--rule);
 }
 
 .brand-title {
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
-  color: var(--text-main);
-  letter-spacing: -0.02em;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 8px;
-  text-transform: uppercase;
+  gap: 9px;
+  white-space: nowrap;
 }
 
+/* Sync lamp: hollow until both the catalog and the engine have landed. */
 .brand-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #0ea5e9;
-  box-shadow: 0 0 8px #0ea5e9;
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  background: transparent;
+  border: 1.5px solid var(--ink-4);
+  transition: background .3s ease, border-color .3s ease;
 }
 .brand-dot.synced {
-  background: #10b981;
-  box-shadow: 0 0 8px #10b981;
+  background: var(--assay-600);
+  border-color: var(--assay-600);
 }
 
+.divider-v { display: none; }
+
 .header-meta-pill {
-  background: var(--surface-subtle);
-  border: 1px solid var(--border);
-  padding: 3px 9px;
-  border-radius: 6px;
-  font-size: 11.5px;
-  color: var(--text-muted);
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: 11px;
   font-weight: 500;
+  color: var(--ink-3);
+  letter-spacing: 0.01em;
   white-space: nowrap;
 }
 .header-meta-pill strong {
-  color: var(--text-main);
+  color: var(--ink);
   font-weight: 700;
+  font-size: 12.5px;
+}
+.header-meta-pill .meta-sep {
+  color: var(--rule-3);
+  padding: 0 2px;
+}
+
+.header-right {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-left: auto;
+}
+
+/* One rule per boundary: the register strip's children each own their left
+   edge, so no two adjacent borders ever double up. */
+.header-right > * { border-left: 1px solid var(--rule); }
+
+.header-instrument {
+  height: var(--head-2);
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 0 0 0 18px;
+  background: var(--sheet-alt);
 }
 
 .header-center {
@@ -138,356 +240,511 @@ header.app-header {
   align-items: center;
   gap: 8px;
   flex: 1;
-  max-width: 660px;
+  min-width: 0;
+  padding-right: 12px;
 }
 
+/* ── Fields ─────────────────────────────────────────────────────────────── */
 .search-field {
   position: relative;
-  flex: 1.5;
+  flex: 1.6;
+  min-width: 190px;
+  max-width: 340px;
 }
 .search-field svg {
   position: absolute;
-  left: 11px;
+  left: 10px;
   top: 50%;
   transform: translateY(-50%);
   width: 14px;
   height: 14px;
-  color: var(--text-dim);
+  color: var(--ink-4);
   pointer-events: none;
 }
 .search-field input {
   width: 100%;
-  height: 34px;
-  padding: 0 10px 0 34px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 7px;
+  height: 30px;
+  padding: 0 10px 0 31px;
+  background: var(--sheet);
+  border: 1px solid var(--rule-2);
+  border-radius: 0;
   font-size: 12.5px;
-  color: var(--text-main);
   font-family: inherit;
+  color: var(--ink);
   outline: none;
-  transition: all .15s ease;
+  transition: border-color .12s ease, box-shadow .12s ease;
 }
+.search-field input::placeholder { color: var(--ink-4); }
+.search-field input:hover { border-color: var(--rule-3); }
 .search-field input:focus {
-  background: #ffffff;
-  border-color: var(--border-dark);
-  box-shadow: 0 0 0 1px var(--border-dark);
+  border-color: var(--assay-700);
+  box-shadow: inset 0 -2px 0 var(--assay-700);
 }
+.search-field input::-webkit-search-cancel-button { filter: grayscale(1) opacity(.55); }
 
 .select-field {
   position: relative;
   flex: 1;
+  min-width: 108px;
 }
 .select-field select {
   width: 100%;
-  height: 34px;
-  padding: 0 24px 0 10px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 7px;
+  height: 30px;
+  padding: 0 26px 0 10px;
+  background: var(--sheet);
+  border: 1px solid var(--rule-2);
+  border-radius: 0;
   font-size: 12px;
   font-weight: 500;
-  color: var(--text-main);
   font-family: inherit;
+  color: var(--ink);
   outline: none;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
-  transition: all .15s ease;
+  text-overflow: ellipsis;
+  transition: border-color .12s ease, box-shadow .12s ease;
 }
+.select-field select:hover { border-color: var(--rule-3); }
 .select-field select:focus {
-  background: #ffffff;
-  border-color: var(--border-dark);
+  border-color: var(--assay-700);
+  box-shadow: inset 0 -2px 0 var(--assay-700);
 }
 .select-field::after {
   content: '';
   position: absolute;
-  right: 10px;
+  right: 11px;
   top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-left: 3.5px solid transparent;
-  border-right: 3.5px solid transparent;
-  border-top: 4.5px solid var(--text-muted);
+  width: 7px;
+  height: 7px;
+  margin-top: -5px;
+  border-right: 1.5px solid var(--ink-3);
+  border-bottom: 1.5px solid var(--ink-3);
+  transform: rotate(45deg);
   pointer-events: none;
 }
 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* Premium Button Styles */
+/* ── Header buttons ─────────────────────────────────────────────────────── */
 .btn-calc {
-  height: 34px;
-  padding: 0 13px;
-  border-radius: 7px;
-  border: 1px solid var(--text-main);
-  background: var(--text-main);
-  color: #ffffff;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 0;
+  border: 1px solid var(--assay-900);
+  background: var(--assay-900);
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  white-space: nowrap;
+  transition: background .12s ease, border-color .12s ease;
+}
+.btn-calc:hover:not(:disabled) { background: var(--assay-700); border-color: var(--assay-700); }
+.btn-calc:active:not(:disabled) { background: var(--assay-800); }
+.btn-calc:disabled { opacity: .45; cursor: not-allowed; }
+.btn-calc svg { width: 14px; height: 14px; }
+
+/* The compare cord: one control that re-reads every chip in the field at
+   once. Framed to close tier 2 on the same edge tier 1 closes on. */
+.btn-toggle-view {
+  height: 100%;
+  padding: 0 15px;
+  border: 0;
+  border-left: 1px solid var(--rule-2);
+  background: var(--sheet);
+  color: var(--ink-2);
+  font-family: inherit;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  transition: all .15s ease;
   white-space: nowrap;
-  box-shadow: var(--shadow-sm);
+  flex: 0 0 auto;
+  transition: background .12s ease, color .12s ease;
 }
-.btn-calc:hover {
-  background: #1e293b;
-  border-color: #1e293b;
-  transform: translateY(-0.5px);
+.btn-toggle-view:hover { background: var(--sheet-sunk); color: var(--ink); }
+.btn-toggle-view.active-mode {
+  background: var(--assay-900);
+  color: #fff;
+  border-left-color: var(--assay-900);
 }
-.btn-calc svg { width: 14px; height: 14px; }
+/* Same 30px framed control as the fields beside it, wrapped in the full-height
+   ruled cell that closes the tier — consistent affordance, aligned edge. */
+.btn-toggle-view::before {
+  content: '';
+  position: absolute;
+  inset: 8px 0;
+  border: 1px solid var(--rule-2);
+  pointer-events: none;
+}
+.btn-toggle-view { position: relative; }
+.btn-toggle-view.active-mode::before { border-color: rgba(255, 255, 255, .28); }
+.btn-toggle-view svg { width: 13px; height: 13px; flex: 0 0 auto; }
 
-.btn-toggle-view {
-  height: 34px;
-  padding: 0 12px;
-  border-radius: 7px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-secondary);
+/* Register-tier controls read as ruled tabs, not floating buttons. Their
+   dividing rules come from `.header-right > *`, so none is drawn twice. */
+.btn-register {
+  height: 100%;
+  padding: 0 15px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-2);
+  font-family: inherit;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: all .15s ease;
+  gap: 7px;
   white-space: nowrap;
+  transition: background .12s ease, color .12s ease;
 }
-.btn-toggle-view:hover {
-  background: var(--surface-subtle);
-  color: var(--text-main);
-  border-color: var(--border-strong);
-}
-.btn-toggle-view.active-mode {
-  background: #eff6ff;
-  color: #1d4ed8;
-  border-color: #bfdbfe;
-}
-.btn-toggle-view svg { width: 14px; height: 14px; }
-.selling-chip-btn-short { display: none; }
+.btn-register:hover { background: var(--sheet-alt); color: var(--ink); }
+.btn-register svg { width: 14px; height: 14px; }
 
-.btn-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 7px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-secondary);
+.btn-register.is-primary {
+  background: var(--assay-900);
+  color: #fff;
+}
+.btn-register.is-primary:hover { background: var(--assay-700); color: #fff; }
+.header-right > .btn-register.is-primary { border-left-color: var(--assay-900); }
+
+/* Out-of-spec readout: a count that filters the sheet when clicked. Framed
+   like the other register controls so its pressability is not in doubt. */
+.spec-flag {
+  height: 100%;
+  padding: 0 15px;
+  border: 0;
+  background: var(--spec-50);
+  color: var(--spec-700);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  transition: all .15s ease;
+  gap: 8px;
+  white-space: nowrap;
+  transition: background .12s ease, color .12s ease;
 }
-.btn-icon:hover {
-  background: var(--bg);
-  color: var(--text-main);
-  border-color: var(--border-strong);
+.spec-flag[hidden] { display: none; }
+.spec-flag .spec-flag-verb { font-weight: 600; }
+.spec-flag .spec-flag-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--spec-700);
+}
+.spec-flag .spec-flag-mark {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  background: var(--spec-600);
+}
+.header-right > .spec-flag { border-left-color: var(--spec-100); }
+.spec-flag:hover { background: var(--spec-100); }
+.spec-flag[aria-pressed='true'] {
+  background: var(--spec-600);
+  color: #fff;
+}
+.spec-flag[aria-pressed='true'] .spec-flag-count { color: #fff; }
+.spec-flag[aria-pressed='true'] .spec-flag-mark { background: #fff; }
+.header-right > .spec-flag[aria-pressed='true'] { border-left-color: var(--spec-600); }
+
+/* ══ 2. Register tabs (sourcing books) ════════════════════════════════════
+   The two books dock into the header rule as register tabs. Each carries
+   its own specimen count, so the size of the book you are not reading is
+   legible from here. */
+.origin-switch {
+  display: flex;
+  align-items: stretch;
+}
+.origin-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-right: 1px solid var(--rule);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink-3);
+  text-decoration: none;
+  white-space: nowrap;
+  position: relative;
+  transition: background .12s ease, color .12s ease;
+}
+.origin-option:last-child { border-right: 0; }
+.origin-option:hover { background: var(--sheet-alt); color: var(--ink); }
+.origin-option.is-active {
+  color: var(--ink);
+  background: var(--sheet);
+}
+.origin-option.is-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--assay-700);
+}
+.origin-count {
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 1px 6px;
+  background: var(--sheet-sunk);
+  color: var(--ink-2);
+}
+.origin-option.is-active .origin-count {
+  background: var(--assay-50);
+  color: var(--assay-900);
 }
 
-/* 2. Grid Table Viewport */
+/* ══ 3. The sheet ═════════════════════════════════════════════════════════ */
 .table-viewport {
   flex: 1;
   overflow: auto;
   position: relative;
-  background: var(--surface);
+  background: var(--sheet);
+  overscroll-behavior: contain;
 }
 
 table {
   border-collapse: separate;
   border-spacing: 0;
   width: max-content;
+  min-width: 100%;
 }
 
+/* ── Column heads: small-caps label over a unit-of-measure basis line ───── */
 thead th {
   position: sticky;
   top: 0;
   z-index: 30;
-  background: #f8fafc;
-  color: var(--text-secondary);
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-  border-right: 1px solid var(--border-light);
+  background: var(--sheet-alt);
+  padding: 0;
+  border-bottom: 1px solid var(--rule-2);
+  border-right: 1px solid var(--rule);
   white-space: nowrap;
   user-select: none;
-  cursor: pointer;
+  vertical-align: bottom;
+  text-align: left;
   transition: background .12s ease;
 }
-thead th:hover {
-  background: #f1f5f9;
-}
+thead th:hover { background: var(--sheet-sunk); }
 
 .sort-button {
   appearance: none;
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
   width: 100%;
+  min-height: 44px;
   margin: 0;
-  padding: 0;
+  padding: 7px 12px 8px;
   border: 0;
   background: transparent;
   color: inherit;
   font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
   text-align: inherit;
   cursor: pointer;
 }
+.head-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--ink-2);
+}
+.head-basis {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink-3);
+  text-transform: none;
+}
+.sort-mark {
+  width: 9px;
+  height: 11px;
+  flex: 0 0 auto;
+  color: var(--ink-4);
+  opacity: .55;
+  transition: opacity .12s ease, color .12s ease;
+}
+thead th:hover .sort-mark { opacity: 1; }
+th[aria-sort='ascending'] .sort-mark,
+th[aria-sort='descending'] .sort-mark { opacity: 1; color: var(--assay-700); }
+th[aria-sort='ascending'] .head-label,
+th[aria-sort='descending'] .head-label { color: var(--assay-900); }
+th[aria-sort='ascending'],
+th[aria-sort='descending'] { box-shadow: inset 0 -2px 0 var(--assay-700); }
 
 th.source-col-head {
-  min-width: 200px;
+  min-width: 186px;
   text-align: left;
 }
 .source-head-wrap {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
 }
 .badge-channel {
   font-size: 9px;
-  padding: 2px 5px;
-  border-radius: 4px;
-  font-weight: 600;
+  padding: 1px 5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
-.badge-channel.official { background: #e0f2fe; color: #0369a1; }
-.badge-channel.market { background: #f1f5f9; color: #64748b; }
+.badge-channel.official { background: var(--assay-50); color: var(--assay-900); }
+.badge-channel.market { background: var(--sheet-sunk); color: var(--ink-3); }
 
-/* 3. Sticky Columns (5 Base Columns) */
+/* ── Pinned specimen columns ───────────────────────────────────────────── */
 .col-product {
   position: sticky;
   left: 0;
   z-index: 20;
-  width: 280px;
-  min-width: 280px;
-  max-width: 280px;
-  background: #ffffff;
+  width: var(--col-product);
+  min-width: var(--col-product);
+  max-width: var(--col-product);
+  background: var(--sheet);
 }
 .col-brand {
   position: sticky;
-  left: 280px;
+  left: var(--col-product);
   z-index: 20;
-  width: 115px;
-  min-width: 115px;
-  max-width: 115px;
-  background: #ffffff;
+  width: var(--col-brand);
+  min-width: var(--col-brand);
+  max-width: var(--col-brand);
+  background: var(--sheet);
 }
 .col-mfg {
   position: sticky;
-  left: 395px;
+  left: calc(var(--col-product) + var(--col-brand));
   z-index: 20;
-  width: 115px;
-  min-width: 115px;
-  max-width: 115px;
-  background: #ffffff;
+  width: var(--col-mfg);
+  min-width: var(--col-mfg);
+  max-width: var(--col-mfg);
+  background: var(--sheet);
   text-align: right;
 }
 .col-market {
   position: sticky;
-  left: 510px;
+  left: calc(var(--col-product) + var(--col-brand) + var(--col-mfg));
   z-index: 20;
-  width: 185px;
-  min-width: 185px;
-  max-width: 185px;
-  background: #ffffff;
+  width: var(--col-market);
+  min-width: var(--col-market);
+  max-width: var(--col-market);
+  background: var(--sheet);
 }
 .col-selling-price {
   position: sticky;
-  left: 695px;
+  left: calc(var(--col-product) + var(--col-brand) + var(--col-mfg) + var(--col-market));
   z-index: 20;
-  width: 185px;
-  min-width: 185px;
-  max-width: 185px;
-  background: #ffffff;
-  border-right: 2px solid #cbd5e1 !important;
-  box-shadow: var(--shadow-pin);
+  width: var(--col-selling);
+  min-width: var(--col-selling);
+  max-width: var(--col-selling);
+  background: var(--sheet);
+  /* The datum rule: everything left of it is what we know, everything right
+     of it is what the market is doing. */
+  border-right: 1px solid var(--rule-datum) !important;
+  box-shadow: var(--shadow-datum);
 }
+th.col-mfg .sort-button,
+th.col-market .sort-button,
+th.col-selling-price .sort-button { align-items: flex-end; text-align: right; }
 
-thead th.col-product, thead th.col-brand, thead th.col-mfg, thead th.col-market, thead th.col-selling-price {
+thead th.col-product,
+thead th.col-brand,
+thead th.col-mfg,
+thead th.col-market,
+thead th.col-selling-price {
   z-index: 35;
-  background: #f1f5f9;
+  background: var(--sheet-alt);
 }
 
-/* Rows & Cells */
+/* ── Rows ──────────────────────────────────────────────────────────────── */
 tbody tr {
   cursor: pointer;
-  transition: background-color 0.08s ease;
+  transition: background-color .08s ease;
 }
-tbody tr:hover td {
-  background-color: var(--surface-hover) !important;
-}
+tbody tr:hover td,
+tbody tr:focus-visible td { background-color: var(--sheet-hover) !important; }
+tbody tr:hover td.source-data-cell:has(.cell-dash) { background-color: var(--sheet-sunk) !important; }
+tbody tr:focus-visible { outline: none; }
+tbody tr:focus-visible td:first-child { box-shadow: inset 2px 0 0 var(--assay-700); }
 
 td {
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border-light);
-  border-right: 1px solid var(--border-light);
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
   vertical-align: middle;
-  height: 52px;
-  background: #ffffff;
-}
-
-tbody tr:hover td.col-product,
-tbody tr:hover td.col-brand,
-tbody tr:hover td.col-mfg,
-tbody tr:hover td.col-market,
-tbody tr:hover td.col-selling-price {
-  background-color: #f1f5f9 !important;
+  height: 54px;
+  background: var(--sheet);
 }
 
 .item-name {
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: var(--text-main);
-  line-height: 1.35;
+  color: var(--ink);
+  line-height: 1.32;
+  letter-spacing: -0.008em;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+/* Pack size disambiguates same-name SKUs, so it gets its own ruled mark. */
+.item-size {
+  margin-top: 3px;
+  display: inline-block;
+  padding: 0 5px;
+  border: 1px solid var(--rule-2);
+  color: var(--ink-3);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 15px;
+}
+
 .brand-label {
   font-size: 11.5px;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--ink-2);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100px;
+  max-width: 100%;
   display: block;
 }
 
 .num-price {
   font-size: 13.5px;
   font-weight: 600;
-  color: #334155;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums lining-nums;
 }
-.num-price.mfg {
-  color: #0284c7;
-  font-weight: 700;
-}
-.num-price.selling {
-  color: #0f172a;
-  font-weight: 700;
-}
-.num-price.custom-tuned {
-  color: #7c3aed;
-  font-weight: 700;
-}
+.num-price.mfg { font-weight: 700; color: var(--ink); }
+.num-price.selling { font-weight: 700; color: var(--assay-900); }
+.num-price.custom-tuned { font-weight: 700; color: var(--tune-700); }
+.num-price.mrp-official { font-weight: 600; color: var(--ink); }
+.num-price.mrp-thirdparty { font-weight: 600; color: var(--brass-700); }
+.num-price.mrp-ref { font-weight: 600; color: var(--ink-2); }
 
-/* Dual Metric Layout for Market Avg & Selling Price */
 .dual-metric-cell {
   display: flex;
   align-items: center;
@@ -499,238 +756,544 @@ tbody tr:hover td.col-selling-price {
 .custom-tune-tag {
   font-size: 9px;
   font-weight: 700;
-  padding: 1px 4px;
-  background: #ede9fe;
-  color: #6d28d9;
-  border-radius: 4px;
+  padding: 1px 5px;
+  background: var(--tune-50);
+  border: 1px solid var(--tune-100);
+  color: var(--tune-700);
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
-/* Per-SKU tune form: blank inputs inherit the global engine, pinned ones don't. */
-.tune-inherit-note {
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--text-muted);
-}
-
-.engine-input.is-pinned {
-  border-color: #a78bfa;
-  background: #faf5ff;
-  font-weight: 600;
-  color: #5b21b6;
-}
-
-.engine-input:disabled {
-  background: #f8fafc;
-  color: #94a3b8;
-  cursor: not-allowed;
-}
-
-.num-price.mrp-official {
-  color: #0f172a;
-  font-weight: 700;
-}
-.num-price.mrp-thirdparty {
-  color: #92400e;
-  font-weight: 600;
-}
-.num-price.mrp-ref {
-  color: #64748b;
-  font-weight: 500;
-}
-
-/* Source Cells & Cards */
+/* ── Replicate measurement cells (channels) ────────────────────────────── */
 .source-data-cell {
-  padding: 5px 8px;
-  min-width: 200px;
-  background: #ffffff;
+  padding: 6px 10px;
+  min-width: 186px;
+  background: var(--sheet);
 }
 .price-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 4px 6px;
-  border-radius: 6px;
-  background: transparent;
 }
 .price-left-group {
   display: flex;
   align-items: center;
   gap: 7px;
+  min-width: 0;
 }
 .price-val {
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
-  color: #18181b;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-/* Markup Chips with Clear Semantics */
+/* ── The chip ramp ─────────────────────────────────────────────────────── */
 .markup-chip {
   font-size: 10.5px;
   font-weight: 700;
   padding: 2px 6px;
-  border-radius: 5px;
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  letter-spacing: -0.01em;
+  gap: 3px;
+  letter-spacing: 0.01em;
   border: 1px solid transparent;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.markup-chip svg { width: 8px; height: 8px; flex: 0 0 auto; }
+
+.markup-chip.neg { background: var(--chip-neg-bg); border-color: var(--chip-neg-border); color: var(--chip-neg-text); }
+.markup-chip.zero { background: var(--chip-zero-bg); border-color: var(--chip-zero-border); color: var(--chip-zero-text); }
+.markup-chip.t1 { background: var(--chip-tier1-bg); border-color: var(--chip-tier1-border); color: var(--chip-tier1-text); }
+.markup-chip.t2 { background: var(--chip-tier2-bg); border-color: var(--chip-tier2-border); color: var(--chip-tier2-text); }
+.markup-chip.t3 { background: var(--chip-tier3-bg); border-color: var(--chip-tier3-border); color: var(--chip-tier3-text); }
+.markup-chip.t4 { background: var(--chip-tier4-bg); border-color: var(--chip-tier4-border); color: var(--chip-tier4-text); }
+.markup-chip.mkt-disc { background: var(--chip-mkt-disc-bg); border-color: var(--chip-mkt-disc-border); color: var(--chip-mkt-disc-text); }
+.markup-chip.mkt-prem { background: var(--chip-mkt-prem-bg); border-color: var(--chip-mkt-prem-border); color: var(--chip-mkt-prem-text); }
+
+/* Out of spec: not a tier on the ramp, a failed measurement. */
+.markup-chip.above-market {
+  background: var(--spec-600) !important;
+  border-color: var(--spec-700) !important;
+  color: #fff !important;
+  font-weight: 700;
 }
 
-.markup-chip.neg {
-  background: var(--chip-neg-bg);
-  border-color: var(--chip-neg-border);
-  color: var(--chip-neg-text);
-}
-.markup-chip.zero {
-  background: var(--chip-zero-bg);
-  border-color: var(--chip-zero-border);
-  color: var(--chip-zero-text);
-}
-.markup-chip.t1 {
-  background: var(--chip-tier1-bg);
-  border-color: var(--chip-tier1-border);
-  color: var(--chip-tier1-text);
-}
-.markup-chip.t2 {
-  background: var(--chip-tier2-bg);
-  border-color: var(--chip-tier2-border);
-  color: var(--chip-tier2-text);
-}
-.markup-chip.t3 {
-  background: var(--chip-tier3-bg);
-  border-color: var(--chip-tier3-border);
-  color: var(--chip-tier3-text);
-}
-.markup-chip.t4 {
-  background: var(--chip-tier4-bg);
-  border-color: var(--chip-tier4-border);
-  color: var(--chip-tier4-text);
-}
-
-/* Market Discount Mode Chips */
-.markup-chip.mkt-disc {
-  background: var(--chip-mkt-disc-bg);
-  border-color: var(--chip-mkt-disc-border);
-  color: var(--chip-mkt-disc-text);
-}
-.markup-chip.mkt-prem {
-  background: var(--chip-mkt-prem-bg);
-  border-color: var(--chip-mkt-prem-border);
-  color: var(--chip-mkt-prem-text);
-}
-
+/* ── Deep link / unverified marker ─────────────────────────────────────── */
 .btn-open-link {
-  color: var(--text-dim);
+  color: var(--ink-4);
   text-decoration: none;
-  font-size: 11px;
-  padding: 2px 5px;
-  border-radius: 4px;
+  min-width: 28px;
+  min-height: 28px;
   border: 1px solid transparent;
-  transition: all .12s;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
+  transition: color .12s ease, background .12s ease, border-color .12s ease;
 }
-.price-card:hover .btn-open-link {
-  color: var(--text-main);
-  background: #f1f5f9;
-  border-color: var(--border);
-}
+.btn-open-link svg { width: 13px; height: 13px; }
+.price-card:hover .btn-open-link { color: var(--assay-700); border-color: var(--rule-2); }
+.btn-open-link:hover { color: var(--assay-900) !important; background: var(--assay-50); border-color: var(--assay-100) !important; }
 
-/* A price recorded from research, with no confirmed product page to open. */
+/* Close the last channel column against the viewport edge rather than
+   letting its chip clip at the scroll boundary. */
+th.source-col-head:last-child,
+td.source-data-cell:last-child { padding-right: 18px; border-right: 0; }
+
+/* A channel with no listing for this SKU: state the absence quietly instead
+   of drawing a full-weight rule around emptiness. */
+.source-data-cell:has(.cell-dash) { background: var(--sheet-alt); }
+
+/* A price recorded from research with no confirmed product page: the cell
+   says the measurement is unreplicated rather than faking a link. */
 .listing-unverified {
-  color: #cbd5e1;
-  font-size: 11px;
-  padding: 2px 5px;
-  min-width: 32px;
-  min-height: 32px;
+  color: var(--ink-4);
+  min-width: 28px;
+  min-height: 28px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   cursor: help;
 }
+.listing-unverified svg { width: 12px; height: 12px; }
 .listing-unverified-text {
-  color: var(--text-muted);
+  color: var(--ink-3);
   font-size: 11.5px;
-  font-style: italic;
 }
 
 .cell-dash {
-  color: #cbd5e1;
+  color: var(--rule-3);
   font-size: 13px;
-  text-align: center;
   display: block;
 }
+.col-mfg .cell-dash,
+.col-market .cell-dash,
+.col-selling-price .cell-dash { text-align: right; }
 
-/* 4. Impeccable Modals & Dialogs */
+/* ══ 4. Notices ═══════════════════════════════════════════════════════════ */
+.sync-error {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--spec-100);
+  background: var(--spec-50);
+  color: var(--spec-700);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* One over-market SKU is a tuning job; a hundred is a broken global model. */
+.above-market-banner {
+  position: sticky;
+  left: 0;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--spec-100);
+  background: var(--spec-50);
+  color: var(--spec-700);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.empty-state {
+  padding: 88px 20px;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 13px;
+}
+
+/* ══ 5. Specimen record (dialogs) ═════════════════════════════════════════ */
 dialog {
   margin: auto;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: #ffffff;
-  color: var(--text-main);
-  width: min(640px, calc(100% - 32px));
-  box-shadow: var(--shadow-lg);
+  padding: 0;
+  border: 1px solid var(--rule-2);
+  border-radius: 0;
+  background: var(--sheet);
+  color: var(--ink);
+  width: min(720px, calc(100% - 32px));
+  box-shadow: var(--shadow-dialog);
   outline: none;
 }
+dialog#dialog { width: min(880px, calc(100% - 32px)); }
 dialog::backdrop {
-  background: rgba(15, 23, 42, 0.35);
-  backdrop-filter: blur(3px);
+  background: rgba(22, 24, 28, 0.42);
+  backdrop-filter: blur(2px);
 }
+
 .modal-header {
-  padding: 16px 22px;
-  border-bottom: 1px solid var(--border);
+  padding: 18px 22px 16px;
+  border-bottom: 1px solid var(--rule-2);
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  background: #f8fafc;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--sheet-alt);
 }
 .modal-heading-group {
   display: flex;
   flex-direction: column;
+  gap: 3px;
+  min-width: 0;
 }
 .modal-kicker {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--brand-blue);
+  letter-spacing: 0.11em;
+  color: var(--ink-3);
 }
 .modal-title {
   font-family: var(--font-display);
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 700;
-  color: var(--text-main);
-  margin-top: 2px;
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  text-wrap: balance;
 }
 .modal-btn-close {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  font-size: 16px;
+  flex: 0 0 auto;
+  background: var(--sheet);
+  border: 1px solid var(--rule-2);
+  color: var(--ink-2);
+  width: 30px;
+  height: 30px;
+  border-radius: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all .12s ease;
+  transition: background .12s ease, color .12s ease, border-color .12s ease;
 }
-.modal-btn-close:hover { background: #f1f5f9; color: var(--text-main); }
+.modal-btn-close svg { width: 13px; height: 13px; }
+.modal-btn-close:hover { background: var(--ink); border-color: var(--ink); color: #fff; }
+
 .modal-body {
   padding: 22px;
   display: grid;
-  gap: 18px;
-  max-height: 75vh;
+  gap: 20px;
+  max-height: 74vh;
   overflow-y: auto;
 }
 
-/* Pricing Engine Form Controls */
+/* ── Section rule: a labelled band, not a card ─────────────────────────── */
+.record-section { display: grid; gap: 10px; }
+.record-legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--ink-3);
+}
+.record-legend::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* ── Specimen identity strip ───────────────────────────────────────────── */
+.record-spec-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-bottom: 0;
+}
+.record-spec-item {
+  flex: 1 1 150px;
+  display: grid;
+  gap: 3px;
+  padding: 9px 12px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.record-spec-item:last-child { border-right: 0; }
+.record-spec-item dt {
+  font-size: 9.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--ink-3);
+}
+.record-spec-item dd {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+/* ── Assay readings ────────────────────────────────────────────────────── */
+.detail-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--rule-2);
+}
+.detail-stat-box {
+  padding: 11px 13px;
+  border-right: 1px solid var(--rule);
+  display: grid;
+  gap: 4px;
+  align-content: start;
+}
+.detail-stat-box:last-child { border-right: 0; }
+.detail-stat-box.is-result { background: var(--assay-50); }
+.detail-stat-box.is-out-of-spec { background: var(--spec-50); }
+.detail-stat-box span {
+  display: block;
+  font-size: 9.5px;
+  color: var(--ink-3);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.detail-stat-box strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.detail-stat-box.is-result strong { color: var(--assay-900); }
+.detail-stat-box.is-out-of-spec strong { color: var(--spec-700); }
+
+/* A percentage means nothing without its basis, so each reading names one. */
+.stat-readings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 1px;
+}
+.stat-reading {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ── Cost stack: where the recommended price comes from ────────────────── */
+.cost-stack { display: grid; gap: 8px; }
+.cost-stack-bar {
+  display: flex;
+  height: 24px;
+  border: 1px solid var(--rule-2);
+  overflow: hidden;
+}
+.cost-stack-seg {
+  min-width: 2px;
+  transition: filter .12s ease;
+}
+.cost-stack-seg.seg-source { background: var(--assay-900); }
+.cost-stack-seg.seg-overhead { background: var(--assay-600); }
+.cost-stack-seg.seg-margin { background: var(--chip-tier3-text); }
+.cost-stack-seg.seg-discount { background: repeating-linear-gradient(135deg, var(--spec-100) 0 4px, var(--spec-50) 4px 8px); }
+.cost-stack-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+}
+.cost-stack-key-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+.cost-stack-key-item i {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  align-self: center;
+}
+.cost-stack-key-item i.seg-source { background: var(--assay-900); }
+.cost-stack-key-item i.seg-overhead { background: var(--assay-600); }
+.cost-stack-key-item i.seg-margin { background: var(--chip-tier3-text); }
+.cost-stack-key-item i.seg-discount { background: repeating-linear-gradient(135deg, var(--spec-100) 0 3px, var(--spec-50) 3px 6px); border: 1px solid var(--spec-100); }
+.cost-stack-key-item b {
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* ── Replicate spread: where our price sits against the channels ───────── */
+.spread-rail {
+  position: relative;
+  height: 60px;
+  border: 1px solid var(--rule-2);
+  background: var(--sheet-alt);
+}
+/* The inner track is inset so a tick at either extreme stays inside the
+   frame while still measuring 0–100% of the real price range. */
+.spread-inner {
+  position: absolute;
+  inset: 0 22px;
+}
+.spread-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 24px;
+  height: 1px;
+  background: var(--rule-2);
+}
+.spread-band {
+  position: absolute;
+  top: 16px;
+  height: 17px;
+  background: var(--assay-50);
+  border-left: 1px solid var(--assay-100);
+  border-right: 1px solid var(--assay-100);
+}
+.spread-tick {
+  position: absolute;
+  top: 12px;
+  width: 1px;
+  height: 25px;
+  background: var(--ink-4);
+  transform: translateX(-0.5px);
+}
+.spread-tick.is-ours {
+  width: 3px;
+  height: 35px;
+  top: 6px;
+  background: var(--assay-900);
+  transform: translateX(-1.5px);
+}
+.spread-tick.is-ours.is-out-of-spec { background: var(--spec-600); }
+.spread-tick.is-mrp { background: var(--ink); height: 31px; top: 8px; }
+.spread-label {
+  position: absolute;
+  top: 42px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+.spread-label.is-ours { color: var(--assay-900); }
+.spread-label.is-out-of-spec { color: var(--spec-700); }
+.spread-endpoints {
+  display: flex;
+  justify-content: space-between;
+  /* Aligned to the inner track's inset so each caption sits under its own
+     end tick rather than out at the frame edge. */
+  padding: 0 22px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.spread-endpoints span:first-child { transform: translateX(-50%); }
+.spread-endpoints span:last-child { transform: translateX(50%); }
+
+/* ── Channel audit ─────────────────────────────────────────────────────── */
+.detail-sources-list {
+  display: grid;
+  border: 1px solid var(--rule);
+  border-bottom: 0;
+}
+.detail-source-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 13px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--sheet);
+}
+.detail-source-row:nth-child(even) { background: var(--sheet-alt); }
+.source-row-name {
+  font-weight: 600;
+  font-size: 12.5px;
+  color: var(--ink);
+}
+.source-row-title {
+  font-size: 11px;
+  color: var(--ink-3);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.source-row-figure {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.detail-source-row a {
+  color: var(--assay-700);
+  text-decoration: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+}
+.detail-source-row a svg { width: 11px; height: 11px; }
+.detail-source-row a:hover { text-decoration: underline; }
+.detail-source-empty {
+  padding: 14px 13px;
+  border: 1px solid var(--rule);
+  color: var(--ink-3);
+  font-size: 12px;
+}
+
+/* ── Tabs ──────────────────────────────────────────────────────────────── */
+.tab-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--rule-2);
+}
+.tab-btn {
+  padding: 8px 15px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--ink-3);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: -1px;
+  transition: color .12s ease, border-color .12s ease;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active {
+  color: var(--assay-900);
+  border-bottom-color: var(--assay-700);
+}
+
+/* ══ 6. Engine form ═══════════════════════════════════════════════════════ */
 .engine-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -741,177 +1304,188 @@ dialog::backdrop {
   flex-direction: column;
   gap: 5px;
 }
-.engine-field label {
-  font-size: 12px;
+.engine-field label,
+.engine-field legend {
+  font-size: 11.5px;
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--ink);
+  letter-spacing: 0.01em;
 }
 .engine-field span.hint {
   font-size: 11px;
-  color: var(--text-muted);
+  line-height: 1.45;
+  color: var(--ink-3);
+  margin-top: 1px;
 }
 .engine-input {
-  height: 38px;
-  padding: 0 12px;
-  border: 1px solid var(--border-strong);
-  border-radius: 7px;
+  height: 34px;
+  padding: 0 11px;
+  border: 1px solid var(--rule-2);
+  border-radius: 0;
   font-size: 13px;
   font-family: inherit;
+  font-variant-numeric: tabular-nums lining-nums;
   outline: none;
-  background: #ffffff;
-  color: var(--text-main);
-  transition: all .12s ease;
+  background: var(--sheet);
+  color: var(--ink);
+  transition: border-color .12s ease, box-shadow .12s ease, background .12s ease;
 }
+.engine-input:hover:not(:disabled) { border-color: var(--rule-3); }
 .engine-input:focus {
-  border-color: var(--border-dark);
-  box-shadow: 0 0 0 1px var(--border-dark);
+  border-color: var(--assay-700);
+  box-shadow: inset 0 -2px 0 var(--assay-700);
+}
+.engine-input.is-pinned {
+  border-color: var(--tune-100);
+  background: var(--tune-50);
+  font-weight: 600;
+  color: var(--tune-700);
+}
+.engine-input:disabled,
+.engine-input[readonly] {
+  background: var(--sheet-alt);
+  color: var(--ink-3);
+  cursor: not-allowed;
+}
+.engine-input[readonly] { cursor: default; }
+
+.tune-inherit-note {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--ink-3);
+  padding-left: 11px;
+  border-left: 1px solid var(--rule-2);
 }
 
 .engine-preview-card {
-  background: #f8fafc;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 16px;
+  border: 1px solid var(--rule-2);
+  background: var(--sheet-alt);
+  padding: 0;
   display: grid;
-  gap: 10px;
 }
 .engine-preview-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
+  gap: 14px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule);
   font-size: 12.5px;
-  color: var(--text-secondary);
+  color: var(--ink-2);
 }
+.engine-preview-row:last-child { border-bottom: 0; }
 .engine-preview-row strong {
-  color: var(--text-main);
+  color: var(--ink);
   font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums lining-nums;
 }
 .engine-preview-row.total-highlight {
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-  margin-top: 4px;
-  font-size: 14px;
+  background: var(--sheet);
   font-weight: 700;
-  color: var(--text-main);
+  color: var(--ink);
 }
 .engine-preview-row.total-highlight strong {
-  font-size: 16px;
-  color: var(--brand-blue);
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  color: var(--assay-900);
 }
 
-/* Discount Type Toggle Pill */
 .discount-type-group {
   display: flex;
-  background: var(--surface-subtle);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 2px;
-  gap: 2px;
+  border: 1px solid var(--rule-2);
 }
 .discount-type-btn {
   flex: 1;
-  height: 28px;
-  border: none;
-  background: transparent;
+  height: 30px;
+  border: 0;
+  border-right: 1px solid var(--rule-2);
+  background: var(--sheet);
+  font-family: inherit;
   font-size: 11.5px;
   font-weight: 600;
-  color: var(--text-secondary);
-  border-radius: 4px;
+  color: var(--ink-3);
   cursor: pointer;
-  transition: all .12s ease;
+  transition: background .12s ease, color .12s ease;
 }
+.discount-type-btn:last-child { border-right: 0; }
+.discount-type-btn:hover:not(:disabled) { background: var(--sheet-alt); color: var(--ink); }
 .discount-type-btn.active {
-  background: #ffffff;
-  color: var(--text-main);
-  box-shadow: var(--shadow-sm);
+  background: var(--assay-900);
+  color: #fff;
+}
+.discount-type-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.status-message {
+  min-height: 17px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.status-message.error { color: var(--spec-700); font-weight: 600; }
+.status-message.success { color: var(--assay-700); font-weight: 600; }
+
+.read-only-note {
+  padding: 10px 12px;
+  border: 1px solid var(--rule-2);
+  background: var(--sheet-alt);
+  color: var(--ink-2);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
-/* Detail Drawer Styles */
-.detail-stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  background: #f8fafc;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-.detail-stat-box span {
-  display: block;
-  font-size: 11px;
-  color: var(--text-muted);
+.btn-ghost {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--rule-2);
+  border-radius: 0;
+  background: var(--sheet);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease;
 }
-.detail-stat-box strong {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-main);
-  margin-top: 2px;
-  display: block;
-}
-.detail-sources-list {
-  display: grid;
-  gap: 8px;
-}
-.detail-source-row {
+.btn-ghost:hover:not(:disabled) { background: var(--sheet-alt); border-color: var(--rule-3); }
+.btn-ghost:disabled { opacity: .45; cursor: not-allowed; }
+
+.form-actions { display: flex; gap: 10px; }
+.form-actions .btn-calc { flex: 1; height: 36px; }
+
+/* ── Danger zone ───────────────────────────────────────────────────────────
+   Irreversible, catalog-wide actions get their own labelled region. The
+   weight comes from a solid crimson field, not a stripe on the edge. */
+.danger-zone {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 14px;
-  background: #ffffff;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  gap: 14px;
+  padding: 13px 14px;
+  border: 1px solid var(--spec-600);
+  background: var(--spec-50);
 }
-.detail-source-row a {
-  color: var(--brand-blue);
-  text-decoration: none;
+.danger-zone-copy { display: grid; gap: 3px; }
+.danger-zone-copy strong { color: var(--spec-700); font-size: 12.5px; font-weight: 700; }
+.danger-zone-copy span { color: var(--spec-700); font-size: 11.5px; line-height: 1.45; opacity: .85; }
+.btn-danger {
+  flex: 0 0 auto;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--spec-600);
+  border-radius: 0;
+  background: var(--sheet);
+  color: var(--spec-700);
+  font-family: inherit;
   font-size: 12px;
   font-weight: 600;
-}
-.detail-source-row a:hover { text-decoration: underline; }
-
-.tab-nav {
-  display: flex;
-  gap: 8px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 12px;
-}
-.tab-btn {
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 12.5px;
-  font-weight: 600;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text-secondary);
   cursor: pointer;
+  transition: background .12s ease, color .12s ease;
 }
-.tab-btn.active {
-  background: var(--surface-subtle);
-  color: var(--text-main);
-  border-color: var(--border);
-}
+.btn-danger:hover:not(:disabled) { background: var(--spec-600); color: #fff; }
+.btn-danger:disabled { opacity: .5; cursor: not-allowed; }
 
-.empty-state {
-  padding: 80px 20px;
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13.5px;
-}
-
-.sync-error {
-  position: sticky;
-  top: 0;
-  z-index: 60;
-  padding: 10px 16px;
-  border-bottom: 1px solid #fecaca;
-  background: #fef2f2;
-  color: #991b1b;
-  font-size: 12px;
-  font-weight: 600;
-}
-
+/* ══ 7. Utility ═══════════════════════════════════════════════════════════ */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -923,74 +1497,54 @@ dialog::backdrop {
   white-space: nowrap;
   border: 0;
 }
-
 [hidden] { display: none !important; }
+.text-sm { font-size: 12.5px; line-height: 1.55; }
+.text-muted { color: var(--ink-3); }
 
-.status-message {
-  min-height: 18px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.status-message.error { color: #b91c1c; }
-.status-message.success { color: #047857; }
+/* ══ 8. Adaptation ════════════════════════════════════════════════════════
+   Structural, not fluid: the sheet sheds pinned columns and stacks its
+   tiers. Type sizes hold, because operators read at a fixed distance. */
 
-.btn-admin {
-  height: 34px;
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-main);
-  border-radius: 7px;
-  font: 600 12px var(--font-sans);
-  cursor: pointer;
-  white-space: nowrap;
-}
-.btn-admin:hover { background: var(--surface-subtle); }
-
-.read-only-note {
-  padding: 10px 12px;
-  border: 1px solid #bae6fd;
-  background: #f0f9ff;
-  color: #075985;
-  border-radius: 7px;
-  font-size: 12px;
-  line-height: 1.45;
+@media (max-width: 1180px) {
+  .header-instrument { flex-wrap: wrap; height: auto; padding: 0 0 8px 14px; }
+  .header-center { flex-wrap: wrap; padding: 8px 12px 0 0; }
+  .search-field { max-width: none; flex-basis: 100%; }
+  .btn-toggle-view { height: 32px; margin: 8px 14px 0 0; border-left: 1px solid var(--rule-2); border: 1px solid var(--rule-2); }
+  .btn-toggle-view::before { display: none; }
+  .btn-toggle-view.active-mode { border-color: var(--assay-900); }
 }
 
-tbody tr:focus-visible td,
-thead th:focus-visible,
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible {
-  outline: 2px solid #0284c7;
-  outline-offset: -2px;
-}
-
-.btn-open-link {
-  min-width: 32px;
-  min-height: 32px;
-  color: #475569;
-}
-
-@media (max-width: 1100px) {
-  body { min-height: 100dvh; height: 100dvh; }
-  header.app-header {
-    height: auto;
-    min-height: 56px;
-    padding: 10px 14px;
+@media (max-width: 980px) {
+  body { height: 100dvh; }
+  .header-register { height: auto; flex-wrap: wrap; }
+  .header-left { flex-basis: 100%; border-right: 0; border-bottom: 1px solid var(--rule); height: 44px; }
+  /* Two ruled rows instead of one overflowing strip: the books, then the
+     out-of-spec filter beside the write actions. `align-content: flex-start`
+     keeps a wrapped line at its own height rather than stretching it. */
+  .header-right {
+    width: 100%;
     flex-wrap: wrap;
-    align-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
   }
-  .header-center {
-    order: 3;
-    flex-basis: 100%;
-    max-width: none;
+  /* Each register control is its own 44px cell; without a fixed height they
+     stretch to fill the whole wrapped strip. */
+  .header-right > * { height: 44px; min-height: 44px; }
+  .header-right > *:first-child { border-left: 0; }
+  .origin-switch { flex: 1 0 100%; }
+  .origin-option { flex: 1; justify-content: center; }
+  .spec-flag {
+    flex: 1 0 100%;
+    justify-content: center;
+    border-top: 1px solid var(--rule);
+    border-left: 0 !important;
   }
-}
+  .btn-register {
+    flex: 1 1 50%;
+    justify-content: center;
+    border-top: 1px solid var(--rule);
+  }
 
-@media (max-width: 900px) {
-  .header-right { margin-left: auto; }
   .col-brand,
   .col-mfg,
   .col-market,
@@ -999,8 +1553,8 @@ select:focus-visible {
     left: auto;
     box-shadow: none;
   }
-  /* `thead th` sets position:sticky globally; unpinning the columns above must
-     not unpin the header ROW, or the header tears in half on vertical scroll. */
+  /* `thead th` pins globally; unpinning the columns must not unpin the
+     header ROW, or it tears in half on vertical scroll. */
   thead th.col-brand,
   thead th.col-mfg,
   thead th.col-market,
@@ -1010,164 +1564,51 @@ select:focus-visible {
     left: auto;
     z-index: 30;
   }
-  .col-product { width: 240px; min-width: 240px; max-width: 240px; }
-  .col-brand { width: 110px; min-width: 110px; max-width: 110px; }
-  .col-mfg { width: 110px; min-width: 110px; max-width: 110px; }
-  .col-market,
-  .col-selling-price { width: 165px; min-width: 165px; max-width: 165px; }
-}
-
-@media (max-width: 600px) {
-  header.app-header { gap: 9px; padding: 9px 10px; }
-  .divider-v, .header-meta-pill { display: none; }
-  .header-left { gap: 8px; }
-  .header-right { gap: 6px; }
-  .header-center {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .col-selling-price { border-right: 1px solid var(--rule-datum) !important; }
+  :root {
+    --col-product: 244px;
+    --col-brand: 112px;
+    --col-mfg: 112px;
+    --col-market: 168px;
+    --col-selling: 178px;
   }
-  .search-field { grid-column: 1 / -1; }
-  .select-field:last-child { grid-column: 1 / -1; }
-  .btn-toggle-view #sellingChipBtnLabel { display: none; }
-  .btn-toggle-view .selling-chip-btn-short { display: inline; }
-  .btn-toggle-view { min-width: 44px; min-height: 44px; padding: 0 10px; justify-content: center; }
-  .btn-calc { padding: 0 10px; }
-  .col-product { width: 210px; min-width: 210px; max-width: 210px; }
-  th.source-col-head, .source-data-cell { min-width: 170px; }
-  .engine-grid, .detail-stats-grid { grid-template-columns: 1fr; }
+  .detail-stats-grid { grid-template-columns: 1fr 1fr; }
+  .detail-stat-box:nth-child(2) { border-right: 0; }
+  .detail-stat-box:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+}
+
+@media (max-width: 640px) {
+  .header-instrument { padding: 0 0 8px 12px; }
+  .header-left { padding: 0 12px; gap: 10px; }
+  .header-meta-pill { font-size: 10.5px; }
+  /* Two even columns: a 38px-wide select is a control nobody can read. */
+  .header-center { display: grid; grid-template-columns: 1fr 1fr; padding: 8px 12px 0 0; }
+  .select-field { min-width: 0; }
+  .search-field, .select-field:last-child { grid-column: 1 / -1; }
+  .btn-toggle-view {
+    width: calc(100% - 12px);
+    /* 44px is the touch-target floor; 40 was a miss-tap waiting to happen. */
+    min-height: 44px;
+    justify-content: center;
+    margin: 8px 12px 0 0;
+  }
+  :root { --col-product: 210px; }
+  th.source-col-head, .source-data-cell { min-width: 164px; }
+  .engine-grid { grid-template-columns: 1fr; }
+  .detail-stats-grid { grid-template-columns: 1fr; }
+  .detail-stat-box { border-right: 0; border-bottom: 1px solid var(--rule); }
+  .detail-stat-box:last-child { border-bottom: 0; }
   .modal-body { padding: 16px; }
-  .detail-source-row { align-items: flex-start; gap: 10px; }
-  .btn-open-link { min-width: 44px; min-height: 44px; }
+  .detail-source-row { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .source-row-figure { justify-content: flex-start; }
+  .btn-open-link, .listing-unverified { min-width: 40px; min-height: 40px; }
+  .record-spec-item { flex-basis: 100%; border-right: 0; }
+  .form-actions { flex-direction: column; }
 }
 
-/* ── Origin switch ─────────────────────────────────────────────────────────
-   Floating switch between the two sourcing books. Sits above the table, out
-   of the way of the sticky columns, and stays reachable on small screens. */
-.origin-switch {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 60;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 4px;
-  background: var(--card, #fff);
-  border: 1px solid var(--border, #e2e8f0);
-  border-radius: 999px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, .12), 0 1px 3px rgba(15, 23, 42, .08);
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
 }
-.origin-option {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  min-height: 34px;
-  padding: 0 15px;
-  border-radius: 999px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--text-muted, #64748b);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background .12s, color .12s;
-}
-.origin-option:hover { color: var(--text-main, #0f172a); background: #f1f5f9; }
-.origin-option.is-active { color: #fff; background: #0f172a; }
-.origin-count {
-  font-size: 11px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  padding: 1px 7px;
-  border-radius: 999px;
-  background: #e2e8f0;
-  color: #475569;
-}
-.origin-option.is-active .origin-count { background: rgba(255, 255, 255, .22); color: #fff; }
-
-@media (max-width: 1100px) {
-  .origin-switch { bottom: 12px; }
-  .origin-option { min-height: 40px; padding: 0 13px; }
-}
-
-/* ── Above-market warning ──────────────────────────────────────────────────
-   A recommended price above the market reference is not sellable. The cell
-   says so instead of rendering an impossible number in confident blue. */
-.above-market-banner {
-  position: sticky;
-  left: 0;
-  z-index: 55;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 16px;
-  border-bottom: 1px solid #fed7aa;
-  background: #fff7ed;
-  color: #9a3412;
-  font-size: 12px;
-  font-weight: 600;
-}
-.above-market-banner::before {
-  content: "!";
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  background: #9a3412;
-  color: #fff7ed;
-  font-size: 11px;
-  font-weight: 800;
-}
-.markup-chip.above-market {
-  background: #dc2626 !important;
-  color: #ffffff !important;
-  border-color: #b91c1c !important;
-  font-weight: 700;
-}
-
-/* Size qualifier under the product title: the catalog contains same-name SKUs
-   that differ only by pack size, so the title alone is ambiguous. */
-.item-size {
-  margin-top: 2px;
-  color: var(--text-dim);
-  font-size: 11px;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ── Danger zone ───────────────────────────────────────────────────────────
-   Irreversible, catalog-wide actions get their own labelled region rather than
-   sitting as a bare icon beside the save button. */
-.danger-zone {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin-top: 4px;
-  padding: 12px 14px;
-  border: 1px solid #fecaca;
-  border-radius: 6px;
-  background: #fef2f2;
-}
-.danger-zone-copy { display: grid; gap: 2px; }
-.danger-zone-copy strong { color: #991b1b; font-size: 12.5px; font-weight: 700; }
-.danger-zone-copy span { color: #b91c1c; font-size: 11.5px; }
-.btn-danger {
-  flex: 0 0 auto;
-  height: 34px;
-  padding: 0 14px;
-  border: 1px solid #dc2626;
-  border-radius: 5px;
-  background: #fff;
-  color: #b91c1c;
-  font-family: var(--font-sans);
-  font-size: 12.5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background .12s, color .12s;
-}
-.btn-danger:hover:not(:disabled) { background: #dc2626; color: #fff; }
-.btn-danger:disabled { opacity: .5; cursor: not-allowed; }
