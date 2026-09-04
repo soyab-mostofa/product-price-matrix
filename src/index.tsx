@@ -2,7 +2,6 @@ import { Hono, type Context } from 'hono'
 import { Header } from './components/Header'
 import { Layout } from './components/Layout'
 import { Modals } from './components/Modals'
-import { OriginSwitch } from './components/OriginSwitch'
 import { PriceMatrix } from './components/PriceMatrix'
 import auth from './routes/auth'
 import engine from './routes/engine'
@@ -25,7 +24,6 @@ const dashboard = (origin: SourcingOrigin) => async (c: Context<AppEnv>) => {
     <Layout>
       <Header meta={meta} />
       <PriceMatrix />
-      <OriginSwitch meta={meta} />
       <Modals />
     </Layout>,
   )
