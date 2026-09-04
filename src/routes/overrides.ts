@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
+import { requireAdmin } from '../server/auth'
 import {
   PRICING_DEFAULTS,
   isEmptyOverride,
@@ -14,6 +15,9 @@ const overrides = new Hono<AppEnv>()
 const overrideSchema = z.object({ productRowId: productRowIdSchema, override: pricingOverrideSchema })
 const deleteSchema = z.object({ productRowId: productRowIdSchema.optional(), all: z.enum(['true']).optional() })
 
+// Every route here mutates stored pricing, so the whole router is admin-only.
+// Overrides are read through GET /api/engine, which stays public.
+overrides.use('*', requireAdmin)
 
 async function readGlobalParams(db: D1Database): Promise<PricingParams> {
   const row = await db.prepare(

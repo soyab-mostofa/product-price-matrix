@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
+import { requireAdmin } from '../server/auth'
 import { PRICING_DEFAULTS, pricingSchema } from '../server/pricing'
 import type { AppEnv, StoredPricingOverride } from '../types'
 
@@ -59,7 +60,9 @@ engine.get('/', async (c) => {
   return c.json({ success: true, globalParams, overrides })
 })
 
-engine.post('/', zValidator('json', pricingSchema, (result, c) => {
+// Reading the engine is public: the dashboard renders selling prices for
+// everyone. Writing it repositions every SKU at once, so it stays admin-only.
+engine.post('/', requireAdmin, zValidator('json', pricingSchema, (result, c) => {
   if (!result.success) {
     const issue = result.error.issues[0]
     return c.json({ success: false, error: issue?.message || 'Validation failed' }, 400)

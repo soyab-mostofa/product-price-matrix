@@ -299,14 +299,43 @@ describe('Hono application', () => {
     expect(db.seen).toHaveLength(0)
   })
 
-  test('allows public unauthenticated pricing writes to POST /api/engine', async () => {
+  test('blocks unauthenticated POST /api/engine with same-origin header', async () => {
     const res = await app.request('https://matrix.example/api/engine', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Origin: 'https://matrix.example',
+        'X-Price-Matrix-Admin': '1',
       },
       body: JSON.stringify(PRICING_DEFAULTS),
     }, env)
+    expect(res.status).toBe(401)
+  })
+
+  test('blocks cross-origin or missing header POST /api/engine with 403', async () => {
+    const res = await app.request('/api/engine', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(PRICING_DEFAULTS),
+    }, env)
+    expect(res.status).toBe(403)
+  })
+
+  test('rejects malformed mutation referrers instead of throwing', async () => {
+    const res = await app.request('https://matrix.example/api/engine', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Referer: 'not a valid URL',
+        'X-Price-Matrix-Admin': '1',
+      },
+      body: JSON.stringify(PRICING_DEFAULTS),
+    }, env)
+    expect(res.status).toBe(403)
+  })
+
+  test('keeps GET /api/engine public so anyone can read prices', async () => {
+    const res = await app.request('/api/engine', {}, env)
     expect(res.status).toBe(200)
     const data = await res.json() as any
     expect(data.success).toBe(true)
@@ -375,7 +404,7 @@ describe('sparse per-product overrides', () => {
 
     const res = await postOverride(testEnv, cookie, {
       productRowId: 1,
-      override: { packaging: 45, delivery: 60 }, // both identical to global
+      override: { packaging: 45, cac: 40 }, // both identical to global
     })
     expect(res.status).toBe(200)
     const data = await res.json() as any
@@ -398,18 +427,28 @@ describe('sparse per-product overrides', () => {
     expect(db.seen).toHaveLength(0)
   })
 
-  test('allows public unauthenticated override writes', async () => {
+  test('blocks unauthenticated override writes', async () => {
     const { env: testEnv } = overrideEnv()
     const res = await app.request('https://matrix.example/api/overrides', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Origin: 'https://matrix.example',
+        'X-Price-Matrix-Admin': '1',
       },
       body: JSON.stringify({ productRowId: 1, override: { targetMarginPct: 30 } }),
     }, testEnv)
-    expect(res.status).toBe(200)
-    const data = await res.json() as any
-    expect(data.success).toBe(true)
-    expect(data.override.targetMarginPct).toBe(30)
+    expect(res.status).toBe(401)
+  })
+
+  test('blocks unauthenticated bulk override deletion', async () => {
+    const { db, env: testEnv } = overrideEnv()
+    db.seen.length = 0
+    const res = await app.request('https://matrix.example/api/overrides?all=true', {
+      method: 'DELETE',
+      headers: { Origin: 'https://matrix.example', 'X-Price-Matrix-Admin': '1' },
+    }, testEnv)
+    expect(res.status).toBe(401)
+    expect(db.seen).toHaveLength(0)
   })
 })
