@@ -50,7 +50,7 @@
       "brand_name": "Bio-Screen",
       "size": "12gm",
       "manufactured_price": 1237.5,
-      "market_average_price": 1402.0,
+      "market_average_price": 1650.0,
       "canonical_name": "Bio-Screen Powder Sunblock SPF 50+",
       "sources": {
         "Official Store": {
@@ -63,7 +63,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 3,
@@ -71,7 +71,7 @@
       "brand_name": "BioCare",
       "size": "50ml",
       "manufactured_price": 1612.5,
-      "market_average_price": 1828.0,
+      "market_average_price": 2150.0,
       "canonical_name": "BioCare Vitamin C Whitening Facial Cream",
       "sources": {
         "Official Store": {
@@ -93,7 +93,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 4,
@@ -114,7 +114,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 5,
@@ -122,7 +122,7 @@
       "brand_name": "BioCare",
       "size": "100ml",
       "manufactured_price": 974.25,
-      "market_average_price": 909.0,
+      "market_average_price": 1299.0,
       "canonical_name": "BioCare Vitamin C Whitening Facial Wash",
       "sources": {
         "Official Store": {
@@ -135,7 +135,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 6,
@@ -143,7 +143,7 @@
       "brand_name": "BioCare",
       "size": "30ml",
       "manufactured_price": 1237.5,
-      "market_average_price": 825.0,
+      "market_average_price": 1650.0,
       "canonical_name": "BioCare Retinol+C Serum",
       "sources": {
         "Official Store": {
@@ -165,7 +165,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 7,
@@ -186,7 +186,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 8,
@@ -194,7 +194,7 @@
       "brand_name": "BioCare",
       "size": "30ml",
       "manufactured_price": 1237.5,
-      "market_average_price": 495.0,
+      "market_average_price": 1650.0,
       "canonical_name": "BioCare Glow Serum",
       "sources": {
         "Official Store": {
@@ -216,7 +216,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 9,
@@ -224,7 +224,7 @@
       "brand_name": "BioCare",
       "size": "200ml",
       "manufactured_price": 412.5,
-      "market_average_price": 523.0,
+      "market_average_price": 550.0,
       "canonical_name": "BioCare PureGlow Soothing Cleansing Gel",
       "sources": {
         "Official Store": {
@@ -237,7 +237,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 10,
@@ -245,7 +245,7 @@
       "brand_name": "BioCare",
       "size": "150ml",
       "manufactured_price": 449.25,
-      "market_average_price": 569.0,
+      "market_average_price": 599.0,
       "canonical_name": "BioCare Acne & Oil Control Creamy Face Wash",
       "sources": {
         "Official Store": {
@@ -258,7 +258,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 11,
@@ -266,7 +266,7 @@
       "brand_name": "BioCare",
       "size": "200ml",
       "manufactured_price": 487.5,
-      "market_average_price": 617.0,
+      "market_average_price": 650.0,
       "canonical_name": "BioCare Bio White Whitening Face Wash",
       "sources": {
         "Official Store": {
@@ -279,7 +279,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 12,
@@ -287,7 +287,7 @@
       "brand_name": "BioCare",
       "size": "50g",
       "manufactured_price": 1612.5,
-      "market_average_price": 1720.0,
+      "market_average_price": 2150.0,
       "canonical_name": "BioCare 12 Hour Protection Sunscreen Cream SPF 60+",
       "sources": {
         "Official Store": {
@@ -300,7 +300,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 13,
@@ -308,7 +308,7 @@
       "brand_name": "Bio-Screen",
       "size": "50ml",
       "manufactured_price": 1199.25,
-      "market_average_price": 1199.0,
+      "market_average_price": 1599.0,
       "canonical_name": "Bio-Screen Sunblock BB cream SPF 60",
       "sources": {
         "Official Store": {
@@ -321,7 +321,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 14,
@@ -329,7 +329,7 @@
       "brand_name": "BioCare",
       "size": "200g",
       "manufactured_price": 1199.25,
-      "market_average_price": 480.0,
+      "market_average_price": 1599.0,
       "canonical_name": "BioCare Hair Repairing Argan Oil Conditioner",
       "sources": {
         "Official Store": {
@@ -342,7 +342,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 15,
@@ -350,7 +350,7 @@
       "brand_name": "BioCare",
       "size": "80ml",
       "manufactured_price": 787.5,
-      "market_average_price": 997.0,
+      "market_average_price": 1050.0,
       "canonical_name": "BioCare Ultra Hydra+ Moisturizing Cream",
       "sources": {
         "Official Store": {
@@ -372,7 +372,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 16,
@@ -380,7 +380,7 @@
       "brand_name": "BioCare",
       "size": "230ml",
       "manufactured_price": 749.25,
-      "market_average_price": 949.0,
+      "market_average_price": 999.0,
       "canonical_name": "BioCare Brightening Body Lotion",
       "sources": {
         "Official Store": {
@@ -402,7 +402,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 17,
@@ -410,7 +410,7 @@
       "brand_name": "BioCare",
       "size": "30ml",
       "manufactured_price": 824.25,
-      "market_average_price": 1044.0,
+      "market_average_price": 1099.0,
       "canonical_name": "BioCare Acne, Oil & Pores Minimizing Serum",
       "sources": {
         "Official Store": {
@@ -432,7 +432,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 18,
@@ -440,7 +440,7 @@
       "brand_name": "BioCare",
       "size": "50ml",
       "manufactured_price": 824.25,
-      "market_average_price": 1044.0,
+      "market_average_price": 1099.0,
       "canonical_name": "BioCare Acne and Oil Control Moisturizing Gel",
       "sources": {
         "Official Store": {
@@ -462,7 +462,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 19,
@@ -470,7 +470,7 @@
       "brand_name": "BioCare",
       "size": "200ml",
       "manufactured_price": 824.25,
-      "market_average_price": 879.0,
+      "market_average_price": 1099.0,
       "canonical_name": "BioCare Brightening Aloe Vera Gel",
       "sources": {
         "Official Store": {
@@ -492,7 +492,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 20,
@@ -500,7 +500,7 @@
       "brand_name": "BioCare",
       "size": "100gm",
       "manufactured_price": 412.5,
-      "market_average_price": 523.0,
+      "market_average_price": 550.0,
       "canonical_name": "BioCare Handmade Milk and Honey Glowing Beauty Bar",
       "sources": {
         "Official Store": {
@@ -522,7 +522,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 21,
@@ -530,7 +530,7 @@
       "brand_name": "BioCare",
       "size": "100gm",
       "manufactured_price": 412.5,
-      "market_average_price": 523.0,
+      "market_average_price": 550.0,
       "canonical_name": "BioCare Handmade Papaya PureGlow Beauty Bar",
       "sources": {
         "Official Store": {
@@ -552,7 +552,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 22,
@@ -560,7 +560,7 @@
       "brand_name": "BioCare",
       "size": "65gm",
       "manufactured_price": 337.5,
-      "market_average_price": 427.0,
+      "market_average_price": 450.0,
       "canonical_name": "BioCare Handmade Baby Bar",
       "sources": {
         "Official Store": {
@@ -582,7 +582,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 23,
@@ -590,7 +590,7 @@
       "brand_name": "BioCare",
       "size": "100gm",
       "manufactured_price": 412.5,
-      "market_average_price": 523.0,
+      "market_average_price": 550.0,
       "canonical_name": "BioCare Handmade Niacinamide Brightening Beauty Bar",
       "sources": {
         "Official Store": {
@@ -612,7 +612,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 24,
@@ -620,7 +620,7 @@
       "brand_name": "BioCare",
       "size": "50ml",
       "manufactured_price": 486.75,
-      "market_average_price": 617.0,
+      "market_average_price": 649.0,
       "canonical_name": "BioCare Hair Growth Oil",
       "sources": {
         "Official Store": {
@@ -642,7 +642,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 25,
@@ -650,7 +650,7 @@
       "brand_name": "BioCare",
       "size": "50ml",
       "manufactured_price": 824.25,
-      "market_average_price": 1044.0,
+      "market_average_price": 1099.0,
       "canonical_name": "BioCare Niacinamide Brightening Creamy Gel",
       "sources": {
         "Official Store": {
@@ -672,7 +672,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 26,
@@ -680,7 +680,7 @@
       "brand_name": "BioCare",
       "size": "200ml",
       "manufactured_price": 487.5,
-      "market_average_price": 617.0,
+      "market_average_price": 650.0,
       "canonical_name": "BioCare Niacinamide Brightening Face Wash",
       "sources": {
         "Official Store": {
@@ -702,7 +702,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 27,
@@ -710,7 +710,7 @@
       "brand_name": "BioCare",
       "size": "30ml",
       "manufactured_price": 824.25,
-      "market_average_price": 1044.0,
+      "market_average_price": 1099.0,
       "canonical_name": "BioCare Niacinamide Brightening Serum",
       "sources": {
         "Official Store": {
@@ -732,7 +732,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 28,
@@ -753,7 +753,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 29,
@@ -761,7 +761,7 @@
       "brand_name": "BioCare",
       "size": "50ml",
       "manufactured_price": 449.25,
-      "market_average_price": 569.0,
+      "market_average_price": 599.0,
       "canonical_name": "BioCare Castor + Vitamin E Hair Oil",
       "sources": {
         "Official Store": {
@@ -774,7 +774,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 30,
@@ -782,7 +782,7 @@
       "brand_name": "BioCare",
       "size": "30ml",
       "manufactured_price": 749.25,
-      "market_average_price": 949.0,
+      "market_average_price": 999.0,
       "canonical_name": "BioCare Hair Growth Serum",
       "sources": {
         "Official Store": {
@@ -795,7 +795,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 31,
@@ -825,7 +825,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 32,
@@ -833,7 +833,7 @@
       "brand_name": "BioCare",
       "size": "50g",
       "manufactured_price": 374.25,
-      "market_average_price": 474.0,
+      "market_average_price": 499.0,
       "canonical_name": "BioCare Ultra Hydra Non-Sticky Glycerin",
       "sources": {
         "Official Store": {
@@ -846,7 +846,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 33,
@@ -854,7 +854,7 @@
       "brand_name": "BioCare",
       "size": "150ml",
       "manufactured_price": 824.25,
-      "market_average_price": 1044.0,
+      "market_average_price": 1099.0,
       "canonical_name": "BioCare Zero Dandruff Shampoo",
       "sources": {
         "Official Store": {
@@ -867,7 +867,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 34,
@@ -875,7 +875,7 @@
       "brand_name": "BioCare",
       "size": "200ml",
       "manufactured_price": 899.25,
-      "market_average_price": 1139.0,
+      "market_average_price": 1199.0,
       "canonical_name": "BioCare DermaBright Whitening Moisturizing Cream",
       "sources": {
         "Official Store": {
@@ -888,7 +888,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 35,
@@ -896,7 +896,7 @@
       "brand_name": "BioCare",
       "size": "10ml",
       "manufactured_price": 599.25,
-      "market_average_price": 759.0,
+      "market_average_price": 799.0,
       "canonical_name": "BioCare Tea Tree Essential Oil",
       "sources": {
         "Official Store": {
@@ -918,7 +918,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 36,
@@ -926,7 +926,7 @@
       "brand_name": "BioCare",
       "size": "10ml",
       "manufactured_price": 599.25,
-      "market_average_price": 759.0,
+      "market_average_price": 799.0,
       "canonical_name": "BioCare Ginseng Essential Oil",
       "sources": {
         "Official Store": {
@@ -948,7 +948,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 37,
@@ -969,7 +969,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 38,
@@ -990,7 +990,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 39,
@@ -998,7 +998,7 @@
       "brand_name": "BioCare",
       "size": "10ml",
       "manufactured_price": 599.25,
-      "market_average_price": 759.0,
+      "market_average_price": 799.0,
       "canonical_name": "BioCare Sandalwood Essential Oil",
       "sources": {
         "Official Store": {
@@ -1020,7 +1020,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 40,
@@ -1028,7 +1028,7 @@
       "brand_name": "BioCare",
       "size": "10ml",
       "manufactured_price": 599.25,
-      "market_average_price": 759.0,
+      "market_average_price": 799.0,
       "canonical_name": "BioCare Polygonum Multiflorum Essential Oil",
       "sources": {
         "Official Store": {
@@ -1050,7 +1050,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 41,
@@ -1058,7 +1058,7 @@
       "brand_name": "BioCare",
       "size": "10ml",
       "manufactured_price": 599.25,
-      "market_average_price": 759.0,
+      "market_average_price": 799.0,
       "canonical_name": "BioCare Rosehip Essential Oil",
       "sources": {
         "Official Store": {
@@ -1080,7 +1080,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 42,
@@ -1088,7 +1088,7 @@
       "brand_name": "BioCare",
       "size": "10ml",
       "manufactured_price": 599.25,
-      "market_average_price": 759.0,
+      "market_average_price": 799.0,
       "canonical_name": "BioCare Migraine Relief Essential Oil",
       "sources": {
         "Official Store": {
@@ -1110,7 +1110,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 43,
@@ -1131,7 +1131,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 44,
@@ -1152,7 +1152,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 45,
@@ -1182,7 +1182,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 46,
@@ -1190,7 +1190,7 @@
       "brand_name": "BioCare",
       "size": "230ml",
       "manufactured_price": 449.25,
-      "market_average_price": 593.0,
+      "market_average_price": 599.0,
       "canonical_name": "BioCare Baby Shampoo & Shower Gel",
       "sources": {
         "Daraz": {
@@ -1203,7 +1203,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 47,
@@ -1233,7 +1233,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 48,
@@ -1290,7 +1290,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 49,
@@ -1329,7 +1329,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 50,
@@ -1377,7 +1377,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 51,
@@ -1385,7 +1385,7 @@
       "brand_name": "Guerniss",
       "size": "100ml",
       "manufactured_price": 348.0,
-      "market_average_price": 531.0,
+      "market_average_price": 580.0,
       "canonical_name": "Vitamin E Milk Plus Facial Cleanser",
       "sources": {
         "Arogga": {
@@ -1407,7 +1407,7 @@
           "confidence": 93.33
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 52,
@@ -1415,7 +1415,7 @@
       "brand_name": "Guerniss",
       "size": "120ml",
       "manufactured_price": 282.0,
-      "market_average_price": 410.0,
+      "market_average_price": 470.0,
       "canonical_name": "Salicylic Acid Toner 0.5%",
       "sources": {
         "Arogga": {
@@ -1428,7 +1428,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 53,
@@ -1476,7 +1476,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 54,
@@ -1515,7 +1515,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 55,
@@ -1523,7 +1523,7 @@
       "brand_name": "Guerniss",
       "size": "120ml",
       "manufactured_price": 282.0,
-      "market_average_price": 399.0,
+      "market_average_price": 470.0,
       "canonical_name": "Niacinamide Toner 5%",
       "sources": {
         "OhSoGo": {
@@ -1536,7 +1536,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 56,
@@ -1584,7 +1584,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 57,
@@ -1632,7 +1632,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 58,
@@ -1671,7 +1671,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 59,
@@ -1710,7 +1710,7 @@
           "confidence": 84.6
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 60,
@@ -1718,7 +1718,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 432.0,
-      "market_average_price": 602.0,
+      "market_average_price": 720.0,
       "canonical_name": "Salicylic Acid Serum 0.5%",
       "sources": {
         "Arogga": {
@@ -1740,7 +1740,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 61,
@@ -1788,7 +1788,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 62,
@@ -1796,7 +1796,7 @@
       "brand_name": "Guerniss",
       "size": "120ml",
       "manufactured_price": 258.0,
-      "market_average_price": 365.0,
+      "market_average_price": 430.0,
       "canonical_name": "Niacinamide Micellar Water",
       "sources": {
         "OhSoGo": {
@@ -1809,7 +1809,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 63,
@@ -1817,7 +1817,7 @@
       "brand_name": "Guerniss",
       "size": "120ml",
       "manufactured_price": 258.0,
-      "market_average_price": 418.0,
+      "market_average_price": 430.0,
       "canonical_name": "Glycolic Acid Micellar Water",
       "sources": {
         "Shajgoj": {
@@ -1830,7 +1830,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 64,
@@ -1838,7 +1838,7 @@
       "brand_name": "Guerniss",
       "size": "250ml",
       "manufactured_price": 222.0,
-      "market_average_price": 310.3333,
+      "market_average_price": 370.0,
       "canonical_name": "Glutathione Hyaluronic Acid Shower Gel (Cloud Touch)",
       "sources": {
         "Arogga": {
@@ -1869,7 +1869,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 65,
@@ -1877,7 +1877,7 @@
       "brand_name": "Guerniss",
       "size": "250ml",
       "manufactured_price": 222.0,
-      "market_average_price": 317.5,
+      "market_average_price": 370.0,
       "canonical_name": "Glutathione Vitamin E Shower Gel (Bloom)",
       "sources": {
         "Arogga": {
@@ -1899,7 +1899,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 66,
@@ -1907,7 +1907,7 @@
       "brand_name": "Guerniss",
       "size": "250ml",
       "manufactured_price": 222.0,
-      "market_average_price": 317.5,
+      "market_average_price": 370.0,
       "canonical_name": "Glutathione Niacinamide Shower Gel (Floral)",
       "sources": {
         "Arogga": {
@@ -1929,7 +1929,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 67,
@@ -1937,7 +1937,7 @@
       "brand_name": "Guerniss",
       "size": "120ml",
       "manufactured_price": 588.0,
-      "market_average_price": 890.0,
+      "market_average_price": 980.0,
       "canonical_name": "Hair Serum",
       "sources": {
         "Shajgoj": {
@@ -1959,7 +1959,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 68,
@@ -1998,7 +1998,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 69,
@@ -2037,7 +2037,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 70,
@@ -2076,7 +2076,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 71,
@@ -2115,7 +2115,7 @@
           "confidence": 77.33
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 72,
@@ -2163,7 +2163,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 73,
@@ -2202,7 +2202,7 @@
           "confidence": 83.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 74,
@@ -2241,7 +2241,7 @@
           "confidence": 86.4
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 75,
@@ -2280,7 +2280,7 @@
           "confidence": 86.4
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 76,
@@ -2328,7 +2328,7 @@
           "confidence": 80.78
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 77,
@@ -2367,7 +2367,7 @@
           "confidence": 78.02
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 78,
@@ -2397,7 +2397,7 @@
           "confidence": 82.54
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 79,
@@ -2405,7 +2405,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Saintmartin)",
       "sources": {
         "Official Store": {
@@ -2418,7 +2418,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 80,
@@ -2426,7 +2426,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Cox's Bazar)",
       "sources": {
         "Official Store": {
@@ -2439,7 +2439,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 81,
@@ -2447,7 +2447,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Nilgiri)",
       "sources": {
         "Official Store": {
@@ -2460,7 +2460,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 82,
@@ -2468,7 +2468,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Kaptai)",
       "sources": {
         "Official Store": {
@@ -2481,7 +2481,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 83,
@@ -2489,7 +2489,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Sajek)",
       "sources": {
         "Official Store": {
@@ -2502,7 +2502,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 84,
@@ -2510,7 +2510,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Kuakata)",
       "sources": {
         "Official Store": {
@@ -2523,7 +2523,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 85,
@@ -2531,7 +2531,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Jaflong)",
       "sources": {
         "Official Store": {
@@ -2544,7 +2544,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 86,
@@ -2552,7 +2552,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Ratargul)",
       "sources": {
         "Official Store": {
@@ -2565,7 +2565,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 87,
@@ -2573,7 +2573,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Nikli Haor)",
       "sources": {
         "Official Store": {
@@ -2586,7 +2586,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 88,
@@ -2594,7 +2594,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Monpura)",
       "sources": {
         "Official Store": {
@@ -2607,7 +2607,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 89,
@@ -2615,7 +2615,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 416.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Moynamoti)",
       "sources": {
         "Shajgoj": {
@@ -2628,7 +2628,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 90,
@@ -2636,7 +2636,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 294.0,
-      "market_average_price": 368.0,
+      "market_average_price": 490.0,
       "canonical_name": "Guerniss Vacation Lipstick (Panam Nagar)",
       "sources": {
         "Official Store": {
@@ -2649,7 +2649,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 91,
@@ -2657,7 +2657,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1122.0,
-      "market_average_price": 1683.0,
+      "market_average_price": 1870.0,
       "canonical_name": "Guerniss Full Cover Matte Foundation (1.0 Porcelain)",
       "sources": {
         "Official Store": {
@@ -2679,7 +2679,7 @@
           "confidence": 86.83
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 92,
@@ -2687,7 +2687,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1122.0,
-      "market_average_price": 1683.0,
+      "market_average_price": 1870.0,
       "canonical_name": "Guerniss Full Cover Matte Foundation (2.0 Worm Porcelain)",
       "sources": {
         "Official Store": {
@@ -2700,7 +2700,7 @@
           "confidence": 98.35
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 93,
@@ -2708,7 +2708,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1122.0,
-      "market_average_price": 1683.0,
+      "market_average_price": 1870.0,
       "canonical_name": "Guerniss Full Cover Matte Foundation (3.0 Ivory)",
       "sources": {
         "Official Store": {
@@ -2721,7 +2721,7 @@
           "confidence": 97.97
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 94,
@@ -2729,7 +2729,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1122.0,
-      "market_average_price": 1683.0,
+      "market_average_price": 1870.0,
       "canonical_name": "Guerniss Full Cover Matte Foundation (4.0 Beige)",
       "sources": {
         "Official Store": {
@@ -2760,7 +2760,7 @@
           "confidence": 84.56
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 95,
@@ -2768,7 +2768,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1122.0,
-      "market_average_price": 1683.0,
+      "market_average_price": 1870.0,
       "canonical_name": "Guerniss Full Cover Matte Foundation (5.0 Medium Light)",
       "sources": {
         "Official Store": {
@@ -2781,7 +2781,7 @@
           "confidence": 98.28
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 96,
@@ -2789,7 +2789,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1122.0,
-      "market_average_price": 1683.0,
+      "market_average_price": 1870.0,
       "canonical_name": "Guerniss Full Cover Matte Foundation (6.0 Medium)",
       "sources": {
         "Official Store": {
@@ -2802,7 +2802,7 @@
           "confidence": 98.02
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 97,
@@ -2810,7 +2810,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1122.0,
-      "market_average_price": 1683.0,
+      "market_average_price": 1870.0,
       "canonical_name": "Guerniss Full Cover Matte Foundation (7.0 Tan)",
       "sources": {
         "Official Store": {
@@ -2823,7 +2823,7 @@
           "confidence": 97.87
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 98,
@@ -2831,7 +2831,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 984.0,
-      "market_average_price": 1476.0,
+      "market_average_price": 1640.0,
       "canonical_name": "Guerniss BB Cream (BB 10)",
       "sources": {
         "Official Store": {
@@ -2844,7 +2844,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 99,
@@ -2852,7 +2852,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 984.0,
-      "market_average_price": 1476.0,
+      "market_average_price": 1640.0,
       "canonical_name": "Guerniss BB Cream (BB 20)",
       "sources": {
         "Official Store": {
@@ -2874,7 +2874,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 100,
@@ -2882,7 +2882,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 984.0,
-      "market_average_price": 1476.0,
+      "market_average_price": 1640.0,
       "canonical_name": "Guerniss BB Cream (BB 30)",
       "sources": {
         "Official Store": {
@@ -2904,7 +2904,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 101,
@@ -2912,7 +2912,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 984.0,
-      "market_average_price": 1476.0,
+      "market_average_price": 1640.0,
       "canonical_name": "Guerniss BB Cream (BB 40)",
       "sources": {
         "Official Store": {
@@ -2925,7 +2925,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 102,
@@ -2933,7 +2933,7 @@
       "brand_name": "Guerniss",
       "size": "12g",
       "manufactured_price": 648.0,
-      "market_average_price": 972.0,
+      "market_average_price": 1080.0,
       "canonical_name": "Guerniss Pro Perfect Pressed Powder (NC 10)",
       "sources": {
         "Official Store": {
@@ -2946,7 +2946,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 103,
@@ -2954,7 +2954,7 @@
       "brand_name": "Guerniss",
       "size": "12g",
       "manufactured_price": 648.0,
-      "market_average_price": 972.0,
+      "market_average_price": 1080.0,
       "canonical_name": "Guerniss Pro Perfect Pressed Powder (NC 20)",
       "sources": {
         "Official Store": {
@@ -2967,7 +2967,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 104,
@@ -2975,7 +2975,7 @@
       "brand_name": "Guerniss",
       "size": "12g",
       "manufactured_price": 648.0,
-      "market_average_price": 972.0,
+      "market_average_price": 1080.0,
       "canonical_name": "Guerniss Pro Perfect Pressed Powder (NC 30)",
       "sources": {
         "Official Store": {
@@ -2988,7 +2988,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 105,
@@ -2996,7 +2996,7 @@
       "brand_name": "Guerniss",
       "size": "12g",
       "manufactured_price": 648.0,
-      "market_average_price": 972.0,
+      "market_average_price": 1080.0,
       "canonical_name": "Guerniss Pro Perfect Pressed Powder (NC 40)",
       "sources": {
         "Official Store": {
@@ -3009,7 +3009,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 106,
@@ -3017,10 +3017,10 @@
       "brand_name": "Guerniss",
       "size": "7ml",
       "manufactured_price": 948.0,
-      "market_average_price": 1422.0,
+      "market_average_price": 1580.0,
       "canonical_name": "G/S Liquid Concealer (GO21 - Honey)",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 107,
@@ -3028,7 +3028,7 @@
       "brand_name": "Guerniss",
       "size": "7ml",
       "manufactured_price": 948.0,
-      "market_average_price": 1422.0,
+      "market_average_price": 1580.0,
       "canonical_name": "G/S Liquid Concealer (GO22 - Vanilla)",
       "sources": {
         "Official Store": {
@@ -3041,7 +3041,7 @@
           "confidence": 97.94
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 108,
@@ -3049,7 +3049,7 @@
       "brand_name": "Guerniss",
       "size": "7ml",
       "manufactured_price": 948.0,
-      "market_average_price": 1422.0,
+      "market_average_price": 1580.0,
       "canonical_name": "G/S Liquid Concealer (GO23 - Custard)",
       "sources": {
         "Official Store": {
@@ -3062,7 +3062,7 @@
           "confidence": 97.94
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 109,
@@ -3070,7 +3070,7 @@
       "brand_name": "Guerniss",
       "size": "10ml",
       "manufactured_price": 324.0,
-      "market_average_price": 270.0,
+      "market_average_price": 540.0,
       "canonical_name": "Guerniss XXL Water proof Mascara",
       "sources": {
         "Official Store": {
@@ -3083,7 +3083,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 110,
@@ -3091,10 +3091,10 @@
       "brand_name": "Guerniss",
       "size": "6g",
       "manufactured_price": 534.0,
-      "market_average_price": 554.5,
+      "market_average_price": 890.0,
       "canonical_name": "Guerniss Lashfull Mascara",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 111,
@@ -3102,7 +3102,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 330.0,
-      "market_average_price": 440.0,
+      "market_average_price": 550.0,
       "canonical_name": "Guerniss Matte Kajol",
       "sources": {
         "OhSoGo": {
@@ -3115,7 +3115,7 @@
           "confidence": 73.78
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 112,
@@ -3123,10 +3123,10 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 330.0,
-      "market_average_price": 495.0,
+      "market_average_price": 550.0,
       "canonical_name": "Guerniss New Matte Khol Kajol",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 113,
@@ -3134,10 +3134,10 @@
       "brand_name": "Guerniss",
       "size": "5ml",
       "manufactured_price": 414.0,
-      "market_average_price": 621.0,
+      "market_average_price": 690.0,
       "canonical_name": "Guerniss Eye Ink Liquid EyeLiner",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 114,
@@ -3148,7 +3148,7 @@
       "market_average_price": 780.0,
       "canonical_name": "Guerniss liquid Matte Black Eyeliner",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 115,
@@ -3159,7 +3159,7 @@
       "market_average_price": 1190.0,
       "canonical_name": "Makeup Setting Spray",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 116,
@@ -3167,10 +3167,10 @@
       "brand_name": "Guerniss",
       "size": "3.5ml",
       "manufactured_price": 432.0,
-      "market_average_price": 540.0,
+      "market_average_price": 720.0,
       "canonical_name": "Guerniss Water Gloss Lip Glaze (WLG Honey)",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 117,
@@ -3178,7 +3178,7 @@
       "brand_name": "Guerniss",
       "size": "3.5ml",
       "manufactured_price": 432.0,
-      "market_average_price": 612.0,
+      "market_average_price": 720.0,
       "canonical_name": "Guerniss Water Gloss Lip Glaze (WLG Peach)",
       "sources": {
         "Shajgoj": {
@@ -3191,7 +3191,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 118,
@@ -3199,10 +3199,10 @@
       "brand_name": "Guerniss",
       "size": "3.5ml",
       "manufactured_price": 432.0,
-      "market_average_price": 540.0,
+      "market_average_price": 720.0,
       "canonical_name": "Guerniss Water Gloss Lip Glaze (WLG Watermelon)",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 119,
@@ -3210,7 +3210,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 870.0,
-      "market_average_price": 1305.0,
+      "market_average_price": 1450.0,
       "canonical_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G101)",
       "sources": {
         "Official Store": {
@@ -3232,7 +3232,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 120,
@@ -3240,7 +3240,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 870.0,
-      "market_average_price": 1305.0,
+      "market_average_price": 1450.0,
       "canonical_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G102)",
       "sources": {
         "Official Store": {
@@ -3253,7 +3253,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 121,
@@ -3261,7 +3261,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 870.0,
-      "market_average_price": 1305.0,
+      "market_average_price": 1450.0,
       "canonical_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G103)",
       "sources": {
         "Official Store": {
@@ -3274,7 +3274,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 122,
@@ -3282,7 +3282,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 870.0,
-      "market_average_price": 1305.0,
+      "market_average_price": 1450.0,
       "canonical_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G104)",
       "sources": {
         "Official Store": {
@@ -3295,7 +3295,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 123,
@@ -3303,7 +3303,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 870.0,
-      "market_average_price": 1305.0,
+      "market_average_price": 1450.0,
       "canonical_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G105)",
       "sources": {
         "Official Store": {
@@ -3325,7 +3325,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 124,
@@ -3333,7 +3333,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 870.0,
-      "market_average_price": 1305.0,
+      "market_average_price": 1450.0,
       "canonical_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G106)",
       "sources": {
         "Official Store": {
@@ -3346,7 +3346,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 125,
@@ -3354,7 +3354,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 870.0,
-      "market_average_price": 1305.0,
+      "market_average_price": 1450.0,
       "canonical_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G107)",
       "sources": {
         "Official Store": {
@@ -3376,7 +3376,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 126,
@@ -3384,7 +3384,7 @@
       "brand_name": "Guerniss",
       "size": "3g",
       "manufactured_price": 870.0,
-      "market_average_price": 1305.0,
+      "market_average_price": 1450.0,
       "canonical_name": "Guerniss Soft Burnt Matte Makeup Holding lipstick (G108)",
       "sources": {
         "Official Store": {
@@ -3397,7 +3397,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 127,
@@ -3405,7 +3405,7 @@
       "brand_name": "Guerniss",
       "size": "60ml",
       "manufactured_price": 768.0,
-      "market_average_price": 1152.0,
+      "market_average_price": 1280.0,
       "canonical_name": "Guerniss Vitamin E Milk Plus Face Wash",
       "sources": {
         "Official Store": {
@@ -3427,7 +3427,7 @@
           "confidence": 82.62
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 128,
@@ -3435,7 +3435,7 @@
       "brand_name": "Guerniss",
       "size": "150ml",
       "manufactured_price": 1122.0,
-      "market_average_price": 1683.0,
+      "market_average_price": 1870.0,
       "canonical_name": "Guerniss Anti Melasma Toner",
       "sources": {
         "Official Store": {
@@ -3448,7 +3448,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 129,
@@ -3456,7 +3456,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1134.0,
-      "market_average_price": 780.0,
+      "market_average_price": 1890.0,
       "canonical_name": "Guerniss Vitamin C Serum",
       "sources": {
         "Official Store": {
@@ -3487,7 +3487,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 130,
@@ -3498,7 +3498,7 @@
       "market_average_price": 1890.0,
       "canonical_name": "Guerniss Aloe Moisturizing and Brightening Essence",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 131,
@@ -3506,7 +3506,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1134.0,
-      "market_average_price": 1701.0,
+      "market_average_price": 1890.0,
       "canonical_name": "Guerniss Anti Melasma Whitening Serum",
       "sources": {
         "Official Store": {
@@ -3519,7 +3519,7 @@
           "confidence": 96.9
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 132,
@@ -3530,7 +3530,7 @@
       "market_average_price": 1890.0,
       "canonical_name": "Guerniss Moisturizing and Hydrating Essence",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 133,
@@ -3538,7 +3538,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1134.0,
-      "market_average_price": 1701.0,
+      "market_average_price": 1890.0,
       "canonical_name": "Guerniss Niacinamide 10% + Zinc 1% Serum",
       "sources": {
         "Official Store": {
@@ -3551,7 +3551,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 134,
@@ -3559,7 +3559,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 1134.0,
-      "market_average_price": 1701.0,
+      "market_average_price": 1890.0,
       "canonical_name": "Guerniss Tea Tree Oil",
       "sources": {
         "Official Store": {
@@ -3572,7 +3572,7 @@
           "confidence": 94.48
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 135,
@@ -3580,7 +3580,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 834.0,
-      "market_average_price": 1112.0,
+      "market_average_price": 1390.0,
       "canonical_name": "Guerniss Spotless Brightening Serum",
       "sources": {
         "Official Store": {
@@ -3611,7 +3611,7 @@
           "confidence": 77.33
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 136,
@@ -3619,7 +3619,7 @@
       "brand_name": "Guerniss",
       "size": "50ml",
       "manufactured_price": 1134.0,
-      "market_average_price": 1701.0,
+      "market_average_price": 1890.0,
       "canonical_name": "Guerniss SPF 25++ Bossim Brightening Day Cream",
       "sources": {
         "Official Store": {
@@ -3632,7 +3632,7 @@
           "confidence": 79.93
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 137,
@@ -3640,10 +3640,10 @@
       "brand_name": "Guerniss",
       "size": "60ml",
       "manufactured_price": 1050.0,
-      "market_average_price": 1575.0,
+      "market_average_price": 1750.0,
       "canonical_name": "Guerniss Everyday Sun Block",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 138,
@@ -3651,7 +3651,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 888.0,
-      "market_average_price": 1332.0,
+      "market_average_price": 1480.0,
       "canonical_name": "Guerniss Anti Melasma Cream",
       "sources": {
         "Official Store": {
@@ -3664,7 +3664,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 139,
@@ -3672,7 +3672,7 @@
       "brand_name": "Guerniss",
       "size": "30ml",
       "manufactured_price": 228.0,
-      "market_average_price": 339.5,
+      "market_average_price": 380.0,
       "canonical_name": "Guerniss Brightening Face Mask",
       "sources": {
         "OhSoGo": {
@@ -3694,7 +3694,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 140,
@@ -3702,7 +3702,7 @@
       "brand_name": "Guerniss",
       "size": "",
       "manufactured_price": 18.0,
-      "market_average_price": 27.0,
+      "market_average_price": 30.0,
       "canonical_name": "Guerniss Avocado Deep Cleansing Wet Wipes",
       "sources": {
         "Official Store": {
@@ -3733,7 +3733,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 141,
@@ -3741,10 +3741,10 @@
       "brand_name": "Q Cosmetics",
       "size": "130ml",
       "manufactured_price": 190.005,
-      "market_average_price": 249.5,
+      "market_average_price": 300.0,
       "canonical_name": "Nature Beauty Aloe Vera Moisture Soothing Gel",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 142,
@@ -3752,7 +3752,7 @@
       "brand_name": "Q Cosmetics",
       "size": "130ml",
       "manufactured_price": 190.005,
-      "market_average_price": 210.0,
+      "market_average_price": 300.0,
       "canonical_name": "Nature Beauty Milk Moisture Soothing Gel",
       "sources": {
         "Arogga": {
@@ -3774,7 +3774,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 143,
@@ -3782,7 +3782,7 @@
       "brand_name": "Q Cosmetics",
       "size": "130ml",
       "manufactured_price": 269.17375,
-      "market_average_price": 325.8333,
+      "market_average_price": 425.0,
       "canonical_name": "Nature Beauty Saffron Moisture Soothing Gel",
       "sources": {
         "Arogga": {
@@ -3813,7 +3813,7 @@
           "confidence": 74.74
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 144,
@@ -3821,10 +3821,10 @@
       "brand_name": "Q Cosmetics",
       "size": "300ml",
       "manufactured_price": 180.50475,
-      "market_average_price": 195.0,
+      "market_average_price": 285.0,
       "canonical_name": "Nature Beauty Anti-Tobacco Air Freshener",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 145,
@@ -3832,7 +3832,7 @@
       "brand_name": "Q Cosmetics",
       "size": "300ml",
       "manufactured_price": 180.50475,
-      "market_average_price": 975.0,
+      "market_average_price": 285.0,
       "canonical_name": "Nature Beauty Jasmine Dew Air Freshener",
       "sources": {
         "Shajgoj": {
@@ -3845,7 +3845,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 146,
@@ -3853,7 +3853,7 @@
       "brand_name": "Q Cosmetics",
       "size": "300ml",
       "manufactured_price": 180.50475,
-      "market_average_price": 612.0,
+      "market_average_price": 285.0,
       "canonical_name": "Nature Beauty Lemon Twist Air Freshener",
       "sources": {
         "Shajgoj": {
@@ -3875,7 +3875,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 147,
@@ -3883,7 +3883,7 @@
       "brand_name": "Q Cosmetics",
       "size": "300ml",
       "manufactured_price": 180.50475,
-      "market_average_price": 630.5,
+      "market_average_price": 285.0,
       "canonical_name": "Nature Beauty Lavender Air Freshener",
       "sources": {
         "Arogga": {
@@ -3905,7 +3905,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 148,
@@ -3913,7 +3913,7 @@
       "brand_name": "Q Cosmetics",
       "size": "200ml",
       "manufactured_price": 95.0025,
-      "market_average_price": 120.0,
+      "market_average_price": 150.0,
       "canonical_name": "Nature Beauty Hand Wash- Lavender",
       "sources": {
         "OhSoGo": {
@@ -3926,7 +3926,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 149,
@@ -3934,7 +3934,7 @@
       "brand_name": "Q Cosmetics",
       "size": "200ml",
       "manufactured_price": 95.0025,
-      "market_average_price": 120.0,
+      "market_average_price": 150.0,
       "canonical_name": "Nature Beauty Hand Wash- Orchid",
       "sources": {
         "OhSoGo": {
@@ -3947,7 +3947,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 150,
@@ -3955,7 +3955,7 @@
       "brand_name": "Q Cosmetics",
       "size": "200ml",
       "manufactured_price": 95.0025,
-      "market_average_price": 120.0,
+      "market_average_price": 150.0,
       "canonical_name": "Nature Beauty Hand Wash- Strawberry",
       "sources": {
         "OhSoGo": {
@@ -3968,7 +3968,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 151,
@@ -3976,7 +3976,7 @@
       "brand_name": "Q Cosmetics",
       "size": "370ml",
       "manufactured_price": 158.3375,
-      "market_average_price": 200.0,
+      "market_average_price": 250.0,
       "canonical_name": "Nature Beauty Lemon Handwash",
       "sources": {
         "Shajgoj": {
@@ -3998,7 +3998,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 152,
@@ -4006,7 +4006,7 @@
       "brand_name": "Q Cosmetics",
       "size": "370ml",
       "manufactured_price": 158.3375,
-      "market_average_price": 200.0,
+      "market_average_price": 250.0,
       "canonical_name": "Nature Beauty Strawberry Handwash",
       "sources": {
         "Shajgoj": {
@@ -4019,7 +4019,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 153,
@@ -4027,7 +4027,7 @@
       "brand_name": "Q Cosmetics",
       "size": "500ml",
       "manufactured_price": 300.84125,
-      "market_average_price": 380.0,
+      "market_average_price": 475.0,
       "canonical_name": "Nature Beauty Fruity Shower Gel",
       "sources": {
         "Shajgoj": {
@@ -4040,7 +4040,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 154,
@@ -4048,10 +4048,10 @@
       "brand_name": "Q Cosmetics",
       "size": "500ml",
       "manufactured_price": 300.84125,
-      "market_average_price": 285.0,
+      "market_average_price": 475.0,
       "canonical_name": "Nature Beauty Ocean Fresh Shower Gel",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 155,
@@ -4059,7 +4059,7 @@
       "brand_name": "Q Cosmetics",
       "size": "115gm",
       "manufactured_price": 221.6725,
-      "market_average_price": 245.0,
+      "market_average_price": 350.0,
       "canonical_name": "Nature Beauty Hand-made Beauty Bar (Fruity)",
       "sources": {
         "Arogga": {
@@ -4081,7 +4081,7 @@
           "confidence": 66.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 156,
@@ -4089,7 +4089,7 @@
       "brand_name": "Q Cosmetics",
       "size": "115gm",
       "manufactured_price": 221.6725,
-      "market_average_price": 280.0,
+      "market_average_price": 350.0,
       "canonical_name": "Nature Beauty Hand-made Beauty Bar (Goat Milk)",
       "sources": {
         "Shajgoj": {
@@ -4102,7 +4102,7 @@
           "confidence": 73.39
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 157,
@@ -4110,7 +4110,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100gm",
       "manufactured_price": 285.0075,
-      "market_average_price": 309.5,
+      "market_average_price": 450.0,
       "canonical_name": "Nature Beauty Hand-made Beauty Bar (Saffron)",
       "sources": {
         "Arogga": {
@@ -4132,7 +4132,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 158,
@@ -4140,7 +4140,7 @@
       "brand_name": "Q Cosmetics",
       "size": "200ml",
       "manufactured_price": 221.6725,
-      "market_average_price": 295.0,
+      "market_average_price": 350.0,
       "canonical_name": "Nature Beauty Healthy Glowing Body Lotion",
       "sources": {
         "Arogga": {
@@ -4162,7 +4162,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 159,
@@ -4170,7 +4170,7 @@
       "brand_name": "Q Cosmetics",
       "size": "200ml",
       "manufactured_price": 221.6725,
-      "market_average_price": 245.0,
+      "market_average_price": 350.0,
       "canonical_name": "Nature Beauty Skin Relief Milk Moisture Lotion",
       "sources": {
         "Arogga": {
@@ -4192,7 +4192,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 160,
@@ -4200,7 +4200,7 @@
       "brand_name": "Q Cosmetics",
       "size": "370ml",
       "manufactured_price": 300.84125,
-      "market_average_price": 391.875,
+      "market_average_price": 475.0,
       "canonical_name": "Nature Beauty Healthy Glowing Body Lotion",
       "sources": {
         "Arogga": {
@@ -4239,7 +4239,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 161,
@@ -4247,7 +4247,7 @@
       "brand_name": "Q Cosmetics",
       "size": "370ml",
       "manufactured_price": 300.84125,
-      "market_average_price": 380.0,
+      "market_average_price": 475.0,
       "canonical_name": "Nature Beauty Milk Body Lotion",
       "sources": {
         "Shajgoj": {
@@ -4260,7 +4260,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 162,
@@ -4268,7 +4268,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 364.17625,
-      "market_average_price": 421.6667,
+      "market_average_price": 575.0,
       "canonical_name": "Nature Beauty Hyaluronic 1% & Glycolic Acid 2% Serum",
       "sources": {
         "Arogga": {
@@ -4299,7 +4299,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 163,
@@ -4307,7 +4307,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 364.17625,
-      "market_average_price": 421.6667,
+      "market_average_price": 575.0,
       "canonical_name": "Nature Beauty Niacinamide 10% Serum",
       "sources": {
         "Arogga": {
@@ -4338,7 +4338,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 164,
@@ -4346,7 +4346,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 364.17625,
-      "market_average_price": 475.3333,
+      "market_average_price": 575.0,
       "canonical_name": "Nature Beauty Salicylic Acid 2% Serum",
       "sources": {
         "Arogga": {
@@ -4377,7 +4377,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 165,
@@ -4385,7 +4385,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100ml",
       "manufactured_price": 186.83825,
-      "market_average_price": 259.6,
+      "market_average_price": 295.0,
       "canonical_name": "Nature Beauty Milk Facewash",
       "sources": {
         "Arogga": {
@@ -4398,7 +4398,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 166,
@@ -4406,7 +4406,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100ml",
       "manufactured_price": 186.83825,
-      "market_average_price": 206.5,
+      "market_average_price": 295.0,
       "canonical_name": "Nature Beauty Neem Oil Control Facewash",
       "sources": {
         "Arogga": {
@@ -4428,7 +4428,7 @@
           "confidence": 77.33
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 167,
@@ -4449,7 +4449,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 168,
@@ -4457,7 +4457,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100ml",
       "manufactured_price": 186.83825,
-      "market_average_price": 226.1667,
+      "market_average_price": 295.0,
       "canonical_name": "Nature Beauty Tea Tree Facewash",
       "sources": {
         "Arogga": {
@@ -4488,7 +4488,7 @@
           "confidence": 74.09
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 169,
@@ -4496,7 +4496,7 @@
       "brand_name": "Q Cosmetics",
       "size": "3.4gm",
       "manufactured_price": 126.03665,
-      "market_average_price": 160.0,
+      "market_average_price": 199.0,
       "canonical_name": "Nature Beauty Sweet Cherry Tinted Lip Balm",
       "sources": {
         "Shajgoj": {
@@ -4509,7 +4509,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 170,
@@ -4517,7 +4517,7 @@
       "brand_name": "Q Cosmetics",
       "size": "3.4gm",
       "manufactured_price": 126.03665,
-      "market_average_price": 149.0,
+      "market_average_price": 199.0,
       "canonical_name": "Nature Beauty Pink Rose Tinted Lip Balm",
       "sources": {
         "OhSoGo": {
@@ -4530,7 +4530,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 171,
@@ -4538,7 +4538,7 @@
       "brand_name": "Q Cosmetics",
       "size": "3.4gm",
       "manufactured_price": 126.03665,
-      "market_average_price": 154.5,
+      "market_average_price": 199.0,
       "canonical_name": "Nature Beauty Icy Lemon Lip Balm",
       "sources": {
         "Shajgoj": {
@@ -4560,7 +4560,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 172,
@@ -4581,7 +4581,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 173,
@@ -4589,7 +4589,7 @@
       "brand_name": "Q Cosmetics",
       "size": "150ml",
       "manufactured_price": 186.83825,
-      "market_average_price": 206.0,
+      "market_average_price": 295.0,
       "canonical_name": "Nature Beauty Herbal Hair Oil",
       "sources": {
         "Arogga": {
@@ -4611,7 +4611,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 174,
@@ -4619,7 +4619,7 @@
       "brand_name": "Q Cosmetics",
       "size": "130ml",
       "manufactured_price": 177.338,
-      "market_average_price": 168.0,
+      "market_average_price": 280.0,
       "canonical_name": "Nature Beauty Appricot Face Scrub",
       "sources": {
         "Arogga": {
@@ -4632,7 +4632,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 175,
@@ -4640,7 +4640,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100ml",
       "manufactured_price": 177.338,
-      "market_average_price": 205.6667,
+      "market_average_price": 280.0,
       "canonical_name": "Nature Beauty Olive Oil - Glass",
       "sources": {
         "Arogga": {
@@ -4671,7 +4671,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 176,
@@ -4679,7 +4679,7 @@
       "brand_name": "Q Cosmetics",
       "size": "50ml",
       "manufactured_price": 348.3425,
-      "market_average_price": 399.8,
+      "market_average_price": 550.0,
       "canonical_name": "Nature Beauty Sunscreen",
       "sources": {
         "Arogga": {
@@ -4728,7 +4728,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 177,
@@ -4736,7 +4736,7 @@
       "brand_name": "Q Cosmetics",
       "size": "150ml",
       "manufactured_price": 300.84125,
-      "market_average_price": 538.3333,
+      "market_average_price": 475.0,
       "canonical_name": "QLUXURY Body Mist For Man - Blue Lagoon",
       "sources": {
         "Arogga": {
@@ -4767,7 +4767,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 178,
@@ -4775,7 +4775,7 @@
       "brand_name": "Q Cosmetics",
       "size": "150ml",
       "manufactured_price": 300.84125,
-      "market_average_price": 399.0,
+      "market_average_price": 475.0,
       "canonical_name": "QLUXURY Body Mist For Man - Silver Edge",
       "sources": {
         "Arogga": {
@@ -4797,7 +4797,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 179,
@@ -4805,7 +4805,7 @@
       "brand_name": "Q Cosmetics",
       "size": "150ml",
       "manufactured_price": 300.84125,
-      "market_average_price": 403.75,
+      "market_average_price": 475.0,
       "canonical_name": "QLUXURY Body Mist For Women - Fruity Flirt",
       "sources": {
         "Arogga": {
@@ -4827,7 +4827,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 180,
@@ -4835,7 +4835,7 @@
       "brand_name": "Q Cosmetics",
       "size": "150ml",
       "manufactured_price": 300.84125,
-      "market_average_price": 332.5,
+      "market_average_price": 475.0,
       "canonical_name": "QLUXURY Body Mist For Women - Musky Bloom",
       "sources": {
         "Arogga": {
@@ -4857,7 +4857,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 181,
@@ -4865,10 +4865,10 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 63.335,
-      "market_average_price": 67.5,
+      "market_average_price": 100.0,
       "canonical_name": "Apple Colour Shampoo ( Black)",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 182,
@@ -4876,7 +4876,7 @@
       "brand_name": "Q Cosmetics",
       "size": "25ml",
       "manufactured_price": 437.0115,
-      "market_average_price": 414.0,
+      "market_average_price": 690.0,
       "canonical_name": "Qolore All Blur Pro Face Primer",
       "sources": {
         "Arogga": {
@@ -4889,7 +4889,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 183,
@@ -4897,10 +4897,10 @@
       "brand_name": "Q Cosmetics",
       "size": "0.35gm",
       "manufactured_price": 221.6725,
-      "market_average_price": 270.0,
+      "market_average_price": 350.0,
       "canonical_name": "Qolore Black Kohl Kajal",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 184,
@@ -4908,7 +4908,7 @@
       "brand_name": "Q Cosmetics",
       "size": "",
       "manufactured_price": 174.17125,
-      "market_average_price": 201.6667,
+      "market_average_price": 275.0,
       "canonical_name": "Qolore Cloud Soft Cotton Pads - 80pcs",
       "sources": {
         "Arogga": {
@@ -4939,7 +4939,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 185,
@@ -4947,7 +4947,7 @@
       "brand_name": "Q Cosmetics",
       "size": "12gm",
       "manufactured_price": 538.3475,
-      "market_average_price": 680.0,
+      "market_average_price": 850.0,
       "canonical_name": "Qolore Compact Powder Honey Soft 03",
       "sources": {
         "Shajgoj": {
@@ -4960,7 +4960,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 186,
@@ -4968,7 +4968,7 @@
       "brand_name": "Q Cosmetics",
       "size": "12gm",
       "manufactured_price": 538.3475,
-      "market_average_price": 680.0,
+      "market_average_price": 850.0,
       "canonical_name": "Qolore Compact Powder Ivory Pink-05",
       "sources": {
         "Shajgoj": {
@@ -4981,7 +4981,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 187,
@@ -4989,7 +4989,7 @@
       "brand_name": "Q Cosmetics",
       "size": "12gm",
       "manufactured_price": 538.3475,
-      "market_average_price": 680.0,
+      "market_average_price": 850.0,
       "canonical_name": "Qolore Compact Powder Natural 07",
       "sources": {
         "Shajgoj": {
@@ -5011,7 +5011,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 188,
@@ -5019,7 +5019,7 @@
       "brand_name": "Q Cosmetics",
       "size": "3ml",
       "manufactured_price": 380.01,
-      "market_average_price": 480.0,
+      "market_average_price": 600.0,
       "canonical_name": "Qolore Pro Cover Concealer Ivory 05",
       "sources": {
         "Shajgoj": {
@@ -5032,7 +5032,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 189,
@@ -5040,7 +5040,7 @@
       "brand_name": "Q Cosmetics",
       "size": "3ml",
       "manufactured_price": 380.01,
-      "market_average_price": 480.0,
+      "market_average_price": 600.0,
       "canonical_name": "Qolore Pro Cover Concealer Neutral 07",
       "sources": {
         "Shajgoj": {
@@ -5062,7 +5062,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 190,
@@ -5070,7 +5070,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 728.3525,
-      "market_average_price": 920.0,
+      "market_average_price": 1150.0,
       "canonical_name": "Qolore Skin Glow Liquid Foundation Honey Soft-03",
       "sources": {
         "Shajgoj": {
@@ -5083,7 +5083,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 191,
@@ -5091,7 +5091,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 728.3525,
-      "market_average_price": 930.0,
+      "market_average_price": 1150.0,
       "canonical_name": "Qolore Skin Glow Liquid Foundation Ivory Pink-05",
       "sources": {
         "Daraz": {
@@ -5104,7 +5104,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 192,
@@ -5112,7 +5112,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 728.3525,
-      "market_average_price": 904.5,
+      "market_average_price": 1150.0,
       "canonical_name": "Qolore Skin Glow Liquid Foundation Natural-07",
       "sources": {
         "Daraz": {
@@ -5134,7 +5134,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 193,
@@ -5142,7 +5142,7 @@
       "brand_name": "Q Cosmetics",
       "size": "6gm",
       "manufactured_price": 411.6775,
-      "market_average_price": 520.0,
+      "market_average_price": 650.0,
       "canonical_name": "Qolore Soft Matte Liquid Lipstick Cinnamon Love-03",
       "sources": {
         "Daraz": {
@@ -5155,7 +5155,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 194,
@@ -5163,7 +5163,7 @@
       "brand_name": "Q Cosmetics",
       "size": "6gm",
       "manufactured_price": 411.6775,
-      "market_average_price": 520.0,
+      "market_average_price": 650.0,
       "canonical_name": "Qolore Soft Matte Liquid Lipstick Scarlet Red-05",
       "sources": {
         "Shajgoj": {
@@ -5185,7 +5185,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 195,
@@ -5193,7 +5193,7 @@
       "brand_name": "Q Cosmetics",
       "size": "6gm",
       "manufactured_price": 411.6775,
-      "market_average_price": 520.0,
+      "market_average_price": 650.0,
       "canonical_name": "Qolore Soft Matte Liquid Lipstick Dark Mauve-07",
       "sources": {
         "Shajgoj": {
@@ -5206,7 +5206,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 196,
@@ -5217,7 +5217,7 @@
       "market_average_price": 650.0,
       "canonical_name": "Qolore Soft Matte Liquid Lipstick Brown Mocha-09",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 197,
@@ -5225,7 +5225,7 @@
       "brand_name": "Q Cosmetics",
       "size": "6gm",
       "manufactured_price": 411.6775,
-      "market_average_price": 499.5,
+      "market_average_price": 650.0,
       "canonical_name": "Qolore Soft Matte Liquid Lipstick Berry Drop-11",
       "sources": {
         "Shajgoj": {
@@ -5247,7 +5247,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 198,
@@ -5255,7 +5255,7 @@
       "brand_name": "Q Cosmetics",
       "size": "6gm",
       "manufactured_price": 411.6775,
-      "market_average_price": 520.0,
+      "market_average_price": 650.0,
       "canonical_name": "Qolore Soft Matte Liquid Lipstick Coral Silk-13",
       "sources": {
         "Shajgoj": {
@@ -5277,7 +5277,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 199,
@@ -5285,7 +5285,7 @@
       "brand_name": "Q Cosmetics",
       "size": "50ml",
       "manufactured_price": 1171.6975,
-      "market_average_price": 1295.0,
+      "market_average_price": 1850.0,
       "canonical_name": "Quinsia 2% Salicylic Acid Moisturizer",
       "sources": {
         "Arogga": {
@@ -5307,7 +5307,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 200,
@@ -5315,7 +5315,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 791.6875,
-      "market_average_price": 875.0,
+      "market_average_price": 1250.0,
       "canonical_name": "Quinsia 2% Salicylic Acid Serum",
       "sources": {
         "Arogga": {
@@ -5337,7 +5337,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 201,
@@ -5345,7 +5345,7 @@
       "brand_name": "Q Cosmetics",
       "size": "120ml",
       "manufactured_price": 1045.0275,
-      "market_average_price": 1210.0,
+      "market_average_price": 1650.0,
       "canonical_name": "Quinsia Salicylic Acid Facewash",
       "sources": {
         "Arogga": {
@@ -5376,7 +5376,7 @@
           "confidence": 74.09
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 202,
@@ -5384,7 +5384,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100ml",
       "manufactured_price": 950.025,
-      "market_average_price": 1045.0,
+      "market_average_price": 1500.0,
       "canonical_name": "Quinsia Salicylic Acid Toner",
       "sources": {
         "Arogga": {
@@ -5406,7 +5406,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 203,
@@ -5414,7 +5414,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30gm",
       "manufactured_price": 126.67,
-      "market_average_price": 140.0,
+      "market_average_price": 200.0,
       "canonical_name": "Quinsia Salicylic Acid Sheet Mask",
       "sources": {
         "Arogga": {
@@ -5436,7 +5436,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 204,
@@ -5444,7 +5444,7 @@
       "brand_name": "Q Cosmetics",
       "size": "50ml",
       "manufactured_price": 1171.6975,
-      "market_average_price": 1295.0,
+      "market_average_price": 1850.0,
       "canonical_name": "Quinsia Anti-Melasma Moisturizer",
       "sources": {
         "Arogga": {
@@ -5466,7 +5466,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 205,
@@ -5474,7 +5474,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 791.6875,
-      "market_average_price": 1000.0,
+      "market_average_price": 1250.0,
       "canonical_name": "Quinsia Anti-Melasma Serum",
       "sources": {
         "Shajgoj": {
@@ -5487,7 +5487,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 206,
@@ -5495,7 +5495,7 @@
       "brand_name": "Q Cosmetics",
       "size": "120ml",
       "manufactured_price": 1045.0275,
-      "market_average_price": 1210.0,
+      "market_average_price": 1650.0,
       "canonical_name": "Quinsia Anti-Melasma Facewash",
       "sources": {
         "Arogga": {
@@ -5526,7 +5526,7 @@
           "confidence": 73.89
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 207,
@@ -5534,7 +5534,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100ml",
       "manufactured_price": 950.025,
-      "market_average_price": 900.0,
+      "market_average_price": 1500.0,
       "canonical_name": "Quinsia Anti-Melasma Refreshing Toner",
       "sources": {
         "Arogga": {
@@ -5547,7 +5547,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 208,
@@ -5555,7 +5555,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30gm",
       "manufactured_price": 126.67,
-      "market_average_price": 140.0,
+      "market_average_price": 200.0,
       "canonical_name": "Quinsia Anti-Melasma Sheet Mask",
       "sources": {
         "Arogga": {
@@ -5577,7 +5577,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 209,
@@ -5585,7 +5585,7 @@
       "brand_name": "Q Cosmetics",
       "size": "50ml",
       "manufactured_price": 1108.3625,
-      "market_average_price": 1050.0,
+      "market_average_price": 1750.0,
       "canonical_name": "Quinsia Vitamin C Antioxidant Moisturizer",
       "sources": {
         "Arogga": {
@@ -5598,7 +5598,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 210,
@@ -5606,7 +5606,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30ml",
       "manufactured_price": 791.6875,
-      "market_average_price": 1045.0,
+      "market_average_price": 1250.0,
       "canonical_name": "Quinsia Vitamin C Antioxidant Serum",
       "sources": {
         "Arogga": {
@@ -5628,7 +5628,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 211,
@@ -5636,7 +5636,7 @@
       "brand_name": "Q Cosmetics",
       "size": "120ml",
       "manufactured_price": 950.025,
-      "market_average_price": 1050.0,
+      "market_average_price": 1500.0,
       "canonical_name": "Quinsia Vitamin C Antioxidant Facewash",
       "sources": {
         "Arogga": {
@@ -5658,7 +5658,7 @@
           "confidence": 74.63
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 212,
@@ -5666,7 +5666,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100ml",
       "manufactured_price": 886.69,
-      "market_average_price": 840.0,
+      "market_average_price": 1400.0,
       "canonical_name": "Quinsia Vitamin C Antioxidant Toner",
       "sources": {
         "Arogga": {
@@ -5679,7 +5679,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 213,
@@ -5687,7 +5687,7 @@
       "brand_name": "Q Cosmetics",
       "size": "30gm",
       "manufactured_price": 126.67,
-      "market_average_price": 140.0,
+      "market_average_price": 200.0,
       "canonical_name": "Quinsia Vitamin C Sheet Mask",
       "sources": {
         "Arogga": {
@@ -5709,7 +5709,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 214,
@@ -5717,7 +5717,7 @@
       "brand_name": "Q Cosmetics",
       "size": "100ml",
       "manufactured_price": 285.0075,
-      "market_average_price": 360.0,
+      "market_average_price": 450.0,
       "canonical_name": "Quinsia Miceller Water",
       "sources": {
         "Arogga": {
@@ -5747,7 +5747,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 215,
@@ -5777,7 +5777,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 216,
@@ -5816,7 +5816,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 217,
@@ -5837,7 +5837,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 218,
@@ -5867,7 +5867,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 219,
@@ -5878,7 +5878,7 @@
       "market_average_price": 190.0,
       "canonical_name": "Rose Patals Powder/ গোলাপের পাপড়ি গুঁড়া",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 220,
@@ -5908,7 +5908,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 221,
@@ -5947,7 +5947,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 222,
@@ -5986,7 +5986,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 223,
@@ -6007,7 +6007,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 224,
@@ -6046,7 +6046,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 225,
@@ -6076,7 +6076,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 226,
@@ -6087,7 +6087,7 @@
       "market_average_price": 790.0,
       "canonical_name": "Coconut Oil/ নারিকেল তেল (Big)",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 227,
@@ -6098,7 +6098,7 @@
       "market_average_price": 499.0,
       "canonical_name": "Coconut Oil/ নারিকেল তেল (Small)",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 228,
@@ -6128,7 +6128,7 @@
           "confidence": 73.33
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 229,
@@ -6158,7 +6158,7 @@
           "confidence": 71.69
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 230,
@@ -6188,7 +6188,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 231,
@@ -6218,7 +6218,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 232,
@@ -6239,7 +6239,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 233,
@@ -6260,7 +6260,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 234,
@@ -6281,7 +6281,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 235,
@@ -6302,7 +6302,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 236,
@@ -6323,7 +6323,7 @@
           "confidence": 30.81
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 237,
@@ -6331,7 +6331,7 @@
       "brand_name": "Neofarmers",
       "size": "75ml",
       "manufactured_price": 122.5,
-      "market_average_price": 157.5,
+      "market_average_price": 175.0,
       "canonical_name": "Sesame Oil/ তিলের তেল",
       "sources": {
         "Shajgoj": {
@@ -6344,7 +6344,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 238,
@@ -6365,7 +6365,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 239,
@@ -6386,7 +6386,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 240,
@@ -6425,7 +6425,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 241,
@@ -6433,10 +6433,10 @@
       "brand_name": "Neofarmers",
       "size": "75ml",
       "manufactured_price": 553.0,
-      "market_average_price": 565.0,
+      "market_average_price": 790.0,
       "canonical_name": "Mixed Hair Oil/ মিক্সড হেয়ার অয়েল",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 242,
@@ -6444,7 +6444,7 @@
       "brand_name": "Neofarmers",
       "size": "30ml",
       "manufactured_price": 308.0,
-      "market_average_price": 379.5,
+      "market_average_price": 440.0,
       "canonical_name": "Mixed Oil/ মিক্সড অয়েল",
       "sources": {
         "Arogga": {
@@ -6466,7 +6466,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 243,
@@ -6474,7 +6474,7 @@
       "brand_name": "Skin Cafe",
       "size": "250 ml",
       "manufactured_price": 414.0,
-      "market_average_price": 557.3333,
+      "market_average_price": 690.0,
       "canonical_name": "Skin Cafe Coconut OIl",
       "sources": {
         "Arogga": {
@@ -6505,7 +6505,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 244,
@@ -6544,7 +6544,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 245,
@@ -6592,7 +6592,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 246,
@@ -6640,7 +6640,7 @@
           "confidence": 56.88
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 247,
@@ -6648,10 +6648,10 @@
       "brand_name": "Skin Cafe",
       "size": "10 ml",
       "manufactured_price": 240.0,
-      "market_average_price": 294.5,
+      "market_average_price": 400.0,
       "canonical_name": "Skin cafe Sweet Orange Essential Oil",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 248,
@@ -6717,7 +6717,7 @@
           "confidence": 72.8
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 249,
@@ -6725,7 +6725,7 @@
       "brand_name": "Skin Cafe",
       "size": "100gm",
       "manufactured_price": 168.0,
-      "market_average_price": 230.0,
+      "market_average_price": 280.0,
       "canonical_name": "Skin Cafe Brightening Mask",
       "sources": {
         "Arogga": {
@@ -6747,7 +6747,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 250,
@@ -6786,7 +6786,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 251,
@@ -6852,7 +6852,7 @@
           "confidence": 66.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 252,
@@ -6891,7 +6891,7 @@
           "confidence": 86.16
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 253,
@@ -6957,7 +6957,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 254,
@@ -7014,7 +7014,7 @@
           "confidence": 77.33
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 255,
@@ -7022,10 +7022,10 @@
       "brand_name": "Skin Cafe",
       "size": "120ml",
       "manufactured_price": 165.0,
-      "market_average_price": 295.0,
+      "market_average_price": 275.0,
       "canonical_name": "Skincafe hair conditioner",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 256,
@@ -7033,7 +7033,7 @@
       "brand_name": "Skin Cafe",
       "size": "250ml",
       "manufactured_price": 255.0,
-      "market_average_price": 291.6667,
+      "market_average_price": 425.0,
       "canonical_name": "Skincafe Banana shampoo",
       "sources": {
         "Arogga": {
@@ -7064,7 +7064,7 @@
           "confidence": 92.22
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 257,
@@ -7112,7 +7112,7 @@
           "confidence": 70.86
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 258,
@@ -7151,7 +7151,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 259,
@@ -7159,7 +7159,7 @@
       "brand_name": "Skin Cafe",
       "size": "140ml",
       "manufactured_price": 237.0,
-      "market_average_price": 322.75,
+      "market_average_price": 395.0,
       "canonical_name": "Skin Cafe Soothing Aloe Vera Facewash with Salicylic Acid",
       "sources": {
         "Arogga": {
@@ -7199,7 +7199,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 260,
@@ -7238,7 +7238,7 @@
           "confidence": 66.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 261,
@@ -7286,7 +7286,7 @@
           "confidence": 76.88
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 262,
@@ -7334,7 +7334,7 @@
           "confidence": 82.68
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 263,
@@ -7342,7 +7342,7 @@
       "brand_name": "Skin Cafe",
       "size": "50 gm",
       "manufactured_price": 294.0,
-      "market_average_price": 410.75,
+      "market_average_price": 490.0,
       "canonical_name": "Skin Cafe Night Repairing Cream With Collagen",
       "sources": {
         "Arogga": {
@@ -7382,7 +7382,7 @@
           "confidence": 82.68
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 264,
@@ -7412,7 +7412,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 265,
@@ -7442,7 +7442,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 266,
@@ -7450,7 +7450,7 @@
       "brand_name": "Skin Cafe",
       "size": "350ml",
       "manufactured_price": 357.0,
-      "market_average_price": 490.6267,
+      "market_average_price": 595.0,
       "canonical_name": "Skin Cafe Moisture Maven Body Lotion",
       "sources": {
         "Arogga": {
@@ -7481,7 +7481,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 267,
@@ -7489,7 +7489,7 @@
       "brand_name": "Enso Skin",
       "size": "50 ml",
       "manufactured_price": 210.0,
-      "market_average_price": 209.5,
+      "market_average_price": 350.0,
       "canonical_name": "Enso Skin Super Light Brightening Gel Moisturizer",
       "sources": {
         "Arogga": {
@@ -7511,7 +7511,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 268,
@@ -7519,7 +7519,7 @@
       "brand_name": "RAJKONNA",
       "size": "80gm",
       "manufactured_price": 78.0,
-      "market_average_price": 105.37,
+      "market_average_price": 130.0,
       "canonical_name": "RAJKONNA MULTANI MATI",
       "sources": {
         "Arogga": {
@@ -7568,7 +7568,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 269,
@@ -7576,7 +7576,7 @@
       "brand_name": "RAJKONNA",
       "size": "50gm",
       "manufactured_price": 90.0,
-      "market_average_price": 120.0,
+      "market_average_price": 150.0,
       "canonical_name": "RAJKONNA HENNA POWDER",
       "sources": {
         "OhSoGo": {
@@ -7589,7 +7589,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 270,
@@ -7600,7 +7600,7 @@
       "market_average_price": 30.0,
       "canonical_name": "RAJKONNA GLOW BOOSTER FACIAL WASH Mini pack",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 271,
@@ -7608,7 +7608,7 @@
       "brand_name": "RAJKONNA",
       "size": "100ml",
       "manufactured_price": 111.0,
-      "market_average_price": 158.81,
+      "market_average_price": 185.0,
       "canonical_name": "RAJKONNA ACNE FIGHTING FACIAL WASH",
       "sources": {
         "Arogga": {
@@ -7657,7 +7657,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 272,
@@ -7665,7 +7665,7 @@
       "brand_name": "RAJKONNA",
       "size": "100ml",
       "manufactured_price": 111.0,
-      "market_average_price": 168.6833,
+      "market_average_price": 185.0,
       "canonical_name": "RAJKONNA GLOW BOOSTER FACIAL WASH",
       "sources": {
         "OhSoGo": {
@@ -7696,7 +7696,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 273,
@@ -7704,7 +7704,7 @@
       "brand_name": "RAJKONNA",
       "size": "50gm",
       "manufactured_price": 177.0,
-      "market_average_price": 246.0,
+      "market_average_price": 295.0,
       "canonical_name": "Rajkonna Light Moisturizer With Rice Water And Licorice Extract",
       "sources": {
         "Arogga": {
@@ -7735,7 +7735,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 274,
@@ -7743,7 +7743,7 @@
       "brand_name": "RAJKONNA",
       "size": "120ml",
       "manufactured_price": 144.0,
-      "market_average_price": 188.04,
+      "market_average_price": 240.0,
       "canonical_name": "RAJKONNA ALL PURPOSE TONER",
       "sources": {
         "Arogga": {
@@ -7792,7 +7792,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 275,
@@ -7800,7 +7800,7 @@
       "brand_name": "RAJKONNA",
       "size": "330ML",
       "manufactured_price": 198.0,
-      "market_average_price": 283.9667,
+      "market_average_price": 330.0,
       "canonical_name": "RAJKONNA MOISTURIZING SHOWER GEL",
       "sources": {
         "Arogga": {
@@ -7831,7 +7831,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 276,
@@ -7839,7 +7839,7 @@
       "brand_name": "RAJKONNA",
       "size": "330ML",
       "manufactured_price": 198.0,
-      "market_average_price": 281.3,
+      "market_average_price": 330.0,
       "canonical_name": "RAJKONNA WHITE GLOW SHOWER GEL",
       "sources": {
         "Arogga": {
@@ -7870,7 +7870,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 277,
@@ -7878,7 +7878,7 @@
       "brand_name": "RAJKONNA",
       "size": "300",
       "manufactured_price": 270.0,
-      "market_average_price": 373.8125,
+      "market_average_price": 450.0,
       "canonical_name": "Rajkonna Brightening Body Lotion Super Moisture",
       "sources": {
         "Arogga": {
@@ -7918,7 +7918,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 278,
@@ -7926,7 +7926,7 @@
       "brand_name": "LILAC",
       "size": "30ml",
       "manufactured_price": 570.0,
-      "market_average_price": 791.0,
+      "market_average_price": 950.0,
       "canonical_name": "LILAC VITAMIN C SERUM 10%",
       "sources": {
         "Arogga": {
@@ -7957,7 +7957,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 279,
@@ -7965,7 +7965,7 @@
       "brand_name": "LILAC",
       "size": "30ml",
       "manufactured_price": 570.0,
-      "market_average_price": 743.3333,
+      "market_average_price": 950.0,
       "canonical_name": "LILAC NIACINAMIDE SERUM 5%",
       "sources": {
         "Arogga": {
@@ -7996,7 +7996,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 280,
@@ -8004,7 +8004,7 @@
       "brand_name": "LILAC",
       "size": "30ml",
       "manufactured_price": 570.0,
-      "market_average_price": 755.0,
+      "market_average_price": 950.0,
       "canonical_name": "LILAC BRIGHTENING SERUM WITH 2% ALPHA ARBUTIN AND 1% KOJIC ACID",
       "sources": {
         "Arogga": {
@@ -8026,7 +8026,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 281,
@@ -8034,7 +8034,7 @@
       "brand_name": "LILAC",
       "size": "50gm",
       "manufactured_price": 210.0,
-      "market_average_price": 291.0,
+      "market_average_price": 350.0,
       "canonical_name": "LILAC 3X SPOT LIGHTENER",
       "sources": {
         "Arogga": {
@@ -8074,7 +8074,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 282,
@@ -8082,7 +8082,7 @@
       "brand_name": "LILAC",
       "size": "120ml",
       "manufactured_price": 417.0,
-      "market_average_price": 632.5625,
+      "market_average_price": 695.0,
       "canonical_name": "LILAC BRIGHTENING FACE WASH OILY AND COMBINATION SKIN",
       "sources": {
         "Arogga": {
@@ -8122,7 +8122,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 283,
@@ -8130,7 +8130,7 @@
       "brand_name": "LILAC",
       "size": "120ml",
       "manufactured_price": 417.0,
-      "market_average_price": 278.0,
+      "market_average_price": 695.0,
       "canonical_name": "LILAC BRIGHTENING FACE WASH DRY AND SENSITIVE SKIN",
       "sources": {
         "Shajgoj": {
@@ -8143,7 +8143,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 284,
@@ -8151,7 +8151,7 @@
       "brand_name": "LILAC",
       "size": "50gm",
       "manufactured_price": 510.0,
-      "market_average_price": 666.6667,
+      "market_average_price": 850.0,
       "canonical_name": "LILAC BRIGHTENING MOISTURISER",
       "sources": {
         "Arogga": {
@@ -8182,7 +8182,7 @@
           "confidence": 91.65
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 285,
@@ -8193,7 +8193,7 @@
       "market_average_price": 200.0,
       "canonical_name": "LILAC LIP BALM- Aloevera- SPF-15",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 286,
@@ -8201,10 +8201,10 @@
       "brand_name": "LILAC",
       "size": "30gm",
       "manufactured_price": 132.0,
-      "market_average_price": 179.0,
+      "market_average_price": 220.0,
       "canonical_name": "LILAC LIP BALM- Rose- SPF-15",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 287,
@@ -8212,7 +8212,7 @@
       "brand_name": "LILAC",
       "size": "10 gm",
       "manufactured_price": 150.0,
-      "market_average_price": 212.0,
+      "market_average_price": 250.0,
       "canonical_name": "LILAC PREMIUM TINTED LIP BALM – ORANGE PIE WITH SPF15",
       "sources": {
         "Shajgoj": {
@@ -8225,7 +8225,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 288,
@@ -8233,7 +8233,7 @@
       "brand_name": "LILAC",
       "size": "4.5 gm",
       "manufactured_price": 78.0,
-      "market_average_price": 110.0,
+      "market_average_price": 130.0,
       "canonical_name": "Lilac Tinted Lipbalm With SPF15 Strawberry Bliss",
       "sources": {
         "Shajgoj": {
@@ -8246,7 +8246,7 @@
           "confidence": 84.75
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 289,
@@ -8254,7 +8254,7 @@
       "brand_name": "LILAC",
       "size": "10 gm",
       "manufactured_price": 150.0,
-      "market_average_price": 212.0,
+      "market_average_price": 250.0,
       "canonical_name": "LILAC PREMIUM LIP BALM – COOKIE DOUGH WITH SPF15",
       "sources": {
         "Arogga": {
@@ -8267,7 +8267,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 290,
@@ -8275,7 +8275,7 @@
       "brand_name": "LILAC",
       "size": "10 gm",
       "manufactured_price": 150.0,
-      "market_average_price": 212.0,
+      "market_average_price": 250.0,
       "canonical_name": "LILAC PREMIUM LIP BALM – CHOCO DELIGHT WITH SPF15",
       "sources": {
         "Shajgoj": {
@@ -8288,7 +8288,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 291,
@@ -8296,7 +8296,7 @@
       "brand_name": "LILAC",
       "size": "4.5",
       "manufactured_price": 78.0,
-      "market_average_price": 110.0,
+      "market_average_price": 130.0,
       "canonical_name": "Lilac Lip Balm With SPF15 Orange Crush",
       "sources": {
         "Arogga": {
@@ -8309,7 +8309,7 @@
           "confidence": 71.92
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 292,
@@ -8317,7 +8317,7 @@
       "brand_name": "Hawaa",
       "size": "100 ml",
       "manufactured_price": 132.0,
-      "market_average_price": 170.25,
+      "market_average_price": 220.0,
       "canonical_name": "Hawaa-Hair Fall Avenger Oil",
       "sources": {
         "Arogga": {
@@ -8357,7 +8357,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 293,
@@ -8365,7 +8365,7 @@
       "brand_name": "Hawaa",
       "size": "100 ml",
       "manufactured_price": 162.0,
-      "market_average_price": 220.0,
+      "market_average_price": 270.0,
       "canonical_name": "Hawaa Olive Oil",
       "sources": {
         "Arogga": {
@@ -8387,7 +8387,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 294,
@@ -8395,7 +8395,7 @@
       "brand_name": "Hawaa",
       "size": "100 ml",
       "manufactured_price": 150.0,
-      "market_average_price": 203.5,
+      "market_average_price": 250.0,
       "canonical_name": "Hawaa Castor Oil",
       "sources": {
         "Arogga": {
@@ -8417,7 +8417,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 295,
@@ -8425,7 +8425,7 @@
       "brand_name": "Nirvana",
       "size": "15gm",
       "manufactured_price": 570.0,
-      "market_average_price": 810.0,
+      "market_average_price": 950.0,
       "canonical_name": "Nirvana Color Face Palette - Windy Monsoon",
       "sources": {
         "Shajgoj": {
@@ -8438,7 +8438,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 296,
@@ -8446,7 +8446,7 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 348.0,
-      "market_average_price": 493.0,
+      "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Liquid Matte Lipstick- Infatuated",
       "sources": {
         "Shajgoj": {
@@ -8459,7 +8459,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 297,
@@ -8470,7 +8470,7 @@
       "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Liquid Matte Lipstick- Kiss me",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 298,
@@ -8478,10 +8478,10 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 348.0,
-      "market_average_price": 459.0,
+      "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Liquid Matte Lipstick- Love me",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 299,
@@ -8489,7 +8489,7 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 348.0,
-      "market_average_price": 493.0,
+      "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Liquid Matte Lipstick- Sweet Raisin",
       "sources": {
         "Shajgoj": {
@@ -8502,7 +8502,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 300,
@@ -8510,7 +8510,7 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 348.0,
-      "market_average_price": 492.0,
+      "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Liquid Matte Lipstick- Sweet Sin",
       "sources": {
         "Arogga": {
@@ -8523,7 +8523,7 @@
           "confidence": 98.81
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 301,
@@ -8531,7 +8531,7 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 348.0,
-      "market_average_price": 492.0,
+      "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Liquid Matte Lipstick- Timeless",
       "sources": {
         "Arogga": {
@@ -8544,7 +8544,7 @@
           "confidence": 97.66
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 302,
@@ -8552,7 +8552,7 @@
       "brand_name": "Nirvana",
       "size": "5 gm",
       "manufactured_price": 210.0,
-      "market_average_price": 306.0,
+      "market_average_price": 350.0,
       "canonical_name": "Nirvana Color No Smudge Retractable Eyeliner – Coal Black",
       "sources": {
         "Daraz": {
@@ -8565,7 +8565,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 303,
@@ -8573,10 +8573,10 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 220.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Feeling Blue – 35",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 304,
@@ -8584,7 +8584,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 187.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Mint Mojito – 33",
       "sources": {
         "Shajgoj": {
@@ -8597,7 +8597,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 305,
@@ -8605,7 +8605,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 204.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Snow White – 27",
       "sources": {
         "Shajgoj": {
@@ -8618,7 +8618,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 306,
@@ -8626,7 +8626,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 187.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Beautiful Mess – 32",
       "sources": {
         "Shajgoj": {
@@ -8639,7 +8639,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 307,
@@ -8650,7 +8650,7 @@
       "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Glitter Nail Enamel – Miracle Brush -21",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 308,
@@ -8658,7 +8658,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 220.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Glitter Nail Enamel – Focus On -23",
       "sources": {
         "Shajgoj": {
@@ -8671,7 +8671,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 309,
@@ -8679,7 +8679,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 212.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Cherry Picked-14",
       "sources": {
         "Arogga": {
@@ -8701,7 +8701,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 310,
@@ -8709,7 +8709,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 220.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Femme Fatale – 36",
       "sources": {
         "Arogga": {
@@ -8722,7 +8722,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 311,
@@ -8730,7 +8730,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 203.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Spiced Latte – 37",
       "sources": {
         "Arogga": {
@@ -8743,7 +8743,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 312,
@@ -8751,7 +8751,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 187.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Pastel Bloom – 29",
       "sources": {
         "Shajgoj": {
@@ -8764,7 +8764,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 313,
@@ -8772,7 +8772,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 204.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Glitter Nail Enamel – Touched Angel -25",
       "sources": {
         "Shajgoj": {
@@ -8785,7 +8785,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 314,
@@ -8793,7 +8793,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 215.5,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Glitter Nail Enamel – Precious Love -19",
       "sources": {
         "Arogga": {
@@ -8815,7 +8815,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 315,
@@ -8823,7 +8823,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 220.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Naughty Hand-07",
       "sources": {
         "Shajgoj": {
@@ -8836,7 +8836,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 316,
@@ -8844,7 +8844,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 187.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Mysterious Look -18",
       "sources": {
         "Shajgoj": {
@@ -8857,7 +8857,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 317,
@@ -8865,7 +8865,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 204.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Pretty Girl -17",
       "sources": {
         "Shajgoj": {
@@ -8878,7 +8878,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 318,
@@ -8886,7 +8886,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 220.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Olive You – 34",
       "sources": {
         "Arogga": {
@@ -8908,7 +8908,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 319,
@@ -8916,7 +8916,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 203.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Black Swan – 38",
       "sources": {
         "Arogga": {
@@ -8929,7 +8929,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 320,
@@ -8937,7 +8937,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 220.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – I Am Jealous-05",
       "sources": {
         "Shajgoj": {
@@ -8950,7 +8950,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 321,
@@ -8958,7 +8958,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 220.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – I Am Yours-09",
       "sources": {
         "Shajgoj": {
@@ -8971,7 +8971,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 322,
@@ -8982,7 +8982,7 @@
       "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Glitter Nail Enamel – Shiny Hand-22",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 323,
@@ -8990,7 +8990,7 @@
       "brand_name": "Nirvana",
       "size": "8ml",
       "manufactured_price": 144.0,
-      "market_average_price": 204.0,
+      "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Glitter Nail Enamel – Hold Me -24",
       "sources": {
         "Shajgoj": {
@@ -9003,7 +9003,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 324,
@@ -9011,7 +9011,7 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 270.0,
-      "market_average_price": 380.0,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Honey Crush",
       "sources": {
         "Shajgoj": {
@@ -9024,7 +9024,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 325,
@@ -9032,10 +9032,10 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 270.0,
-      "market_average_price": 380.0,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Berry Lips",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 326,
@@ -9043,10 +9043,10 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 270.0,
-      "market_average_price": 360.0,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Burnt Sienna",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 327,
@@ -9054,7 +9054,7 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 270.0,
-      "market_average_price": 380.0,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Dusky Wine",
       "sources": {
         "Shajgoj": {
@@ -9067,7 +9067,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 328,
@@ -9075,7 +9075,7 @@
       "brand_name": "Nirvana",
       "size": "5gm",
       "manufactured_price": 210.0,
-      "market_average_price": 380.0,
+      "market_average_price": 350.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Brick Brown",
       "sources": {
         "Shajgoj": {
@@ -9088,7 +9088,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 329,
@@ -9096,7 +9096,7 @@
       "brand_name": "Nirvana",
       "size": "30ml",
       "manufactured_price": 690.0,
-      "market_average_price": 975.0,
+      "market_average_price": 1150.0,
       "canonical_name": "Nirvana Color Face Perfect Liquid Foundation – Light Golden",
       "sources": {
         "Shajgoj": {
@@ -9109,7 +9109,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 330,
@@ -9117,10 +9117,10 @@
       "brand_name": "Nirvana",
       "size": "30ml",
       "manufactured_price": 690.0,
-      "market_average_price": 599.0,
+      "market_average_price": 1150.0,
       "canonical_name": "Nirvana Color Face Perfect Liquid Foundation – Light Honey",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 331,
@@ -9128,10 +9128,10 @@
       "brand_name": "Nirvana",
       "size": "30ml",
       "manufactured_price": 690.0,
-      "market_average_price": 837.0,
+      "market_average_price": 1150.0,
       "canonical_name": "Nirvana Color Face Perfect Liquid Foundation – Light Beige",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 332,
@@ -9139,7 +9139,7 @@
       "brand_name": "Nirvana",
       "size": "30ml",
       "manufactured_price": 690.0,
-      "market_average_price": 975.0,
+      "market_average_price": 1150.0,
       "canonical_name": "Nirvana Color Face Perfect Liquid Foundation – Light Natural",
       "sources": {
         "Shajgoj": {
@@ -9152,7 +9152,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 333,
@@ -9160,7 +9160,7 @@
       "brand_name": "Nirvana",
       "size": "25ml",
       "manufactured_price": 270.0,
-      "market_average_price": 364.0,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Eau De Parfum For Women Suranjana",
       "sources": {
         "Arogga": {
@@ -9173,7 +9173,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 334,
@@ -9181,7 +9181,7 @@
       "brand_name": "Nirvana",
       "size": "25ml",
       "manufactured_price": 270.0,
-      "market_average_price": 361.5,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Eau De Parfum For Women Shishir",
       "sources": {
         "Arogga": {
@@ -9203,7 +9203,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 335,
@@ -9211,7 +9211,7 @@
       "brand_name": "Nirvana",
       "size": "25ml",
       "manufactured_price": 270.0,
-      "market_average_price": 361.5,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Eau De Parfum For Women Akashleena",
       "sources": {
         "Arogga": {
@@ -9233,7 +9233,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 336,
@@ -9241,7 +9241,7 @@
       "brand_name": "Nirvana",
       "size": "25ml",
       "manufactured_price": 270.0,
-      "market_average_price": 361.5,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Eau De Parfum For Women Pankouri",
       "sources": {
         "Arogga": {
@@ -9263,7 +9263,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 337,
@@ -9271,7 +9271,7 @@
       "brand_name": "Nirvana",
       "size": "25ml",
       "manufactured_price": 270.0,
-      "market_average_price": 361.5,
+      "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Eau De Parfum For Women Prohelika",
       "sources": {
         "Arogga": {
@@ -9293,7 +9293,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 338,
@@ -9301,7 +9301,7 @@
       "brand_name": "Nirvana",
       "size": "12ml",
       "manufactured_price": 348.0,
-      "market_average_price": 477.5,
+      "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Volume Pro Mascara",
       "sources": {
         "Shajgoj": {
@@ -9323,7 +9323,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 339,
@@ -9331,7 +9331,7 @@
       "brand_name": "Nirvana",
       "size": "25ml",
       "manufactured_price": 510.0,
-      "market_average_price": 707.0,
+      "market_average_price": 850.0,
       "canonical_name": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Beige)",
       "sources": {
         "Shajgoj": {
@@ -9353,7 +9353,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 340,
@@ -9361,7 +9361,7 @@
       "brand_name": "Nirvana",
       "size": "25ml",
       "manufactured_price": 510.0,
-      "market_average_price": 765.0,
+      "market_average_price": 850.0,
       "canonical_name": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Natural)",
       "sources": {
         "Daraz": {
@@ -9374,7 +9374,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 341,
@@ -9382,7 +9382,7 @@
       "brand_name": "Nirvana",
       "size": "25ml",
       "manufactured_price": 510.0,
-      "market_average_price": 765.0,
+      "market_average_price": 850.0,
       "canonical_name": "Nirvana Color Mattifying and Poreless Pressed Powder (Light Golden)",
       "sources": {
         "Daraz": {
@@ -9395,7 +9395,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 342,
@@ -9403,7 +9403,7 @@
       "brand_name": "Groome",
       "size": "",
       "manufactured_price": 117.0,
-      "market_average_price": 162.0,
+      "market_average_price": 195.0,
       "canonical_name": "Groome Tea Tree Purifying & Deep Cleansing Nose Strips (Monthly Pack) 6 pcs",
       "sources": {
         "Arogga": {
@@ -9425,7 +9425,7 @@
           "confidence": 91.29
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 343,
@@ -9433,7 +9433,7 @@
       "brand_name": "Groome",
       "size": "",
       "manufactured_price": 117.0,
-      "market_average_price": 149.0,
+      "market_average_price": 195.0,
       "canonical_name": "Groome Black Head Remover Charcoal Nose strips(Monthly Pack) 6 pcs",
       "sources": {
         "Shajgoj": {
@@ -9446,7 +9446,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 344,
@@ -9454,7 +9454,7 @@
       "brand_name": "Groome",
       "size": "",
       "manufactured_price": 132.0,
-      "market_average_price": 180.3333,
+      "market_average_price": 220.0,
       "canonical_name": "Groome Beauty Blender Sponge - Yellow",
       "sources": {
         "Arogga": {
@@ -9485,7 +9485,7 @@
           "confidence": 96.44
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 345,
@@ -9493,7 +9493,7 @@
       "brand_name": "Groome",
       "size": "",
       "manufactured_price": 132.0,
-      "market_average_price": 176.75,
+      "market_average_price": 220.0,
       "canonical_name": "Groome Makeup Blender Sponge - Pink",
       "sources": {
         "Arogga": {
@@ -9533,7 +9533,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 346,
@@ -9541,7 +9541,7 @@
       "brand_name": "Groome",
       "size": "",
       "manufactured_price": 159.0,
-      "market_average_price": 199.0,
+      "market_average_price": 265.0,
       "canonical_name": "Groome Personal Care Cotton Pad - 80pcs",
       "sources": {
         "Shajgoj": {
@@ -9554,7 +9554,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 347,
@@ -9562,7 +9562,7 @@
       "brand_name": "Groome",
       "size": "",
       "manufactured_price": 144.0,
-      "market_average_price": 192.5,
+      "market_average_price": 240.0,
       "canonical_name": "Groome Eyebrow and Facial Razor (Pack of 2pcs)",
       "sources": {
         "Shajgoj": {
@@ -9584,7 +9584,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 348,
@@ -9592,7 +9592,7 @@
       "brand_name": "Groome",
       "size": "",
       "manufactured_price": 144.0,
-      "market_average_price": 190.0,
+      "market_average_price": 240.0,
       "canonical_name": "Groome Eyebrow And Facial Razor- Scarlet Edge ( 2pcs)",
       "sources": {
         "Shajgoj": {
@@ -9614,7 +9614,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 349,
@@ -9622,7 +9622,7 @@
       "brand_name": "Groome",
       "size": "30 ml",
       "manufactured_price": 588.0,
-      "market_average_price": 762.3333,
+      "market_average_price": 980.0,
       "canonical_name": "Groome Niacinamide 5% + Zinc 1% Skin Correcting Serum",
       "sources": {
         "Arogga": {
@@ -9653,7 +9653,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 350,
@@ -9661,7 +9661,7 @@
       "brand_name": "Groome",
       "size": "30 ml",
       "manufactured_price": 534.0,
-      "market_average_price": 744.0,
+      "market_average_price": 890.0,
       "canonical_name": "Groome Glutathione + Alpha Arbutin +HA Brightening Serum",
       "sources": {
         "Shajgoj": {
@@ -9683,7 +9683,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 351,
@@ -9691,7 +9691,7 @@
       "brand_name": "Groome",
       "size": "30 ml",
       "manufactured_price": 534.0,
-      "market_average_price": 773.0,
+      "market_average_price": 890.0,
       "canonical_name": "Groome Vitamin-C 12% Glowing Serum",
       "sources": {
         "Arogga": {
@@ -9722,7 +9722,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 352,
@@ -9730,7 +9730,7 @@
       "brand_name": "Groome",
       "size": "100 ml",
       "manufactured_price": 387.0,
-      "market_average_price": 519.5,
+      "market_average_price": 645.0,
       "canonical_name": "Groome Bird's Nest Brightening Face Wash",
       "sources": {
         "Shajgoj": {
@@ -9752,7 +9752,7 @@
           "confidence": 97.3
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 353,
@@ -9760,7 +9760,7 @@
       "brand_name": "Groome",
       "size": "100 ml",
       "manufactured_price": 387.0,
-      "market_average_price": 520.3333,
+      "market_average_price": 645.0,
       "canonical_name": "Groome Green Clay Oil Control Face Wash",
       "sources": {
         "Arogga": {
@@ -9791,7 +9791,7 @@
           "confidence": 97.3
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 354,
@@ -9799,7 +9799,7 @@
       "brand_name": "Groome",
       "size": "50g",
       "manufactured_price": 714.0,
-      "market_average_price": 887.3333,
+      "market_average_price": 1190.0,
       "canonical_name": "Groome Skin Regenerist Brightening & Moisturizing Cream0",
       "sources": {
         "Arogga": {
@@ -9830,7 +9830,7 @@
           "confidence": 80.04
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 355,
@@ -9838,7 +9838,7 @@
       "brand_name": "Lavino",
       "size": "100ml",
       "manufactured_price": 174.0,
-      "market_average_price": 238.0,
+      "market_average_price": 290.0,
       "canonical_name": "Lavino Neem Purifying Face Wash With 0.5% Salicylic Acid",
       "sources": {
         "Shajgoj": {
@@ -9860,7 +9860,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 356,
@@ -9868,7 +9868,7 @@
       "brand_name": "Lavino",
       "size": "100ml",
       "manufactured_price": 174.0,
-      "market_average_price": 240.0,
+      "market_average_price": 290.0,
       "canonical_name": "Lavino Milk Brightening Face Wash",
       "sources": {
         "Arogga": {
@@ -9899,7 +9899,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 357,
@@ -9910,7 +9910,7 @@
       "market_average_price": 220.0,
       "canonical_name": "Lavino Pure Olive Oil",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 358,
@@ -9918,7 +9918,7 @@
       "brand_name": "Lavino",
       "size": "100ml",
       "manufactured_price": 174.0,
-      "market_average_price": 237.75,
+      "market_average_price": 290.0,
       "canonical_name": "Lavino vitamin c   Face Wash",
       "sources": {
         "Arogga": {
@@ -9958,7 +9958,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 359,
@@ -9966,7 +9966,7 @@
       "brand_name": "Lavino",
       "size": "50g",
       "manufactured_price": 285.0,
-      "market_average_price": 401.0,
+      "market_average_price": 475.0,
       "canonical_name": "Lavino Brightening Moisturizer - with Alpha Arbutin & Vitamin E",
       "sources": {
         "Arogga": {
@@ -9988,7 +9988,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 360,
@@ -9996,7 +9996,7 @@
       "brand_name": "Lavino",
       "size": "330ml",
       "manufactured_price": 285.0,
-      "market_average_price": 385.0,
+      "market_average_price": 475.0,
       "canonical_name": "Lavino Mint Shower Gel – with Peppermint Extract",
       "sources": {
         "Arogga": {
@@ -10009,7 +10009,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 361,
@@ -10017,7 +10017,7 @@
       "brand_name": "Lavino",
       "size": "330ml",
       "manufactured_price": 285.0,
-      "market_average_price": 391.0,
+      "market_average_price": 475.0,
       "canonical_name": "Lavino Vitamin C Shower Gel – with Orange Extract",
       "sources": {
         "Arogga": {
@@ -10039,7 +10039,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 362,
@@ -10047,7 +10047,7 @@
       "brand_name": "Ombre",
       "size": "120ml",
       "manufactured_price": 270.0,
-      "market_average_price": 381.75,
+      "market_average_price": 450.0,
       "canonical_name": "Ombre Body Mist- Bali Trip (W)",
       "sources": {
         "Arogga": {
@@ -10087,7 +10087,7 @@
           "confidence": 98.77
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 363,
@@ -10095,7 +10095,7 @@
       "brand_name": "Ombre",
       "size": "120ml",
       "manufactured_price": 270.0,
-      "market_average_price": 381.25,
+      "market_average_price": 450.0,
       "canonical_name": "Ombre Body Mist- I found You (W)",
       "sources": {
         "Arogga": {
@@ -10135,7 +10135,7 @@
           "confidence": 98.86
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 364,
@@ -10143,7 +10143,7 @@
       "brand_name": "Ombre",
       "size": "120ml",
       "manufactured_price": 270.0,
-      "market_average_price": 381.4,
+      "market_average_price": 450.0,
       "canonical_name": "Ombre Body Mist- Blue Pearl (W)",
       "sources": {
         "Arogga": {
@@ -10192,7 +10192,7 @@
           "confidence": 98.81
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 365,
@@ -10200,7 +10200,7 @@
       "brand_name": "Ombre",
       "size": "120ml",
       "manufactured_price": 270.0,
-      "market_average_price": 382.0,
+      "market_average_price": 450.0,
       "canonical_name": "Ombre Perfumed Body Mist - Holiday Bliss",
       "sources": {
         "OhSoGo": {
@@ -10231,7 +10231,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 366,
@@ -10239,7 +10239,7 @@
       "brand_name": "Ombre",
       "size": "120ml",
       "manufactured_price": 270.0,
-      "market_average_price": 382.0,
+      "market_average_price": 450.0,
       "canonical_name": "Ombre Perfumed Body Mist - Golden Hour",
       "sources": {
         "OhSoGo": {
@@ -10270,7 +10270,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 367,
@@ -10278,7 +10278,7 @@
       "brand_name": "Ombre",
       "size": "120ml",
       "manufactured_price": 270.0,
-      "market_average_price": 382.0,
+      "market_average_price": 450.0,
       "canonical_name": "Ombre Perfumed Body Mist - Munsell Dream",
       "sources": {
         "OhSoGo": {
@@ -10300,7 +10300,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 368,
@@ -10308,7 +10308,7 @@
       "brand_name": "Ombre",
       "size": "9ml",
       "manufactured_price": 138.0,
-      "market_average_price": 195.0,
+      "market_average_price": 230.0,
       "canonical_name": "Ombre Mini Perfume Blue Pearl (EDP)",
       "sources": {
         "PandaMart": {
@@ -10321,7 +10321,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 369,
@@ -10329,7 +10329,7 @@
       "brand_name": "Ombre",
       "size": "9ml",
       "manufactured_price": 138.0,
-      "market_average_price": 195.0,
+      "market_average_price": 230.0,
       "canonical_name": "Ombre Mini Perfume Golden Hour (EDP)",
       "sources": {
         "Arogga": {
@@ -10351,7 +10351,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 370,
@@ -10359,7 +10359,7 @@
       "brand_name": "Ombre",
       "size": "9ml",
       "manufactured_price": 138.0,
-      "market_average_price": 195.0,
+      "market_average_price": 230.0,
       "canonical_name": "Ombre Mini Perfume Bali Trip (EDP)",
       "sources": {
         "Arogga": {
@@ -10381,7 +10381,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 371,
@@ -10389,10 +10389,10 @@
       "brand_name": "Panam",
       "size": "250ml",
       "manufactured_price": 174.0,
-      "market_average_price": 99.0,
+      "market_average_price": 290.0,
       "canonical_name": "Panam Shower Gel Pulp Rain with Free Loofah",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 372,
@@ -10400,10 +10400,10 @@
       "brand_name": "Panam",
       "size": "250ml",
       "manufactured_price": 174.0,
-      "market_average_price": 172.0,
+      "market_average_price": 290.0,
       "canonical_name": "Panam Shower Gel Ocean Blue With Free Loofah",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 373,
@@ -10411,7 +10411,7 @@
       "brand_name": "Panam",
       "size": "100ml",
       "manufactured_price": 210.0,
-      "market_average_price": 298.0,
+      "market_average_price": 350.0,
       "canonical_name": "Panam Men Brightening Facial Wash",
       "sources": {
         "Arogga": {
@@ -10433,7 +10433,7 @@
           "confidence": 98.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 374,
@@ -10463,7 +10463,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 375,
@@ -10493,7 +10493,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 376,
@@ -10523,7 +10523,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 377,
@@ -10544,7 +10544,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 378,
@@ -10565,7 +10565,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 379,
@@ -10586,7 +10586,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 380,
@@ -10616,7 +10616,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 381,
@@ -10646,7 +10646,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 382,
@@ -10676,7 +10676,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 383,
@@ -10706,7 +10706,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 384,
@@ -10736,7 +10736,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 385,
@@ -10766,7 +10766,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 386,
@@ -10796,7 +10796,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 387,
@@ -10826,7 +10826,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 388,
@@ -10856,7 +10856,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 389,
@@ -10877,7 +10877,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 390,
@@ -10898,7 +10898,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 391,
@@ -10928,7 +10928,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 392,
@@ -10958,7 +10958,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 393,
@@ -10988,7 +10988,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 394,
@@ -11018,7 +11018,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 395,
@@ -11039,7 +11039,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 396,
@@ -11069,7 +11069,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 397,
@@ -11099,7 +11099,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 398,
@@ -11120,7 +11120,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 399,
@@ -11141,7 +11141,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 400,
@@ -11149,7 +11149,7 @@
       "brand_name": "Orgagenic",
       "size": "100g",
       "manufactured_price": 603.0,
-      "market_average_price": 805.0,
+      "market_average_price": 900.0,
       "canonical_name": "Orgagenic White Sandalwood Powder (শ্বেত চন্দন)",
       "sources": {
         "Arogga": {
@@ -11162,7 +11162,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "third_party_avg"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 401,
@@ -11173,7 +11173,7 @@
       "market_average_price": 500.0,
       "canonical_name": "Orgagenic White Sandalwood Powder (শ্বেত চন্দন)",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 402,
@@ -11194,7 +11194,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 403,
@@ -11215,7 +11215,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 404,
@@ -11236,7 +11236,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 405,
@@ -11257,7 +11257,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 406,
@@ -11278,7 +11278,7 @@
           "available": true
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 407,
@@ -11308,7 +11308,7 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "official"
+      "mrp_source_type": "workbook"
     },
     {
       "row": 408,
@@ -11319,7 +11319,7 @@
       "market_average_price": 850.0,
       "canonical_name": "Orgagenic Chloasma Repair Serum",
       "sources": {},
-      "mrp_source_type": "reference"
+      "mrp_source_type": "workbook"
     }
   ]
 }

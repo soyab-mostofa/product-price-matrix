@@ -1,6 +1,15 @@
 # Project: Product Price Intelligence & Marketplace Benchmark Matrix
 
-Real-time price benchmark dataset, automated multi-marketplace discovery pipeline, and interactive dashboard for 407 personal care and beauty SKUs across major Bangladeshi D2C brand flagships and third-party e-commerce channels.
+Price benchmark dataset, automated multi-marketplace discovery pipeline, and interactive dashboard for personal care and beauty SKUs across major Bangladeshi D2C brand flagships and third-party e-commerce channels.
+
+The catalog is split into two books by **Sourcing Origin**, each on its own route:
+
+| Book | Route | SKUs | MRP source |
+| --- | --- | --- | --- |
+| **Local** — made in Bangladesh, bought from the manufacturer | `/` | 407 | Workbook benchmark (always) |
+| **Imported** — brought in, bought from an importer | `/imported` | 189 | Live listings (official → third-party avg → reference) |
+
+No single view shows the combined total; the origin switch carries both counts.
 
 - **Live Production URL**: https://product-price-matrix.pages.dev
 - **Repository**: https://github.com/soyab-mostofa/product-price-matrix
@@ -18,10 +27,12 @@ Real-time price benchmark dataset, automated multi-marketplace discovery pipelin
 - **Deployment & Hosting**: Cloudflare Pages (via `wrangler`), GitHub
 
 ### Core Artifacts
-- `product_marketplace_price_comparison.xlsx` — Canonical source spreadsheet containing formulas and populated Marketplace 1 & 2 listings.
-- `verified_marketplace_research.json` — Comprehensive JSON dataset with candidate records, tokens, and multi-channel mappings.
+- `Roopelle.com Final Excel Sheet.xlsx` — **The commercial source of truth.** Five sheets: `Local product ` (372 rows: MRP, discount rate, final sourcing price), `local product Orgagenic` (35 rows: MRP, distributor price, distributor profit), and `imported Skincare` / `imported Haircare` / `imported Fregrance` (189 rows: cost + channel prices).
+- `product_marketplace_price_comparison.xlsx` — Older working spreadsheet with the original Price Calculator formulas (`MFG = MRP − MRP×discount`; `Cost = MFG + Packaging 20 + Transport 40`). Superseded by the Roopelle sheet for pricing; kept for provenance.
+- `verified_marketplace_research.json` — Comprehensive JSON dataset with candidate records, tokens, and multi-channel mappings. `excel_prices` mirrors the workbook and must never be overwritten by scraped values.
 - `verified_match_audit.json` — Full audit log of accepted matches and rejected candidates with explicit reasons.
 - `build_matrix.py` / `catalog_builder.py` — Pipeline that validates listings and regenerates canonical JSON, audit, and D1 seed artifacts (`seed.sql`).
+- `scripts/restore_workbook_mrp.py` — One-shot repair that restores `excel_prices.market_average_price` from the workbook. Run if a scraper ever overwrites the benchmark again.
 - `sku_matcher.py` — Strict brand, category, volume, bundle, concentration, and cosmetic shade validation engine.
 - `src/` — Hono JSX application, API routes, browser client, and server domain modules.
 - `public/static/app.css` — Authored browser stylesheet; `public/static/app.js` is generated and ignored.
@@ -35,34 +46,34 @@ Real-time price benchmark dataset, automated multi-marketplace discovery pipelin
 The interactive matrix presents a frozen multi-column view with 5 sticky base columns on the left and dynamic marketplace channels on the right:
 
 ### Pinned Sticky Base Columns (Left)
-1. **`Product Name` (280px)**: Product title and SKU details with two-line clamp and full title tooltip (`left: 0px`).
+1. **`Product Name` (280px)**: Product title with the pack size beneath it, two-line clamp and full title tooltip (`left: 0px`). The size line is load-bearing — the catalog holds same-name SKUs that differ only by pack size (Nature Beauty Body Lotion 200/370ml; Orgagenic White Sandalwood 50/100g).
 2. **`Brand` (115px)**: Brand or parent manufacturer name (`left: 280px`).
-3. **`MFG Price` (115px)**: Sourcing/manufacturing purchase price in BDT (`left: 395px`, right-aligned, blue emphasis).
-4. **`MRP` (185px)**: Official Store price when available, otherwise the arithmetic mean of active third-party listings, otherwise the workbook reference benchmark; paired with the markup chip relative to MFG price (`left: 510px`, dual-metric cell).
-5. **`Selling Price` (185px)**: Recommended selling price calculated by the Pricing Engine, accompanied by its **Target Markup % chip** vs MFG price and an optional purple `TUNED` pill when custom per-SKU parameters are active (`left: 695px`, dual-metric cell, elevated shadow divider).
+3. **`Source Cost` (115px)**: What we pay to acquire one unit, in BDT — the discounted manufacturer price for a Local SKU, the importer's quoted price for an Imported SKU (`left: 395px`, right-aligned, blue emphasis). Stored in the `manufactured_price` column for historical reasons; see `CONTEXT.md`.
+4. **`MRP` (185px)**: The market reference price, paired with a markup chip relative to Source Cost (`left: 510px`, dual-metric cell). For a **Local SKU this is always the workbook benchmark** (`mrp_source_type = 'workbook'`); for an **Imported SKU** it resolves official → third-party average → reference.
+5. **`Selling Price` (185px)**: Recommended selling price from the Pricing Engine, with its **Target Markup % chip** vs Source Cost, an optional purple `TUNED` pill when per-SKU parameters are active, and a red `ABOVE MARKET` flag when the recommendation exceeds the MRP (`left: 695px`, dual-metric cell, elevated shadow divider).
 
 ### Dynamic Marketplace Columns (Right)
-- Channels: *Official Store, Arogga, Shajgoj, OhSoGo, Daraz, eMartWay, PandaMart, Rokomari*.
+- Channel order (`CHANNEL_ORDER` in `catalog_builder.py` and `src/server/catalog.ts`): *Official Store, Arogga, Shajgoj, OhSoGo, Daraz, eMartWay, PandaMart, Rokomari, Chaldal, Klassy Missy, Skincarebd, themallbd, Skinplus*. Unknown channels discovered later sort alphabetically after these.
 - Each cell contains:
   - **Active Selling Price (BDT)**
-  - **Semantic Markup % Chip** (relative to MFG Price)
-  - **`↗` Deep Link Button** opening the live verified external product page in a new tab.
-- **Dynamic Auto-Hiding**: Filtering by brand automatically collapses marketplace columns with 0 listings in the active view, while keeping any column with $\ge 1$ listing visible.
+  - **Semantic Markup % Chip** (relative to Source Cost)
+  - **`↗` Deep Link Button** opening the live verified product page in a new tab, or a `◌` marker when the price is recorded but no product page is confirmed.
+- **Dynamic Auto-Hiding**: Filtering by brand collapses marketplace columns with 0 listings in the active view, keeping any column with $\ge 1$ listing visible.
 
 ---
 
 ## 3. Calculation Logic & Pricing Engine
 
 ### A. Sourcing & Channel Markup Percentage
-For any channel price $P$ and Manufacturing purchase price $P_{\text{MFG}}$:
-$$\text{Markup \%} = \frac{P - P_{\text{MFG}}}{P_{\text{MFG}}} \times 100$$
+For any channel price $P$ and Source Cost $C$:
+$$\text{Markup \%} = \frac{P - C}{C} \times 100$$
 
 ### B. Pricing Engine Unit Economics Model
 The model computes the recommended selling price from variable overheads, target margins, and promotional discounts:
 
 1. **Total Base Cost**:
    $$\text{Overhead} = \text{Packaging} + \text{Transport} + \text{Delivery} + \text{CAC}$$
-   $$\text{Total Base Cost} = P_{\text{MFG}} + \text{Overhead}$$
+   $$\text{Total Base Cost} = C + \text{Overhead}$$
 
 2. **List Price with Gross Margin**:
    $$\text{List Price} = \frac{\text{Total Base Cost}}{1 - \frac{\text{Target Margin \%}}{100}}$$
@@ -73,10 +84,26 @@ The model computes the recommended selling price from variable overheads, target
    - **Amount Discount Mode (`amt`)**:
      $$\text{Selling Price} = \max\left(0, \text{List Price} - \text{Discount BDT}\right)$$
 
+> **Overhead is charged per unit.** Delivery and CAC are order-level costs, so
+> loading their full value onto every unit prices cheap SKUs out of their own
+> market: the cost basis is a trade discount off MRP (17–40%), leaving a headroom
+> proportional to price — as little as ৳12 on the cheapest SKUs. Shipping ৳145/unit
+> (packaging 45 + delivery 60 + CAC 40) put 243 of 407 SKUs above market. If you
+> reintroduce delivery or CAC, amortise them across expected units per order.
+
 ### C. Global vs. Per-Product Override Persistence
-- **Global Defaults**: Managed via the top navbar `Pricing Engine` modal (`localStorage` key: `price_matrix_global_params`, persisted to D1 `global_pricing_params`).
-  - Default: Packaging = ৳20, Transport = ৳0, Delivery = ৳60, CAC = ৳0, Margin = 0%, Discount = 0% (pct).
-- **Per-Product Custom Overrides**: Configurable inside each product's detail modal under the *Custom Pricing Engine* tab (`localStorage` key: `price_matrix_custom_overrides`, persisted to D1 `product_pricing_overrides` by immutable row ID). Overrides take immediate precedence for that SKU and persist across browser reloads.
+Both are persisted **in Cloudflare D1 only** — there is no `localStorage` anywhere in the codebase.
+
+- **Global Defaults**: Managed via the top navbar `Pricing Engine` modal, stored in D1 `global_pricing_params` (single row, `id = 1`).
+  - Shipped default: Packaging = ৳45, Transport = ৳0, Delivery = ৳0, CAC = ৳40, Margin = 0%, Discount = 0% (pct) — **৳85/unit**, defined once in `src/shared/pricing.ts` (`PRICING_DEFAULTS`) and mirrored in `schema.sql` and `catalog_builder.py`.
+- **Per-Product Custom Overrides**: Configurable in each product's detail modal under the *Custom Pricing Engine* tab, stored in D1 `product_pricing_overrides` keyed by immutable `product_row_id`.
+  - Overrides are **sparse**: a `NULL` column means "inherit the current global value", so raising a global cost still reaches tuned SKUs for knobs they never pinned. A field equal to the current global value is stripped on save (`sparsifyOverride`); an override pinning nothing is deleted rather than stored.
+  - `discount_type` and `discount_val` pin as a pair or not at all.
+
+### D. Access Control
+- **Reads are public**: `GET /`, `/imported`, `/api/products`, `/api/engine`, `/api/auth`.
+- **Writes require an admin session**: `POST /api/engine` and every `/api/overrides` route are behind `requireAdmin`, which enforces a valid HMAC session cookie **and** a same-origin `X-Price-Matrix-Admin: 1` header. Failed logins are rate-limited via `admin_login_attempts` (5 attempts / 15 min).
+- Requires `ADMIN_PASSWORD` and `SESSION_SECRET` bindings. Without them, mutations return `503` and the UI shows a read-only banner.
 
 ---
 
@@ -93,31 +120,43 @@ The model computes the recommended selling price from variable overheads, target
 2. **Discounted / Selling Price Priority**:
    - Always extract the active customer checkout price (discounted selling price) over the list price or MSRP whenever promotions are active.
 
-3. **Internal Pricing Parity**:
-   - Keep internal Excel pricing columns (`MFG price`, `Mkt (Avg) Price`) 100% faithful to workbook calculations without drift.
+3. **Internal Pricing Parity — the workbook wins**:
+   - `Roopelle.com Final Excel Sheet.xlsx` is the commercial source of truth. Keep `excel_prices.manufactured_price` and `excel_prices.market_average_price` 100% faithful to it, with no drift.
+   - **A Local SKU's MRP is always the workbook benchmark** (`mrp_source_type = 'workbook'`). Never let a scraped price — including the brand's own Official Store — overwrite it. The workbook's cost basis is a trade discount off exactly that number (40% / 30% / 25%, giving cost/MRP ratios of 0.60 / 0.70 / 0.75), so substituting a live price breaks the arithmetic. Brand stores run promotions: 82 of 179 official prices disagreed with the workbook, and 6 sat *below* our sourcing cost, making healthy margins read as losses.
+   - Scraped listings are still first-class: they keep their prices, verification state, and deep links, and render in their own channel columns. They are compared *against* the benchmark, never merged *into* it.
+   - Imported SKUs are the exception — an importer's quoted cost carries no workbook retail benchmark, so their MRP still resolves official → third-party average → reference.
    - Exclude internal raw cost rollups from public user-facing tables.
+
+4. **Data Repair**:
+   - If a scraper ever overwrites the benchmark again, run `uv run --with openpyxl python3 scripts/restore_workbook_mrp.py` then rebuild. The `tests/model.test.ts` suite asserts every local MRP equals its workbook value, so a regression fails CI.
 
 ---
 
 ## 5. UI/UX Design System & Conventions
 
 - **Typography**: `Plus Jakarta Sans` for titles/headings and `Inter` for all UI elements, numerical prices, headers, and modals. Monospace fonts are prohibited.
-- **Markup Percentage Chip Hierarchy**:
-  - `Below MFG (Discount)`: Soft red pill (`#fee2e2` bg, `#991b1b` text) with down arrow `↓-XX%`.
+- **Markup Percentage Chip Hierarchy** (all relative to Source Cost):
+  - `Below Source Cost (Discount)`: Soft red pill (`#fee2e2` bg, `#991b1b` text) with down arrow `↓-XX%`.
   - `At Par (0%)`: Neutral gray pill (`#f1f5f9` bg, `#475569` text) `0%`.
   - `+1% to +15%`: Soft blue pill (`#e0f2fe` bg, `#0369a1` text) `↑+XX%`.
   - `+15% to +35%`: Soft amber pill (`#fef3c7` bg, `#92400e` text) `↑+XX%`.
   - `+35% to +60%`: Warm orange pill (`#ffedd5` bg, `#9a3412` text) `↑+XX%`.
   - `>+60% Extreme`: Soft red pill (`#fee2e2` bg, `#991b1b` text) `↑+XX%`.
+- **Above-Market Warning**: When a recommended Selling Price exceeds the MRP, the price turns red and gains an `ABOVE MARKET` flag; a catalog-level amber banner reports how many of the shown SKUs are affected. Never render an unsellable recommendation as if it were valid.
 - **Top Navigation Bar (56px)**:
   - Brand header with active indicator dot.
   - SKU & listing count metadata pill.
-  - Search input with auto-filtering.
+  - Search input (debounced ~140ms — a repaint rebuilds every visible cell).
   - Brand filter dropdown.
   - Channel filter dropdown.
-  - Multi-criteria sort dropdown (Product A-Z/Z-A, Brand A-Z, Selling Price, MFG Price, Market Avg, Most Channels, Largest Spread, Channel-specific sorts).
+  - Category filter dropdown (imported book only; hidden when the active book has no categories).
+  - Multi-criteria sort dropdown (Product A-Z/Z-A, Brand A-Z/Z-A, Selling Price, Source Cost, MRP, Most Channels, Largest Spread, Channel-specific sorts).
+  - Markup/market-discount chip toggle.
+  - `Admin Login` button (hidden when auth is not configured; becomes `Log out` when signed in).
   - `Pricing Engine` action button.
   - Icon-only JSON dataset export button.
+- **Origin Switch**: A floating pill switching between the Local and Imported books. It navigates real routes (`/` and `/imported`) rather than filtering in place, so each book stays bookmarkable, and carries both SKU counts.
+- **Destructive Actions**: Irreversible catalog-wide actions live in a labelled danger zone with a type-`RESET`-to-confirm prompt that states how many tunes will be lost. Never an unlabelled icon button beside a save action.
 - **Interactive Header Controls**:
   - All table headers display descriptive tooltips on hover explaining column contents and unit logic.
   - Clicking any column header triggers interactive multi-state sorting.
@@ -132,11 +171,22 @@ The model computes the recommended selling price from variable overheads, target
 
 ### Build and Compilation Commands
 ```bash
-# Rebuild datasets and UI artifacts
+# Rebuild datasets and UI artifacts from verified_marketplace_research.json
 uv run --with openpyxl --with rapidfuzz python3 build_matrix.py
 
-# Run scraping and gap fill
-uv run --with primp --with beautifulsoup4 --with rapidfuzz --with ddgs python3 /tmp/fill_targeted_gaps.py
+# Restore workbook MRP benchmarks if a scraper overwrote them
+uv run --with openpyxl python3 scripts/restore_workbook_mrp.py
+
+# Apply pending migrations to the local D1 replicas
+bun run db:local:migrate
+```
+
+### Verification (run before claiming work is done)
+```bash
+bun run typecheck   # tsc --noEmit
+bun run test        # 50 Bun unit tests + 56 Python tests
+bun run build       # client bundle + Worker bundle
+bun run dev         # local dev server on :5173
 ```
 
 ### Deployment Commands
@@ -146,6 +196,12 @@ bun run build
 
 # Deploy to Cloudflare Pages production
 bunx wrangler pages deploy dist --project-name product-price-matrix --commit-dirty=true
+```
+
+Admin auth requires two secrets on the Pages project:
+```bash
+bunx wrangler pages secret put ADMIN_PASSWORD --project-name product-price-matrix
+bunx wrangler pages secret put SESSION_SECRET --project-name product-price-matrix
 ```
 
 ---
