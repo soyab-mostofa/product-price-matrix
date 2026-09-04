@@ -13,6 +13,7 @@
     "test:python": "uv run --with rapidfuzz --with openpyxl python3 -m unittest discover -s tests -p 'test_*.py' -v",
     "test": "bun run test:unit && bun run test:python",
     "test:browser": "playwright test",
+    "test:audit": "bun tests/audit/run.mjs",
     "preview": "wrangler pages dev dist --ip 0.0.0.0 --port 8788",
     "deploy": "bun run build && wrangler pages deploy dist --project-name product-price-matrix --commit-dirty=true",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
