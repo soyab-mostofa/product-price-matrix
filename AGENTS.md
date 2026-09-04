@@ -45,19 +45,24 @@ No single view shows the combined total; the origin switch carries both counts.
 
 The interactive matrix presents a frozen multi-column view with 5 sticky base columns on the left and dynamic marketplace channels on the right:
 
+Every column head carries a small-caps label over a **basis line** naming the unit and comparison basis (`BDT / unit`, `BDT · vs cost`, `BDT · engine output`), so a percentage never needs a tooltip to be legible. Widths are CSS custom properties (`--col-product` etc. in `app.css`), and each sticky column's `left` offset is derived from them rather than hard-coded.
+
 ### Pinned Sticky Base Columns (Left)
-1. **`Product Name` (280px)**: Product title with the pack size beneath it, two-line clamp and full title tooltip (`left: 0px`). The size line is load-bearing — the catalog holds same-name SKUs that differ only by pack size (Nature Beauty Body Lotion 200/370ml; Orgagenic White Sandalwood 50/100g).
-2. **`Brand` (115px)**: Brand or parent manufacturer name (`left: 280px`).
-3. **`Source Cost` (115px)**: What we pay to acquire one unit, in BDT — the discounted manufacturer price for a Local SKU, the importer's quoted price for an Imported SKU (`left: 395px`, right-aligned, blue emphasis). Stored in the `manufactured_price` column for historical reasons; see `CONTEXT.md`.
-4. **`MRP` (185px)**: The market reference price, paired with a markup chip relative to Source Cost (`left: 510px`, dual-metric cell). For a **Local SKU this is always the workbook benchmark** (`mrp_source_type = 'workbook'`); for an **Imported SKU** it resolves official → third-party average → reference.
-5. **`Selling Price` (185px)**: Recommended selling price from the Pricing Engine, with its **Target Markup % chip** vs Source Cost (which turns solid red with white text when the recommendation exceeds the MRP), and an optional purple `TUNED` pill when per-SKU parameters are active (`left: 695px`, dual-metric cell, elevated shadow divider).
+1. **`Product` (`--col-product`, 300px)**: Product title with the pack size beneath it in a ruled marker, two-line clamp and full title tooltip. The size line is load-bearing — the catalog holds same-name SKUs that differ only by pack size (Nature Beauty Body Lotion 200/370ml; Orgagenic White Sandalwood 50/100g). 22 local SKUs carry an empty size and correctly render no marker.
+2. **`Brand` (`--col-brand`, 128px)**: Brand or parent manufacturer name.
+3. **`Source Cost` (`--col-mfg`, 124px)**: What we pay to acquire one unit, in BDT — the discounted manufacturer price for a Local SKU, the importer's quoted price for an Imported SKU (right-aligned). Stored in the `manufactured_price` column for historical reasons; see `CONTEXT.md`.
+4. **`MRP` (`--col-market`, 196px)**: The market reference price, paired with a markup chip relative to Source Cost (dual-metric cell). For a **Local SKU this is always the workbook benchmark** (`mrp_source_type = 'workbook'`); for an **Imported SKU** it resolves official → third-party average → reference.
+5. **`Selling Price` (`--col-selling`, 210px)**: Recommended selling price from the Pricing Engine in assay green, with its **Target Markup % chip** vs Source Cost (which turns solid crimson with white text when the recommendation exceeds the MRP), and an optional violet `TUNED` pill when per-SKU parameters are active. Closed on its right by the **datum rule** — a 1px graphite border plus `--shadow-datum` — separating what we know from what the market is doing.
+
+**Prices are rounded for display; chips are derived from the rounded price.** `calculateSellingPrice` returns a whole number, and every percentage is computed from that displayed value against the *unrounded* source cost. A SKU costing ৳93.6 displays `BDT 94` but its chips read against 93.6 — so hand-checking a chip against the displayed cost will look off by a point. This is deliberate: the chip always describes the number on screen.
 
 ### Dynamic Marketplace Columns (Right)
 - Channel order (`CHANNEL_ORDER` in `catalog_builder.py` and `src/server/catalog.ts`): *Official Store, Arogga, Shajgoj, OhSoGo, Daraz, eMartWay, PandaMart, Rokomari, Chaldal, Klassy Missy, Skincarebd, themallbd, Skinplus*. Unknown channels discovered later sort alphabetically after these.
 - Each cell contains:
   - **Active Selling Price (BDT)**
   - **Semantic Markup % Chip** (relative to Source Cost)
-  - **`↗` Deep Link Button** opening the live verified product page in a new tab, or a `◌` marker when the price is recorded but no product page is confirmed.
+  - **Drawn external-link icon** opening the live verified product page in a new tab, or a dashed-circle marker when the price is recorded but no product page is confirmed. No unicode glyph stands in for an icon anywhere in the UI; the set lives in `src/components/icons.tsx` (JSX) and `src/client/icons.ts` (innerHTML strings), one stroke weight throughout.
+- A channel with no listing for a SKU renders a quiet dash on a recessed ground rather than an empty full-weight cell.
 - **Dynamic Auto-Hiding**: Filtering by brand collapses marketplace columns with 0 listings in the active view, keeping any column with $\ge 1$ listing visible.
 
 ---

@@ -1,0 +1,6 @@
+# Impeccable design-workflow state.
+# Config and the surface brief are shared (they carry the direction contract);
+# review screenshots and build-phase scratch are local artefacts.
+review/
+build/
+mocks/
