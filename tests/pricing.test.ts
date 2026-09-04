@@ -15,7 +15,7 @@ import type { PricingParams } from '../src/types'
 const defaults = {
   packaging: 45,
   transport: 0,
-  delivery: 60,
+  delivery: 0,
   cac: 40,
   targetMarginPct: 0,
   discountType: 'pct' as const,
@@ -70,15 +70,15 @@ describe('sparse override validation', () => {
 
 describe('override merge semantics', () => {
   test('an un-pinned field keeps tracking later global changes', () => {
-    // The scenario that motivated sparse overrides: MFG 100, global overhead 80,
+    // The scenario that motivated sparse overrides: MFG 100, global overhead 85,
     // tuned to 30% margin. Raising global delivery must still reach this SKU.
     const override = { targetMarginPct: 30 }
     const before = calculateSellingPrice(100, resolvePricingParams(defaults, override))
-    expect(before).toBe(350) // (100 + 80) / 0.7
+    expect(before).toBe(264) // (100 + 85) / 0.7
 
     const globalAfterCourierHike: PricingParams = { ...defaults, delivery: 80 }
     const after = calculateSellingPrice(100, resolvePricingParams(globalAfterCourierHike, override))
-    expect(after).toBe(379) // (100 + 100) / 0.7 — delivery change landed
+    expect(after).toBe(379) // (100 + 165) / 0.7 — delivery change landed
   })
 
   test('a pinned field ignores the corresponding global change', () => {
@@ -117,7 +117,7 @@ describe('override sparsification', () => {
     const sparse = sparsifyOverride(defaults, {
       packaging: 45, // same as global — not a tune
       transport: 0, // same as global — not a tune
-      delivery: 60, // same as global — not a tune
+      delivery: 0, // same as global — not a tune
       cac: 40, // same as global — not a tune
       targetMarginPct: 30, // genuinely different
       discountType: 'pct',
@@ -148,10 +148,10 @@ describe('override sparsification', () => {
 
 describe('selling price formula', () => {
   test('applies overhead, margin, and both discount modes', () => {
-    expect(calculateSellingPrice(100, defaults)).toBe(245)
-    expect(calculateSellingPrice(100, { ...defaults, targetMarginPct: 50 })).toBe(490)
-    expect(calculateSellingPrice(100, { ...defaults, discountType: 'pct', discountVal: 10 })).toBe(221)
-    expect(calculateSellingPrice(100, { ...defaults, discountType: 'amt', discountVal: 50 })).toBe(195)
+    expect(calculateSellingPrice(100, defaults)).toBe(185)
+    expect(calculateSellingPrice(100, { ...defaults, targetMarginPct: 50 })).toBe(370)
+    expect(calculateSellingPrice(100, { ...defaults, discountType: 'pct', discountVal: 10 })).toBe(167)
+    expect(calculateSellingPrice(100, { ...defaults, discountType: 'amt', discountVal: 50 })).toBe(135)
   })
 
   test('never returns a negative price and rejects impossible inputs', () => {

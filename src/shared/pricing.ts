@@ -11,10 +11,20 @@ import {
  * in `server/pricing.ts` so validation never reaches the client bundle.
  */
 
+/**
+ * Shipped defaults, mirroring the source workbook's Price Calculator.
+ *
+ * The workbook charges packaging and transport per unit and has no delivery or
+ * CAC column at all. Delivery and customer-acquisition cost are ORDER-level, so
+ * loading them onto every unit is what drove recommended prices above market:
+ * the cost basis is a trade discount off MRP (17-40%), which leaves a headroom
+ * proportional to price -- as little as 12 BDT on the cheapest SKUs. Any flat
+ * per-unit charge above that headroom prices the SKU out of its own market.
+ */
 export const PRICING_DEFAULTS: Readonly<PricingParams> = Object.freeze({
   packaging: 45,
   transport: 0,
-  delivery: 60,
+  delivery: 0,
   cac: 40,
   targetMarginPct: 0,
   discountType: 'pct',
