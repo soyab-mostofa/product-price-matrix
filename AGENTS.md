@@ -139,32 +139,37 @@ Both are persisted **in Cloudflare D1 only** — there is no `localStorage` anyw
 
 ## 5. UI/UX Design System & Conventions
 
-- **Typography**: `Plus Jakarta Sans` for titles/headings and `Inter` for all UI elements, numerical prices, headers, and modals. Monospace fonts are prohibited.
-- **Markup Percentage Chip Hierarchy** (all relative to Source Cost):
-  - `Below Source Cost (Discount)`: Soft red pill (`#fee2e2` bg, `#991b1b` text) with down arrow `↓-XX%`.
-  - `At Par (0%)`: Neutral gray pill (`#f1f5f9` bg, `#475569` text) `0%`.
-  - `+1% to +15%`: Soft blue pill (`#e0f2fe` bg, `#0369a1` text) `↑+XX%`.
-  - `+15% to +35%`: Soft amber pill (`#fef3c7` bg, `#92400e` text) `↑+XX%`.
-  - `+35% to +60%`: Warm orange pill (`#ffedd5` bg, `#9a3412` text) `↑+XX%`.
-  - `>+60% Extreme`: Soft red pill (`#fee2e2` bg, `#991b1b` text) `↑+XX%`.
-- **Above-Market Warning**: When a recommended Selling Price exceeds the MRP, its percentage chip turns solid red with white text (clearly signaling an above-market recommendation without crowding the cell with an extra text badge); a catalog-level amber banner reports how many of the shown SKUs are affected. Never render an unsellable recommendation as if it were valid.
-- **Top Navigation Bar (56px)**:
-  - Brand header with active indicator dot.
-  - SKU & listing count metadata pill.
-  - Search input (debounced ~140ms — a repaint rebuilds every visible cell).
-  - Brand filter dropdown.
-  - Channel filter dropdown.
-  - Category filter dropdown (imported book only; hidden when the active book has no categories).
-  - Multi-criteria sort dropdown (Product A-Z/Z-A, Brand A-Z/Z-A, Selling Price, Source Cost, MRP, Most Channels, Largest Spread, Channel-specific sorts).
-  - Markup/market-discount chip toggle.
-  - `Admin Login` button (hidden when auth is not configured; becomes `Log out` when signed in).
-  - `Pricing Engine` action button.
-  - Icon-only JSON dataset export button.
-- **Origin Switch**: A floating pill switching between the Local and Imported books. It navigates real routes (`/` and `/imported`) rather than filtering in place, so each book stays bookmarkable, and carries both SKU counts.
-- **Destructive Actions**: Irreversible catalog-wide actions live in a labelled danger zone with a type-`RESET`-to-confirm prompt that states how many tunes will be lost. Never an unlabelled icon button beside a save action.
-- **Interactive Header Controls**:
-  - All table headers display descriptive tooltips on hover explaining column contents and unit logic.
-  - Clicking any column header triggers interactive multi-state sorting.
+The visual world is a **certificate-of-analysis assay sheet**: a price recommendation is a measured result, the MRP is its specification limit, and channel listings are replicate measurements. `DESIGN.md` is the authority — tokens in machine-readable frontmatter, then the prose. Read it before any UI change rather than re-deriving the rules from neighbouring code. `.impeccable/surfaces/` holds the direction contract.
+
+**Non-negotiables** (the design detector enforces the first three):
+- **0px radius everywhere.** Buttons, inputs, chips, dialogs, banners, markers. No exceptions.
+- **Every colour and type step is a documented token.** A literal hex or an off-ramp `font-size` is a finding — add the token to both `app.css` and `DESIGN.md`, or use an existing one.
+- **No coloured side-border above 1px**, and no unicode glyph standing in for an icon. The icon set lives in `src/components/icons.tsx` (JSX) and `src/client/icons.ts` (innerHTML strings), one stroke weight throughout.
+- **Tabular lining figures** (`tabular-nums lining-nums`) on every number, including inside inputs and chips.
+- **`--ink-4` is for marks, not text** — it sits below 4.5:1. Basis lines and other small copy use `--ink-35` or darker. Measure contrast; do not eyeball it.
+
+- **Typography**: `Plus Jakarta Sans` for the wordmark and dialog titles, `Inter` for everything else. Monospace is prohibited — Inter's tabular figures do the alignment work.
+- **Markup chip ramp** — an ordered scale where both ends alarm, not six unrelated tags. All relative to Source Cost:
+
+  | Band | Background | Text | Reads as |
+  | --- | --- | --- | --- |
+  | Below cost | `#fbedec` | `#8f1d1d` | Loss |
+  | At par (0%) | `#f1f1ee` | `#4a4f56` | Neutral |
+  | +1 to +15% | `#eef4f1` | `#2c5f4d` | Thin |
+  | +15 to +35% | `#e2f0e8` | `#14614a` | Healthy |
+  | +35 to +60% | `#f6eedb` | `#78530f` | Rich |
+  | Above +60% | `#f6e4da` | `#8a3b14` | Extreme |
+
+- **Above-Market Warning**: when a recommended Selling Price exceeds the MRP, its chip turns solid crimson (`#b32020`) with white text — a *failed measurement* that overrides the ramp entirely, not a seventh tier. A catalog-level banner reports how many of the shown SKUs are affected. Never render an unsellable recommendation as if it were valid.
+- **Two-tier ruled header (46px per tier)**:
+  - *Register tier*: brand wordmark with sync lamp, SKU/listing count pill, the two sourcing books as docked tabs, the out-of-spec filter, `Admin Login` (hidden when auth is unconfigured; becomes `Log out`), icon-only JSON export, and the `Pricing engine` action.
+  - *Instrument tier*: search (debounced ~140ms — a repaint rebuilds every visible cell), brand filter, channel filter, category filter (imported book only; hidden when the active book has no categories), multi-criteria sort (Product A-Z/Z-A, Brand A-Z/Z-A, Selling Price, Source Cost, MRP, Most Channels, Largest Spread, channel-specific sorts), and the markup/market-discount compare cord.
+  - Each control owns its left rule, so no boundary is drawn twice.
+- **Origin switch**: the two books dock into the header rule as tabs, the active one carrying a 2px assay-green underline. They navigate real routes (`/` and `/imported`) rather than filtering in place, so each book stays bookmarkable, and each carries its own SKU count.
+- **The out-of-spec flag is a button, not a readout.** It names its action (`Show 51 above market` → `Showing`) and filters the sheet. It counts across the whole book, never the current view: filtering to one brand must not make a catalog-wide pricing failure look like it went away.
+- **Inline counts need accessible names.** A numeral abutting its label announces as `"Local407"`. Wrap the count in `aria-hidden` and put the real sentence in `aria-label`, keeping it in sync when the count changes.
+- **Destructive Actions**: irreversible catalog-wide actions live in a labelled danger zone with a type-`RESET`-to-confirm prompt that states how many tunes will be lost. Never an unlabelled icon button beside a save action.
+- **Interactive Header Controls**: every column head carries a descriptive tooltip explaining its contents and unit logic; clicking any head triggers multi-state sorting with `aria-sort` reflecting the state.
 
 ---
 
