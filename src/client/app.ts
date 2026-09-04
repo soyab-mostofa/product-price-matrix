@@ -1,4 +1,5 @@
 import type { CatalogPayload, PricingOverride, PricingParams, Product, StoredPricingOverride } from '../types'
+import { ICON_CHIP_DOWN, ICON_CHIP_UP, ICON_EXTERNAL, ICON_UNVERIFIED } from './icons'
 import {
   calculateMarketDiscount,
   calculateMarkup,
@@ -41,6 +42,8 @@ let sources: string[] = []
 let globalCostParams: PricingParams = { ...PRICING_DEFAULTS }
 let productOverrides: Record<string, StoredPricingOverride> = {}
 let sellingChipMode: 'markup' | 'discount' = 'markup'
+/** When on, the sheet shows only specimens whose recommendation clears MRP. */
+let aboveMarketOnly = false
 let activeProductDetail: Product | null = null
 let currentGlobalDiscountType: 'pct' | 'amt' = 'pct'
 /** 'global' = inherit the global discount; 'pct'/'amt' pin it for this SKU. */
@@ -75,6 +78,9 @@ const productTotal = document.getElementById('productTotal') as HTMLElement | nu
 const listingTotal = document.getElementById('listingTotal') as HTMLElement | null
 const toggleSellingChipBtn = document.getElementById('toggleSellingChipModeBtn') as HTMLButtonElement | null
 const sellingChipBtnLabel = document.getElementById('sellingChipBtnLabel') as HTMLElement | null
+const aboveMarketFilterBtn = document.getElementById('aboveMarketFilterBtn') as HTMLButtonElement | null
+const aboveMarketCountEl = document.getElementById('aboveMarketCount') as HTMLElement | null
+const aboveMarketVerbEl = document.getElementById('aboveMarketVerb') as HTMLElement | null
 const openEngineBtn = document.getElementById('openEngineBtn') as HTMLButtonElement | null
 const adminLoginBtn = document.getElementById('adminLoginBtn') as HTMLButtonElement | null
 const authModal = document.getElementById('authModal') as HTMLDialogElement | null
@@ -87,37 +93,45 @@ function esc(value: unknown): string {
   }[char] || char))
 }
 
+/**
+ * A chip on the measurement ramp. Both ends are alarming — selling under
+ * cost, or so far over it the price will not clear — with the healthy band
+ * in the middle. `isAboveMarket` is not a tier: it is a failed measurement,
+ * and it overrides the ramp entirely.
+ */
 function getMarkupChip(pct: number | null, isAboveMarket = false, aboveMarketTitle = ''): string {
   if (pct === null) return ''
+  const mark = pct < -0.01 ? ICON_CHIP_DOWN : ICON_CHIP_UP
+  const magnitude = `${Math.abs(pct).toFixed(0)}%`
+
   if (isAboveMarket) {
     const defaultTitle = `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}% vs source cost · Above market reference`
-    return `<span class="markup-chip above-market" title="${esc(aboveMarketTitle || defaultTitle)}">${pct >= 0 ? '↑+' : '↓'}${pct.toFixed(0)}%</span>`
+    return `<span class="markup-chip above-market" title="${esc(aboveMarketTitle || defaultTitle)}">${mark}${magnitude}</span>`
   }
   if (pct < -0.01) {
-    return `<span class="markup-chip neg" title="${Math.abs(pct).toFixed(1)}% below source cost">↓${pct.toFixed(0)}%</span>`
+    return `<span class="markup-chip neg" title="${Math.abs(pct).toFixed(1)}% below source cost">${ICON_CHIP_DOWN}${magnitude}</span>`
   }
   if (Math.abs(pct) <= 0.01) {
     return '<span class="markup-chip zero" title="Equal to source cost">0%</span>'
   }
-  if (pct <= 15) return `<span class="markup-chip t1" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
-  if (pct <= 35) return `<span class="markup-chip t2" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
-  if (pct <= 60) return `<span class="markup-chip t3" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
-  return `<span class="markup-chip t4" title="+${pct.toFixed(1)}% markup over source cost">↑+${pct.toFixed(0)}%</span>`
+  const tier = pct <= 15 ? 't1' : pct <= 35 ? 't2' : pct <= 60 ? 't3' : 't4'
+  return `<span class="markup-chip ${tier}" title="+${pct.toFixed(1)}% markup over source cost">${ICON_CHIP_UP}${magnitude}</span>`
 }
 
 function getMarketDiscountChip(discPct: number | null, isAboveMarket = false, aboveMarketTitle = ''): string {
   if (discPct === null) return ''
+  const magnitude = `${Math.abs(discPct).toFixed(0)}%`
   if (isAboveMarket) {
     const defaultTitle = `${Math.abs(discPct).toFixed(1)}% above market reference`
-    return `<span class="markup-chip above-market" title="${esc(aboveMarketTitle || defaultTitle)}">↑+${Math.abs(discPct).toFixed(0)}%</span>`
+    return `<span class="markup-chip above-market" title="${esc(aboveMarketTitle || defaultTitle)}">${ICON_CHIP_UP}${magnitude}</span>`
   }
   if (discPct > 0.01) {
-    return `<span class="markup-chip mkt-disc" title="${discPct.toFixed(1)}% discount off Market Average price">↓-${discPct.toFixed(0)}%</span>`
+    return `<span class="markup-chip mkt-disc" title="${discPct.toFixed(1)}% discount off Market Average price">${ICON_CHIP_DOWN}${magnitude}</span>`
   }
   if (Math.abs(discPct) <= 0.01) {
     return '<span class="markup-chip zero" title="Selling at Par with Market Average price">0%</span>'
   }
-  return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% above Market Average price">↑+${Math.abs(discPct).toFixed(0)}%</span>`
+  return `<span class="markup-chip mkt-prem" title="${Math.abs(discPct).toFixed(1)}% above Market Average price">${ICON_CHIP_UP}${magnitude}</span>`
 }
 
 function parseApiError(data: unknown, fallback: string): string {
@@ -178,12 +192,12 @@ function updateSellingChipToggleUI() {
     toggleSellingChipBtn.classList.add('active-mode')
     toggleSellingChipBtn.setAttribute('aria-pressed', 'true')
     toggleSellingChipBtn.setAttribute('aria-label', 'Show product markup percentage')
-    sellingChipBtnLabel.textContent = 'View Product Markup %'
+    sellingChipBtnLabel.textContent = 'Read as cost markup'
   } else {
     toggleSellingChipBtn.classList.remove('active-mode')
     toggleSellingChipBtn.setAttribute('aria-pressed', 'false')
     toggleSellingChipBtn.setAttribute('aria-label', 'Show market discount percentage')
-    sellingChipBtnLabel.textContent = 'View Market Discount %'
+    sellingChipBtnLabel.textContent = 'Read as market discount'
   }
 }
 
@@ -244,7 +258,8 @@ function updateHeaders(activeSources: string[]) {
     th.setAttribute('aria-sort', 'none')
     th.innerHTML = `
       <button type="button" class="sort-button source-head-wrap" title="Sort ${esc(source)} prices">
-        <span>${esc(source)}</span>
+        <span class="head-label">${esc(source)}</span>
+        <span class="head-basis">Listed BDT · vs cost</span>
       </button>
     `
     th.querySelector('button')?.addEventListener('click', () => {
@@ -306,8 +321,8 @@ function sourceCell(p: Product, source: string): string {
   // A price seeded from the workbook has no product page to open yet, so it
   // shows an unverified marker in place of the deep link.
   const link = listing.verified && listing.url
-    ? `<a href="${esc(listing.url)}" class="btn-open-link" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.product_name)} on ${esc(source)} in a new tab" title="Open listing on ${esc(source)}" onclick="event.stopPropagation()">↗</a>`
-    : `<span class="listing-unverified" role="img" aria-label="Unverified price on ${esc(source)} — no confirmed product page yet" title="Unverified: price recorded from research, no confirmed product page yet">◌</span>`
+    ? `<a href="${esc(listing.url)}" class="btn-open-link" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(p.product_name)} on ${esc(source)} in a new tab" title="Open listing on ${esc(source)}" onclick="event.stopPropagation()">${ICON_EXTERNAL}</a>`
+    : `<span class="listing-unverified" role="img" aria-label="Unverified price on ${esc(source)} — no confirmed product page yet" title="Unverified: price recorded from research, no confirmed product page yet">${ICON_UNVERIFIED}</span>`
 
   return `
     <td class="source-data-cell" data-source="${esc(source)}">
@@ -322,19 +337,56 @@ function sourceCell(p: Product, source: string): string {
   `
 }
 
+/** True when the engine's recommendation for this SKU clears its MRP. */
+function isAboveMarket(product: Product): boolean {
+  const mrp = Number(product.market_average_price)
+  const selling = computeSellingPrice(Number(product.manufactured_price), product.row)
+  return mrp > 0 && selling !== null && selling > mrp
+}
+
 function filtered(): Product[] {
-  const list = filterProducts(products, {
+  let list = filterProducts(products, {
     query: searchInput?.value || '',
     brand: brandFilter?.value || '',
     source: sourceFilter?.value || '',
     category: categoryFilter?.value || '',
   })
+  if (aboveMarketOnly) list = list.filter(isAboveMarket)
   return sortProducts(
     list,
     (sortSelect?.value || 'product') as SortValue,
     (product) => computeSellingPrice(product.manufactured_price, product.row),
     sources,
   )
+}
+
+/**
+ * The out-of-spec readout counts across the whole book, not the current view:
+ * filtering to one brand must not make a catalog-wide pricing failure look
+ * like it went away. Hidden entirely when nothing is out of spec.
+ */
+function updateAboveMarketFlag(): number {
+  const total = pricingLoaded ? products.filter(isAboveMarket).length : 0
+  if (aboveMarketCountEl) aboveMarketCountEl.textContent = total.toLocaleString()
+  if (aboveMarketFilterBtn) {
+    aboveMarketFilterBtn.hidden = total === 0
+    aboveMarketFilterBtn.setAttribute('aria-pressed', String(aboveMarketOnly))
+    // The control names its action, not its state: "Show 51 above market"
+    // reads as a button, "51 above market" reads as a passive readout.
+    if (aboveMarketVerbEl) aboveMarketVerbEl.textContent = aboveMarketOnly ? 'Showing' : 'Show'
+    const plural = total === 1 ? 'SKU' : 'SKUs'
+    const label = aboveMarketOnly
+      ? `Showing only the ${total.toLocaleString()} ${plural} priced above their market reference. Activate to show all.`
+      : `Show only the ${total.toLocaleString()} ${plural} priced above their market reference`
+    // The visible text is aria-hidden (its parts would run together as
+    // "Show51above market"), so this label is the only thing announced.
+    aboveMarketFilterBtn.setAttribute('aria-label', label)
+    aboveMarketFilterBtn.title = label
+  }
+  // A filter with nothing left to show would strand the operator on an empty
+  // sheet, so releasing the last out-of-spec SKU releases the filter too.
+  if (total === 0 && aboveMarketOnly) aboveMarketOnly = false
+  return total
 }
 
 function updateSortIndicators(): void {
@@ -360,6 +412,7 @@ function updateSortIndicators(): void {
 
 function render() {
   if (!bodyElement || !emptyElement) return
+  const catalogAboveMarket = updateAboveMarketFlag()
   const list = filtered()
   const activeSources = getVisibleSources(list)
   let aboveMarketCount = 0
@@ -443,11 +496,15 @@ function render() {
 
   // Catalog-level summary: one over-market SKU is a tuning job, a hundred is a
   // broken global model, and the operator should not have to scroll to find out.
+  // The banner is redundant while the sheet is already filtered to them.
   if (aboveMarketBanner) {
-    if (aboveMarketCount > 0) {
+    if (aboveMarketCount > 0 && !aboveMarketOnly) {
       const noun = aboveMarketCount === 1 ? 'SKU prices' : 'SKUs price'
+      const scope = catalogAboveMarket > aboveMarketCount
+        ? ` ${catalogAboveMarket.toLocaleString()} across the whole book.`
+        : ''
       aboveMarketBanner.textContent =
-        `${aboveMarketCount.toLocaleString()} of ${list.length.toLocaleString()} shown ${noun} above the market reference at the current engine settings.`
+        `${aboveMarketCount.toLocaleString()} of ${list.length.toLocaleString()} shown ${noun} above the market reference at the current engine settings.${scope}`
       aboveMarketBanner.hidden = false
     } else {
       aboveMarketBanner.hidden = true
@@ -462,11 +519,91 @@ function debouncedRender(): void {
   renderTimer = setTimeout(render, 140)
 }
 
+/**
+ * How the recommended price is assembled, drawn to scale: what we pay, what
+ * we add, what margin sits on top, and what a promotion takes back off. The
+ * arithmetic is already in the numbers — this makes its proportions legible.
+ */
+function costStack(sourceCost: number, overhead: number, listPrice: number, selling: number): string {
+  const margin = Math.max(0, listPrice - sourceCost - overhead)
+  const discount = Math.max(0, listPrice - selling)
+  const span = Math.max(listPrice, selling, 1)
+  const pct = (value: number) => `${((value / span) * 100).toFixed(2)}%`
+
+  const segments = [
+    { cls: 'seg-source', label: 'Source cost', value: sourceCost },
+    { cls: 'seg-overhead', label: 'Overhead', value: overhead },
+    { cls: 'seg-margin', label: 'Margin', value: margin },
+    { cls: 'seg-discount', label: 'Promo discount', value: discount },
+  ].filter((segment) => segment.value > 0.5)
+
+  return `
+    <div class="cost-stack">
+      <div class="cost-stack-bar" role="img" aria-label="${esc(
+        segments.map((s) => `${s.label} ${money.format(s.value)}`).join(', '),
+      )}">
+        ${segments.map((s) => `<div class="cost-stack-seg ${s.cls}" style="width:${pct(s.value)}"></div>`).join('')}
+      </div>
+      <div class="cost-stack-key">
+        ${segments.map((s) => `
+          <span class="cost-stack-key-item"><i class="${s.cls}"></i>${esc(s.label)} <b>${esc(money.format(s.value))}</b></span>
+        `).join('')}
+        <span class="cost-stack-key-item">Selling <b>${esc(money.format(selling))}</b></span>
+      </div>
+    </div>
+  `
+}
+
+/**
+ * Where our recommendation sits against the channels actually selling this
+ * SKU. Replicate measurements as ticks, the MRP benchmark as a heavy rule,
+ * our number as the assay mark — crimson when it clears the benchmark.
+ */
+function spreadRail(prices: number[], mrp: number, selling: number | null, aboveMarket: boolean): string {
+  const points = [...prices, mrp, ...(selling !== null ? [selling] : [])].filter((value) => value > 0)
+  if (points.length < 2) return ''
+  const low = Math.min(...points)
+  const high = Math.max(...points)
+  const range = high - low || 1
+  // 0–100% of an inset inner track, so the endpoint captions below sit
+  // directly under the ticks they name instead of drifting past them.
+  const at = (value: number) => `${(((value - low) / range) * 100).toFixed(2)}%`
+
+  const channelTicks = prices
+    .filter((price) => price > 0)
+    .map((price) => `<span class="spread-tick" style="left:${at(price)}" title="Channel listing ${esc(money.format(price))}"></span>`)
+    .join('')
+
+  const listed = prices.filter((price) => price > 0)
+  const band = listed.length > 1
+    ? `<span class="spread-band" style="left:${at(Math.min(...listed))};right:calc(100% - ${at(Math.max(...listed))})"></span>`
+    : ''
+
+  const ourTick = selling === null ? '' : `
+    <span class="spread-tick is-ours${aboveMarket ? ' is-out-of-spec' : ''}" style="left:${at(selling)}" title="Our recommended price ${esc(money.format(selling))}"></span>
+    <span class="spread-label is-ours${aboveMarket ? ' is-out-of-spec' : ''}" style="left:${at(selling)}">Ours</span>
+  `
+
+  return `
+    <div class="spread-rail">
+      <div class="spread-inner">
+        <span class="spread-track"></span>
+        ${band}
+        ${channelTicks}
+        <span class="spread-tick is-mrp" style="left:${at(mrp)}" title="MRP benchmark ${esc(money.format(mrp))}"></span>
+        <span class="spread-label" style="left:${at(mrp)}">MRP</span>
+        ${ourTick}
+      </div>
+    </div>
+    <div class="spread-endpoints"><span>${esc(money.format(low))}</span><span>${esc(money.format(high))}</span></div>
+  `
+}
+
 function openDetail(p: Product) {
   activeProductDetail = p
   const dialogBrand = document.getElementById('dialogBrand')
   const dialogName = document.getElementById('dialogName')
-  if (dialogBrand) dialogBrand.textContent = p.size ? `${p.brand_name} · ${p.size}` : p.brand_name
+  if (dialogBrand) dialogBrand.textContent = p.brand_name
   if (dialogName) dialogName.textContent = p.product_name
 
   const mfg = Number(p.manufactured_price)
@@ -489,61 +626,103 @@ function openDetail(p: Product) {
     ? `Above market: Recommended price ${money.format(calculatedSelling)} is ${detailOverBy}% above ${detailProvenance.label} (${money.format(mktAvg)})`
     : ''
 
+  const matchedSources = sources.filter((s) => p.sources[s])
+  const channelPrices = matchedSources
+    .map((s) => Number(p.sources[s]?.price))
+    .filter((price) => Number.isFinite(price) && price > 0)
+
+  // Identity: only fields this SKU actually carries. The catalog holds no
+  // product imagery, so the record states what it knows rather than filling
+  // the space with a placeholder.
+  const identity: Array<[string, string]> = [
+    ['Brand', p.brand_name],
+    ...(p.size ? [['Pack size', p.size] as [string, string]] : []),
+    ...(p.category ? [['Category', p.category] as [string, string]] : []),
+    ['Sourcing', p.sourcing_origin === 'local' ? 'Local — bought from the manufacturer' : 'Imported — bought from an importer'],
+    ['MRP basis', detailProvenance.label],
+    ['Channels listed', `${matchedSources.length} of ${sources.length}`],
+  ]
+
+  const listPrice = calculatedSelling === null
+    ? null
+    : calculateSellingPrice(mfg, { ...params, discountType: 'pct', discountVal: 0 })
+
   let out = `
+    <dl class="record-spec-strip">
+      ${identity.map(([term, value]) => `
+        <div class="record-spec-item"><dt>${esc(term)}</dt><dd>${esc(value)}</dd></div>
+      `).join('')}
+    </dl>
+
     <div class="detail-stats-grid">
-      <div class="detail-stat-box"><span>Source Cost</span><strong>${esc(money.format(mfg))}</strong></div>
+      <div class="detail-stat-box"><span>Source cost</span><strong>${esc(money.format(mfg))}</strong></div>
       <div class="detail-stat-box" title="${esc(detailProvenance.tooltip)}">
-        <span>MRP (${esc(detailProvenance.label)})</span>
-        <strong style="display:flex;align-items:center;gap:6px;">
-          ${esc(money.format(mktAvg))}
-          ${getMarkupChip(calculateMarkup(mktAvg, mfg))}
-        </strong>
+        <span>MRP · ${esc(detailProvenance.label)}</span>
+        <strong>${esc(money.format(mktAvg))}${getMarkupChip(calculateMarkup(mktAvg, mfg))}</strong>
       </div>
       <div class="detail-stat-box">
-        <span>Variable Overhead ${overheadIsTuned ? '(Tuned)' : ''}</span>
+        <span>Overhead${overheadIsTuned ? ' · tuned' : ''}</span>
         <strong>${esc(money.format(overhead))}</strong>
       </div>
-      <div class="detail-stat-box"${detailPinned ? ` title="${esc(`Pinned for this SKU: ${detailPinned}. Everything else follows the global engine.`)}"` : ''}>
-        <span>Selling Price ${detailPinned ? '(Tuned)' : ''}</span>
-        <strong style="color:var(--brand-blue);display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
-          ${calculatedSelling !== null ? esc(money.format(calculatedSelling)) : '—'}
-          ${getMarkupChip(sellingMarkupPct, detailAboveMarket, detailAboveTitle)}
-          ${marketDiscPct !== null ? getMarketDiscountChip(marketDiscPct, detailAboveMarket, detailAboveTitle) : ''}
-        </strong>
+      <div class="detail-stat-box ${detailAboveMarket ? 'is-out-of-spec' : 'is-result'}"${detailPinned ? ` title="${esc(`Pinned for this SKU: ${detailPinned}. Everything else follows the global engine.`)}"` : ''}>
+        <span>Selling price${detailPinned ? ' · tuned' : ''}</span>
+        <strong>${calculatedSelling !== null ? esc(money.format(calculatedSelling)) : '—'}</strong>
+        <div class="stat-readings">
+          ${sellingMarkupPct !== null ? `<span class="stat-reading">vs cost ${getMarkupChip(sellingMarkupPct, detailAboveMarket, detailAboveTitle)}</span>` : ''}
+          ${marketDiscPct !== null ? `<span class="stat-reading">vs MRP ${getMarketDiscountChip(marketDiscPct, detailAboveMarket, detailAboveTitle)}</span>` : ''}
+        </div>
       </div>
     </div>
-    <div class="detail-sources-list">
   `
 
-  const matchedSources = sources.filter((s) => p.sources[s])
+  if (calculatedSelling !== null && listPrice !== null) {
+    out += `
+      <section class="record-section">
+        <h3 class="record-legend">How this price is built</h3>
+        ${costStack(mfg, overhead, listPrice, calculatedSelling)}
+      </section>
+    `
+  }
+
+  const rail = mktAvg > 0 ? spreadRail(channelPrices, mktAvg, calculatedSelling, detailAboveMarket) : ''
+  if (rail) {
+    out += `
+      <section class="record-section">
+        <h3 class="record-legend">Where it sits in the market</h3>
+        ${rail}
+      </section>
+    `
+  }
+
+  out += '<section class="record-section"><h3 class="record-legend">Channel listings</h3>'
+
   if (!matchedSources.length) {
-    out += '<div style="color:var(--text-muted);padding:10px 0;font-size:12px;">No external verified listings found.</div>'
+    out += '<div class="detail-source-empty">No marketplace listings recorded for this SKU yet.</div>'
   } else {
+    out += '<div class="detail-sources-list">'
     matchedSources.forEach((s) => {
       const item = p.sources[s]
       if (!item) return
-      const markupPct = calculateMarkup(Number(item.price), mfg)
-      const markupChip = getMarkupChip(markupPct)
+      const markupChip = getMarkupChip(calculateMarkup(Number(item.price), mfg))
       const detailLink = item.verified && item.url
-        ? `<a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">Open link ↗</a>`
+        ? `<a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer">Open listing${ICON_EXTERNAL}</a>`
         : '<span class="listing-unverified-text">Unverified — no confirmed product page</span>'
       out += `
         <div class="detail-source-row">
           <div>
-            <div style="font-weight:600;font-size:13px;color:var(--text-main);">${esc(s)}</div>
-            <div style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">${esc(item.matched_title || '')}</div>
+            <div class="source-row-name">${esc(s)}</div>
+            ${item.matched_title ? `<div class="source-row-title">${esc(item.matched_title)}</div>` : ''}
           </div>
-          <div style="text-align:right;">
-            <div style="font-weight:700;font-size:15px;color:var(--brand-blue);display:flex;align-items:center;justify-content:flex-end;gap:6px;">
-              ${esc(money.format(item.price))} ${markupChip}
-            </div>
+          <div>
+            <div class="source-row-figure">${esc(money.format(item.price))}${markupChip}</div>
             ${detailLink}
           </div>
         </div>
       `
     })
+    out += '</div>'
   }
-  out += '</div>'
+  out += '</section>'
 
   const tabOverviewContent = document.getElementById('tabOverviewContent')
   if (tabOverviewContent) tabOverviewContent.innerHTML = out
@@ -870,6 +1049,11 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleSellingChipBtn?.addEventListener('click', () => {
     sellingChipMode = sellingChipMode === 'markup' ? 'discount' : 'markup'
     updateSellingChipToggleUI()
+    render()
+  })
+
+  aboveMarketFilterBtn?.addEventListener('click', () => {
+    aboveMarketOnly = !aboveMarketOnly
     render()
   })
 
