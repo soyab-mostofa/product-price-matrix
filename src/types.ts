@@ -1,5 +1,5 @@
 export type DiscountType = 'pct' | 'amt'
-export type MrpSourceType = 'official' | 'third_party_avg' | 'reference'
+export type MrpSourceType = 'official' | 'third_party_avg' | 'reference' | 'workbook'
 
 /** How a SKU reaches us: made here and bought from the maker, or brought in via an importer. */
 export type SourcingOrigin = 'local' | 'imported'

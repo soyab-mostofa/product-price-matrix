@@ -33,7 +33,7 @@ CHANNEL_RANK = {channel: index for index, channel in enumerate(CHANNEL_ORDER)}
 DEFAULT_GLOBAL_PARAMS = {
     "packaging": 45.0,
     "transport": 0.0,
-    "delivery": 60.0,
+    "delivery": 0.0,
     "cac": 40.0,
     "targetMarginPct": 0.0,
     "discountType": "pct",
@@ -180,17 +180,33 @@ def build_public_data(
             listing["available"] = True
             active_sources[channel] = listing
 
-        official = active_sources.get("Official Store")
-        if official:
-            mrp = float(official["price"])
-            mrp_source_type = "official"
-        elif active_sources:
-            prices = [float(source["price"]) for source in active_sources.values()]
-            mrp = sum(prices) / len(prices)
-            mrp_source_type = "third_party_avg"
-        else:
-            mrp = reference_price
-            mrp_source_type = "reference"
+        # MRP for a local SKU is the workbook's Mkt (Avg) Price, full stop.
+        #
+        # The workbook is the commercial source of truth: its cost basis is a
+        # trade discount off exactly this number (40%/30%/25% -> cost/MRP ratios
+        # of 0.60/0.70/0.75), so replacing it with a scraped brand-store price
+        # breaks that arithmetic. A brand's own site runs promotions, and the
+        # discounted checkout price it advertises is frequently BELOW our
+        # sourcing cost -- which made six SKUs read as instant losses and
+        # inflated the "above market" count by 91.
+        #
+        # Scraped listings still travel with the product; they are shown in
+        # their own channel columns, with their live deep links intact. They
+        # just no longer overwrite the benchmark they are meant to be compared
+        # against.
+        mrp = reference_price
+        mrp_source_type = "workbook"
+        if mrp <= 0:
+            violations.append(
+                {
+                    "row": int(item["row"]),
+                    "channel": "-",
+                    "reasons": [
+                        "local SKU has no workbook MRP benchmark; "
+                        "cannot establish a market reference price"
+                    ],
+                }
+            )
 
         products.append(
             {
@@ -275,13 +291,18 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
             "sourcing_origin=excluded.sourcing_origin;"
         )
         for channel, listing in product.get("sources", {}).items():
+            # A listing is verified when it was confirmed against a live product
+            # page, which requires a URL. The schema enforces that pairing, and
+            # the UI shows the deep link only for verified rows — so the flag has
+            # to be written here rather than left to the column default.
+            verified = 1 if listing.get("url") else 0
             lines.append(
                 "INSERT INTO marketplace_listings "
-                "(row_id, channel_name, price, url, matched_title, size, seller, confidence, available) "
+                "(row_id, channel_name, price, url, matched_title, size, seller, confidence, available, verified) "
                 f"VALUES ({row_id}, {_sql_text(channel)}, {_sql_number(listing['price'])}, "
                 f"{_sql_text(listing.get('url'))}, {_sql_text(listing.get('matched_title'))}, "
                 f"{_sql_text(listing.get('size'))}, {_sql_text(listing.get('seller'))}, "
-                f"{_sql_number(listing.get('confidence', 100))}, 1);"
+                f"{_sql_number(listing.get('confidence', 100))}, 1, {verified});"
             )
 
     lines.append(f"DELETE FROM products WHERE sourcing_origin = 'local' AND row_id NOT IN ({', '.join(row_ids)});")

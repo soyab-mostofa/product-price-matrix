@@ -70,11 +70,15 @@ class CatalogBuilderTests(unittest.TestCase):
 
         product = output["products"][0]
         self.assertEqual({"Arogga"}, set(product["sources"]))
-        self.assertEqual(200, product["market_average_price"])
-        self.assertEqual("third_party_avg", product["mrp_source_type"])
         self.assertEqual({"Arogga": 1}, output["source_listing_counts"])
 
-    def test_official_store_price_is_authoritative_mrp(self) -> None:
+    def test_workbook_mrp_beats_the_official_store_price(self) -> None:
+        """A brand store price is a live listing, not the sourcing benchmark.
+
+        The workbook's cost basis is a trade discount off its own MRP, so
+        letting a promotional store price overwrite it breaks that arithmetic
+        and can make a healthy margin read as a loss.
+        """
         research = self.make_research([
             self.product(sources={
                 "Official Store": self.listing(250),
@@ -85,8 +89,21 @@ class CatalogBuilderTests(unittest.TestCase):
         output, _ = build_public_data(research, strict=True)
 
         product = output["products"][0]
-        self.assertEqual(250, product["market_average_price"])
-        self.assertEqual("official", product["mrp_source_type"])
+        # 999.0 is the workbook Mkt (Avg) Price supplied by `self.product`.
+        self.assertEqual(999.0, product["market_average_price"])
+        self.assertEqual("workbook", product["mrp_source_type"])
+        # The scraped listings survive untouched, deep links and all.
+        self.assertEqual({"Official Store", "Arogga"}, set(product["sources"]))
+        self.assertEqual(250, product["sources"]["Official Store"]["price"])
+        self.assertTrue(product["sources"]["Official Store"]["url"])
+
+    def test_a_local_sku_without_a_workbook_mrp_fails_strict_build(self) -> None:
+        research = self.make_research([
+            self.product(market_average_price=0, sources={"Arogga": self.listing(200)})
+        ])
+
+        with self.assertRaises(CatalogValidationError):
+            build_public_data(research, strict=True)
 
     def test_invalid_active_listing_fails_strict_build(self) -> None:
         research = self.make_research([
@@ -127,6 +144,30 @@ class CatalogBuilderTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "duplicate product row ID"):
             build_public_data(self.make_research([first, second]), strict=True)
 
+    def test_seed_marks_listings_with_a_product_page_as_verified(self) -> None:
+        """The deep link only renders for verified rows, so the seed must set it.
+
+        Leaving `verified` to its column default silently downgraded every
+        seeded listing to unverified, replacing the ↗ link with the ◌ marker.
+        """
+        research = self.make_research([
+            self.product(sources={"Official Store": self.listing(250)})
+        ])
+        output, _ = build_public_data(research, strict=True)
+
+        sql = generate_seed_sql(output)
+
+        self.assertIn("available, verified", sql)
+        listing_insert = next(
+            line for line in sql.splitlines()
+            if line.startswith("INSERT INTO marketplace_listings")
+        )
+        # A listing carrying a product page URL is verified.
+        self.assertTrue(
+            listing_insert.rstrip().endswith("1, 1);"),
+            msg=listing_insert,
+        )
+
     def test_seed_uses_product_row_id_overrides_and_canonical_defaults(self) -> None:
         research = self.make_research([
             self.product(sources={"Official Store": self.listing(250)})
@@ -136,7 +177,7 @@ class CatalogBuilderTests(unittest.TestCase):
         sql = generate_seed_sql(output)
 
         self.assertIn("row_id", sql)
-        self.assertIn("45.0, 0.0, 60.0, 40.0, 0.0, 'pct', 0.0", sql)
+        self.assertIn("45.0, 0.0, 0.0, 40.0, 0.0, 'pct', 0.0", sql)
         self.assertEqual(0, DEFAULT_GLOBAL_PARAMS["targetMarginPct"])
 
     def test_seed_preserves_saved_global_pricing_configuration(self) -> None:
@@ -184,7 +225,7 @@ class CatalogBuilderTests(unittest.TestCase):
         listings = connection.execute("SELECT COUNT(*) FROM marketplace_listings").fetchone()[0]
         connection.close()
 
-        self.assertEqual((45.0, 0.0, 60.0, 40.0, 0.0, "pct", 0.0), saved)
+        self.assertEqual((45.0, 0.0, 0.0, 40.0, 0.0, "pct", 0.0), saved)
         self.assertEqual(1, products)
         self.assertEqual(1, listings)
 

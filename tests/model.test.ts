@@ -14,7 +14,7 @@ import { calculateSellingPrice as calculateServerSellingPrice } from '../src/ser
 const defaults: PricingParams = {
   packaging: 45,
   transport: 0,
-  delivery: 60,
+  delivery: 0,
   cac: 40,
   targetMarginPct: 0,
   discountType: 'pct',
@@ -60,10 +60,10 @@ describe('pricing arithmetic', () => {
   })
 
   test('supports true gross margin and both discount modes', () => {
-    expect(calculateSellingPrice(1000, defaults)).toBe(1145)
-    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25 })).toBe(1527)
-    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25, discountVal: 10 })).toBe(1374)
-    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25, discountType: 'amt', discountVal: 200 })).toBe(1327)
+    expect(calculateSellingPrice(1000, defaults)).toBe(1085)
+    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25 })).toBe(1447)
+    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25, discountVal: 10 })).toBe(1302)
+    expect(calculateSellingPrice(1000, { ...defaults, targetMarginPct: 25, discountType: 'amt', discountVal: 200 })).toBe(1247)
   })
 
   test('client and server calculations are identical across the canonical dataset', async () => {
@@ -81,22 +81,39 @@ describe('pricing arithmetic', () => {
     }
   })
 
-  test('canonical MRP is official price or exact active third-party average', async () => {
+  test('a local SKU MRP is the workbook benchmark, never a scraped listing', async () => {
+    // The workbook is the commercial source of truth: its cost basis is a trade
+    // discount off this exact number. A scraped brand-store price is a live
+    // listing (often promotional, sometimes below our cost) and must not
+    // overwrite the benchmark it is meant to be compared against.
+    const workbook = await Bun.file('verified_marketplace_research.json').json() as {
+      products: Array<{ row: number; excel_prices?: { market_average_price?: number } }>
+    }
+    const benchmarks = new Map(
+      workbook.products.map((item) => [item.row, item.excel_prices?.market_average_price]),
+    )
+
     const catalog = await Bun.file('product_pricing_data.json').json() as { products: Product[] }
+    expect(catalog.products.length).toBeGreaterThan(0)
+
     for (const item of catalog.products) {
-      const official = item.sources['Official Store']
-      if (official) {
-        expect(item.market_average_price).toBeCloseTo(official.price, 6)
-        expect(item.mrp_source_type).toBe('official')
-        continue
-      }
-      const prices = Object.values(item.sources).map((source) => source.price)
-      if (prices.length > 0) {
-        const average = prices.reduce((total, price) => total + price, 0) / prices.length
-        expect(item.market_average_price).toBeCloseTo(average, 3)
-        expect(item.mrp_source_type).toBe('third_party_avg')
-      } else {
-        expect(item.mrp_source_type).toBe('reference')
+      expect(item.mrp_source_type).toBe('workbook')
+      const benchmark = benchmarks.get(item.row)
+      expect(benchmark).toBeGreaterThan(0)
+      expect(item.market_average_price).toBeCloseTo(benchmark as number, 6)
+    }
+  })
+
+  test('scraped listings keep their prices and deep links alongside the workbook MRP', async () => {
+    const catalog = await Bun.file('product_pricing_data.json').json() as { products: Product[] }
+    const withListings = catalog.products.filter((item) => Object.keys(item.sources).length > 0)
+    expect(withListings.length).toBeGreaterThan(0)
+
+    for (const item of withListings) {
+      for (const listing of Object.values(item.sources)) {
+        expect(listing.price).toBeGreaterThan(0)
+        // A verified listing still carries the live product page.
+        if (listing.verified) expect(listing.url).toBeTruthy()
       }
     }
   })

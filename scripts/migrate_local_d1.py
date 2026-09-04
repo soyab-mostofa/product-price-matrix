@@ -15,6 +15,7 @@ D1_DIR = ROOT / ".wrangler/state/v3/d1/miniflare-D1DatabaseObject"
 SPARSE_OVERRIDES_MIGRATION_PATH = ROOT / "migrations/0003_sparse_pricing_overrides.sql"
 SOURCING_ORIGIN_MIGRATION_PATH = ROOT / "migrations/0004_sourcing_origin.sql"
 UNVERIFIED_LISTINGS_MIGRATION_PATH = ROOT / "migrations/0005_unverified_listings.sql"
+WORKBOOK_MRP_MIGRATION_PATH = ROOT / "migrations/0006_workbook_mrp_for_local.sql"
 
 
 def _unwrapped(path: Path) -> str:
@@ -45,6 +46,23 @@ def _sourcing_origin_migration() -> str:
 def _unverified_listings_migration() -> str:
     """The 0005 migration body, minus the transaction/pragma wrapper."""
     return _unwrapped(UNVERIFIED_LISTINGS_MIGRATION_PATH)
+
+
+def _workbook_mrp_migration() -> str:
+    """The 0006 migration body, minus the transaction/pragma wrapper."""
+    return _unwrapped(WORKBOOK_MRP_MIGRATION_PATH)
+
+
+def _mrp_source_type_allows_workbook(connection: sqlite3.Connection) -> bool:
+    """True once the products CHECK constraint accepts 'workbook'.
+
+    The constraint text is the only record of which values are legal, so read it
+    off sqlite_master rather than probing with a write.
+    """
+    row = connection.execute(
+        "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'products'"
+    ).fetchone()
+    return bool(row) and "'workbook'" in str(row[0])
 
 
 def columns(connection: sqlite3.Connection, table: str) -> set[str]:
@@ -158,6 +176,10 @@ def migrate_database(path: Path) -> list[str]:
         if "verified" not in columns(connection, "marketplace_listings"):
             connection.executescript(_unverified_listings_migration())
             changes.append("marketplace_listings.verified")
+
+        if not _mrp_source_type_allows_workbook(connection):
+            connection.executescript(_workbook_mrp_migration())
+            changes.append("products.mrp_source_type=workbook")
 
         connection.execute(
             """

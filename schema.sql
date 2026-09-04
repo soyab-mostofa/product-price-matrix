@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS global_pricing_params (
   id INTEGER PRIMARY KEY CHECK (id = 1),
   packaging REAL NOT NULL DEFAULT 45.0 CHECK (packaging >= 0 AND packaging <= 100000),
   transport REAL NOT NULL DEFAULT 0.0 CHECK (transport >= 0 AND transport <= 100000),
-  delivery REAL NOT NULL DEFAULT 60.0 CHECK (delivery >= 0 AND delivery <= 100000),
+  delivery REAL NOT NULL DEFAULT 0.0 CHECK (delivery >= 0 AND delivery <= 100000),
   cac REAL NOT NULL DEFAULT 40.0 CHECK (cac >= 0 AND cac <= 100000),
   target_margin_pct REAL NOT NULL DEFAULT 0.0 CHECK (target_margin_pct >= 0 AND target_margin_pct < 100),
   discount_type TEXT NOT NULL DEFAULT 'pct' CHECK (discount_type IN ('pct', 'amt')),
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS products (
   manufactured_price REAL NOT NULL CHECK (manufactured_price >= 0),
   market_average_price REAL NOT NULL CHECK (market_average_price >= 0),
   canonical_name TEXT,
-  mrp_source_type TEXT NOT NULL DEFAULT 'reference' CHECK (mrp_source_type IN ('official', 'third_party_avg', 'reference')),
+  mrp_source_type TEXT NOT NULL DEFAULT 'reference' CHECK (mrp_source_type IN ('official', 'third_party_avg', 'reference', 'workbook')),
   -- How this SKU reaches us: manufactured locally and bought from the
   -- manufacturer, or brought in and bought from an importer.
   sourcing_origin TEXT NOT NULL DEFAULT 'local' CHECK (sourcing_origin IN ('local', 'imported')),
