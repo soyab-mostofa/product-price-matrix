@@ -79,7 +79,7 @@ test('header search and filters combine correctly', async ({ page }) => {
 })
 
 test('select and clickable header sorts work in both directions', async ({ page }) => {
-  const productHeader = page.getByRole('button', { name: 'Product Name ↕' })
+  const productHeader = page.getByRole('button', { name: /Product/ }).first()
   await expect(productHeader).toHaveCSS('border-top-width', '0px')
   await expect(productHeader).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
 
@@ -96,22 +96,22 @@ test('select and clickable header sorts work in both directions', async ({ page 
   expect(isDescending(await numbersIn(page, '#body tr[data-row-id] .col-selling-price'))).toBe(true)
 
   await page.locator('#sort').selectOption('product')
-  await page.getByRole('button', { name: 'MFG Price ↕' }).click()
+  await page.getByRole('button', { name: /Source cost/ }).click()
   await expect(page.locator('#sort')).toHaveValue('mfgAsc')
   expect(isAscending(await numbersIn(page, '#body tr[data-row-id] .col-mfg'))).toBe(true)
   await expect(page.locator('th.col-mfg')).toHaveAttribute('aria-sort', 'ascending')
 
-  await page.getByRole('button', { name: 'MFG Price ↕' }).click()
+  await page.getByRole('button', { name: /Source cost/ }).click()
   await expect(page.locator('#sort')).toHaveValue('mfgDesc')
   expect(isDescending(await numbersIn(page, '#body tr[data-row-id] .col-mfg'))).toBe(true)
   await expect(page.locator('th.col-mfg')).toHaveAttribute('aria-sort', 'descending')
 
-  await page.getByRole('button', { name: 'Official Store', exact: true }).click()
+  await page.getByRole('button', { name: /Official Store/ }).click()
   await expect(page.locator('#sort')).toHaveValue('srcAsc:Official Store')
   const officialAscending = await numbersIn(page, '#body tr[data-row-id] td[data-source="Official Store"]')
   expect(isAscending(officialAscending)).toBe(true)
 
-  await page.getByRole('button', { name: 'Official Store', exact: true }).click()
+  await page.getByRole('button', { name: /Official Store/ }).click()
   await expect(page.locator('#sort')).toHaveValue('srcDesc:Official Store')
   const officialDescending = await numbersIn(page, '#body tr[data-row-id] td[data-source="Official Store"]')
   expect(isDescending(officialDescending)).toBe(true)
@@ -209,8 +209,8 @@ test('reference-only MRP provenance is labeled correctly in product details', as
   const referenceProduct = catalog.products.find((product) => product.mrp_source_type === 'reference')
   expect(referenceProduct).toBeDefined()
   await page.locator(`#body tr[data-row-id="${referenceProduct!.row}"]`).click()
-  await expect(page.locator('#tabOverviewContent')).toContainText('MRP (Reference Benchmark)')
-  await expect(page.locator('#tabOverviewContent')).not.toContainText('MRP (3rd-Party Avg)')
+  await expect(page.locator('#tabOverviewContent')).toContainText('MRP · Reference Benchmark')
+  await expect(page.locator('#tabOverviewContent')).not.toContainText('MRP · 3rd-Party Avg')
 })
 
 test('product detail tabs support arrow-key navigation', async ({ page }) => {
@@ -227,7 +227,9 @@ test('product detail tabs support arrow-key navigation', async ({ page }) => {
 test('comparison toggle keeps a visible mobile label and touch target', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   const toggle = page.locator('#toggleSellingChipModeBtn')
-  await expect(toggle).toContainText('Compare')
+  // The control names what it does at every width rather than shrinking to an
+  // ambiguous stub, so the full label survives the mobile layout.
+  await expect(toggle).toContainText('Read as market discount')
   const box = await toggle.boundingBox()
   expect(box?.width).toBeGreaterThanOrEqual(44)
   expect(box?.height).toBeGreaterThanOrEqual(44)
