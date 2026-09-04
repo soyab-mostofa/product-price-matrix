@@ -52,14 +52,13 @@ export function Header({ meta }: { meta: DashboardMeta }) {
             <span>Admin login</span>
           </button>
           <button
-            class="btn-register"
+            class="btn-register is-icon"
             id="download"
             type="button"
             aria-label="Export dataset as JSON"
             title="Export dataset (JSON)"
           >
             <DownloadIcon />
-            <span>Export</span>
           </button>
           <button class="btn-register is-primary" id="openEngineBtn" type="button">
             <SlidersIcon />

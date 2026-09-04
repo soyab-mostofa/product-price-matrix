@@ -7,14 +7,16 @@ colors:
   sheet-alt: "#f6f6f3"
   sheet-hover: "#f4f5f1"
   sheet-sunk: "#efefea"
-  ink: "#16181c"
-  ink-2: "#3f444c"
+  ink: "#1c2024"
+  ink-2: "#454b53"
   ink-3: "#5d636b"
-  ink-4: "#8f959d"
-  rule: "#e6e5e0"
-  rule-2: "#d4d3cc"
-  rule-3: "#b8b7ae"
-  rule-datum: "#16181c"
+  ink-35: "#666c74"
+  ink-4: "#9aa0a7"
+  rule-faint: "#f2f0eb"
+  rule: "#eceae5"
+  rule-2: "#dedcd6"
+  rule-3: "#c4c3bb"
+  rule-datum: "#a9a89f"
   assay-900: "#0b4d39"
   assay-800: "#08402f"
   assay-700: "#0f6b4f"
@@ -62,6 +64,11 @@ typography:
     fontFamily: "Inter, sans-serif"
     fontSize: "13.5px"
     fontWeight: 700
+    fontFeature: "tnum 1, lnum 1"
+  numeric-input:
+    fontFamily: "Inter, sans-serif"
+    fontSize: "14.5px"
+    fontWeight: 600
     fontFeature: "tnum 1, lnum 1"
   control:
     fontFamily: "Inter, sans-serif"
@@ -189,12 +196,13 @@ A warm lab-paper ground under graphite ink, with exactly two semantic colors: as
 | Sheet | `sheet` | `#ffffff` | Cell and dialog surfaces |
 | Sheet (alt) | `sheet-alt` | `#f6f6f3` | Column heads, the instrument tier, alternating audit rows |
 | Sheet (sunk) | `sheet-sunk` | `#efefea` | Channel cells with no listing; count markers |
-| Ink | `ink` | `#16181c` | Prices, product titles, the datum rule |
-| Ink 2 | `ink-2` | `#3f444c` | Column labels, secondary controls |
-| Ink 3 | `ink-3` | `#5d636b` | Basis lines, hints, metadata — the contrast floor for text |
-| Ink 4 | `ink-4` | `#8f959d` | **Non-text marks only.** Below 4.5:1; never set copy in it |
-| Rules | `rule` / `rule-2` / `rule-3` | `#e6e5e0` / `#d4d3cc` / `#b8b7ae` | Cell, section, and control boundaries in ascending weight |
-| Datum | `rule-datum` | `#16181c` | The one graphite line closing the pinned columns |
+| Ink | `ink` | `#1c2024` | Prices, product titles |
+| Ink 2 | `ink-2` | `#454b53` | Secondary controls |
+| Ink 3 | `ink-3` | `#5d636b` | Column labels, hints, metadata |
+| Ink 3.5 | `ink-35` | `#666c74` | Basis lines — the lightest tone still clearing 4.5:1 |
+| Ink 4 | `ink-4` | `#9aa0a7` | **Non-text marks only.** Below 4.5:1; never set copy in it |
+| Rules | `rule-faint` / `rule` / `rule-2` / `rule-3` | `#f2f0eb` / `#eceae5` / `#dedcd6` / `#c4c3bb` | Column, cell, section, and control boundaries in ascending weight |
+| Datum | `rule-datum` | `#a9a89f` | The one line closing the pinned columns |
 | Assay green | `assay-900` / `800` / `700` / `600` | `#0b4d39` / `#08402f` / `#0f6b4f` / `#158a66` | Brand, primary action, the selling price, focus rings |
 | Assay tint | `assay-100` / `50` | `#d6e9df` / `#edf6f1` | Active-tab counts, the in-spec band on the spread rail |
 | Brass | `brass-700` | `#78530f` | The rich-margin chip band; a third-party-average MRP |
@@ -240,8 +248,8 @@ Full-bleed. The matrix runs edge to edge with no container, no max-width, and no
 
 **The system is flat by default.** Depth is not decoration here, and it appears in exactly two places:
 
-1. **The datum rule** — the pinned columns close against a 1px graphite border plus `--shadow-datum` (`6px 0 14px -8px`). It is the sheet's one structural statement: everything left of it is what we know, everything right of it is what the market is doing.
-2. **Dialogs** — `--shadow-dialog` lifts a record off the sheet, with a `rgba(22,24,28,0.42)` scrim behind it.
+1. **The datum rule** — the pinned columns close against a 1px `rule-datum` border plus `--shadow-datum` (`6px 0 14px -8px`). It is the sheet's one structural statement: everything left of it is what we know, everything right of it is what the market is doing. Softened from full graphite — at ink weight it read as a bar drawn across the sheet rather than a boundary.
+2. **Dialogs** — `--shadow-dialog` lifts a record off the sheet, with a `rgba(28, 32, 36, 0.42)` scrim behind it.
 
 Everywhere else, layering is tonal: `sheet` over `sheet-alt` over `sheet-sunk`. Elevation is declared once — a border *or* a shadow, never a hairline border under a wide soft shadow.
 

@@ -14,17 +14,23 @@
   --sheet-sunk: #efefea;
 
   /* Graphite ink */
-  --ink: #16181c;
-  --ink-2: #3f444c;
+  --ink: #1c2024;
+  --ink-2: #454b53;
   --ink-3: #5d636b;
+  /* The lightest tone that still clears 4.5:1 on both sheet and sheet-alt.
+     Anything lighter is a mark, not text. */
+  --ink-35: #666c74;
   /* Reserved for non-text marks only — below the 4.5:1 floor for body copy. */
-  --ink-4: #8f959d;
+  --ink-4: #9aa0a7;
 
   /* Hairline rules — the only structure this sheet has */
-  --rule: #e6e5e0;
-  --rule-2: #d4d3cc;
-  --rule-3: #b8b7ae;
-  --rule-datum: #16181c;
+  --rule-faint: #f2f0eb;
+  --rule: #eceae5;
+  --rule-2: #dedcd6;
+  --rule-3: #c4c3bb;
+  /* Closes the pinned columns. Softened from full graphite: it should read as
+     a boundary, not as a bar drawn across the sheet. */
+  --rule-datum: #a9a89f;
 
   /* Assay green — brand, action, in-spec */
   --assay-900: #0b4d39;
@@ -87,8 +93,8 @@
 
   /* Depth exists in exactly two places: the datum rule that closes the
      pinned columns, and the dialog lifting off the sheet. */
-  --shadow-datum: 6px 0 14px -8px rgba(22, 24, 28, 0.4);
-  --shadow-dialog: 0 24px 56px -12px rgba(22, 24, 28, 0.28), 0 2px 8px rgba(22, 24, 28, 0.08);
+  --shadow-datum: 6px 0 14px -8px rgba(28, 32, 36, 0.28);
+  --shadow-dialog: 0 24px 56px -12px rgba(28, 32, 36, 0.28), 0 2px 8px rgba(28, 32, 36, 0.08);
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: 'Plus Jakarta Sans', var(--font-sans);
@@ -409,12 +415,25 @@ header.app-header {
 .btn-register:hover { background: var(--sheet-alt); color: var(--ink); }
 .btn-register svg { width: 14px; height: 14px; }
 
+/* Icon-only register control: square rather than padded like a labelled one,
+   so it reads as a mark and not as a button that lost its text. */
+.btn-register.is-icon {
+  padding: 0;
+  width: 46px;
+  justify-content: center;
+  color: var(--ink-3);
+}
+.btn-register.is-icon:hover { color: var(--ink); }
+.btn-register.is-icon svg { width: 15px; height: 15px; }
+
+/* The primary action is the one saturated mass in the register tier. Seated
+   in assay-700 rather than 900: at full height it was reading as a slab. */
 .btn-register.is-primary {
-  background: var(--assay-900);
+  background: var(--assay-700);
   color: #fff;
 }
-.btn-register.is-primary:hover { background: var(--assay-700); color: #fff; }
-.header-right > .btn-register.is-primary { border-left-color: var(--assay-900); }
+.btn-register.is-primary:hover { background: var(--assay-900); color: #fff; }
+.header-right > .btn-register.is-primary { border-left-color: var(--assay-700); }
 
 /* Out-of-spec readout: a count that filters the sheet when clicked. Framed
    like the other register controls so its pressability is not in doubt. */
@@ -559,6 +578,8 @@ thead th:hover { background: var(--sheet-sunk); }
   text-align: inherit;
   cursor: pointer;
 }
+/* The head labels the column; the data is what gets read. Setting them in
+   ink-3 rather than ink-2 drops them behind the numbers without losing them. */
 .head-label {
   display: flex;
   align-items: center;
@@ -567,13 +588,13 @@ thead th:hover { background: var(--sheet-sunk); }
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.09em;
-  color: var(--ink-2);
+  color: var(--ink-3);
 }
 .head-basis {
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: var(--ink-3);
+  color: var(--ink-35);
   text-transform: none;
 }
 .sort-mark {
@@ -687,12 +708,15 @@ tbody tr:hover td.source-data-cell:has(.cell-dash) { background-color: var(--she
 tbody tr:focus-visible { outline: none; }
 tbody tr:focus-visible td:first-child { box-shadow: inset 2px 0 0 var(--assay-700); }
 
+/* Rows carry a horizontal rule; the vertical is lighter still. Thirteen
+   channel columns are read across, so the column boundary has to survive —
+   but at equal weight the two together drew a cage around every number. */
 td {
-  padding: 9px 12px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--rule);
-  border-right: 1px solid var(--rule);
+  border-right: 1px solid var(--rule-faint);
   vertical-align: middle;
-  height: 54px;
+  height: 58px;
   background: var(--sheet);
 }
 
@@ -925,7 +949,7 @@ dialog {
 }
 dialog#dialog { width: min(880px, calc(100% - 32px)); }
 dialog::backdrop {
-  background: rgba(22, 24, 28, 0.42);
+  background: rgba(28, 32, 36, 0.42);
   backdrop-filter: blur(2px);
 }
 
@@ -1297,32 +1321,35 @@ dialog::backdrop {
 .engine-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 18px;
 }
 .engine-field {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 .engine-field label,
 .engine-field legend {
-  font-size: 11.5px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--ink);
   letter-spacing: 0.01em;
 }
 .engine-field span.hint {
-  font-size: 11px;
+  font-size: 11.5px;
   line-height: 1.45;
   color: var(--ink-3);
   margin-top: 1px;
 }
+/* These fields set money. They are sized to be read and corrected with
+   confidence, not to match the density of a filter control. */
 .engine-input {
-  height: 34px;
-  padding: 0 11px;
+  height: 40px;
+  padding: 0 12px;
   border: 1px solid var(--rule-2);
   border-radius: 0;
-  font-size: 13px;
+  font-size: 14.5px;
+  font-weight: 600;
   font-family: inherit;
   font-variant-numeric: tabular-nums lining-nums;
   outline: none;
@@ -1392,13 +1419,16 @@ dialog::backdrop {
   color: var(--assay-900);
 }
 
+/* The type toggle and its value are one control in two parts, so they sit in
+   a shared field with a small gap — not stacked flush like two rows. */
 .discount-type-group {
   display: flex;
   border: 1px solid var(--rule-2);
+  margin-bottom: 6px;
 }
 .discount-type-btn {
   flex: 1;
-  height: 30px;
+  height: 34px;
   border: 0;
   border-right: 1px solid var(--rule-2);
   background: var(--sheet);
@@ -1412,7 +1442,7 @@ dialog::backdrop {
 .discount-type-btn:last-child { border-right: 0; }
 .discount-type-btn:hover:not(:disabled) { background: var(--sheet-alt); color: var(--ink); }
 .discount-type-btn.active {
-  background: var(--assay-900);
+  background: var(--assay-700);
   color: #fff;
 }
 .discount-type-btn:disabled { opacity: .5; cursor: not-allowed; }
