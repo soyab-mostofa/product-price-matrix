@@ -113,8 +113,8 @@ class AroggaChannel:
             return None
         pv = pv_list[0]
         price = pv.get("pv_b2c_discounted_price") or pv.get("pv_b2c_price") or pv.get("pv_mrp")
-        pv_id = pv.get("pv_id") or hit.get("id")
-        if not price or not pv_id:
+        product_id = hit.get("id") or hit.get("p_id") or pv.get("pv_p_id")
+        if not price or not product_id:
             return None
         try:
             val = float(price)
@@ -123,7 +123,7 @@ class AroggaChannel:
         if val <= 0:
             return None
         slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
-        url = f"https://www.arogga.com/product/{pv_id}/{slug}"
+        url = f"https://www.arogga.com/product/{product_id}/{slug}"
         size = str(pv.get("pu_b2c_sales_unit_label") or pv.get("pu_base_unit_label") or "") or None
         return name, val, url, size
 
@@ -225,22 +225,30 @@ def replica_paths() -> list[Path]:
 
 
 def record_match(connections: list[sqlite3.Connection], row_id: int, channel: str,
-                 title: str, price: float, url: str, confidence: float) -> None:
+                 title: str, price: float, url: str, confidence: float,
+                 size: str | None = None) -> None:
     for con in connections:
         con.execute(
             """
             INSERT INTO marketplace_listings
-              (row_id, channel_name, price, url, matched_title, seller, confidence, available, verified)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 1, 1)
+              (row_id, channel_name, price, url, matched_title, size, seller, confidence, available, verified)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 1)
             ON CONFLICT(row_id, channel_name) DO UPDATE SET
               price = excluded.price,
               url = excluded.url,
               matched_title = excluded.matched_title,
+              size = excluded.size,
               confidence = excluded.confidence,
               verified = 1
             """,
-            (row_id, channel, price, url, title, channel, confidence),
+            (row_id, channel, price, url, title, size, channel, confidence),
         )
+        # Recompute the MRP for IMPORTED SKUs only. A local SKU's MRP is always
+        # the workbook benchmark (AGENTS.md §4.3): its cost basis is a trade
+        # discount off exactly that number, so substituting a live listing
+        # breaks the arithmetic and makes healthy margins read as losses.
+        # Scraped prices still live in their own channel columns — they are
+        # compared against the benchmark, never merged into it.
         con.execute(
             """
             UPDATE products
@@ -259,7 +267,7 @@ def record_match(connections: list[sqlite3.Connection], row_id: int, channel: st
                                    WHERE row_id = ?1 AND available = 1 AND verified = 1) THEN 'third_party_avg'
                      ELSE 'reference'
                    END
-             WHERE row_id = ?1
+             WHERE row_id = ?1 AND sourcing_origin = 'imported'
             """,
             (row_id,),
         )
@@ -360,12 +368,17 @@ def main() -> None:
                     candidate_size_text=cand_size,
                 )
                 if verdict.accepted:
-                    matched = (cand_title, cand_price, cand_url, max(0.0, min(100.0, float(verdict.score))))
+                    # Carry the candidate's declared size through to storage:
+                    # the match was validated against it, so dropping it means
+                    # a later audit cannot reproduce this verdict.
+                    matched = (cand_title, cand_price, cand_url,
+                               max(0.0, min(100.0, float(verdict.score))), cand_size)
                     break
 
             if matched:
-                matched_title, matched_price, matched_url, confidence = matched
-                record_match(connections, row_id, ch_name, matched_title, matched_price, matched_url, confidence)
+                matched_title, matched_price, matched_url, confidence, matched_size = matched
+                record_match(connections, row_id, ch_name, matched_title, matched_price,
+                             matched_url, confidence, matched_size)
                 new_matches += 1
                 print(f"  [{idx}/{len(targets)}] [{origin}] {ch_name:8} ৳{matched_price:>7.0f} ({confidence:.0f}%) -> {name[:40]}")
 

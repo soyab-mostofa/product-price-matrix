@@ -75,6 +75,111 @@ class SkuMatcherTests(unittest.TestCase):
         self.assertFalse(result.accepted)
         self.assertIn("multiple package sizes for single SKU", result.reasons)
 
+    def test_body_spray_does_not_match_cream(self) -> None:
+        result = validate_match(
+            brand="Dove",
+            product_name="Dove Body Spray 250ml",
+            target_size_text="250ml",
+            candidate_name="Dove Body Love Deep Moisturisation Beauty Cream 250ml",
+            candidate_size_text="250ml",
+        )
+        self.assertFalse(result.accepted)
+        self.assertTrue(any("product type mismatch" in r for r in result.reasons))
+
+    def test_facial_foam_does_not_match_night_cream(self) -> None:
+        result = validate_match(
+            brand="Pond's",
+            product_name="Ponds Age Miracle Ultimate Youth Hexyl Retinol Facial Foam - 45g",
+            target_size_text="45gm",
+            candidate_name="Pond's Age Miracle Hexyl Retinol Ultimate Youth Night Cream 45g",
+            candidate_size_text="45gm",
+        )
+        self.assertFalse(result.accepted)
+        self.assertTrue(any("product type mismatch" in r for r in result.reasons))
+
+    def test_missing_key_active_ingredient_is_rejected(self) -> None:
+        result = validate_match(
+            brand="The Ordinary",
+            product_name="The Ordinary Hyaluronic Acid 2% +30ml",
+            target_size_text="30ml",
+            candidate_name="The Ordinary Salicylic Acid 2% Solution (30ml)",
+            candidate_size_text="30ml",
+        )
+        self.assertFalse(result.accepted)
+        self.assertTrue(any("missing key active" in r for r in result.reasons))
+
+    def test_conflicting_fragrance_variant_is_rejected(self) -> None:
+        result = validate_match(
+            brand="Enchanteur",
+            product_name="Enchanteur Enticing Perfumed Deo Roll-on 50ml",
+            target_size_text="50ml",
+            candidate_name="Enchanteur Perfumed Deo Roll-on Romantic 50ml",
+            candidate_size_text="50ml",
+        )
+        self.assertFalse(result.accepted)
+        self.assertTrue(any("fragrance" in r or "variant mismatch" in r for r in result.reasons))
+
+    def test_sub_line_sunscreen_formula_is_rejected(self) -> None:
+        result = validate_match(
+            brand="Beauty of Joseon",
+            product_name="Beauty Of Joseon Rice Probiotics Relief Sun SPF50 50ml",
+            target_size_text="50ml",
+            candidate_name="Beauty of Joseon Relief Sun Aqua-Fresh : Rice + B5 SPF50+ PA++++ 50ml",
+            candidate_size_text="50ml",
+        )
+        self.assertFalse(result.accepted)
+        self.assertTrue(any("variant mismatch" in r for r in result.reasons))
+
+    def test_unexpected_spf_on_regular_moisturizer_is_rejected(self) -> None:
+        result = validate_match(
+            brand="Simple",
+            product_name="Simple Light Moisturiser 125ml (uk)",
+            target_size_text="125ml",
+            candidate_name="Simple Kind to Skin Protecting Light Moisturiser SPF15 with Pro-Vitamins B5+E 125ml",
+            candidate_size_text="125ml",
+        )
+        self.assertFalse(result.accepted)
+        self.assertTrue(any("unexpected SPF" in r for r in result.reasons))
+
+    def test_rival_product_sub_line_is_rejected(self) -> None:
+        """Streax ships Vitalized and Shine serums that differ by one word.
+
+        Every other token matches, so token-set similarity rates them ~80%
+        alike and they clear the score threshold on their own.
+        """
+        result = validate_match(
+            brand="Streax",
+            product_name="Streax Vitalized With Walnut Oil Hair Serum 115ml",
+            target_size_text="115ml",
+            candidate_name="Streax Shine With Walnut Oil Hair Serum (115ml)",
+            candidate_size_text="115ml",
+        )
+        self.assertFalse(result.accepted)
+        self.assertTrue(any("sub-line mismatch" in r for r in result.reasons))
+
+    def test_candidate_dropping_the_sub_line_is_rejected(self) -> None:
+        """Sunsilk's Hijab line is a different product from the plain line."""
+        result = validate_match(
+            brand="Sunsilk",
+            product_name="Sunsilk Hijab Refresh & Hair Fall Solution Shampoo 300ml",
+            target_size_text="300ml",
+            candidate_name="Sunsilk Hair Fall Solution Shampoo",
+            candidate_size_text=None,
+        )
+        self.assertFalse(result.accepted)
+        self.assertTrue(any("missing sub-line" in r for r in result.reasons))
+
+    def test_same_sub_line_reordered_is_still_accepted(self) -> None:
+        """The rule must not reject the correct listing for word order."""
+        result = validate_match(
+            brand="Streax",
+            product_name="Streax Vitalized With Walnut Oil Hair Serum 115ml",
+            target_size_text="115ml",
+            candidate_name="Streax Hair Serum Vitalized With Walnut Oil 115ml",
+            candidate_size_text="115ml",
+        )
+        self.assertTrue(result.accepted, result.reasons)
+
 
 if __name__ == "__main__":
     unittest.main()

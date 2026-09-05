@@ -9,6 +9,15 @@ ROOT = Path(__file__).resolve().parents[1]
 MIGRATION = ROOT / "migrations/0004_sourcing_origin.sql"
 SCHEMA = ROOT / "schema.sql"
 
+# Every migration that changes the shape of `products`, in order. The
+# schema-agreement test walks this chain, so a new products migration must be
+# appended here and mirrored into schema.sql or the test fails.
+PRODUCT_SHAPE_MIGRATIONS = (
+    MIGRATION,
+    ROOT / "migrations/0006_workbook_mrp_for_local.sql",
+    ROOT / "migrations/0007_workbook_provenance.sql",
+)
+
 # The catalog as it stood before sourcing origin existed: every product was a
 # Local SKU, but nothing recorded that fact.
 PRE_ORIGIN_SCHEMA = """
@@ -167,10 +176,17 @@ class SourcingOriginMigrationTests(unittest.TestCase):
         connection.close()
 
     def test_schema_and_migration_agree_on_product_shape(self) -> None:
-        """A fresh schema.sql database must match a migrated one."""
+        """A fresh schema.sql database must match a migrated one.
+
+        Applies every migration that reshapes `products`, not just this one:
+        the point is that a database built by walking the migration chain ends
+        up identical to one built from schema.sql, so a new migration that
+        forgets to update schema.sql (or vice versa) fails here.
+        """
         migrated = _pre_origin_database()
         migrated.commit()
-        migrated.executescript(MIGRATION.read_text(encoding="utf-8"))
+        for migration in PRODUCT_SHAPE_MIGRATIONS:
+            migrated.executescript(migration.read_text(encoding="utf-8"))
         migrated_columns = [
             (row[1], row[2], row[3])
             for row in migrated.execute("PRAGMA table_info(products)")

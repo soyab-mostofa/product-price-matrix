@@ -65,10 +65,11 @@ def seed(path: Path) -> dict[str, int]:
                 row_id = found[0]
                 connection.execute(
                     "UPDATE products SET brand_name = ?, size = ?, manufactured_price = ?, "
-                    "market_average_price = ?, canonical_name = ?, mrp_source_type = ?, category = ? "
+                    "market_average_price = ?, canonical_name = ?, mrp_source_type = ?, category = ?, "
+                    "source_sheet = ?, source_row = ? "
                     "WHERE row_id = ?",
                     (brand, sku.size, sku.source_cost, benchmark, sku.product_name,
-                     mrp_source, sku.category, row_id),
+                     mrp_source, sku.category, sku.source_sheet, sku.source_row, row_id),
                 )
             else:
                 row_id = next_id
@@ -76,10 +77,11 @@ def seed(path: Path) -> dict[str, int]:
                 connection.execute(
                     "INSERT INTO products (row_id, product_name, brand_name, size, "
                     "manufactured_price, market_average_price, canonical_name, "
-                    "mrp_source_type, sourcing_origin, category) "
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'imported', ?)",
+                    "mrp_source_type, sourcing_origin, category, source_sheet, source_row) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'imported', ?, ?, ?)",
                     (row_id, sku.product_name, brand, sku.size, sku.source_cost,
-                     benchmark, sku.product_name, mrp_source, sku.category),
+                     benchmark, sku.product_name, mrp_source, sku.category,
+                     sku.source_sheet, sku.source_row),
                 )
                 products += 1
             written += 1

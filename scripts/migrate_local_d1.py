@@ -16,6 +16,7 @@ SPARSE_OVERRIDES_MIGRATION_PATH = ROOT / "migrations/0003_sparse_pricing_overrid
 SOURCING_ORIGIN_MIGRATION_PATH = ROOT / "migrations/0004_sourcing_origin.sql"
 UNVERIFIED_LISTINGS_MIGRATION_PATH = ROOT / "migrations/0005_unverified_listings.sql"
 WORKBOOK_MRP_MIGRATION_PATH = ROOT / "migrations/0006_workbook_mrp_for_local.sql"
+WORKBOOK_PROVENANCE_MIGRATION_PATH = ROOT / "migrations/0007_workbook_provenance.sql"
 
 
 def _unwrapped(path: Path) -> str:
@@ -51,6 +52,11 @@ def _unverified_listings_migration() -> str:
 def _workbook_mrp_migration() -> str:
     """The 0006 migration body, minus the transaction/pragma wrapper."""
     return _unwrapped(WORKBOOK_MRP_MIGRATION_PATH)
+
+
+def _workbook_provenance_migration() -> str:
+    """The 0007 migration body, minus the transaction/pragma wrapper."""
+    return _unwrapped(WORKBOOK_PROVENANCE_MIGRATION_PATH)
 
 
 def _mrp_source_type_allows_workbook(connection: sqlite3.Connection) -> bool:
@@ -180,6 +186,10 @@ def migrate_database(path: Path) -> list[str]:
         if not _mrp_source_type_allows_workbook(connection):
             connection.executescript(_workbook_mrp_migration())
             changes.append("products.mrp_source_type=workbook")
+
+        if "source_sheet" not in columns(connection, "products"):
+            connection.executescript(_workbook_provenance_migration())
+            changes.append("products.source_sheet+source_row")
 
         connection.execute(
             """

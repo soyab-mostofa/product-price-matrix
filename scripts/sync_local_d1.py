@@ -23,12 +23,13 @@ def sync_database(path: Path, seed_sql: str) -> bool:
         connection.close()
 
     # Re-seed imported products into the replica so syncing canonical local seed
-    # never leaves the replica missing the imported book.
-    try:
-        from seed_imported import seed as seed_imported
-        seed_imported(path)
-    except Exception as exc:
-        print(f"Warning: imported seed failed for {path.name}: {exc}")
+    # never leaves the replica missing the imported book. A failure here is
+    # fatal, not a warning: the local seed has already deleted and rewritten the
+    # catalog, so swallowing this leaves the replica with an empty imported book
+    # and the `/imported` route silently serving nothing.
+    from seed_imported import seed as seed_imported
+
+    seed_imported(path)
 
     return True
 

@@ -33,6 +33,12 @@ No single view shows the combined total; the origin switch carries both counts.
 - `verified_match_audit.json` — Full audit log of accepted matches and rejected candidates with explicit reasons.
 - `build_matrix.py` / `catalog_builder.py` — Pipeline that validates listings and regenerates canonical JSON, audit, and D1 seed artifacts (`seed.sql`).
 - `scripts/restore_workbook_mrp.py` — One-shot repair that restores `excel_prices.market_average_price` from the workbook. Run if a scraper ever overwrites the benchmark again.
+- `scripts/verify_workbook_parity.py` — **The reconciliation gate.** Asserts every SKU's Source Cost and MRP in D1 equal the workbook to the paisa, that no SKU/row_id/(SKU,channel) is duplicated, and that every product carries its sheet + Excel row. Exits non-zero on any drift.
+- `scripts/audit_all_listings.py` — Checks every verified listing three ways: reachable (no 404), identical after redirects (the Arogga `pv_id` class of bug), and still accepted by `sku_matcher`. Writes `/tmp/listing_audit.json`.
+- `scripts/verify_live_links.py` — The same reachability/identity check against the **live production API**, so a bad deploy or an unsynced remote D1 is caught, not just a bad local file.
+- `scripts/purge_rejected_listings.py` — Deletes listings the hardened matcher now rejects; recovers a dropped candidate size from the live channel and re-validates before deleting.
+- `scripts/fold_d1_listings_into_research.py` — Folds scraper-discovered listings from D1 back into `verified_marketplace_research.json`, re-validating each. **Run after any discovery pass**, or the next `build_matrix.py` silently undoes it.
+- `scripts/stamp_workbook_provenance.py` — Stamps each local SKU with its workbook sheet and Excel row.
 - `sku_matcher.py` — Strict brand, category, volume, bundle, concentration, and cosmetic shade validation engine.
 - `src/` — Hono JSX application, API routes, browser client, and server domain modules.
 - `public/static/app.css` — Authored browser stylesheet; `public/static/app.js` is generated and ignored.
@@ -134,6 +140,12 @@ Both are persisted **in Cloudflare D1 only** — there is no `localStorage` anyw
 
 4. **Data Repair**:
    - If a scraper ever overwrites the benchmark again, run `uv run --with openpyxl python3 scripts/restore_workbook_mrp.py` then rebuild. The `tests/model.test.ts` suite asserts every local MRP equals its workbook value, so a regression fails CI.
+   - **The recompute must be origin-scoped.** A discovery pass recomputes `market_average_price` from listings — correct for imported SKUs, corrupting for local ones. Every `UPDATE products ... mrp_source_type` in a scraper ends `WHERE row_id = ?1 AND sourcing_origin = 'imported'`. An unguarded one silently rewrote 71 local benchmarks, each *below* the workbook because it had been replaced by a promotional price. `tests/test_mrp_recompute_guard.py` pins the filter in the SQL text.
+
+5. **Workbook Traceability**:
+   - Every product carries `source_sheet` and `source_row` — the sheet it was read from and the **1-based Excel row** (headers are row 1, data starts at row 2), so a figure on screen can be typed into Excel's Name Box and land on its cell.
+   - Reconcile with `uv run --with openpyxl --with rapidfuzz python3 scripts/verify_workbook_parity.py`. It must print `PASS — 0 problem(s)` before any deploy that touches pricing.
+   - Workbook lookups key on **(name, size)**, never name alone: the catalog holds same-name SKUs differing only by pack size (Nature Beauty Healthy Glowing Body Lotion 200/370ml; Orgagenic White Sandalwood 50/100g), and a name-only key silently compares a SKU against its sibling's price.
 
 ---
 
@@ -187,8 +199,27 @@ uv run --with openpyxl --with rapidfuzz python3 build_matrix.py
 # Restore workbook MRP benchmarks if a scraper overwrote them
 uv run --with openpyxl python3 scripts/restore_workbook_mrp.py
 
+# Fold scraper-discovered listings back into the research file
+# (run after any discovery pass, BEFORE build_matrix.py)
+uv run --with rapidfuzz python3 scripts/fold_d1_listings_into_research.py
+
 # Apply pending migrations to the local D1 replicas
 bun run db:local:migrate
+```
+
+### Data Integrity Checks
+```bash
+# Workbook parity + duplicates + row traceability — must print PASS
+uv run --with openpyxl --with rapidfuzz python3 scripts/verify_workbook_parity.py
+
+# Every verified listing: reachable, same product after redirects, still matches
+uv run --with rapidfuzz python3 scripts/audit_all_listings.py
+
+# Delete listings the hardened matcher rejects; recover dropped sizes first
+uv run --with rapidfuzz --with openpyxl python3 scripts/purge_rejected_listings.py
+
+# The same link check against LIVE production
+uv run python3 scripts/verify_live_links.py
 ```
 
 ### Verification (run before claiming work is done)

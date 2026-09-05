@@ -173,6 +173,10 @@ class ImportedSku:
     category: str
     source_cost: float
     channel_prices: dict[str, float] = field(default_factory=dict)
+    # Workbook provenance: the sheet and 1-based Excel row this SKU was read
+    # from, so a price on the dashboard walks back to a cell.
+    source_sheet: str | None = None
+    source_row: int | None = None
 
 
 @dataclass
@@ -213,7 +217,10 @@ def read_workbook(path: Path = WORKBOOK) -> SeedReport:
         if name_at is None or price_at is None:
             continue
 
-        for row in rows[header_index + 1:]:
+        # `rows` is 0-indexed; Excel numbers from 1. Offsetting by the header
+        # index keeps `source_row` typeable straight into the Name Box.
+        for offset, row in enumerate(rows[header_index + 1:]):
+            excel_row = header_index + offset + 2
             if not any(cell not in (None, "") for cell in row):
                 continue
             raw_name = row[name_at] if name_at < len(row) else None
@@ -232,7 +239,10 @@ def read_workbook(path: Path = WORKBOOK) -> SeedReport:
             if size is None:
                 report.missing_sizes.append(name)
 
-            sku = ImportedSku(name, brand, size, category, cost)
+            sku = ImportedSku(
+                name, brand, size, category, cost,
+                source_sheet=tab, source_row=excel_row,
+            )
             for channel in CHANNEL_COLUMNS:
                 at = column.get(channel)
                 if at is None or at >= len(row):

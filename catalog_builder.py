@@ -219,6 +219,10 @@ def build_public_data(
                 "canonical_name": item.get("canonical_name") or item["product_name"],
                 "sources": active_sources,
                 "mrp_source_type": mrp_source_type,
+                # Workbook provenance: which sheet and 1-based Excel row this
+                # SKU was read from, so a price on screen walks back to a cell.
+                "source_sheet": item.get("source_sheet"),
+                "source_row": item.get("source_row"),
             }
         )
 
@@ -276,19 +280,23 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
     for product in output["products"]:
         row_id = int(product["row"])
         row_ids.append(str(row_id))
+        source_row = product.get("source_row")
+        source_row_sql = str(int(source_row)) if source_row else "NULL"
         lines.append(
             "INSERT INTO products "
-            "(row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin) "
+            "(row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin, source_sheet, source_row) "
             f"VALUES ({row_id}, {_sql_text(product['product_name'])}, {_sql_text(product['brand_name'])}, "
             f"{_sql_text(product.get('size'))}, {_sql_number(product['manufactured_price'])}, "
             f"{_sql_number(product['market_average_price'])}, {_sql_text(product.get('canonical_name'))}, "
-            f"{_sql_text(product.get('mrp_source_type'))}, 'local') "
+            f"{_sql_text(product.get('mrp_source_type'))}, 'local', "
+            f"{_sql_text(product.get('source_sheet'))}, {source_row_sql}) "
             "ON CONFLICT(row_id) DO UPDATE SET product_name=excluded.product_name, "
             "brand_name=excluded.brand_name, size=excluded.size, "
             "manufactured_price=excluded.manufactured_price, "
             "market_average_price=excluded.market_average_price, "
             "canonical_name=excluded.canonical_name, mrp_source_type=excluded.mrp_source_type, "
-            "sourcing_origin=excluded.sourcing_origin;"
+            "sourcing_origin=excluded.sourcing_origin, "
+            "source_sheet=excluded.source_sheet, source_row=excluded.source_row;"
         )
         for channel, listing in product.get("sources", {}).items():
             # A listing is verified when it was confirmed against a live product

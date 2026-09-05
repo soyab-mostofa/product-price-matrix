@@ -33,22 +33,32 @@ def main():
     if gp:
         lines.append(f"INSERT INTO global_pricing_params (id, packaging, transport, delivery, cac, target_margin_pct, discount_type, discount_val) VALUES ({gp[0]}, {gp[1]}, {gp[2]}, {gp[3]}, {gp[4]}, {gp[5]}, {sql_quote(gp[6])}, {gp[7]}) ON CONFLICT(id) DO UPDATE SET packaging=excluded.packaging, transport=excluded.transport, delivery=excluded.delivery, cac=excluded.cac, target_margin_pct=excluded.target_margin_pct, discount_type=excluded.discount_type, discount_val=excluded.discount_val;")
 
-    lines.append("\n-- Sync products (596 SKUs: 407 local + 189 imported)")
-    products = con.execute("SELECT row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin, category FROM products ORDER BY row_id ASC").fetchall()
+    lines.append("\n-- Sync products (local + imported)")
+    products = con.execute(
+        "SELECT row_id, product_name, brand_name, size, manufactured_price, "
+        "market_average_price, canonical_name, mrp_source_type, sourcing_origin, "
+        "category, source_sheet, source_row FROM products ORDER BY row_id ASC"
+    ).fetchall()
     for p in products:
         lines.append(
-            f"INSERT INTO products (row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin, category) "
-            f"VALUES ({p[0]}, {sql_quote(p[1])}, {sql_quote(p[2])}, {sql_quote(p[3])}, {p[4]}, {p[5]}, {sql_quote(p[6])}, {sql_quote(p[7])}, {sql_quote(p[8])}, {sql_quote(p[9])}) "
-            f"ON CONFLICT(row_id) DO UPDATE SET product_name=excluded.product_name, brand_name=excluded.brand_name, size=excluded.size, manufactured_price=excluded.manufactured_price, market_average_price=excluded.market_average_price, canonical_name=excluded.canonical_name, mrp_source_type=excluded.mrp_source_type, sourcing_origin=excluded.sourcing_origin, category=excluded.category;"
+            f"INSERT INTO products (row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin, category, source_sheet, source_row) "
+            f"VALUES ({p[0]}, {sql_quote(p[1])}, {sql_quote(p[2])}, {sql_quote(p[3])}, {p[4]}, {p[5]}, {sql_quote(p[6])}, {sql_quote(p[7])}, {sql_quote(p[8])}, {sql_quote(p[9])}, {sql_quote(p[10])}, {sql_quote(p[11])}) "
+            f"ON CONFLICT(row_id) DO UPDATE SET product_name=excluded.product_name, brand_name=excluded.brand_name, size=excluded.size, manufactured_price=excluded.manufactured_price, market_average_price=excluded.market_average_price, canonical_name=excluded.canonical_name, mrp_source_type=excluded.mrp_source_type, sourcing_origin=excluded.sourcing_origin, category=excluded.category, source_sheet=excluded.source_sheet, source_row=excluded.source_row;"
         )
 
-    lines.append("\n-- Sync marketplace listings (1,334 listings)")
+    # Listings cascade from products, so drop removed SKUs only after the
+    # upserts above — otherwise a delisted row would take its listings with it
+    # before they are rewritten.
+    kept = ", ".join(str(p[0]) for p in products)
+    lines.append(f"DELETE FROM products WHERE row_id NOT IN ({kept});")
+
+    lines.append("\n-- Sync marketplace listings")
+    lines.append("DELETE FROM marketplace_listings;")
     listings = con.execute("SELECT row_id, channel_name, price, url, matched_title, size, seller, confidence, available, verified FROM marketplace_listings ORDER BY row_id ASC, channel_name ASC").fetchall()
     for l in listings:
         lines.append(
             f"INSERT INTO marketplace_listings (row_id, channel_name, price, url, matched_title, size, seller, confidence, available, verified) "
-            f"VALUES ({l[0]}, {sql_quote(l[1])}, {l[2]}, {sql_quote(l[3])}, {sql_quote(l[4])}, {sql_quote(l[5])}, {sql_quote(l[6])}, {l[7]}, {l[8]}, {l[9]}) "
-            f"ON CONFLICT(row_id, channel_name) DO UPDATE SET price=excluded.price, url=excluded.url, matched_title=excluded.matched_title, size=excluded.size, seller=excluded.seller, confidence=excluded.confidence, available=excluded.available, verified=excluded.verified;"
+            f"VALUES ({l[0]}, {sql_quote(l[1])}, {l[2]}, {sql_quote(l[3])}, {sql_quote(l[4])}, {sql_quote(l[5])}, {sql_quote(l[6])}, {l[7]}, {l[8]}, {l[9]});"
         )
 
     OUT_FILE.write_text("\n".join(lines), encoding="utf-8")

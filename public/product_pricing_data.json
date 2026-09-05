@@ -26,7 +26,7 @@
   ],
   "source_listing_counts": {
     "Official Store": 179,
-    "Arogga": 159,
+    "Arogga": 157,
     "Shajgoj": 145,
     "OhSoGo": 116,
     "Daraz": 58,
@@ -36,9 +36,9 @@
   },
   "coverage_counts": {
     "0": 40,
-    "1": 154,
+    "1": 155,
     "2": 124,
-    "3": 56,
+    "3": 55,
     "4": 23,
     "5": 7,
     "6": 3
@@ -63,7 +63,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 2
     },
     {
       "row": 3,
@@ -93,7 +95,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 3
     },
     {
       "row": 4,
@@ -114,7 +118,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 4
     },
     {
       "row": 5,
@@ -135,7 +141,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 5
     },
     {
       "row": 6,
@@ -165,7 +173,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 6
     },
     {
       "row": 7,
@@ -186,7 +196,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 7
     },
     {
       "row": 8,
@@ -216,7 +228,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 8
     },
     {
       "row": 9,
@@ -237,7 +251,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 9
     },
     {
       "row": 10,
@@ -258,7 +274,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 10
     },
     {
       "row": 11,
@@ -279,7 +297,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 11
     },
     {
       "row": 12,
@@ -300,7 +320,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 12
     },
     {
       "row": 13,
@@ -321,7 +343,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 13
     },
     {
       "row": 14,
@@ -342,7 +366,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 14
     },
     {
       "row": 15,
@@ -372,7 +398,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 15
     },
     {
       "row": 16,
@@ -402,7 +430,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 16
     },
     {
       "row": 17,
@@ -432,7 +462,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 17
     },
     {
       "row": 18,
@@ -462,7 +494,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 18
     },
     {
       "row": 19,
@@ -492,7 +526,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 19
     },
     {
       "row": 20,
@@ -522,7 +558,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 20
     },
     {
       "row": 21,
@@ -552,7 +590,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 21
     },
     {
       "row": 22,
@@ -582,7 +622,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 22
     },
     {
       "row": 23,
@@ -612,7 +654,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 23
     },
     {
       "row": 24,
@@ -642,7 +686,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 24
     },
     {
       "row": 25,
@@ -672,7 +718,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 25
     },
     {
       "row": 26,
@@ -702,7 +750,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 26
     },
     {
       "row": 27,
@@ -732,7 +782,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 27
     },
     {
       "row": 28,
@@ -753,7 +805,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 28
     },
     {
       "row": 29,
@@ -774,7 +828,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 29
     },
     {
       "row": 30,
@@ -795,7 +851,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 30
     },
     {
       "row": 31,
@@ -825,7 +883,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 31
     },
     {
       "row": 32,
@@ -846,7 +906,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 32
     },
     {
       "row": 33,
@@ -867,7 +929,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 33
     },
     {
       "row": 34,
@@ -888,7 +952,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 34
     },
     {
       "row": 35,
@@ -918,7 +984,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 35
     },
     {
       "row": 36,
@@ -948,7 +1016,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 36
     },
     {
       "row": 37,
@@ -969,7 +1039,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 37
     },
     {
       "row": 38,
@@ -990,7 +1062,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 38
     },
     {
       "row": 39,
@@ -1020,7 +1094,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 39
     },
     {
       "row": 40,
@@ -1050,7 +1126,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 40
     },
     {
       "row": 41,
@@ -1080,7 +1158,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 41
     },
     {
       "row": 42,
@@ -1110,7 +1190,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 42
     },
     {
       "row": 43,
@@ -1131,7 +1213,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 43
     },
     {
       "row": 44,
@@ -1152,7 +1236,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 44
     },
     {
       "row": 45,
@@ -1182,7 +1268,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 45
     },
     {
       "row": 46,
@@ -1203,7 +1291,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 46
     },
     {
       "row": 47,
@@ -1233,7 +1323,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 47
     },
     {
       "row": 48,
@@ -1290,7 +1382,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 48
     },
     {
       "row": 49,
@@ -1329,7 +1423,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 49
     },
     {
       "row": 50,
@@ -1377,7 +1473,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 50
     },
     {
       "row": 51,
@@ -1407,7 +1505,9 @@
           "confidence": 93.33
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 51
     },
     {
       "row": 52,
@@ -1428,7 +1528,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 52
     },
     {
       "row": 53,
@@ -1476,7 +1578,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 53
     },
     {
       "row": 54,
@@ -1515,7 +1619,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 54
     },
     {
       "row": 55,
@@ -1536,7 +1642,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 55
     },
     {
       "row": 56,
@@ -1584,7 +1692,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 56
     },
     {
       "row": 57,
@@ -1632,7 +1742,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 57
     },
     {
       "row": 58,
@@ -1671,7 +1783,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 58
     },
     {
       "row": 59,
@@ -1710,7 +1824,9 @@
           "confidence": 84.6
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 59
     },
     {
       "row": 60,
@@ -1740,7 +1856,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 60
     },
     {
       "row": 61,
@@ -1788,7 +1906,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 61
     },
     {
       "row": 62,
@@ -1809,7 +1929,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 62
     },
     {
       "row": 63,
@@ -1830,7 +1952,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 63
     },
     {
       "row": 64,
@@ -1869,7 +1993,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 64
     },
     {
       "row": 65,
@@ -1899,7 +2025,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 65
     },
     {
       "row": 66,
@@ -1929,7 +2057,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 66
     },
     {
       "row": 67,
@@ -1959,7 +2089,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 67
     },
     {
       "row": 68,
@@ -1998,7 +2130,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 68
     },
     {
       "row": 69,
@@ -2037,7 +2171,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 69
     },
     {
       "row": 70,
@@ -2076,7 +2212,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 70
     },
     {
       "row": 71,
@@ -2115,7 +2253,9 @@
           "confidence": 77.33
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 71
     },
     {
       "row": 72,
@@ -2163,7 +2303,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 72
     },
     {
       "row": 73,
@@ -2202,7 +2344,9 @@
           "confidence": 83.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 73
     },
     {
       "row": 74,
@@ -2241,7 +2385,9 @@
           "confidence": 86.4
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 74
     },
     {
       "row": 75,
@@ -2280,7 +2426,9 @@
           "confidence": 86.4
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 75
     },
     {
       "row": 76,
@@ -2328,7 +2476,9 @@
           "confidence": 80.78
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 76
     },
     {
       "row": 77,
@@ -2367,7 +2517,9 @@
           "confidence": 78.02
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 77
     },
     {
       "row": 78,
@@ -2397,7 +2549,9 @@
           "confidence": 82.54
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 78
     },
     {
       "row": 79,
@@ -2418,7 +2572,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 79
     },
     {
       "row": 80,
@@ -2439,7 +2595,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 80
     },
     {
       "row": 81,
@@ -2460,7 +2618,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 81
     },
     {
       "row": 82,
@@ -2481,7 +2641,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 82
     },
     {
       "row": 83,
@@ -2502,7 +2664,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 83
     },
     {
       "row": 84,
@@ -2523,7 +2687,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 84
     },
     {
       "row": 85,
@@ -2544,7 +2710,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 85
     },
     {
       "row": 86,
@@ -2565,7 +2733,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 86
     },
     {
       "row": 87,
@@ -2586,7 +2756,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 87
     },
     {
       "row": 88,
@@ -2607,7 +2779,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 88
     },
     {
       "row": 89,
@@ -2628,7 +2802,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 89
     },
     {
       "row": 90,
@@ -2649,7 +2825,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 90
     },
     {
       "row": 91,
@@ -2679,7 +2857,9 @@
           "confidence": 86.83
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 91
     },
     {
       "row": 92,
@@ -2700,7 +2880,9 @@
           "confidence": 98.35
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 92
     },
     {
       "row": 93,
@@ -2721,7 +2903,9 @@
           "confidence": 97.97
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 93
     },
     {
       "row": 94,
@@ -2760,7 +2944,9 @@
           "confidence": 84.56
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 94
     },
     {
       "row": 95,
@@ -2781,7 +2967,9 @@
           "confidence": 98.28
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 95
     },
     {
       "row": 96,
@@ -2802,7 +2990,9 @@
           "confidence": 98.02
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 96
     },
     {
       "row": 97,
@@ -2823,7 +3013,9 @@
           "confidence": 97.87
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 97
     },
     {
       "row": 98,
@@ -2844,7 +3036,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 98
     },
     {
       "row": 99,
@@ -2874,7 +3068,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 99
     },
     {
       "row": 100,
@@ -2904,7 +3100,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 100
     },
     {
       "row": 101,
@@ -2925,7 +3123,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 101
     },
     {
       "row": 102,
@@ -2946,7 +3146,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 102
     },
     {
       "row": 103,
@@ -2967,7 +3169,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 103
     },
     {
       "row": 104,
@@ -2988,7 +3192,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 104
     },
     {
       "row": 105,
@@ -3009,7 +3215,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 105
     },
     {
       "row": 106,
@@ -3020,7 +3228,9 @@
       "market_average_price": 1580.0,
       "canonical_name": "G/S Liquid Concealer (GO21 - Honey)",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 106
     },
     {
       "row": 107,
@@ -3041,7 +3251,9 @@
           "confidence": 97.94
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 107
     },
     {
       "row": 108,
@@ -3062,7 +3274,9 @@
           "confidence": 97.94
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 108
     },
     {
       "row": 109,
@@ -3083,7 +3297,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 109
     },
     {
       "row": 110,
@@ -3094,7 +3310,9 @@
       "market_average_price": 890.0,
       "canonical_name": "Guerniss Lashfull Mascara",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 110
     },
     {
       "row": 111,
@@ -3115,7 +3333,9 @@
           "confidence": 73.78
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 111
     },
     {
       "row": 112,
@@ -3126,7 +3346,9 @@
       "market_average_price": 550.0,
       "canonical_name": "Guerniss New Matte Khol Kajol",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 112
     },
     {
       "row": 113,
@@ -3137,7 +3359,9 @@
       "market_average_price": 690.0,
       "canonical_name": "Guerniss Eye Ink Liquid EyeLiner",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 113
     },
     {
       "row": 114,
@@ -3148,7 +3372,9 @@
       "market_average_price": 780.0,
       "canonical_name": "Guerniss liquid Matte Black Eyeliner",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 114
     },
     {
       "row": 115,
@@ -3159,7 +3385,9 @@
       "market_average_price": 1190.0,
       "canonical_name": "Makeup Setting Spray",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 115
     },
     {
       "row": 116,
@@ -3170,7 +3398,9 @@
       "market_average_price": 720.0,
       "canonical_name": "Guerniss Water Gloss Lip Glaze (WLG Honey)",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 116
     },
     {
       "row": 117,
@@ -3191,7 +3421,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 117
     },
     {
       "row": 118,
@@ -3202,7 +3434,9 @@
       "market_average_price": 720.0,
       "canonical_name": "Guerniss Water Gloss Lip Glaze (WLG Watermelon)",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 118
     },
     {
       "row": 119,
@@ -3232,7 +3466,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 119
     },
     {
       "row": 120,
@@ -3253,7 +3489,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 120
     },
     {
       "row": 121,
@@ -3274,7 +3512,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 121
     },
     {
       "row": 122,
@@ -3295,7 +3535,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 122
     },
     {
       "row": 123,
@@ -3325,7 +3567,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 123
     },
     {
       "row": 124,
@@ -3346,7 +3590,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 124
     },
     {
       "row": 125,
@@ -3376,7 +3622,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 125
     },
     {
       "row": 126,
@@ -3397,7 +3645,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 126
     },
     {
       "row": 127,
@@ -3427,7 +3677,9 @@
           "confidence": 82.62
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 127
     },
     {
       "row": 128,
@@ -3448,7 +3700,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 128
     },
     {
       "row": 129,
@@ -3487,7 +3741,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 129
     },
     {
       "row": 130,
@@ -3498,7 +3754,9 @@
       "market_average_price": 1890.0,
       "canonical_name": "Guerniss Aloe Moisturizing and Brightening Essence",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 130
     },
     {
       "row": 131,
@@ -3519,7 +3777,9 @@
           "confidence": 96.9
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 131
     },
     {
       "row": 132,
@@ -3530,7 +3790,9 @@
       "market_average_price": 1890.0,
       "canonical_name": "Guerniss Moisturizing and Hydrating Essence",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 132
     },
     {
       "row": 133,
@@ -3551,7 +3813,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 133
     },
     {
       "row": 134,
@@ -3572,7 +3836,9 @@
           "confidence": 94.48
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 134
     },
     {
       "row": 135,
@@ -3611,7 +3877,9 @@
           "confidence": 77.33
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 135
     },
     {
       "row": 136,
@@ -3632,7 +3900,9 @@
           "confidence": 79.93
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 136
     },
     {
       "row": 137,
@@ -3643,7 +3913,9 @@
       "market_average_price": 1750.0,
       "canonical_name": "Guerniss Everyday Sun Block",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 137
     },
     {
       "row": 138,
@@ -3664,7 +3936,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 138
     },
     {
       "row": 139,
@@ -3694,7 +3968,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 139
     },
     {
       "row": 140,
@@ -3718,8 +3994,8 @@
           "price": 26.0,
           "url": "https://shop.shajgoj.com/product/guerniss-avocado-deep-cleansing-wet-wipes",
           "matched_title": "Guerniss Avocado Deep Cleansing Wet Wipes",
-          "size": null,
-          "seller": null,
+          "size": "",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         },
@@ -3733,7 +4009,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 140
     },
     {
       "row": 141,
@@ -3744,7 +4022,9 @@
       "market_average_price": 300.0,
       "canonical_name": "Nature Beauty Aloe Vera Moisture Soothing Gel",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 141
     },
     {
       "row": 142,
@@ -3755,15 +4035,6 @@
       "market_average_price": 300.0,
       "canonical_name": "Nature Beauty Milk Moisture Soothing Gel",
       "sources": {
-        "Arogga": {
-          "price": 180.0,
-          "url": "https://www.arogga.com/product/74257/nature-beauty-milk-moisture-soothing-gel-130ml",
-          "matched_title": "Nature Beauty Milk Moisture Soothing Gel 130ml",
-          "size": "Nature Beauty Milk Moisture Soothing Gel 130ml Buy Nature Beauty Milk Moisture Soothing Gel 130ml at best price in Bangladesh. For best price, offers, discount and fastest home  delivery all over  Bangladesh order it from Arogga. 130ml × 1 130ml × 1",
-          "seller": null,
-          "available": true,
-          "confidence": 100.0
-        },
         "OhSoGo": {
           "price": 240.0,
           "url": "https://www.ohsogo.com/products/nature-beauty-milk-moisture-soothing-gel-130ml",
@@ -3774,7 +4045,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 142
     },
     {
       "row": 143,
@@ -3785,15 +4058,6 @@
       "market_average_price": 425.0,
       "canonical_name": "Nature Beauty Saffron Moisture Soothing Gel",
       "sources": {
-        "Arogga": {
-          "price": 255.0,
-          "url": "https://www.arogga.com/product/74258/nature-beauty-saffron-moisture-soothing-gel-130ml",
-          "matched_title": "Nature Beauty Saffron Moisture Soothing Gel 130ml",
-          "size": "Nature Beauty Saffron Moisture Soothing Gel 130ml Buy Nature Beauty Saffron Moisture Soothing Gel 130ml at best price in Bangladesh. For best price, offers, discount and fastest home  delivery all over  Bangladesh order it from Arogga. 130ml × 1 130ml × 1",
-          "seller": null,
-          "available": true,
-          "confidence": 100.0
-        },
         "OhSoGo": {
           "price": 340.0,
           "url": "https://www.ohsogo.com/products/nature-beauty-saffron-moisture-soothing-gel-130ml",
@@ -3813,7 +4077,9 @@
           "confidence": 74.74
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 143
     },
     {
       "row": 144,
@@ -3824,7 +4090,9 @@
       "market_average_price": 285.0,
       "canonical_name": "Nature Beauty Anti-Tobacco Air Freshener",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 144
     },
     {
       "row": 145,
@@ -3845,7 +4113,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 145
     },
     {
       "row": 146,
@@ -3875,7 +4145,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 146
     },
     {
       "row": 147,
@@ -3905,7 +4177,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 147
     },
     {
       "row": 148,
@@ -3926,7 +4200,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 148
     },
     {
       "row": 149,
@@ -3947,7 +4223,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 149
     },
     {
       "row": 150,
@@ -3968,7 +4246,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 150
     },
     {
       "row": 151,
@@ -3998,7 +4278,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 151
     },
     {
       "row": 152,
@@ -4019,7 +4301,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 152
     },
     {
       "row": 153,
@@ -4040,7 +4324,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 153
     },
     {
       "row": 154,
@@ -4051,7 +4337,9 @@
       "market_average_price": 475.0,
       "canonical_name": "Nature Beauty Ocean Fresh Shower Gel",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 154
     },
     {
       "row": 155,
@@ -4081,7 +4369,9 @@
           "confidence": 66.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 155
     },
     {
       "row": 156,
@@ -4102,7 +4392,9 @@
           "confidence": 73.39
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 156
     },
     {
       "row": 157,
@@ -4132,7 +4424,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 157
     },
     {
       "row": 158,
@@ -4162,7 +4456,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 158
     },
     {
       "row": 159,
@@ -4192,7 +4488,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 159
     },
     {
       "row": 160,
@@ -4239,7 +4537,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 160
     },
     {
       "row": 161,
@@ -4260,7 +4560,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 161
     },
     {
       "row": 162,
@@ -4299,7 +4601,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 162
     },
     {
       "row": 163,
@@ -4338,7 +4642,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 163
     },
     {
       "row": 164,
@@ -4377,7 +4683,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 164
     },
     {
       "row": 165,
@@ -4398,7 +4706,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 165
     },
     {
       "row": 166,
@@ -4428,7 +4738,9 @@
           "confidence": 77.33
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 166
     },
     {
       "row": 167,
@@ -4443,13 +4755,15 @@
           "price": 295.0,
           "url": "https://mynaturebeauty.com/product/nature-beauty-papaya-facewash-100ml/",
           "matched_title": "Nature Beauty Papaya Facewash 100ml",
-          "size": "Nature Beauty Papaya Facewash 100ml Nature Beauty Papaya Facewash enriched with the goodness of papaya, gently cleanses, revitalizes, and refreshes the skin. Regular use brightens, removes impurities, and naturally radiant. Suitable for all skin types. \r\nKey Features\r\n\r\n\r\n&amp;gt; Fades hyperpigmentation\r\n&amp;gt; Helps to enhance skin brightness\r\n&amp;gt; Diminishes the appearance of wrinkles and fine lines\r\n&amp;gt; Maintains pH level of skin\r\n&amp;gt; Paraben &amp;amp; Sulfate Free\r\n\r\nMade in Bangladesh\r\nBarcode: 0784196632770",
+          "size": "Nature Beauty Papaya Facewash 100ml Nature Beauty Papaya Facewash enriched with the goodness of papaya, gently cleanses, revitalizes, and refreshes the skin. Regular use brightens, removes impurities, and naturally radiant. Suitable for all skin types. \nKey Features\n\n\n&amp;gt; Fades hyperpigmentation\n&amp;gt; Helps to enhance skin brightness\n&amp;gt; Diminishes the appearance of wrinkles and fine lines\n&amp;gt; Maintains pH level of skin\n&amp;gt; Paraben &amp;amp; Sulfate Free\n\nMade in Bangladesh\nBarcode: 0784196632770",
           "seller": "Nature Beauty Official",
           "available": true,
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 167
     },
     {
       "row": 168,
@@ -4488,7 +4802,9 @@
           "confidence": 74.09
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 168
     },
     {
       "row": 169,
@@ -4509,7 +4825,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 169
     },
     {
       "row": 170,
@@ -4530,7 +4848,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 170
     },
     {
       "row": 171,
@@ -4560,7 +4880,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 171
     },
     {
       "row": 172,
@@ -4581,7 +4903,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 172
     },
     {
       "row": 173,
@@ -4611,7 +4935,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 173
     },
     {
       "row": 174,
@@ -4632,7 +4958,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 174
     },
     {
       "row": 175,
@@ -4671,7 +4999,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 175
     },
     {
       "row": 176,
@@ -4728,7 +5058,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 176
     },
     {
       "row": 177,
@@ -4767,7 +5099,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 177
     },
     {
       "row": 178,
@@ -4797,7 +5131,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 178
     },
     {
       "row": 179,
@@ -4827,7 +5163,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 179
     },
     {
       "row": 180,
@@ -4857,7 +5195,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 180
     },
     {
       "row": 181,
@@ -4868,7 +5208,9 @@
       "market_average_price": 100.0,
       "canonical_name": "Apple Colour Shampoo ( Black)",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 181
     },
     {
       "row": 182,
@@ -4889,7 +5231,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 182
     },
     {
       "row": 183,
@@ -4900,7 +5244,9 @@
       "market_average_price": 350.0,
       "canonical_name": "Qolore Black Kohl Kajal",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 183
     },
     {
       "row": 184,
@@ -4924,8 +5270,8 @@
           "price": 220.0,
           "url": "https://shop.shajgoj.com/product/qolore-cloud-soft-cotton-pads-80-pcs",
           "matched_title": "Qolore Cloud Soft Cotton Pads 80 Pcs",
-          "size": null,
-          "seller": null,
+          "size": "",
+          "seller": "",
           "available": true,
           "confidence": 82.55
         },
@@ -4939,7 +5285,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 184
     },
     {
       "row": 185,
@@ -4960,7 +5308,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 185
     },
     {
       "row": 186,
@@ -4981,7 +5331,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 186
     },
     {
       "row": 187,
@@ -5011,7 +5363,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 187
     },
     {
       "row": 188,
@@ -5032,7 +5386,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 188
     },
     {
       "row": 189,
@@ -5062,7 +5418,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 189
     },
     {
       "row": 190,
@@ -5083,7 +5441,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 190
     },
     {
       "row": 191,
@@ -5104,7 +5464,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 191
     },
     {
       "row": 192,
@@ -5134,7 +5496,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 192
     },
     {
       "row": 193,
@@ -5155,7 +5519,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 193
     },
     {
       "row": 194,
@@ -5185,7 +5551,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 194
     },
     {
       "row": 195,
@@ -5206,7 +5574,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 195
     },
     {
       "row": 196,
@@ -5217,7 +5587,9 @@
       "market_average_price": 650.0,
       "canonical_name": "Qolore Soft Matte Liquid Lipstick Brown Mocha-09",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 196
     },
     {
       "row": 197,
@@ -5247,7 +5619,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 197
     },
     {
       "row": 198,
@@ -5277,7 +5651,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 198
     },
     {
       "row": 199,
@@ -5307,7 +5683,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 199
     },
     {
       "row": 200,
@@ -5337,7 +5715,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 200
     },
     {
       "row": 201,
@@ -5376,7 +5756,9 @@
           "confidence": 74.09
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 201
     },
     {
       "row": 202,
@@ -5406,7 +5788,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 202
     },
     {
       "row": 203,
@@ -5436,7 +5820,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 203
     },
     {
       "row": 204,
@@ -5466,7 +5852,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 204
     },
     {
       "row": 205,
@@ -5487,7 +5875,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 205
     },
     {
       "row": 206,
@@ -5526,7 +5916,9 @@
           "confidence": 73.89
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 206
     },
     {
       "row": 207,
@@ -5547,7 +5939,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 207
     },
     {
       "row": 208,
@@ -5577,7 +5971,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 208
     },
     {
       "row": 209,
@@ -5598,7 +5994,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 209
     },
     {
       "row": 210,
@@ -5628,7 +6026,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 210
     },
     {
       "row": 211,
@@ -5658,7 +6058,9 @@
           "confidence": 74.63
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 211
     },
     {
       "row": 212,
@@ -5679,7 +6081,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 212
     },
     {
       "row": 213,
@@ -5709,7 +6113,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 213
     },
     {
       "row": 214,
@@ -5747,7 +6153,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 214
     },
     {
       "row": 215,
@@ -5777,7 +6185,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 215
     },
     {
       "row": 216,
@@ -5816,7 +6226,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 216
     },
     {
       "row": 217,
@@ -5837,7 +6249,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 217
     },
     {
       "row": 218,
@@ -5867,7 +6281,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 218
     },
     {
       "row": 219,
@@ -5878,7 +6294,9 @@
       "market_average_price": 190.0,
       "canonical_name": "Rose Patals Powder/ গোলাপের পাপড়ি গুঁড়া",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 219
     },
     {
       "row": 220,
@@ -5908,7 +6326,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 220
     },
     {
       "row": 221,
@@ -5947,7 +6367,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 221
     },
     {
       "row": 222,
@@ -5986,7 +6408,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 222
     },
     {
       "row": 223,
@@ -6007,7 +6431,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 223
     },
     {
       "row": 224,
@@ -6046,7 +6472,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 224
     },
     {
       "row": 225,
@@ -6076,7 +6504,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 225
     },
     {
       "row": 226,
@@ -6087,7 +6517,9 @@
       "market_average_price": 790.0,
       "canonical_name": "Coconut Oil/ নারিকেল তেল (Big)",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 226
     },
     {
       "row": 227,
@@ -6098,7 +6530,9 @@
       "market_average_price": 499.0,
       "canonical_name": "Coconut Oil/ নারিকেল তেল (Small)",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 227
     },
     {
       "row": 228,
@@ -6128,7 +6562,9 @@
           "confidence": 73.33
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 228
     },
     {
       "row": 229,
@@ -6158,7 +6594,9 @@
           "confidence": 71.69
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 229
     },
     {
       "row": 230,
@@ -6188,7 +6626,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 230
     },
     {
       "row": 231,
@@ -6218,7 +6658,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 231
     },
     {
       "row": 232,
@@ -6239,7 +6681,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 232
     },
     {
       "row": 233,
@@ -6260,7 +6704,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 233
     },
     {
       "row": 234,
@@ -6281,7 +6727,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 234
     },
     {
       "row": 235,
@@ -6302,7 +6750,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 235
     },
     {
       "row": 236,
@@ -6323,7 +6773,9 @@
           "confidence": 30.81
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 236
     },
     {
       "row": 237,
@@ -6344,7 +6796,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 237
     },
     {
       "row": 238,
@@ -6365,7 +6819,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 238
     },
     {
       "row": 239,
@@ -6386,7 +6842,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 239
     },
     {
       "row": 240,
@@ -6425,7 +6883,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 240
     },
     {
       "row": 241,
@@ -6436,7 +6896,9 @@
       "market_average_price": 790.0,
       "canonical_name": "Mixed Hair Oil/ মিক্সড হেয়ার অয়েল",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 241
     },
     {
       "row": 242,
@@ -6466,7 +6928,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 242
     },
     {
       "row": 243,
@@ -6505,7 +6969,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 243
     },
     {
       "row": 244,
@@ -6520,7 +6986,7 @@
           "price": 500.0,
           "url": "https://skincafe.co/product/skin-cafe-pure-natural-aloe-vera-gel-98-240ml",
           "matched_title": "Skin Cafe Pure & Natural Aloe Vera gel 98% - 240ml",
-          "size": "Skin Cafe Pure & Natural Aloe Vera gel 98% - 240ml Skin Cafe Pure &amp; Natural 98% Aloe Vera Gel- this soothing gel is enriched with 98% natural aloe vera free from paraben, mineral oil and artificial color.\r\n\r\n \t98% Aloe Vera Gel\r\n \tPure &amp; Natur...",
+          "size": "Skin Cafe Pure & Natural Aloe Vera gel 98% - 240ml Skin Cafe Pure &amp; Natural 98% Aloe Vera Gel- this soothing gel is enriched with 98% natural aloe vera free from paraben, mineral oil and artificial color.\n\n \t98% Aloe Vera Gel\n \tPure &amp; Natur...",
           "seller": "Skin Cafe Official",
           "available": true,
           "confidence": 100.0
@@ -6544,7 +7010,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 244
     },
     {
       "row": 245,
@@ -6586,13 +7054,15 @@
           "price": 372.0,
           "url": "https://www.emartwayskincare.com.bd/skin-cafe-100-natural-essential-oil--tea-tree",
           "matched_title": "Skin Cafe 100% Natural Essential Oil Tea Tree (10ml)",
-          "size": "Skin Cafe 100% Natural Essential Oil Tea Tree (10ml) <p style=\"text-align: justify;\">Skin Cafe 100% Natural Tea Tree Essential Oil is pure tea tree oil, formulated to serve several skin and hair related concerns for all skin types. It is a safe topical treatment that can be applied to the skin on a regular basis. This multifunctional essential oil will fight acne, dry skin and eczema, nail fungus, help to get rid of dandruff, and protect from insect bites. It can also be used as hand sanitizer and mouthwash.</p><p><b style=\"background-color: rgb(255, 255, 255);\">\r\n\r\n</b></p><h5><b style=\"background-color: rgb(255, 255, 255);\">For Skin</b></h5><b style=\"background-color: rgb(255, 255, 255);\">\r\n\r\n</b><p></p><ul><li>Skin Cafe 100% Natural Essential Oil Tea Tree can be used for treating acne because of its anti-inflammatory and antimicrobial properties.\r\n</li><li>It can calm redness, swelling, and inflammation.\r\n</li><li>It may even help to prevent and reduce acne scars, leaving with smooth, clear skin.\r\n</li><li>Skin Cafe 100% Natural Tea Tree Essential Oil can help soothe dry skin by reducing itching and irritation. </li><li>The antiseptic properties of this tea tree essential oil may contribute to its ability to combat oily skin.</li></ul>\r\n\r\n<h5><b>For Hair</b></h5>\r\n\r\n<ul><li>Use Skin Cafe 100% Natural Tea Tree Essential Oil to treat dandruff by removing chemicals and dead skin cells from the scalp.\r\n</li><li>Skin Cafe 100% Natural Tea Tree Essential Oil has powerful cleansing, antibacterial, and antimicrobial properties. When used topically, it can help unplug hair follicles and increase hair growth.\r\n</li><li>It may even help to prevent and reduce acne scars, leaving with smooth, clear skin.\r\n</li><li>Using Skin Cafe 100% Natural Tea Tree Essential Oil helps the hair to stay healthy and moisturized, promoting optimal growth.</li></ul><p></p><b>\r\n\r\nIngredients: </b>100% Tea Tree Oil.",
-          "seller": null,
+          "size": "Skin Cafe 100% Natural Essential Oil Tea Tree (10ml) <p style=\"text-align: justify;\">Skin Cafe 100% Natural Tea Tree Essential Oil is pure tea tree oil, formulated to serve several skin and hair related concerns for all skin types. It is a safe topical treatment that can be applied to the skin on a regular basis. This multifunctional essential oil will fight acne, dry skin and eczema, nail fungus, help to get rid of dandruff, and protect from insect bites. It can also be used as hand sanitizer and mouthwash.</p><p><b style=\"background-color: rgb(255, 255, 255);\">\n\n</b></p><h5><b style=\"background-color: rgb(255, 255, 255);\">For Skin</b></h5><b style=\"background-color: rgb(255, 255, 255);\">\n\n</b><p></p><ul><li>Skin Cafe 100% Natural Essential Oil Tea Tree can be used for treating acne because of its anti-inflammatory and antimicrobial properties.\n</li><li>It can calm redness, swelling, and inflammation.\n</li><li>It may even help to prevent and reduce acne scars, leaving with smooth, clear skin.\n</li><li>Skin Cafe 100% Natural Tea Tree Essential Oil can help soothe dry skin by reducing itching and irritation. </li><li>The antiseptic properties of this tea tree essential oil may contribute to its ability to combat oily skin.</li></ul>\n\n<h5><b>For Hair</b></h5>\n\n<ul><li>Use Skin Cafe 100% Natural Tea Tree Essential Oil to treat dandruff by removing chemicals and dead skin cells from the scalp.\n</li><li>Skin Cafe 100% Natural Tea Tree Essential Oil has powerful cleansing, antibacterial, and antimicrobial properties. When used topically, it can help unplug hair follicles and increase hair growth.\n</li><li>It may even help to prevent and reduce acne scars, leaving with smooth, clear skin.\n</li><li>Using Skin Cafe 100% Natural Tea Tree Essential Oil helps the hair to stay healthy and moisturized, promoting optimal growth.</li></ul><p></p><b>\n\nIngredients: </b>100% Tea Tree Oil.",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 245
     },
     {
       "row": 246,
@@ -6640,7 +7110,9 @@
           "confidence": 56.88
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 246
     },
     {
       "row": 247,
@@ -6651,7 +7123,9 @@
       "market_average_price": 400.0,
       "canonical_name": "Skin cafe Sweet Orange Essential Oil",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 247
     },
     {
       "row": 248,
@@ -6702,8 +7176,8 @@
           "price": 372.0,
           "url": "https://www.emartwayskincare.com.bd/skin-cafe-100-natural-essential-oil--rosemary",
           "matched_title": "Skin Cafe 100% Natural Essential Oil Rosemary (10ml)",
-          "size": "Skin Cafe 100% Natural Essential Oil Rosemary (10ml) <p style=\"text-align: justify;\">Skin Cafe 100% Natural Rosemary Essential Oil is formulated with 100% pure rosemary oil. It is a one stop solution for all problems. It’s a multi-purpose oil that can diminish dandruff, increase the hair regrowth and darkness as well. This essential oil can reduce joint pain, headache, stomach cramps, constipation, and so forth. Moreover, it can be used as mouthwash to improve oral health. It can also be used as air freshener, mosquito repellent and cleaning spray.</p><p><b style=\"background-color: rgb(255, 255, 255);\">\r\n\r\n</b></p><h5><b style=\"background-color: rgb(255, 255, 255);\">For Skin</b></h5><b style=\"background-color: rgb(255, 255, 255);\">\r\n\r\n</b><p></p><ul><li>When massaged into the face, Skin Cafe 100% Natural Rosemary Essential Oil can help lighten dark spots and blemishes on the skin resulting in an improved skin complexion.\r\n</li><li>Balances skin’s natural oils. Whether the skin is dry or on the oilier side, Skin Cafe 100% Natural Rosemary Essential Oil gives your complexion the elements it needs.\r\n</li><limakes the=\"\" skin=\"\" feel=\"\" hydrated=\"\" and=\"\" moisturized.<=\"\" li=\"\"><li>The anti-inflammatory properties of this rosemary essential oil help to reduce swelling and puffiness of the skin.</li></limakes></ul>\r\n\r\n<h5><b>For Hair</b></h5>\r\n\r\n<ul><li>Skin Cafe 100% Natural Rosemary Essential Oil stimulates hair growth and help alopecia.\r\n</li><li>It has anti-inflammatory properties, promotes nerve growth and improves circulation that infuses new life to thinning hair and gives thicker locks.\r\n</li><li>The antifungal quality of the essential oil helps to address overactive fungal activity in the scalp and aid to diminish dandruff.\r\n</li><li>It can make lighter hair darker over time. It basically improves the health of the scalp to make sure that the hair follicles contain enough melanin pigment. As a result, the hair fibers become darker naturally.</li></ul><p></p><b>\r\n\r\nIngredients: </b>100% pure rosemary oil.",
-          "seller": null,
+          "size": "Skin Cafe 100% Natural Essential Oil Rosemary (10ml) <p style=\"text-align: justify;\">Skin Cafe 100% Natural Rosemary Essential Oil is formulated with 100% pure rosemary oil. It is a one stop solution for all problems. It’s a multi-purpose oil that can diminish dandruff, increase the hair regrowth and darkness as well. This essential oil can reduce joint pain, headache, stomach cramps, constipation, and so forth. Moreover, it can be used as mouthwash to improve oral health. It can also be used as air freshener, mosquito repellent and cleaning spray.</p><p><b style=\"background-color: rgb(255, 255, 255);\">\n\n</b></p><h5><b style=\"background-color: rgb(255, 255, 255);\">For Skin</b></h5><b style=\"background-color: rgb(255, 255, 255);\">\n\n</b><p></p><ul><li>When massaged into the face, Skin Cafe 100% Natural Rosemary Essential Oil can help lighten dark spots and blemishes on the skin resulting in an improved skin complexion.\n</li><li>Balances skin’s natural oils. Whether the skin is dry or on the oilier side, Skin Cafe 100% Natural Rosemary Essential Oil gives your complexion the elements it needs.\n</li><limakes the=\"\" skin=\"\" feel=\"\" hydrated=\"\" and=\"\" moisturized.<=\"\" li=\"\"><li>The anti-inflammatory properties of this rosemary essential oil help to reduce swelling and puffiness of the skin.</li></limakes></ul>\n\n<h5><b>For Hair</b></h5>\n\n<ul><li>Skin Cafe 100% Natural Rosemary Essential Oil stimulates hair growth and help alopecia.\n</li><li>It has anti-inflammatory properties, promotes nerve growth and improves circulation that infuses new life to thinning hair and gives thicker locks.\n</li><li>The antifungal quality of the essential oil helps to address overactive fungal activity in the scalp and aid to diminish dandruff.\n</li><li>It can make lighter hair darker over time. It basically improves the health of the scalp to make sure that the hair follicles contain enough melanin pigment. As a result, the hair fibers become darker naturally.</li></ul><p></p><b>\n\nIngredients: </b>100% pure rosemary oil.",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         },
@@ -6717,7 +7191,9 @@
           "confidence": 72.8
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 248
     },
     {
       "row": 249,
@@ -6747,7 +7223,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 249
     },
     {
       "row": 250,
@@ -6762,7 +7240,7 @@
           "price": 280.0,
           "url": "https://skincafe.co/product/skin-cafe-acne-care-mask-100gm",
           "matched_title": "Skin Cafe Acne Care Mask - 100gm",
-          "size": "Skin Cafe Acne Care Mask - 100gm Reduces Acne and Blemishes.\r\n \tBalances Skin Tone.\r\n \tGentle on Skin.\r\n \tImproves Skin Texture.\r\n \tNatural and Pure.\r\n\r\nCountry of Origin: Bangladesh.\r\n\r\nBarcode: 8944000574753\r\nKey InformationBenefit...",
+          "size": "Skin Cafe Acne Care Mask - 100gm Reduces Acne and Blemishes.\n \tBalances Skin Tone.\n \tGentle on Skin.\n \tImproves Skin Texture.\n \tNatural and Pure.\n\nCountry of Origin: Bangladesh.\n\nBarcode: 8944000574753\nKey InformationBenefit...",
           "seller": "Skin Cafe Official",
           "available": true,
           "confidence": 100.0
@@ -6786,7 +7264,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 250
     },
     {
       "row": 251,
@@ -6852,7 +7332,9 @@
           "confidence": 66.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 251
     },
     {
       "row": 252,
@@ -6885,13 +7367,15 @@
           "price": 604.5,
           "url": "https://www.emartwayskincare.com.bd/skin-cafe-sunscreen-spf-50-pa-lightweight--non-greasy",
           "matched_title": "Skin Cafe Sunscreen SPF 50 PA+++ Lightweight & Non-Greasy (60g)",
-          "size": "Skin Cafe Sunscreen SPF 50 PA+++ Lightweight & Non-Greasy (60g) <p style=\"text-align: justify;\">Sun tan is a regular skin problem for both men and women. Tanning is the process of increased melanin production caused by exposure to sunlight. To beat this, we have come up with our new Skin Cafe Sunscreen SPF 50 PA+++. </p><p style=\"text-align: justify; \">\r\n\r\nSPF 50 blocks 98% of the ultraviolet rays. It acts powerfully on your skin to keep it safe from the harmfulness of sun. This lightweight sunscreen is non-comedogenic and gives you a matte finish. It has UVB-UVA protection and preventive anti-mark effect.</p>",
-          "seller": null,
+          "size": "Skin Cafe Sunscreen SPF 50 PA+++ Lightweight & Non-Greasy (60g) <p style=\"text-align: justify;\">Sun tan is a regular skin problem for both men and women. Tanning is the process of increased melanin production caused by exposure to sunlight. To beat this, we have come up with our new Skin Cafe Sunscreen SPF 50 PA+++. </p><p style=\"text-align: justify; \">\n\nSPF 50 blocks 98% of the ultraviolet rays. It acts powerfully on your skin to keep it safe from the harmfulness of sun. This lightweight sunscreen is non-comedogenic and gives you a matte finish. It has UVB-UVA protection and preventive anti-mark effect.</p>",
+          "seller": "",
           "available": true,
           "confidence": 86.16
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 252
     },
     {
       "row": 253,
@@ -6942,8 +7426,8 @@
           "price": 325.5,
           "url": "https://www.emartwayskincare.com.bd/skin-cafe-micellar-water-120ml",
           "matched_title": "Skin Cafe Micellar Water 120ml",
-          "size": "Skin Cafe Micellar Water 120ml <p><p></p><p>Skin Cafe Micellar Water is a versatile multi-tasker. It removes makeup and impurities from the face and provides skin-balancing and hydrating benefits as well. It is gentle even on sensitive skin.<br></p><b>\r\nHow To Use:</b>\r\nBefore use, shake the bottle. Soak a cotton pad or a cloth with micellar water to remove makeup from your eyes and face. Then, wash your eyes and face thoroughly with face wash.\r\n</p><p><b>Ingredients</b>: Aqua, Disodium EDTA, Hexylene Glycol, Xylitileglucoside, Decyl Glucoside, PEG- 40 Glyceryl Cocoate, Xylitol, Phenoxyethanol.</p>",
-          "seller": null,
+          "size": "Skin Cafe Micellar Water 120ml <p><p></p><p>Skin Cafe Micellar Water is a versatile multi-tasker. It removes makeup and impurities from the face and provides skin-balancing and hydrating benefits as well. It is gentle even on sensitive skin.<br></p><b>\nHow To Use:</b>\nBefore use, shake the bottle. Soak a cotton pad or a cloth with micellar water to remove makeup from your eyes and face. Then, wash your eyes and face thoroughly with face wash.\n</p><p><b>Ingredients</b>: Aqua, Disodium EDTA, Hexylene Glycol, Xylitileglucoside, Decyl Glucoside, PEG- 40 Glyceryl Cocoate, Xylitol, Phenoxyethanol.</p>",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         },
@@ -6957,7 +7441,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 253
     },
     {
       "row": 254,
@@ -7014,7 +7500,9 @@
           "confidence": 77.33
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 254
     },
     {
       "row": 255,
@@ -7025,7 +7513,9 @@
       "market_average_price": 275.0,
       "canonical_name": "Skincafe hair conditioner",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 255
     },
     {
       "row": 256,
@@ -7046,9 +7536,9 @@
           "confidence": 92.22
         },
         "Shajgoj": {
-          "price": 170.0,
-          "url": "https://shop.shajgoj.com/product/skin-cafe-end-of-dull-hair-banana-shampoo-with-egg-protein-expiry-date-august-2026",
-          "matched_title": "Skin Cafe End of Dull Hair Banana Shampoo with Egg Protein (Expiry Date - August  2026)",
+          "price": 255.0,
+          "url": "https://shop.shajgoj.com/product/skin-cafe-end-of-dull-hair-banana-shampoo-with-egg-protein-expiry-date-october-2026",
+          "matched_title": "Skin Cafe End of Dull Hair Banana Shampoo with Egg Protein (Expiry date - October 2026)",
           "size": "250ml",
           "seller": null,
           "available": true,
@@ -7064,7 +7554,9 @@
           "confidence": 92.22
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 256
     },
     {
       "row": 257,
@@ -7112,7 +7604,9 @@
           "confidence": 70.86
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 257
     },
     {
       "row": 258,
@@ -7145,13 +7639,15 @@
           "price": 367.35,
           "url": "https://www.emartwayskincare.com.bd/skin-cafe-hydrating-hyaluronic-acid-face-wash-with-seaweed-extract-dry--sensitive-skin-140ml",
           "matched_title": "Skin Cafe Hydrating Hyaluronic Acid Face Wash with Seaweed Extract (Dry & Sensitive Skin) 140ml",
-          "size": "Skin Cafe Hydrating Hyaluronic Acid Face Wash with Seaweed Extract (Dry & Sensitive Skin) 140ml <p style=\"text-align: justify; \">The Skin Cafe Hyaluronic Acid Face Wash contains a blend of nourishing ingredients such as Hyaluronic Acid and Seaweed Extract, which effectively cleanse, calm, and moisturize the skin. It also helps to reduce skin sensitivity, leaving the skin feeling soft and hydrated for an extended period.</p><p style=\"text-align: justify; \"><b>\r\n\r\nIngredients:\r\n</b>Aqua, Disodium EDTA, Glycerin, Propylene Glycol, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Decyl Glucoside, PEG-150 Distearate, Sodium Hyaluronate, Alaria Esculenta Extract, Phenoxyethanol, PEG-40 Hydrogenated Castor Oil, Parfum.</p>",
-          "seller": null,
+          "size": "Skin Cafe Hydrating Hyaluronic Acid Face Wash with Seaweed Extract (Dry & Sensitive Skin) 140ml <p style=\"text-align: justify; \">The Skin Cafe Hyaluronic Acid Face Wash contains a blend of nourishing ingredients such as Hyaluronic Acid and Seaweed Extract, which effectively cleanse, calm, and moisturize the skin. It also helps to reduce skin sensitivity, leaving the skin feeling soft and hydrated for an extended period.</p><p style=\"text-align: justify; \"><b>\n\nIngredients:\n</b>Aqua, Disodium EDTA, Glycerin, Propylene Glycol, Sodium Laureth Sulfate, Cocamidopropyl Betaine, Decyl Glucoside, PEG-150 Distearate, Sodium Hyaluronate, Alaria Esculenta Extract, Phenoxyethanol, PEG-40 Hydrogenated Castor Oil, Parfum.</p>",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 258
     },
     {
       "row": 259,
@@ -7199,7 +7695,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 259
     },
     {
       "row": 260,
@@ -7214,7 +7712,7 @@
           "price": 650.0,
           "url": "https://skincafe.co/product/skin-cafe-brightening-serum-30-ml",
           "matched_title": "Skin Cafe Brightening Serum - 30 ml",
-          "size": "Skin Cafe Brightening Serum - 30 ml Fades Dark Spots\r\n \tHelps with Anti-Aging\r\n \tDermatologically Tested\r\n \tAll Skin Types\r\n\r\n&nbsp;\r\n\r\nMade in Bangladesh\r\n\r\nBarcode: 8944000592535\r\nKey InformationBenefits:\r\n\r\n \tFades Dark Spots\r\n \tHelp...",
+          "size": "Skin Cafe Brightening Serum - 30 ml Fades Dark Spots\n \tHelps with Anti-Aging\n \tDermatologically Tested\n \tAll Skin Types\n\n&nbsp;\n\nMade in Bangladesh\n\nBarcode: 8944000592535\nKey InformationBenefits:\n\n \tFades Dark Spots\n \tHelp...",
           "seller": "Skin Cafe Official",
           "available": true,
           "confidence": 100.0
@@ -7238,7 +7736,9 @@
           "confidence": 66.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 260
     },
     {
       "row": 261,
@@ -7253,7 +7753,7 @@
           "price": 650.0,
           "url": "https://skincafe.co/product/skin-cafe-niacinamide-10-serum-30-ml",
           "matched_title": "Skin Cafe Niacinamide 10% Serum - 30 ml",
-          "size": "Skin Cafe Niacinamide 10% Serum - 30 ml Minimizes Pores\r\n \tBrightens Skin Tone\r\n \tDermatologically Tested\r\n \tAll Skin Types\r\n\r\n&nbsp;\r\n\r\nMade in Bangladesh\r\n\r\nBarcode: 8944000592542\r\nKey InformationBenefits:\r\n\r\n \tMinimizes Pores\r\n \tBrighten...",
+          "size": "Skin Cafe Niacinamide 10% Serum - 30 ml Minimizes Pores\n \tBrightens Skin Tone\n \tDermatologically Tested\n \tAll Skin Types\n\n&nbsp;\n\nMade in Bangladesh\n\nBarcode: 8944000592542\nKey InformationBenefits:\n\n \tMinimizes Pores\n \tBrighten...",
           "seller": "Skin Cafe Official",
           "available": true,
           "confidence": 100.0
@@ -7286,7 +7786,9 @@
           "confidence": 76.88
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 261
     },
     {
       "row": 262,
@@ -7301,7 +7803,7 @@
           "price": 490.0,
           "url": "https://skincafe.co/product/skin-cafe-all-day-moisturizer-with-niacinamide-50gm",
           "matched_title": "Skin Cafe All-Day Moisturizer With Niacinamide - 50gm",
-          "size": "Skin Cafe All-Day Moisturizer With Niacinamide - 50gm Brightening\r\n \tHydrating\r\n \tOil-Control\r\n \tDermatologically tested\r\n \tAll Skin Types\r\n\r\nStart your mornings with Skin Cafe All-Day Moisturizer with Niacinamide – a light, breathable formula, glides on...",
+          "size": "Skin Cafe All-Day Moisturizer With Niacinamide - 50gm Brightening\n \tHydrating\n \tOil-Control\n \tDermatologically tested\n \tAll Skin Types\n\nStart your mornings with Skin Cafe All-Day Moisturizer with Niacinamide – a light, breathable formula, glides on...",
           "seller": "Skin Cafe Official",
           "available": true,
           "confidence": 100.0
@@ -7334,7 +7836,9 @@
           "confidence": 82.68
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 262
     },
     {
       "row": 263,
@@ -7382,7 +7886,9 @@
           "confidence": 82.68
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 263
     },
     {
       "row": 264,
@@ -7412,7 +7918,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 264
     },
     {
       "row": 265,
@@ -7442,7 +7950,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 265
     },
     {
       "row": 266,
@@ -7481,7 +7991,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 266
     },
     {
       "row": 267,
@@ -7511,7 +8023,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 267
     },
     {
       "row": 268,
@@ -7568,7 +8082,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 268
     },
     {
       "row": 269,
@@ -7589,7 +8105,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 269
     },
     {
       "row": 270,
@@ -7600,7 +8118,9 @@
       "market_average_price": 30.0,
       "canonical_name": "RAJKONNA GLOW BOOSTER FACIAL WASH Mini pack",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 270
     },
     {
       "row": 271,
@@ -7657,7 +8177,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 271
     },
     {
       "row": 272,
@@ -7696,7 +8218,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 272
     },
     {
       "row": 273,
@@ -7735,7 +8259,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 273
     },
     {
       "row": 274,
@@ -7792,7 +8318,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 274
     },
     {
       "row": 275,
@@ -7831,7 +8359,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 275
     },
     {
       "row": 276,
@@ -7870,7 +8400,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 276
     },
     {
       "row": 277,
@@ -7918,7 +8450,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 277
     },
     {
       "row": 278,
@@ -7957,7 +8491,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 278
     },
     {
       "row": 279,
@@ -7996,7 +8532,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 279
     },
     {
       "row": 280,
@@ -8026,7 +8564,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 280
     },
     {
       "row": 281,
@@ -8074,7 +8614,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 281
     },
     {
       "row": 282,
@@ -8122,7 +8664,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 282
     },
     {
       "row": 283,
@@ -8143,7 +8687,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 283
     },
     {
       "row": 284,
@@ -8182,7 +8728,9 @@
           "confidence": 91.65
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 284
     },
     {
       "row": 285,
@@ -8193,7 +8741,9 @@
       "market_average_price": 200.0,
       "canonical_name": "LILAC LIP BALM- Aloevera- SPF-15",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 285
     },
     {
       "row": 286,
@@ -8204,7 +8754,9 @@
       "market_average_price": 220.0,
       "canonical_name": "LILAC LIP BALM- Rose- SPF-15",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 286
     },
     {
       "row": 287,
@@ -8225,7 +8777,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 287
     },
     {
       "row": 288,
@@ -8246,7 +8800,9 @@
           "confidence": 84.75
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 288
     },
     {
       "row": 289,
@@ -8267,7 +8823,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 289
     },
     {
       "row": 290,
@@ -8288,7 +8846,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 290
     },
     {
       "row": 291,
@@ -8309,7 +8869,9 @@
           "confidence": 71.92
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 291
     },
     {
       "row": 292,
@@ -8330,9 +8892,9 @@
           "confidence": 100.0
         },
         "Shajgoj": {
-          "price": 88.0,
-          "url": "https://shop.shajgoj.com/product/hawaa-hair-fall-avenger-oil-expiry-date-october-2026",
-          "matched_title": "Hawaa Hair Fall Avenger Oil (Expiry Date - October 2026)",
+          "price": 213.0,
+          "url": "https://shop.shajgoj.com/product/hawaa-hair-fall-avenger-oil-2-2-2-YDj",
+          "matched_title": "Hawaa Hair Fall Avenger Oil",
           "size": "100ml",
           "seller": null,
           "available": true,
@@ -8357,7 +8919,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 292
     },
     {
       "row": 293,
@@ -8387,7 +8951,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 293
     },
     {
       "row": 294,
@@ -8417,7 +8983,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 294
     },
     {
       "row": 295,
@@ -8438,7 +9006,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 295
     },
     {
       "row": 296,
@@ -8459,7 +9029,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 296
     },
     {
       "row": 297,
@@ -8470,7 +9042,9 @@
       "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Liquid Matte Lipstick- Kiss me",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 297
     },
     {
       "row": 298,
@@ -8481,7 +9055,9 @@
       "market_average_price": 580.0,
       "canonical_name": "Nirvana Color Liquid Matte Lipstick- Love me",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 298
     },
     {
       "row": 299,
@@ -8502,7 +9078,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 299
     },
     {
       "row": 300,
@@ -8523,7 +9101,9 @@
           "confidence": 98.81
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 300
     },
     {
       "row": 301,
@@ -8544,7 +9124,9 @@
           "confidence": 97.66
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 301
     },
     {
       "row": 302,
@@ -8565,7 +9147,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 302
     },
     {
       "row": 303,
@@ -8576,7 +9160,9 @@
       "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Feeling Blue – 35",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 303
     },
     {
       "row": 304,
@@ -8597,7 +9183,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 304
     },
     {
       "row": 305,
@@ -8618,7 +9206,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 305
     },
     {
       "row": 306,
@@ -8639,7 +9229,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 306
     },
     {
       "row": 307,
@@ -8650,7 +9242,9 @@
       "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Glitter Nail Enamel – Miracle Brush -21",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 307
     },
     {
       "row": 308,
@@ -8671,7 +9265,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 308
     },
     {
       "row": 309,
@@ -8701,7 +9297,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 309
     },
     {
       "row": 310,
@@ -8722,7 +9320,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 310
     },
     {
       "row": 311,
@@ -8743,7 +9343,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 311
     },
     {
       "row": 312,
@@ -8764,7 +9366,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 312
     },
     {
       "row": 313,
@@ -8785,7 +9389,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 313
     },
     {
       "row": 314,
@@ -8815,7 +9421,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 314
     },
     {
       "row": 315,
@@ -8836,7 +9444,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 315
     },
     {
       "row": 316,
@@ -8857,7 +9467,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 316
     },
     {
       "row": 317,
@@ -8878,7 +9490,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 317
     },
     {
       "row": 318,
@@ -8908,7 +9522,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 318
     },
     {
       "row": 319,
@@ -8929,7 +9545,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 319
     },
     {
       "row": 320,
@@ -8950,7 +9568,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 320
     },
     {
       "row": 321,
@@ -8971,7 +9591,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 321
     },
     {
       "row": 322,
@@ -8982,7 +9604,9 @@
       "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Glitter Nail Enamel – Shiny Hand-22",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 322
     },
     {
       "row": 323,
@@ -9003,7 +9627,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 323
     },
     {
       "row": 324,
@@ -9024,7 +9650,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 324
     },
     {
       "row": 325,
@@ -9035,7 +9663,9 @@
       "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Berry Lips",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 325
     },
     {
       "row": 326,
@@ -9046,7 +9676,9 @@
       "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Burnt Sienna",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 326
     },
     {
       "row": 327,
@@ -9067,7 +9699,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 327
     },
     {
       "row": 328,
@@ -9088,7 +9722,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 328
     },
     {
       "row": 329,
@@ -9109,7 +9745,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 329
     },
     {
       "row": 330,
@@ -9120,7 +9758,9 @@
       "market_average_price": 1150.0,
       "canonical_name": "Nirvana Color Face Perfect Liquid Foundation – Light Honey",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 330
     },
     {
       "row": 331,
@@ -9131,7 +9771,9 @@
       "market_average_price": 1150.0,
       "canonical_name": "Nirvana Color Face Perfect Liquid Foundation – Light Beige",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 331
     },
     {
       "row": 332,
@@ -9152,7 +9794,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 332
     },
     {
       "row": 333,
@@ -9173,7 +9817,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 333
     },
     {
       "row": 334,
@@ -9203,7 +9849,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 334
     },
     {
       "row": 335,
@@ -9233,7 +9881,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 335
     },
     {
       "row": 336,
@@ -9263,7 +9913,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 336
     },
     {
       "row": 337,
@@ -9293,7 +9945,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 337
     },
     {
       "row": 338,
@@ -9323,7 +9977,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 338
     },
     {
       "row": 339,
@@ -9353,7 +10009,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 339
     },
     {
       "row": 340,
@@ -9374,7 +10032,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 340
     },
     {
       "row": 341,
@@ -9395,7 +10055,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 341
     },
     {
       "row": 342,
@@ -9425,7 +10087,9 @@
           "confidence": 91.29
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 342
     },
     {
       "row": 343,
@@ -9440,13 +10104,15 @@
           "price": 149.0,
           "url": "https://shop.shajgoj.com/product/groome-black-head-remover-charcoal-nose-stripsmonthly-pack-6-pcs",
           "matched_title": "Groome Black Head Remover Charcoal Nose strips(Monthly Pack) 6 pcs",
-          "size": null,
-          "seller": null,
+          "size": "",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 343
     },
     {
       "row": 344,
@@ -9485,7 +10151,9 @@
           "confidence": 96.44
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 344
     },
     {
       "row": 345,
@@ -9509,8 +10177,8 @@
           "price": 170.0,
           "url": "https://shop.shajgoj.com/product/groome-makeup-blender-sponge-pink-velvet",
           "matched_title": "Groome Makeup Blender Sponge - Pink Velvet",
-          "size": null,
-          "seller": null,
+          "size": "",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         },
@@ -9533,7 +10201,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 345
     },
     {
       "row": 346,
@@ -9548,13 +10218,15 @@
           "price": 199.0,
           "url": "https://shop.shajgoj.com/product/groome-personal-care-cotton-pad-80pcs",
           "matched_title": "Groome Personal Care Cotton Pad - 80pcs",
-          "size": null,
-          "seller": null,
+          "size": "",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 346
     },
     {
       "row": 347,
@@ -9569,8 +10241,8 @@
           "price": 190.0,
           "url": "https://shop.shajgoj.com/product/groome-eyebrow-and-facial-razor-pack-of-2pcs",
           "matched_title": "Groome Eyebrow and Facial Razor (Pack of 2pcs)",
-          "size": null,
-          "seller": null,
+          "size": "",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         },
@@ -9584,7 +10256,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 347
     },
     {
       "row": 348,
@@ -9599,8 +10273,8 @@
           "price": 190.0,
           "url": "https://shop.shajgoj.com/product/groome-eyebrow-and-facial-razor-scarlet-edge-2pcs",
           "matched_title": "Groome Eyebrow And Facial Razor- Scarlet Edge ( 2pcs)",
-          "size": null,
-          "seller": null,
+          "size": "",
+          "seller": "",
           "available": true,
           "confidence": 100.0
         },
@@ -9614,7 +10288,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 348
     },
     {
       "row": 349,
@@ -9653,7 +10329,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 349
     },
     {
       "row": 350,
@@ -9683,7 +10361,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 350
     },
     {
       "row": 351,
@@ -9722,7 +10402,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 351
     },
     {
       "row": 352,
@@ -9752,7 +10434,9 @@
           "confidence": 97.3
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 352
     },
     {
       "row": 353,
@@ -9791,7 +10475,9 @@
           "confidence": 97.3
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 353
     },
     {
       "row": 354,
@@ -9830,7 +10516,9 @@
           "confidence": 80.04
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 354
     },
     {
       "row": 355,
@@ -9860,7 +10548,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 355
     },
     {
       "row": 356,
@@ -9899,7 +10589,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 356
     },
     {
       "row": 357,
@@ -9910,7 +10602,9 @@
       "market_average_price": 220.0,
       "canonical_name": "Lavino Pure Olive Oil",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 357
     },
     {
       "row": 358,
@@ -9958,7 +10652,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 358
     },
     {
       "row": 359,
@@ -9988,7 +10684,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 359
     },
     {
       "row": 360,
@@ -10009,7 +10707,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 360
     },
     {
       "row": 361,
@@ -10039,7 +10739,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 361
     },
     {
       "row": 362,
@@ -10087,7 +10789,9 @@
           "confidence": 98.77
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 362
     },
     {
       "row": 363,
@@ -10135,7 +10839,9 @@
           "confidence": 98.86
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 363
     },
     {
       "row": 364,
@@ -10192,7 +10898,9 @@
           "confidence": 98.81
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 364
     },
     {
       "row": 365,
@@ -10231,7 +10939,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 365
     },
     {
       "row": 366,
@@ -10270,7 +10980,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 366
     },
     {
       "row": 367,
@@ -10300,7 +11012,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 367
     },
     {
       "row": 368,
@@ -10321,7 +11035,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 368
     },
     {
       "row": 369,
@@ -10351,7 +11067,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 369
     },
     {
       "row": 370,
@@ -10381,7 +11099,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 370
     },
     {
       "row": 371,
@@ -10392,7 +11112,9 @@
       "market_average_price": 290.0,
       "canonical_name": "Panam Shower Gel Pulp Rain with Free Loofah",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 371
     },
     {
       "row": 372,
@@ -10403,7 +11125,9 @@
       "market_average_price": 290.0,
       "canonical_name": "Panam Shower Gel Ocean Blue With Free Loofah",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 372
     },
     {
       "row": 373,
@@ -10433,7 +11157,9 @@
           "confidence": 98.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "Local product ",
+      "source_row": 373
     },
     {
       "row": 374,
@@ -10463,7 +11189,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 2
     },
     {
       "row": 375,
@@ -10493,7 +11221,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 3
     },
     {
       "row": 376,
@@ -10523,7 +11253,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 4
     },
     {
       "row": 377,
@@ -10544,7 +11276,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 5
     },
     {
       "row": 378,
@@ -10565,7 +11299,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 6
     },
     {
       "row": 379,
@@ -10586,7 +11322,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 7
     },
     {
       "row": 380,
@@ -10616,7 +11354,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 8
     },
     {
       "row": 381,
@@ -10646,7 +11386,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 9
     },
     {
       "row": 382,
@@ -10676,7 +11418,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 10
     },
     {
       "row": 383,
@@ -10706,7 +11450,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 11
     },
     {
       "row": 384,
@@ -10736,7 +11482,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 12
     },
     {
       "row": 385,
@@ -10766,7 +11514,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 13
     },
     {
       "row": 386,
@@ -10796,7 +11546,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 14
     },
     {
       "row": 387,
@@ -10826,7 +11578,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 15
     },
     {
       "row": 388,
@@ -10856,7 +11610,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 16
     },
     {
       "row": 389,
@@ -10877,7 +11633,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 17
     },
     {
       "row": 390,
@@ -10898,7 +11656,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 18
     },
     {
       "row": 391,
@@ -10928,7 +11688,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 19
     },
     {
       "row": 392,
@@ -10958,7 +11720,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 20
     },
     {
       "row": 393,
@@ -10988,7 +11752,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 21
     },
     {
       "row": 394,
@@ -11018,7 +11784,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 22
     },
     {
       "row": 395,
@@ -11039,7 +11807,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 23
     },
     {
       "row": 396,
@@ -11069,7 +11839,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 24
     },
     {
       "row": 397,
@@ -11099,7 +11871,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 25
     },
     {
       "row": 398,
@@ -11120,7 +11894,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 26
     },
     {
       "row": 399,
@@ -11141,7 +11917,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 27
     },
     {
       "row": 400,
@@ -11162,7 +11940,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 28
     },
     {
       "row": 401,
@@ -11173,7 +11953,9 @@
       "market_average_price": 500.0,
       "canonical_name": "Orgagenic White Sandalwood Powder (শ্বেত চন্দন)",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 29
     },
     {
       "row": 402,
@@ -11194,7 +11976,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 30
     },
     {
       "row": 403,
@@ -11215,7 +11999,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 31
     },
     {
       "row": 404,
@@ -11236,7 +12022,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 32
     },
     {
       "row": 405,
@@ -11257,7 +12045,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 33
     },
     {
       "row": 406,
@@ -11278,7 +12068,9 @@
           "available": true
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 34
     },
     {
       "row": 407,
@@ -11308,7 +12100,9 @@
           "confidence": 100.0
         }
       },
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 35
     },
     {
       "row": 408,
@@ -11319,7 +12113,9 @@
       "market_average_price": 850.0,
       "canonical_name": "Orgagenic Chloasma Repair Serum",
       "sources": {},
-      "mrp_source_type": "workbook"
+      "mrp_source_type": "workbook",
+      "source_sheet": "local product Orgagenic",
+      "source_row": 36
     }
   ]
 }

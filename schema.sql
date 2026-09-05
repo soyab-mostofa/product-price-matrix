@@ -31,7 +31,13 @@ CREATE TABLE IF NOT EXISTS products (
   sourcing_origin TEXT NOT NULL DEFAULT 'local' CHECK (sourcing_origin IN ('local', 'imported')),
   -- Skincare / Haircare / Fragrance for imported SKUs; local SKUs have none.
   category TEXT,
-  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  -- Workbook provenance: the sheet and 1-based Excel row this SKU was read
+  -- from, so any price on screen can be walked back to a cell. Nullable —
+  -- provenance, not a constraint. Declared last to match migration 0007,
+  -- which appends them with ALTER TABLE ADD COLUMN.
+  source_sheet TEXT,
+  source_row INTEGER CHECK (source_row IS NULL OR source_row > 1)
 );
 
 CREATE TABLE IF NOT EXISTS marketplace_listings (

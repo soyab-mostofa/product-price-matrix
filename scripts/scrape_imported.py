@@ -40,6 +40,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from sku_matcher import validate_match  # noqa: E402
+from imported_seed import read_workbook  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 D1_DIR = ROOT / ".wrangler/state/v3/d1/miniflare-D1DatabaseObject"
@@ -116,25 +117,33 @@ class AroggaChannel:
         return payload.get("data", [])[:10]
 
     def extract(self, hit: dict) -> tuple[str, float, str, str | None] | None:
+        candidates = self.extract_all(hit)
+        return candidates[0] if candidates else None
+
+    def extract_all(self, hit: dict) -> list[tuple[str, float, str, str | None]]:
         name = str(hit.get("p_name") or "").strip()
         pv_list = hit.get("pv") or []
         if not name or not pv_list:
-            return None
-        pv = pv_list[0]
-        price = pv.get("pv_b2c_discounted_price") or pv.get("pv_b2c_price") or pv.get("pv_mrp")
-        pv_id = pv.get("pv_id") or hit.get("id")
-        if not price or not pv_id:
-            return None
-        try:
-            val = float(price)
-        except (TypeError, ValueError):
-            return None
-        if val <= 0:
-            return None
+            return []
+        product_id = hit.get("id") or hit.get("p_id")
+        if not product_id:
+            return []
         slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
-        url = f"https://www.arogga.com/product/{pv_id}/{slug}"
-        size = str(pv.get("pu_b2c_sales_unit_label") or pv.get("pu_base_unit_label") or "") or None
-        return name, val, url, size
+        url = f"https://www.arogga.com/product/{product_id}/{slug}"
+        out = []
+        for pv in pv_list:
+            price = pv.get("pv_b2c_discounted_price") or pv.get("pv_b2c_price") or pv.get("pv_mrp")
+            if not price:
+                continue
+            try:
+                val = float(price)
+            except (TypeError, ValueError):
+                continue
+            if val <= 0:
+                continue
+            size = str(pv.get("pu_b2c_sales_unit_label") or pv.get("pu_base_unit_label") or "") or None
+            out.append((name, val, url, size))
+        return out
 
 
 class OhSoGoChannel:
@@ -214,21 +223,22 @@ def replica_paths(explicit: Path | None) -> list[Path]:
 
 
 def record_match(connections: list[sqlite3.Connection], row_id: int, channel: str,
-                 title: str, price: float, url: str, confidence: float) -> None:
+                 title: str, price: float, url: str, confidence: float, size: str | None = None) -> None:
     for con in connections:
         con.execute(
             """
             INSERT INTO marketplace_listings
-              (row_id, channel_name, price, url, matched_title, seller, confidence, available, verified)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 1, 1)
+              (row_id, channel_name, price, url, matched_title, size, seller, confidence, available, verified)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, 1)
             ON CONFLICT(row_id, channel_name) DO UPDATE SET
               price = excluded.price,
               url = excluded.url,
               matched_title = excluded.matched_title,
+              size = excluded.size,
               confidence = excluded.confidence,
               verified = 1
             """,
-            (row_id, channel, price, url, title, channel, confidence),
+            (row_id, channel, price, url, title, size, channel, confidence),
         )
         con.execute(
             """
@@ -238,6 +248,8 @@ def record_match(connections: list[sqlite3.Connection], row_id: int, channel: st
                        WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1 AND verified = 1),
                      (SELECT AVG(price) FROM marketplace_listings
                        WHERE row_id = ?1 AND available = 1 AND verified = 1),
+                     (SELECT AVG(price) FROM marketplace_listings
+                       WHERE row_id = ?1 AND available = 1),
                      market_average_price,
                      manufactured_price
                    ),
@@ -248,7 +260,7 @@ def record_match(connections: list[sqlite3.Connection], row_id: int, channel: st
                                    WHERE row_id = ?1 AND available = 1 AND verified = 1) THEN 'third_party_avg'
                      ELSE 'reference'
                    END
-             WHERE row_id = ?1
+             WHERE row_id = ?1 AND sourcing_origin = 'imported'
             """,
             (row_id,),
         )
@@ -307,6 +319,9 @@ def main() -> None:
     print(f"  Replicas: {len(connections)} databases synced")
     print(f"  Pre-scrape verified coverage: {before_coverage}/{len(skus)} SKUs\n")
 
+    wb_report = read_workbook()
+    wb_skus = {s.product_name: s for s in wb_report.skus}
+
     verified_new = 0
 
     for idx, (row_id, name, brand, size, cat, mfg_price) in enumerate(skus, start=1):
@@ -315,7 +330,7 @@ def main() -> None:
             if key in done and not args.reset:
                 continue
 
-            query = f"{brand} {name}"
+            query = name if name.lower().startswith(brand.lower()) else f"{brand} {name}"
             hits, error_str = [], None
             for attempt in range(args.retries + 1):
                 try:
@@ -335,33 +350,60 @@ def main() -> None:
 
             matched_candidate = None
             for hit in hits:
-                parsed = ch.extract(hit)
-                if not parsed:
-                    continue
-                cand_title, cand_price, cand_url, cand_size = parsed
-                verdict = validate_match(
-                    brand=brand,
-                    product_name=name,
-                    target_size_text=size,
-                    candidate_name=cand_title,
-                    candidate_context=ch_name,
-                    candidate_size_text=cand_size,
-                )
-                audit_log.append({
-                    "row_id": row_id, "brand": brand, "product": name, "channel": ch_name,
-                    "candidate_title": cand_title, "candidate_price": cand_price,
-                    "accepted": verdict.accepted, "reasons": verdict.reasons,
-                    "score": round(verdict.score, 2),
-                })
-                if verdict.accepted:
-                    matched_candidate = (cand_title, cand_price, cand_url, max(0.0, min(100.0, float(verdict.score))))
+                candidates = ch.extract_all(hit) if hasattr(ch, "extract_all") else ([ch.extract(hit)] if ch.extract(hit) else [])
+                for parsed in candidates:
+                    if not parsed:
+                        continue
+                    cand_title, cand_price, cand_url, cand_size = parsed
+                    verdict = validate_match(
+                        brand=brand,
+                        product_name=name,
+                        target_size_text=size,
+                        candidate_name=cand_title,
+                        candidate_context=ch_name,
+                        candidate_size_text=cand_size,
+                    )
+                    audit_log.append({
+                        "row_id": row_id, "brand": brand, "product": name, "channel": ch_name,
+                        "candidate_title": cand_title, "candidate_price": cand_price,
+                        "accepted": verdict.accepted, "reasons": verdict.reasons,
+                        "score": round(verdict.score, 2),
+                    })
+                    if verdict.accepted:
+                        matched_candidate = (cand_title, cand_price, cand_url, cand_size, max(0.0, min(100.0, float(verdict.score))))
+                        break
+                if matched_candidate:
                     break
 
             if matched_candidate:
-                c_title, c_price, c_url, c_conf = matched_candidate
-                record_match(connections, row_id, ch_name, c_title, c_price, c_url, c_conf)
+                c_title, c_price, c_url, c_size, c_conf = matched_candidate
+                record_match(connections, row_id, ch_name, c_title, c_price, c_url, c_conf, c_size)
                 verified_new += 1
                 print(f"  [{idx}/{len(skus)}] {ch_name:10} ৳{c_price:>7.0f} ({c_conf:.0f}%) -> {c_title[:50]}")
+            else:
+                wb_sku = wb_skus.get(name)
+                wb_price = wb_sku.channel_prices.get(ch_name) if wb_sku else None
+                for con in connections:
+                    if wb_price is not None:
+                        con.execute(
+                            """
+                            INSERT INTO marketplace_listings
+                              (row_id, channel_name, price, url, matched_title, size, seller, confidence, available, verified)
+                            VALUES (?, ?, ?, NULL, NULL, NULL, ?, 100.0, 1, 0)
+                            ON CONFLICT(row_id, channel_name) DO UPDATE SET
+                              price = excluded.price,
+                              url = NULL,
+                              matched_title = NULL,
+                              size = NULL,
+                              confidence = 100.0,
+                              verified = 0,
+                              available = 1
+                            """,
+                            (row_id, ch_name, wb_price, ch_name),
+                        )
+                    else:
+                        con.execute("DELETE FROM marketplace_listings WHERE row_id = ? AND channel_name = ?", (row_id, ch_name))
+                    con.commit()
 
             done.add(key)
             PROGRESS_PATH.write_text(json.dumps({"done": sorted(done)}))

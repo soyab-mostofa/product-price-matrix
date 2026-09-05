@@ -21,6 +21,8 @@ REPLACEMENTS = {
     'hydro boost': 'hydroboost',
     'hairfall': 'hair fall',
     'hand-made': 'handmade',
+    'glutathion': 'glutathione',
+    'deo': 'deodorant',
 }
 
 BRAND_MAP = {
@@ -51,6 +53,7 @@ Q_SUBBRANDS = {
 GRAMMAR_STOP = {
     'and', 'with', 'for', 'the', 'of', 'a', 'an', 'plus', 'by', 'to', 'from',
     'online', 'best', 'price', 'bangladesh', 'buy', 'now', 'new',
+    'uk', 'usa', 'india', 'thai', 'thailand', 'france', 'germany', 'malaysia', 'bd', 'official',
 }
 TYPE_STOP = {
     'facial', 'face', 'wash', 'cleanser', 'cleansing', 'foam', 'toner', 'serum',
@@ -60,6 +63,7 @@ TYPE_STOP = {
     'gloss', 'glaze', 'foundation', 'powder', 'concealer', 'mascara', 'kajal',
     'eyeliner', 'nail', 'enamel', 'mist', 'perfume', 'spray', 'water', 'pads',
     'pad', 'razor', 'strips', 'strip', 'wipes', 'body', 'hand', 'air', 'freshener',
+    'perfumed',
 }
 VARIANT_GENERIC = TYPE_STOP | {
     'color', 'soft', 'matte', 'liquid', 'full', 'cover', 'perfect', 'pro', 'compact',
@@ -70,23 +74,27 @@ VARIANT_GENERIC = TYPE_STOP | {
 TYPE_PATTERNS = [
     ('micellar_water', [r'\bmicellar water\b']),
     ('rose_water', [r'\brose water\b']),
-    ('facial_cleanser', [r'\bface ?wash\b', r'\bfacial wash\b', r'\bfacial cleanser\b', r'\bfoam cleanser\b', r'\bcleansing gel\b', r'\bface cleanser\b', r'\bcleanser\b']),
+    ('facial_cleanser', [r'\bface ?wash\b', r'\bfacial wash\b', r'\bfacial cleanser\b', r'\bfoam cleanser\b', r'\bcleansing gel\b', r'\bface cleanser\b', r'\bcleanser\b', r'\bfacial foam\b', r'\bface foam\b', r'\bfoaming cleanser\b', r'\bcleansing foam\b']),
     ('toner', [r'\btoner\b']),
     ('hair_serum', [r'\bhair serum\b']),
     ('serum', [r'\bserum\b']),
     ('essence', [r'\bessence\b']),
-    ('sunscreen', [r'\bsunscreen\b', r'\bsun ?block\b']),
-    ('shampoo_conditioner', [r'\bshampoo (?:and|with|\+) conditioner\b', r'\bshampoo & conditioner\b']),
+    ('sunscreen', [r'\bsunscreen\b', r'\bsun ?block\b', r'\bsun cream\b']),
+    ('shampoo_conditioner', [r'\bshampoo (?:and|with|\+) conditioner\b', r'\bshampoo & conditioner\b', r'\b2in1 shampoo \+ conditioner\b', r'\b2 in 1 shampoo\b']),
     ('shampoo', [r'\bshampoo\b']),
-    ('conditioner', [r'\bconditioner\b']),
+    ('conditioner', [r'\bconditioner\b', r'\bconditioning smoothies\b']),
     ('essential_oil', [r'\bessential oil\b']),
     ('hair_oil', [r'\bhair (?:growth )?oil\b', r'\bonion seed hair oil\b']),
     ('body_oil', [r'\bbody oil\b', r'\bface & body oil\b', r'\bface and body oil\b']),
     ('oil', [r'\boil\b']),
-    ('body_lotion', [r'\bbody lotion\b']),
-    ('baby_lotion', [r'\bbaby body lotion\b']),
-    ('moisturizer', [r'\bmoisturizer\b', r'\bmoisturiser\b', r'\bmoisturizing gel\b', r'\bmoisturising gel\b', r'\bday cream\b', r'\bnight repairing cream\b', r'\bface cream\b', r'\bfacial cream\b', r'\bneck cream\b', r'\bmoisturizing cream\b', r'\bmoisturising cream\b']),
-    ('cream', [r'\bcream\b']),
+    ('petroleum_jelly', [r'\bblueseal\b', r'\bpetroleum jelly\b']),
+    ('body_lotion', [r'\bbody lotion\b', r'\bserum burst lotion\b', r'\bmoisturising lotion\b', r'\bmoisturizing lotion\b', r'\bmoisture lotion\b', r'\bbody milk\b']),
+    ('baby_lotion', [r'\bbaby body lotion\b', r'\bbaby lotion\b']),
+    ('night_cream', [r'\bnight (?:repairing |comfort )?cream\b', r'\bnight gel\b']),
+    ('day_cream', [r'\bday cream\b']),
+    ('moisturizer', [r'\bmoisturizer\b', r'\bmoisturiser\b', r'\bmoisturizing gel\b', r'\bmoisturising gel\b', r'\bface cream\b', r'\bfacial cream\b', r'\bneck cream\b', r'\bmoisturizing cream\b', r'\bmoisturising cream\b', r'\bsoothing gel\b']),
+    ('hair_mask', [r'\bhair mask\b']),
+    ('cream', [r'\bcream\b', r'\bbeauty cream\b']),
     ('shower_gel', [r'\bshower gel\b']),
     ('hand_wash', [r'\bhand ?wash\b']),
     ('air_freshener', [r'\bair freshener\b']),
@@ -107,7 +115,9 @@ TYPE_PATTERNS = [
     ('face_palette', [r'\bface palette\b']),
     ('setting_spray', [r'\bsetting spray\b']),
     ('body_mist', [r'\bbody mist\b']),
-    ('perfume', [r'\bperfume\b', r'\beau de parfum\b', r'\bedp\b']),
+    ('deo_roll_on', [r'\broll\s*on\b']),
+    ('body_spray', [r'\bbody spray\b', r'\bdeodorant (?:body )?spray\b', r'\bdeo spray\b', r'\bpocket deodorant\b', r'\bbody deodorant\b', r'\bdeodorant\b', r'\bdeo\b']),
+    ('perfume', [r'\bperfume\b', r'\beau de parfum\b', r'\bedp\b', r'\bedt\b']),
     ('wet_wipes', [r'\bwet wipes\b']),
     ('cotton_pad', [r'\bcotton pads?\b']),
     ('razor', [r'\brazor\b']),
@@ -116,7 +126,11 @@ TYPE_PATTERNS = [
     ('glycerin', [r'\bglycerin\b']),
     ('powder', [r'\bpowder\b']),
 ]
-VARIANT_TYPES = {'lip_gloss', 'lip_balm', 'lipstick', 'foundation', 'pressed_powder', 'concealer', 'nail_enamel', 'face_palette', 'body_mist', 'perfume'}
+VARIANT_TYPES = {
+    'lip_gloss', 'lip_balm', 'lipstick', 'foundation', 'pressed_powder',
+    'concealer', 'nail_enamel', 'face_palette', 'body_mist', 'body_spray',
+    'deo_roll_on', 'perfume', 'petroleum_jelly',
+}
 SHADE_TOKENS = {
     'natural', 'ivory', 'pink', 'porcelain', 'beige', 'medium', 'tan', 'warm',
     'light', 'fair', 'deep', 'dark', 'nude', 'rose', 'red', 'coral', 'brown',
@@ -221,7 +235,9 @@ def types_compatible(target_type: str | None, candidate_type: str | None) -> boo
         return False
     if target_type == candidate_type:
         return True
-    if {target_type, candidate_type} <= {'cream', 'moisturizer'}:
+    if {target_type, candidate_type} <= {'cream', 'moisturizer', 'day_cream'}:
+        return True
+    if {target_type, candidate_type} <= {'body_lotion', 'baby_lotion'}:
         return True
     oil_types = {'oil', 'body_oil', 'hair_oil', 'essential_oil'}
     return 'oil' in {target_type, candidate_type} and {target_type, candidate_type} <= oil_types
@@ -268,11 +284,106 @@ def critical_markers(value: str | None, size: tuple[Decimal, str] | None = None)
     return markers
 
 
+KEY_ACTIVES = {
+    'hyaluronic': {'hyaluronic', 'ha'},
+    'salicylic': {'salicylic', 'bha'},
+    'glycolic': {'glycolic', 'aha'},
+    'niacinamide': {'niacinamide'},
+    'retinol': {'retinol', 'retinoid'},
+    'ceramide': {'ceramide', 'ceramides'},
+    'glutathione': {'glutathione'},
+    'alpha arbutin': {'alpha arbutin', 'arbutin'},
+    'vitamin c': {'vitamin c', 'ascorbic'},
+    'cica': {'cica', 'centella'},
+    'snail': {'snail', 'mucin'},
+    'collagen': {'collagen'},
+}
+
+FRAGRANCE_VARIANTS = {
+    'enticing', 'romantic', 'gorgeous', 'alluring', 'charming',
+    'royal intense', 'classic gold', 'aqua kiss', 'cocoa butter', 'cocoa glow', 'cocoa', 'original',
+}
+
+
+def detect_actives(text: str | None) -> set[str]:
+    if not text:
+        return set()
+    norm = normalize(text)
+    found = set()
+    for active, aliases in KEY_ACTIVES.items():
+        if any(re.search(r'\b' + re.escape(alias) + r'\b', norm) for alias in aliases):
+            found.add(active)
+    return found
+
+
+def detect_fragrances(text: str | None) -> set[str]:
+    if not text:
+        return set()
+    norm = normalize(text)
+    found = set()
+    for f in FRAGRANCE_VARIANTS:
+        if re.search(r'\b' + re.escape(f) + r'\b', norm):
+            found.add(f)
+    return found
+
+
+HAIR_VARIANTS = {
+    'volume': ['volume'],
+    'anti_dandruff': ['anti dandruff', 'dandruff'],
+    'hair_fall': ['hair fall', 'anti hair fall', 'rambut gugur'],
+    'damage_restore': ['damage restore'],
+    'smooth_manageable': ['smooth & manageable', 'smooth and manageable'],
+    'perfect_straight': ['perfect straight'],
+    'colour_protect': ['colour protect', 'color protect', 'color protecting', 'colour protecting'],
+    'purple': ['purple', 'anti brassiness'],
+}
+
+
+def detect_hair_variants(text: str | None) -> set[str]:
+    if not text:
+        return set()
+    norm = normalize(text)
+    found = set()
+    for v_key, patterns in HAIR_VARIANTS.items():
+        if any(re.search(r'\b' + re.escape(p) + r'\b', norm) for p in patterns):
+            found.add(v_key)
+    return found
+
+
+# Brands ship several products that differ only by a sub-line word, with every
+# other token shared: Streax *Vitalized* vs *Shine*, Streax Pro Vitariche
+# *Care* vs *Gloss*, Sunsilk *Hijab* vs the plain line. Token-set similarity
+# rates these ~80% alike, so without an explicit rule they clear the score
+# threshold and put a shopper on the wrong bottle. Members of one set are
+# mutually exclusive.
+SUB_LINES: tuple[set[str], ...] = (
+    {'vitalized', 'shine', 'gloss', 'care'},   # Streax hair serum lines
+    {'hijab', 'black shine', 'soft smooth'},   # Sunsilk sub-lines
+)
+
+
+def detect_sub_lines(text: str | None) -> set[tuple[int, str]]:
+    if not text:
+        return set()
+    norm = f' {normalize(text)} '
+    found = set()
+    for index, group in enumerate(SUB_LINES):
+        for member in group:
+            if f' {member} ' in norm:
+                found.add((index, member))
+    return found
+
+
 def variant_tokens(brand: str, product_name: str, size: tuple[Decimal, str] | None) -> set[str]:
     product_type = detect_type(product_name)
     if product_type not in VARIANT_TYPES:
         return set()
-    tokens = set(normalize(product_name).split())
+    text_without_sizes = re.sub(
+        r'\b\d+(?:\.\d+)?\s*(?:milliliters?|ml|grams?|grammes?|gm|g|kilograms?|kg|liters?|litres?|l|pieces?|pcs?|pc)\b',
+        ' ',
+        normalize(product_name),
+    )
+    tokens = set(text_without_sizes.split())
     for alias in brand_aliases(brand, product_name):
         tokens -= set(normalize(alias).split())
     tokens -= GRAMMAR_STOP
@@ -285,7 +396,12 @@ def variant_tokens(brand: str, product_name: str, size: tuple[Decimal, str] | No
 
 
 def significant_tokens(brand: str, product_name: str, size: tuple[Decimal, str] | None) -> set[str]:
-    tokens = set(normalize(product_name).split())
+    text_without_sizes = re.sub(
+        r'\b\d+(?:\.\d+)?\s*(?:milliliters?|ml|grams?|grammes?|gm|g|kilograms?|kg|liters?|litres?|l|pieces?|pcs?|pc)\b',
+        ' ',
+        normalize(product_name),
+    )
+    tokens = set(text_without_sizes.split())
     for alias in brand_aliases(brand, product_name):
         tokens -= set(normalize(alias).split())
     tokens -= GRAMMAR_STOP
@@ -325,6 +441,8 @@ def validate_match(*, brand: str, product_name: str, target_size_text: str | Non
         reasons.append('multiple package sizes for single SKU')
     if target_type and not types_compatible(target_type, candidate_type):
         reasons.append(f'product type mismatch ({target_type} != {candidate_type})')
+    elif candidate_type and not target_type and candidate_type in {'cream', 'night_cream', 'body_lotion', 'shampoo', 'conditioner', 'body_spray', 'deo_roll_on', 'perfume'}:
+        reasons.append(f'unmatched candidate product type ({candidate_type})')
     if target_size is not None:
         if candidate_title_sizes and target_size not in candidate_title_sizes:
             reasons.append(f'title size mismatch ({target_size} not in {sorted(candidate_title_sizes)})')
@@ -332,6 +450,56 @@ def validate_match(*, brand: str, product_name: str, target_size_text: str | Non
             reasons.append('candidate size missing')
         elif target_size not in candidate_sizes:
             reasons.append(f'size mismatch ({target_size} not in {sorted(candidate_sizes)})')
+
+    target_actives = detect_actives(product_name)
+    candidate_actives = detect_actives(candidate_name)
+    missing_actives = target_actives - candidate_actives
+    if missing_actives:
+        reasons.append(f'missing key active: {sorted(missing_actives)}')
+
+    target_fragrances = detect_fragrances(product_name)
+    candidate_fragrances = detect_fragrances(candidate_name)
+    missing_fragrances = target_fragrances - candidate_fragrances
+    if missing_fragrances:
+        reasons.append(f'missing fragrance variant: {sorted(missing_fragrances)}')
+    unexpected_fragrances = candidate_fragrances - target_fragrances
+    if unexpected_fragrances and (target_fragrances or target_type in {'petroleum_jelly', 'deo_roll_on', 'body_spray'}):
+        reasons.append(f'unexpected conflicting fragrance: {sorted(unexpected_fragrances)}')
+
+    target_hair = detect_hair_variants(product_name)
+    candidate_hair = detect_hair_variants(candidate_name)
+    missing_hair = target_hair - candidate_hair
+    if missing_hair:
+        reasons.append(f'missing hair variant: {sorted(missing_hair)}')
+    unexpected_hair = candidate_hair - target_hair
+    if unexpected_hair and target_hair:
+        reasons.append(f'unexpected conflicting hair variant: {sorted(unexpected_hair)}')
+
+    target_sub_lines = detect_sub_lines(product_name)
+    candidate_sub_lines = detect_sub_lines(candidate_name)
+    candidate_sub_groups = {group for group, _ in candidate_sub_lines}
+    for group, member in target_sub_lines:
+        rival = next(
+            (other for other_group, other in candidate_sub_lines
+             if other_group == group and other != member),
+            None,
+        )
+        if rival is not None:
+            reasons.append(f'sub-line mismatch ({member} != {rival})')
+        elif group not in candidate_sub_groups:
+            reasons.append(f"candidate missing sub-line '{member}'")
+
+    target_norm = normalize(product_name)
+    cand_norm = normalize(candidate_name)
+    if 'gentle' in target_norm and 'oily' in cand_norm and 'oily' not in target_norm:
+        reasons.append('skin type mismatch: gentle vs oily')
+    if 'oily' in target_norm and 'gentle' in cand_norm and 'gentle' not in target_norm:
+        reasons.append('skin type mismatch: oily vs gentle')
+
+    if 'relief sun' in target_norm and 'aqua fresh' in cand_norm:
+        reasons.append('variant mismatch: relief sun vs aqua fresh')
+    if 'aqua fresh' in target_norm and 'relief sun' in cand_norm and 'aqua fresh' not in cand_norm:
+        reasons.append('variant mismatch: aqua fresh vs relief sun')
 
     c_compact = compact(candidate_name)
     markers = critical_markers(product_name, target_size)
@@ -345,8 +513,11 @@ def validate_match(*, brand: str, product_name: str, target_size_text: str | Non
     candidate_words = set(normalize(candidate_name).split())
     unexpected_shade_words = (candidate_words & SHADE_TOKENS) - (target_words & SHADE_TOKENS)
     unexpected_variant_marker = target_type in VARIANT_TYPES and bool(unexpected_shade_words)
-    if unexpected_markers and (markers or unexpected_variant_marker):
-        reasons.append(f'unexpected critical markers: {unexpected_markers}')
+    if unexpected_markers:
+        if target_type != 'sunscreen' and any(m.startswith('spf') for m in unexpected_markers):
+            reasons.append(f'unexpected SPF marker on non-sunscreen: {sorted(unexpected_markers)}')
+        elif markers or unexpected_variant_marker:
+            reasons.append(f'unexpected critical markers: {sorted(unexpected_markers)}')
 
     variants = variant_tokens(brand, product_name, target_size)
     c_tokens = set(normalize(candidate_name).split())

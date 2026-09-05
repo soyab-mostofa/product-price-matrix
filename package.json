@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "python3 scripts/migrate_local_d1.py && bun run build:client && vite",
     "db:local:migrate": "python3 scripts/migrate_local_d1.py",
-    "db:local:sync": "python3 scripts/sync_local_d1.py",
+    "db:local:sync": "uv run --with openpyxl --with rapidfuzz python3 scripts/sync_local_d1.py",
     "build:client": "bun build src/client/app.ts --outfile public/static/app.js --target browser --minify",
     "build": "bun run build:client && vite build",
     "typecheck": "tsc --noEmit",
