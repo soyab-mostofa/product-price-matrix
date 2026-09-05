@@ -26,19 +26,19 @@
   ],
   "source_listing_counts": {
     "Official Store": 179,
-    "Arogga": 157,
-    "Shajgoj": 145,
-    "OhSoGo": 116,
-    "Daraz": 58,
+    "Arogga": 174,
+    "Shajgoj": 188,
+    "OhSoGo": 118,
+    "Daraz": 73,
     "eMartWay": 27,
     "PandaMart": 28,
     "Rokomari": 3
   },
   "coverage_counts": {
-    "0": 40,
-    "1": 155,
-    "2": 124,
-    "3": 55,
+    "0": 28,
+    "1": 105,
+    "2": 183,
+    "3": 58,
     "4": 23,
     "5": 7,
     "6": 3
@@ -1526,6 +1526,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 390.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-raw-salicylic-acid-toner-05",
+          "matched_title": "Guerniss Raw Salicylic Acid Toner 0.5%",
+          "size": "120ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -1632,6 +1641,15 @@
       "market_average_price": 470.0,
       "canonical_name": "Niacinamide Toner 5%",
       "sources": {
+        "Arogga": {
+          "price": 399.0,
+          "url": "https://www.arogga.com/product/91565/guerniss-raw-niacinamide-toner-5-120ml",
+          "matched_title": "Guerniss Raw Niacinamide Toner 5% 120ml",
+          "size": "120ml",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
         "OhSoGo": {
           "price": 399.0,
           "url": "https://www.ohsogo.com/products/guerniss-raw-niacinamide-toner-5-120ml",
@@ -1919,6 +1937,15 @@
       "market_average_price": 430.0,
       "canonical_name": "Niacinamide Micellar Water",
       "sources": {
+        "Shajgoj": {
+          "price": 340.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-raw-niacinamide-micellar-water",
+          "matched_title": "Guerniss Raw Niacinamide Micellar Water",
+          "size": "120ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        },
         "OhSoGo": {
           "price": 365.0,
           "url": "https://www.ohsogo.com/products/guerniss-raw-niacinamide-micellar-water-120ml-1",
@@ -2593,6 +2620,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 490.0,
+          "url": "https://www.daraz.com.bd/products/guerniss-coxs-bazar-02-i538550927.html",
+          "matched_title": "Guerniss Vacation Lipstick - Coxs Bazar 02",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -2685,6 +2721,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 425.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-vacation-lipstick-6-kuakata",
+          "matched_title": "Guerniss Vacation Lipstick -6 (Kuakata)",
+          "size": "3.4gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -2708,6 +2753,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 425.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-vacation-lipstick-7-jaflong",
+          "matched_title": "Guerniss Vacation Lipstick - 7 (Jaflong)",
+          "size": "3.4gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -2729,6 +2783,15 @@
           "matched_title": "Guerniss Vacation Lipstick GVL 08_Ratargul",
           "size": "Guerniss Vacation Lipstick GVL 08_Ratargul <h2>A Heritage-Inspired Collection of the Best Lipstick</h2>\n<p>Embrace effortless beauty with the Vacation lipstick collection. This range presents twelve shades inspired by destinations known for culture and remarkable nature.</p>\n<p>Each color is created to flatter diverse skin tones. Connect with global inspiration and create fresh looks every time you apply this <a href=\"https://www.facebook.com/share/r/1AL5uo9pj6/\" target=\"_blank\" title=\"\" rel=\"noopener\">lipstick</a>.</p>\n<p>The long-wearing formula helps color stay bold and fresh for hours. This long lasting lipstick feels comfortable and glamorous every day.</p>\n<h2>Travel Through Heritage with Vibrant Shades</h2>\n<p>The Guerniss Vacation collection elevates your makeup ritual for any occasion. Its creamy, hydrating texture offers comfort and helps keep lips nourished and soft.</p>\n<p>Application feels smooth and easy. The satin finish stays feather-light, making the lipstick comfortable through repeated wear.</p>\n<p>The carefully balanced formula features Castor Oil (Ricinus Communis), Carnauba, and Candelilla waxes. These ingredients help provide moisture and a supple feel through wear.</p>\n<p>Each shade delivers rich pigment while supporting a healthy-looking appearance. Show your personality with every swipe, whether you are at home or traveling.</p>\n<p>The texture glides on with ease, helping color spread evenly across the lips. The design also makes touch-ups simple when your plans change.</p>\n<h2>Inclusivity and Versatility Across Iconic Locations Featuring <a href=\"https://guerniss.com/products/full-cover-matte-foundation-30ml\" target=\"_blank\" title=\"\" rel=\"noopener\">Lipstick</a>\n</h2>\n<p>The Guerniss Vacation collection is more than beauty products. It celebrates diversity and elegance in many forms.</p>\n<p>Each carefully chosen color works well with varying skin undertones. The inspiration comes from places known for rich traditions.</p>\n<p>Shades like Monpura and Moynamoti help the collection reflect heritage and culture. That identity gives each shade a distinct sense of place.</p>\n<p>This lipstick-inspired lineup adapts to different moods and occasions. Choose a red-inspired shade for evenings out, or select muted tones for the workday.</p>\n<p>Its versatility fits day trips, meetings, and events with ease. The variety makes matching color with your outfit or setting feel simple.</p>\n<h2>Luxury and Performance: Everyday Glamour with the Best Lipstick</h2>\n<p>With Guerniss, luxury is accessible to all beauty lovers. The remarkable quality and reasonable pricing bring true value to your routine.</p>\n<p>Each product provides vibrant color payoff using select ingredients for beautiful, healthy lips. The lightweight feel supports comfortable daily wear.</p>\n<p>Each available finish, from luminous satin to contemporary matte, is crafted for long wear and beauty. The formula helps resist smudges and fading.</p>\n<ul>\n<li>Bold pigments for vibrant color enhancing any outfit or mood.</li>\n<li>Soft, comfortable texture suitable for daily use or special occasions.</li>\n<li>Formula enriched with nourishing oils and natural waxes for healthy lips.</li>\n<li>Versatile shades moving from powerful reds to serene nudes with ease.</li>\n</ul>\n<p>Dive into our broad collection of heritage-inspired shades and uncover the color that reflects your personality.</p>\n<p>From everyday elegance to bold looks, these lipsticks are designed to elevate your beauty with smooth, effortless application.</p>\n<p>For dramatic evenings, minimalist days, or creative moments in between, these shades energize any beauty look.</p>\n<p>Every shade is created to help you look your best with effortless confidence. Discover nude lipstick, nude lipstick shades, and a lipstick set feel in one collection. Explore brown nude lipstick, best red lipstick, and best nude lipsticks for varied looks. Many users seek the best long lasting lipstick and best matte lipstick for daily wear. The creamy feel suits those wanting the best lipstick for dry lips and best hydrating lipstick. Shades can resemble best brown lipstick, best liquid lipstick, or nude lipstick for fair skin. You can also find a best nude pink lipstick, best pink lipstick, and best lip products inspiration here. Some tones work as the best lip color for fair skin and best nude lipstick for fair skin. Others offer a best lipstick color for fair skin look with long lasting lipstick waterproof performance. The range also suits searches for best long lasting lip gloss and best nude lip gloss alternatives. Red lovers may enjoy best red lipstick for fair skin and red lipstick with blue undertones effects. Many consider it the best vacation lipstick from a best lipstick brand. Guerniss is also noted as a best lipstick brand in bangladesh and a top lipstick brand in world. It fits top 10 best lipstick roundups and answers What is the best long-lasting lipstick? with long wear lipstick appeal. You can explore best mauve lipstick, best natural lipstick, best lipstick for older women, and best long wear lipstick styles. Nude lipstick for brown skin options and the word best appear throughout the collection.</p>",
           "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 425.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-vacation-lipstick-8-ratargul",
+          "matched_title": "Guerniss Vacation Lipstick - 8 (Ratargul)",
+          "size": "3.4gm",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 100.0
         }
@@ -2777,6 +2840,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 425.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-vacation-lipstick-10-monpura",
+          "matched_title": "Guerniss Vacation Lipstick - 10 (Monpura)",
+          "size": "3.4gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -2821,6 +2893,15 @@
           "matched_title": "Guerniss Vacation Lipstick GVL 12_Panam Nagar",
           "size": "Guerniss Vacation Lipstick GVL 12_Panam Nagar <h2>A Heritage-Inspired Collection of the Best Lipstick</h2>\n<p>Embrace effortless beauty with the Vacation lipstick collection. This range presents twelve shades inspired by destinations known for culture and remarkable nature.</p>\n<p>Each color is created to flatter diverse skin tones. Connect with global inspiration and create fresh looks every time you apply this <a href=\"https://www.facebook.com/share/r/1AL5uo9pj6/\" target=\"_blank\" title=\"\" rel=\"noopener\">lipstick</a>.</p>\n<p>The long-wearing formula helps color stay bold and fresh for hours. This long lasting lipstick feels comfortable and glamorous every day.</p>\n<h2>Travel Through Heritage with Vibrant Shades</h2>\n<p>The Guerniss Vacation collection elevates your makeup ritual for any occasion. Its creamy, hydrating texture offers comfort and helps keep lips nourished and soft.</p>\n<p>Application feels smooth and easy. The satin finish stays feather-light, making the lipstick comfortable through repeated wear.</p>\n<p>The carefully balanced formula features Castor Oil (Ricinus Communis), Carnauba, and Candelilla waxes. These ingredients help provide moisture and a supple feel through wear.</p>\n<p>Each shade delivers rich pigment while supporting a healthy-looking appearance. Show your personality with every swipe, whether you are at home or traveling.</p>\n<p>The texture glides on with ease, helping color spread evenly across the lips. The design also makes touch-ups simple when your plans change.</p>\n<h2>Inclusivity and Versatility Across Iconic Locations Featuring <a href=\"https://guerniss.com/products/full-cover-matte-foundation-30ml\" target=\"_blank\" title=\"\" rel=\"noopener\">Lipstick</a>\n</h2>\n<p>The Guerniss Vacation collection is more than beauty products. It celebrates diversity and elegance in many forms.</p>\n<p>Each carefully chosen color works well with varying skin undertones. The inspiration comes from places known for rich traditions.</p>\n<p>Shades like Monpura and Moynamoti help the collection reflect heritage and culture. That identity gives each shade a distinct sense of place.</p>\n<p>This lipstick-inspired lineup adapts to different moods and occasions. Choose a red-inspired shade for evenings out, or select muted tones for the workday.</p>\n<p>Its versatility fits day trips, meetings, and events with ease. The variety makes matching color with your outfit or setting feel simple.</p>\n<h2>Luxury and Performance: Everyday Glamour with the Best Lipstick</h2>\n<p>With Guerniss, luxury is accessible to all beauty lovers. The remarkable quality and reasonable pricing bring true value to your routine.</p>\n<p>Each product provides vibrant color payoff using select ingredients for beautiful, healthy lips. The lightweight feel supports comfortable daily wear.</p>\n<p>Each available finish, from luminous satin to contemporary matte, is crafted for long wear and beauty. The formula helps resist smudges and fading.</p>\n<ul>\n<li>Bold pigments for vibrant color enhancing any outfit or mood.</li>\n<li>Soft, comfortable texture suitable for daily use or special occasions.</li>\n<li>Formula enriched with nourishing oils and natural waxes for healthy lips.</li>\n<li>Versatile shades moving from powerful reds to serene nudes with ease.</li>\n</ul>\n<p>Dive into our broad collection of heritage-inspired shades and uncover the color that reflects your personality.</p>\n<p>From everyday elegance to bold looks, these lipsticks are designed to elevate your beauty with smooth, effortless application.</p>\n<p>For dramatic evenings, minimalist days, or creative moments in between, these shades energize any beauty look.</p>\n<p>Every shade is created to help you look your best with effortless confidence. Discover nude lipstick, nude lipstick shades, and a lipstick set feel in one collection. Explore brown nude lipstick, best red lipstick, and best nude lipsticks for varied looks. Many users seek the best long lasting lipstick and best matte lipstick for daily wear. The creamy feel suits those wanting the best lipstick for dry lips and best hydrating lipstick. Shades can resemble best brown lipstick, best liquid lipstick, or nude lipstick for fair skin. You can also find a best nude pink lipstick, best pink lipstick, and best lip products inspiration here. Some tones work as the best lip color for fair skin and best nude lipstick for fair skin. Others offer a best lipstick color for fair skin look with long lasting lipstick waterproof performance. The range also suits searches for best long lasting lip gloss and best nude lip gloss alternatives. Red lovers may enjoy best red lipstick for fair skin and red lipstick with blue undertones effects. Many consider it the best vacation lipstick from a best lipstick brand. Guerniss is also noted as a best lipstick brand in bangladesh and a top lipstick brand in world. It fits top 10 best lipstick roundups and answers What is the best long-lasting lipstick? with long wear lipstick appeal. You can explore best mauve lipstick, best natural lipstick, best lipstick for older women, and best long wear lipstick styles. Nude lipstick for brown skin options and the word best appear throughout the collection.</p>",
           "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 425.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-vacation-lipstick-12-panam-nagar",
+          "matched_title": "Guerniss Vacation Lipstick - 12 (Panam Nagar)",
+          "size": "3.4gm",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 100.0
         }
@@ -2965,6 +3046,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 98.28
+        },
+        "Shajgoj": {
+          "price": 1650.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-cover-matte-foundation-medium-light-5-0",
+          "matched_title": "Guerniss Cover Matte Foundation Medium Light 5.0",
+          "size": "30ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 88.67
         }
       },
       "mrp_source_type": "workbook",
@@ -2988,6 +3078,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 98.02
+        },
+        "Shajgoj": {
+          "price": 1650.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-cover-matte-foundation-medium-6-0",
+          "matched_title": "Guerniss Cover Matte Foundation Medium 6.0",
+          "size": "30ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 86.4
         }
       },
       "mrp_source_type": "workbook",
@@ -3011,6 +3110,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 97.87
+        },
+        "Shajgoj": {
+          "price": 1650.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-cover-matte-foundation-tan-7-0",
+          "matched_title": "Guerniss Cover Matte Foundation Tan 7.0",
+          "size": "30ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 86.4
         }
       },
       "mrp_source_type": "workbook",
@@ -3227,7 +3335,17 @@
       "manufactured_price": 948.0,
       "market_average_price": 1580.0,
       "canonical_name": "G/S Liquid Concealer (GO21 - Honey)",
-      "sources": {},
+      "sources": {
+        "Shajgoj": {
+          "price": 1350.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-gold-series-full-coverage-liquid-concealer-g021-honey",
+          "matched_title": "Guerniss Gold series Full Coverage Liquid Concealer - G021 Honey",
+          "size": "7 ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 97.79
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 106
@@ -3247,6 +3365,15 @@
           "matched_title": "Full Coverage Liquid Concealer 7 ml G022-VANILLA",
           "size": "Full Coverage Liquid Concealer 7 ml G022-VANILLA <p><span style=\"font-weight: 400;\">Full Coverage liquid concealer is the type of concealer that comes in a liquid formula and gives a high coverage finish. It can have different types of containers and applicators. Concealers come in various shades as the foundation. </span></p>\n<p><span style=\"font-weight: 400;\">Though we should always purchase foundation accurately matched to the skin, we can purchase concealers one or two shades brighter or darker than the skin tone. We generally choose brighter shades to highlight the areas and we use darker shades to correct the dark spots or patches.</span></p>\n<p><span style=\"font-weight: 400;\">Concealers help to hide all the imperfections for example:</span></p>\n<ul>\n<li><span style=\"font-weight: 400;\">pimples</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">dark spots</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">dark circles</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Melasma</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Rosacea</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Fine lines</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Wrinkles</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Hyper pigmentations</span></li>\n</ul>\n<p><span style=\"font-weight: 400;\">If you are going for a natural look you can only use concealer to do a full face makeover. Full coverage concealers are generally a good substitute for foundation in your makeup routine.</span></p>\n<h1><a href=\"https://youtube.com/shorts/lTRnyMnvys8?si=1NRqlKFW3wTIeuWx\" rel=\"noopener\" target=\"_blank\"><strong>Guerniss Full Coverage Liquid Concealer </strong></a></h1>\n<p><span style=\"font-weight: 400;\">This concealer is a high coverage lightweight liquid concealer which comes in a jar with a doe foot applicator. It comes in three different shades that cover almost all skin tones. The concealer is very lightweight and also doesn’t get cakey at all. </span></p>\n<p><span style=\"font-weight: 400;\">It has buildable coverage that leaves the skin with a bright and radiant finish. It also does not contain any artificial fragrance. It is very easily blendable. You can blend it with your finger, brush or beauty sponge.</span></p>\n<h2><strong>More about <a href=\"https://youtube.com/shorts/z_MUrrTvEqI?si=h5S5PTzcQjuAh_5M\" rel=\"noopener\" target=\"_blank\">Full Coverage liquid concealer</a></strong></h2>\n<p><span style=\"font-weight: 400;\">The concealer gives a satin finish, doesn’t reflect light and also makes you camera ready.</span></p>\n<p><span style=\"font-weight: 400;\">Only one to two drops is enough for covering your whole face. Besides the concealer is very hydrating and doesn’t dry out the skin. It lasts up to 16 hours and also doesn’t move at all. Moreover it gives a matte finish and instantly wakes the skin up.</span></p>\n<p><span style=\"font-weight: 400;\">The product is crease-proof, waterproof, vegan and also cruelty-free and great for all types of skin.</span></p>\n<p> </p> 7g 7ml",
           "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 97.94
+        },
+        "Shajgoj": {
+          "price": 1350.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-gold-series-full-coverage-liquid-concealer-g022-vanilla",
+          "matched_title": "Guerniss Gold series Full Coverage Liquid Concealer - G022 Vanilla",
+          "size": "7 ml",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 97.94
         }
@@ -3270,6 +3397,15 @@
           "matched_title": "Full Coverage Liquid Concealer 7 ml G023-CUSTARD",
           "size": "Full Coverage Liquid Concealer 7 ml G023-CUSTARD <p><span style=\"font-weight: 400;\">Full Coverage liquid concealer is the type of concealer that comes in a liquid formula and gives a high coverage finish. It can have different types of containers and applicators. Concealers come in various shades as the foundation. </span></p>\n<p><span style=\"font-weight: 400;\">Though we should always purchase foundation accurately matched to the skin, we can purchase concealers one or two shades brighter or darker than the skin tone. We generally choose brighter shades to highlight the areas and we use darker shades to correct the dark spots or patches.</span></p>\n<p><span style=\"font-weight: 400;\">Concealers help to hide all the imperfections for example:</span></p>\n<ul>\n<li><span style=\"font-weight: 400;\">pimples</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">dark spots</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">dark circles</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Melasma</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Rosacea</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Fine lines</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Wrinkles</span></li>\n<li style=\"font-weight: 400;\" aria-level=\"1\"><span style=\"font-weight: 400;\">Hyper pigmentations</span></li>\n</ul>\n<p><span style=\"font-weight: 400;\">If you are going for a natural look you can only use concealer to do a full face makeover. Full coverage concealers are generally a good substitute for foundation in your makeup routine.</span></p>\n<h1><a href=\"https://youtube.com/shorts/lTRnyMnvys8?si=1NRqlKFW3wTIeuWx\" rel=\"noopener\" target=\"_blank\"><strong>Guerniss Full Coverage Liquid Concealer </strong></a></h1>\n<p><span style=\"font-weight: 400;\">This concealer is a high coverage lightweight liquid concealer which comes in a jar with a doe foot applicator. It comes in three different shades that cover almost all skin tones. The concealer is very lightweight and also doesn’t get cakey at all. </span></p>\n<p><span style=\"font-weight: 400;\">It has buildable coverage that leaves the skin with a bright and radiant finish. It also does not contain any artificial fragrance. It is very easily blendable. You can blend it with your finger, brush or beauty sponge.</span></p>\n<h2><strong>More about <a href=\"https://youtube.com/shorts/z_MUrrTvEqI?si=h5S5PTzcQjuAh_5M\" rel=\"noopener\" target=\"_blank\">Full Coverage liquid concealer</a></strong></h2>\n<p><span style=\"font-weight: 400;\">The concealer gives a satin finish, doesn’t reflect light and also makes you camera ready.</span></p>\n<p><span style=\"font-weight: 400;\">Only one to two drops is enough for covering your whole face. Besides the concealer is very hydrating and doesn’t dry out the skin. It lasts up to 16 hours and also doesn’t move at all. Moreover it gives a matte finish and instantly wakes the skin up.</span></p>\n<p><span style=\"font-weight: 400;\">The product is crease-proof, waterproof, vegan and also cruelty-free and great for all types of skin.</span></p>\n<p> </p> 7g 7ml",
           "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 97.94
+        },
+        "Shajgoj": {
+          "price": 1350.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-gold-series-full-coverage-liquid-concealer-g023-custard",
+          "matched_title": "Guerniss Gold series Full Coverage Liquid Concealer - G023 Custard",
+          "size": "7 ml",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 97.94
         }
@@ -3323,6 +3459,15 @@
       "market_average_price": 550.0,
       "canonical_name": "Guerniss Matte Kajol",
       "sources": {
+        "Shajgoj": {
+          "price": 480.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-matte-khol-kajal",
+          "matched_title": "Guerniss Matte Khol Kajal",
+          "size": "3gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        },
         "OhSoGo": {
           "price": 440.0,
           "url": "https://www.ohsogo.com/products/guerniss-matte-khol-kajal-3gm-black",
@@ -3345,7 +3490,26 @@
       "manufactured_price": 330.0,
       "market_average_price": 550.0,
       "canonical_name": "Guerniss New Matte Khol Kajol",
-      "sources": {},
+      "sources": {
+        "Shajgoj": {
+          "price": 480.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-matte-khol-kajal",
+          "matched_title": "Guerniss Matte Khol Kajal",
+          "size": "3gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        },
+        "OhSoGo": {
+          "price": 440.0,
+          "url": "https://www.ohsogo.com/products/guerniss-matte-khol-kajal-3gm-black",
+          "matched_title": "Guerniss Matte Kohl Kajal (3gm) - Black",
+          "size": null,
+          "seller": "OhSoGo",
+          "available": true,
+          "confidence": 97.09
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 112
@@ -3487,6 +3651,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 1250.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-soft-burnt-matte-makeup-holding-lipstick-g102",
+          "matched_title": "Guerniss Soft Burnt Matte Makeup Holding lipstick G102",
+          "size": "3gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -3510,6 +3683,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 1250.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-soft-burnt-matte-makeup-holding-lipstick-g103",
+          "matched_title": "Guerniss Soft Burnt Matte Makeup Holding lipstick G103",
+          "size": "3gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -3531,6 +3713,15 @@
           "matched_title": "Soft Burnt Matte Makeup Holding Lipstick G104",
           "size": "Soft Burnt Matte Makeup Holding Lipstick G104 <h1>Guerniss Soft Burnt Matte Makeup Holding Lipstick</h1>\n<p>is a premium matte lipstick that perfectly balances comfort and style.</p>\n<p>It has been designed to provide a smooth matte finish while remaining gentle on your lips. This lipstick features a burnt tone inspired by earthy warm hues that reflect the timeless beauty of burnt sienna.</p>\n<ul>\n<li>Matte: Offers a sophisticated, non-shiny finish that feels elegant and refined.</li>\n<li>Softness: Formulated to be soft and soothing on the lips without being too bold or harsh.</li>\n<li>Burnt shade: Inspired by warm autumnal colors, delivering a deep, rich burnt sienna hue.</li>\n</ul>\n<p>Experience a rich autumnal mood with this soft matte lips effect. It’s ideal for transitioning your look throughout seasonal changes. Whether it’s fall or any other time of year, this lipstick captures a natural, warm feeling that complements all skin tones.</p>\n<h2>Introducing Guerniss Soft Burnt</h2>\n<p>We proudly present our ultimate soft burnt designed for a flawless autumnal glow. As crisp autumn air settles in, this lipstick reflects that magic on your lips. It allows you to experience the genuine warmth and charm that many other lipsticks miss.</p>\n<p>Use this beautiful to express your individual style while embracing the essence of fall. It’s more than a color—it’s a feeling and an artistic statement.</p>\n<h3>Features and Benefits</h3>\n<ul>\n<li>Color and finish: Delivers warm, earthy burnt sienna tones paired with an elegant matte finish.</li>\n<li>Long-lasting wear: Designed to be the best long lasting lipstick, eliminating the need for frequent touch-ups.</li>\n<li>Comfortable application: Unlike many, our formula is soft and hydrating, preventing dryness.</li>\n<li>Versatility: Perfect for autumn but suitable for any event, season, or statement you desire.</li>\n<li>Expression: Enhances your personal style with a stunning, soft matte finish every single time.</li>\n</ul>\n<p>Our Soft Burnt Lipstick is not just a typical lipstick but an essential piece in your beauty collection. It delivers bold, rich colors while maintaining a highly comfortable feel. The flaky, drying of the past are history. This lipstick glides on effortlessly with a velvety smooth texture keeping lips soft and hydrated.</p>\n<h3>Why Choose Guerniss Soft Burnt Matte Makeup Holding Lipstick?</h3>\n<p>As one of the best options on the market, this lipstick merges style with outstanding function. It delivers a deeply pigmented color that instantly transforms your look. Not only does it offer a perfect matte finish, but it also nourishes your lips with carefully chosen ingredients to keep them moisturized and healthy.</p>\n<p>Unlike other long lasting lipsticks that can feel heavy, this lipstick stays light and comfortable throughout the day.</p>\n<h3>Perfect Match for Your Lipstick Collection</h3>\n<p>Whether you own a lipstick set or prefer a standout solo piece, this burnt is a must-have addition. Adding it to your lipstick palette brings a unique warm edge that works beautifully with all complexions. It complements other shades in your collection, making it an ideal choice for anyone who loves a versatile lipstick.</p>\n<h3>Usage Instructions for Best Results</h3>\n<p>Twist the tube open and apply 1-2mm of creamy lipstick directly to your lips. Start from the center and move outward for even coverage. For a more intense look, layer the product gently to build the perfect matte finish. It won’t crack or dry out your lips, making this lipstick ideal for long wear.</p>\n<h2>The Science Behind Our Best Nude Lipsticks &amp; <a rel=\"noopener\" href=\"https://www.instagram.com/reel/DMSwlwepZEf/?utm_source=ig_web_copy_link&amp;igsh=MzRlODBiNWFlZA==\" target=\"_blank\">Matte Lipstick</a> Formula</h2>\n<p>Guerniss lipstick is crafted with nourishing ingredients such as beeswax and enriching oils that protect and soften your lips. This blend ensures your lips stay happy and healthy, even with all-day wear. Our formula stands out in the range of best nude lipsticks by offering a burnt tone that is subtle yet unforgettable.</p>\n<h4>More Reasons to Love Guerniss Soft Burnt <a rel=\"noopener\" title=\"\" href=\"https://guerniss.com/products/babyes-velvet-matte-liquid-lipstick\" target=\"_blank\">Matte Lipstick</a>\n</h4>\n<ul>\n<li>Cruelty-free, upholding ethical beauty standards without compromising quality.</li>\n<li>Paraben-free and safe for daily use with gentle ingredients suitable for all skin types.</li>\n<li>Truly lasts and stays on without feeling heavy or drying out your lips.</li>\n</ul>\n<p>Experience the luxurious feel of this, ideal for a stunning, natural look any time of the year. Add it to your beauty kit today for a perfect blend of comfort, color, and long-lasting wear you will love.</p> 3g 3ml",
           "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 1250.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-soft-burnt-matte-makeup-holding-lipstick-g104",
+          "matched_title": "Guerniss Soft Burnt Matte Makeup Holding lipstick G104",
+          "size": "3gm",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 100.0
         }
@@ -3588,6 +3779,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 1250.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-soft-burnt-matte-makeup-holding-lipstick-g106",
+          "matched_title": "Guerniss Soft Burnt Matte Makeup Holding lipstick G106",
+          "size": "3gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -3643,6 +3843,15 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 1250.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-soft-burnt-matte-makeup-holding-lipstick-g108",
+          "matched_title": "Guerniss Soft Burnt Matte Makeup Holding lipstick  G108",
+          "size": "3gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -3696,6 +3905,15 @@
           "matched_title": "Anti Melasma Toner",
           "size": "Anti Melasma Toner <h1><strong>Anti Melasma Toner</strong></h1>\n<p>Anti Melasma Toner, a skin care essential that leaves skin clear, bright, and smoother, eliminates melasma, hyperpigmentation, and stubborn dark spots. Formulated with a blend of powerful natural chemicals and antioxidants, this toner effectively balances your skin tone and reduces discoloration, giving you a radiant look that you’ll love.</p>\n<h2><strong>Key Ingredients and Benefits:</strong></h2>\n<p><strong>Vitamin C:</strong> Well-known for its antioxidant and brightening properties, Vitamin C reduces hyperpigmentation and lightens dark spots. It also improves overall skin health by protecting the skin from harmful radicals. Burdock extract, also known as Arctium lappa root extract, is an herbal extract with powerful anti-inflammatory and antioxidant properties that helps heal and soothe the skin while also eliminating pigmentation and uneven skin tone.</p>\n<p><strong>Calendula Officinalis Flower Extract:</strong> Calendula extract soothes skin irritation and reduces redness, leaving your skin feeling nourished and renewed thanks to its soothing and healing properties.</p>\n<p><strong>Allantoin:</strong> Known for its ability to repair damaged skin, allantoin encourages the regeneration of skin cells, keeping your skin moisturized, smooth, and silky. It also helps reduce irritation and inflammation. Hedera Helix (ivy leaf/stem) Extract: Moreover, This plant extract detoxifies the skin, increases blood circulation, and addresses the root causes of pigmentation by creating a healthy appearance.</p>\n<p><strong>Hydrolyzed Corn Starch:</strong> This ingredient prevents your skin from feeling greasy and makes it silky and smooth, while also hydrating and softening it. It gently exfoliates dead skin cells, increases skin turnover, and encourages the regeneration of new, healthy skin. In addition, The Anti Melasma Toner is designed to eliminate dark spots, uneven skin tone, and melasma. In addition to whitening hyperpigmented areas, the blend of natural extracts helps calm, balance, and nourish the skin. Regular use of this toner will make your skin brighter, reduce stubborn dark spots, and improve your skin tone.</p>\n<h2>Why choose an anti-melasma toner?</h2>\n<p><strong>Specific pigmentation therapy:</strong> A powerful combination of chemicals combats hyperpigmentation and melasma, leaving your skin naturally radiant.</p>\n<p><strong>Calming, gentle formula:</strong> This toner is great for daily use as it soothes and hydrates sensitive skin.</p>\n<p><strong>Absorbent:</strong> The toner ensures that your skin absorbs quickly, feeling nourished and renewed, without leaving any oily or sticky residue.</p>\n<p><strong>Suitable for every skin type:</strong> This toner is designed to work well with any skin care regimen, whether you have dry, oily, or combination skin.</p>\n<p>Moreover, Apply a small amount of Anti Melasma Toner to a cotton pad and gently pat onto your face and neck, avoiding the eye area, after washing your face. For best results, follow with your favorite serum and moisturizer. This powerful, plant-based toner will revolutionize your skincare regimen, brightening your complexion, balancing it, and restoring your natural radiance. With each application, reveal a radiant, smooth complexion.</p> 150g 150ml",
           "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Arogga": {
+          "price": 1313.0,
+          "url": "https://www.arogga.com/product/75705/guerniss-anti-melasma-facial-toner-150ml",
+          "matched_title": "Guerniss Anti Melasma Facial Toner 150ml",
+          "size": "Bottle",
+          "seller": "Arogga",
           "available": true,
           "confidence": 100.0
         }
@@ -3775,6 +3993,24 @@
           "seller": "Guerniss Official",
           "available": true,
           "confidence": 96.9
+        },
+        "Arogga": {
+          "price": 1616.0,
+          "url": "https://www.arogga.com/product/75716/guerniss-anti-melasma-whitening-serum-30ml",
+          "matched_title": "Guerniss Anti Melasma Whitening Serum 30ml",
+          "size": "Bottle",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
+        "OhSoGo": {
+          "price": 1510.0,
+          "url": "https://www.ohsogo.com/products/guerniss-anti-melasma-serum-30ml",
+          "matched_title": "Guerniss Anti-Melasma Serum (30ml)",
+          "size": null,
+          "seller": "OhSoGo",
+          "available": true,
+          "confidence": 74.62
         }
       },
       "mrp_source_type": "workbook",
@@ -3789,7 +4025,17 @@
       "manufactured_price": 1134.0,
       "market_average_price": 1890.0,
       "canonical_name": "Guerniss Moisturizing and Hydrating Essence",
-      "sources": {},
+      "sources": {
+        "Shajgoj": {
+          "price": 1650.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-hyaluronic-acid-moisturizing-hydrating-essence-n90",
+          "matched_title": "Guerniss Hyaluronic Acid Moisturizing & Hydrating Essence N90",
+          "size": "30ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 132
@@ -3809,6 +4055,24 @@
           "matched_title": "Niacinamide 10% + Zinc 1% Serum",
           "size": "Niacinamide 10% + Zinc 1% Serum <h3 data-end=\"355\" data-start=\"335\"><strong data-end=\"353\" data-start=\"339\">How to Use</strong></h3>\n<ol data-end=\"632\" data-start=\"356\">\n<li data-end=\"390\" data-start=\"356\">\n<p data-end=\"390\" data-start=\"359\">Cleanse your face thoroughly.</p>\n</li>\n<li data-end=\"518\" data-start=\"391\">\n<p data-end=\"518\" data-start=\"394\">Apply a few drops of the serum onto your fingertips and gently pat into the skin, focusing on blemish-prone or oily areas.</p>\n</li>\n<li data-end=\"571\" data-start=\"519\">\n<p data-end=\"571\" data-start=\"522\">Use <strong data-end=\"549\" data-start=\"526\">once or twice daily</strong> before moisturizer.</p>\n</li>\n</ol>\n<p data-end=\"632\" data-start=\"575\">Always apply sunscreen during the day for best results.<br><br></p>\n<p data-end=\"1215\" data-start=\"668\"><a href=\"https://www.instagram.com/reel/DMp94VSOlcX/?utm_source=ig_web_copy_link\" rel=\"noopener\" target=\"_blank\"><strong data-end=\"703\" data-start=\"668\">Niacinamide 10% + Zinc 1% Serum</strong></a> is a targeted solution for blemish-prone and oily skin. With a powerful blend of <strong data-end=\"817\" data-start=\"785\">10% Niacinamide (Vitamin B3)</strong> and <strong data-end=\"833\" data-start=\"822\">1% Zinc</strong>, this serum regulates excess sebum, reduces congestion, minimizes pore size, and evens out skin tone. Enhanced with <strong data-end=\"963\" data-start=\"950\">Vitamin E</strong> and botanical extracts like <strong data-end=\"1013\" data-start=\"992\">Witch Hazel Water</strong> and <strong data-end=\"1053\" data-start=\"1018\">Haematococcus Pluvialis Extract</strong>, it soothes irritation, hydrates, and strengthens the skin barrier. Lightweight and fast-absorbing, it leaves your skin smooth, refreshed, and visibly clearer.</p>\n<p data-end=\"2030\" data-start=\"1901\">✨ Perfect for oily, acne-prone, and uneven skin tones, this serum is your daily step towards balanced and clearer-looking skin.</p> 30g 30ml",
           "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Arogga": {
+          "price": 1330.0,
+          "url": "https://www.arogga.com/product/75708/guerniss-niacinamide-10-zinc-1-serum-30ml",
+          "matched_title": "Guerniss Niacinamide 10% + Zinc 1% Serum 30ml",
+          "size": "Bottle",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 1680.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-niacinamide-10-zinc-1-serum",
+          "matched_title": "Guerniss Niacinamide 10% + Zinc 1% Serum",
+          "size": "30ml",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 100.0
         }
@@ -3932,6 +4196,15 @@
           "matched_title": "Guerniss Anti Melasma Cream 30 ml",
           "size": "Guerniss Anti Melasma Cream 30 ml <p dir=\"ltr\"><span><a href=\"https://guerniss.com/products/spotless-brightening-serum\" target=\"_blank\" title=\"\" rel=\"noopener\">Guerniss Anti Melasma Cream</a></span><span> is expertly formulated to treat hyperpigmentation deeply and effectively. This rich yet lightweight cream combines advanced ingredients such as Tranexamic Acid and Betaine Salicylate with brightening plant extracts. It helps fade dark spots and reduce melanin production visibly. It also prevents new discoloration from forming, making it one of the best treatment for melasma on face.</span></p>\n<p dir=\"ltr\">The formula is carefully balanced with hydrating and soothing agents that keep skin soft, supple, and healthy. It strengthens your skin barrier function to boost overall skin resilience. Whether you face stubborn pigmentation patches or uneven skin tone, this delivers a gentle yet powerful solution you can trust in your daily skincare routine.</p>\n<h2 dir=\"ltr\">Why Choose This Anti Melasma Cream?</h2>\n<p dir=\"ltr\">This product offers targeted and effective care for dark spots. Its blend of potent actives and nourishing ingredients shows visible improvements in clarity and skin texture. It is highly recommended for anyone dealing with this common skin concern, providing safe and effective results without causing harsh irritation or dryness.</p>\n<h3 dir=\"ltr\">Key Benefits :</h3>\n<ul>\n<li aria-level=\"1\" dir=\"ltr\">\n<p role=\"presentation\">Visibly reduces melasma, pigmentation, and dark spots for a brighter and more even complexion.</p>\n</li>\n<li aria-level=\"1\" dir=\"ltr\">\n<p role=\"presentation\">Hydrates and softens the skin to restore a smooth, healthy glow.</p>\n</li>\n<li aria-level=\"1\" dir=\"ltr\">\n<p role=\"presentation\">Prevents the formation of new discoloration by effectively regulating melanin synthesis.</p>\n</li>\n</ul>\n<p dir=\"ltr\">This formulation suits all skin types, including sensitive and melasma-prone skin. Its gentle nature ensures effective results without irritation, making it a very safe skincare regimen choice for those seeking treatment.</p>\n<h3 dir=\"ltr\">Powerful Ingredients Behind the Effectiveness </h3>\n<p dir=\"ltr\">Tranexamic Acid inhibits melanin production and helps break down existing pigmentation effectively. Paired with Betaine Salicylate, a mild exfoliant, it promotes cell turnover and brightens the skin’s surface. These potent actives synergize well with botanical brightening extracts to improve tone, clarity and skin texture.</p>\n<p dir=\"ltr\">Moisturizing components deeply nourish the skin while maintaining a strong skin barrier. This prevents damage and dryness commonly associated with pigmentation treatment. By keeping the skin hydrated and comfortable, this cream supports lasting clarity and radiance without sacrificing skin comfort.</p>\n<h2 dir=\"ltr\">How to Use</h2>\n<p dir=\"ltr\">Incorporate this product into your nighttime skincare routine for best results. After cleansing, apply a small amount of cream to clean, dry skin, focusing on areas affected by melasma and dark pigmentation. With regular use, the cream fades dark spots, evens skin tone, and prevents new discoloration from developing.</p>\n<p dir=\"ltr\">For a detailed, step-by-step visual guide, watch this <a href=\"https://www.facebook.com/share/v/173HS6WMAb/\" target=\"_blank\" rel=\"noopener\">FACEBOOK VIDEO</a>. The tutorial shows how to use the cream effectively to maximize daily benefits for your skin.</p>\n<h3 dir=\"ltr\">Additional Points About Guerniss Anti Melasma Cream</h3>\n<ul>\n<li aria-level=\"1\" dir=\"ltr\">\n<p role=\"presentation\">The lightweight texture ensures it feels comfortable on the face without greasiness or heaviness.</p>\n</li>\n<li aria-level=\"1\" dir=\"ltr\">\n<p role=\"presentation\">Free from harsh chemicals and parabens, making it a clean and safe application for daily use.</p>\n</li>\n<li aria-level=\"1\" dir=\"ltr\">\n<p role=\"presentation\">It is carefully formulated as an anti melasma cica cream that soothes while brightening skin simultaneously.</p>\n</li>\n</ul>\n<p dir=\"ltr\">Many users share positive<strong> review</strong> praising the cream’s gentle yet efficient nature. It has become a trusted choice for those seeking effective pigmentation treatment without side effects. This cream remains one of the best options available in Bangladesh for melasma care.</p>\n<p dir=\"ltr\">Whether you aim to reduce stubborn hyperpigmentation or maintain a clear, even skin tone, this cream is highly regarded as a leading option for <em>melasma treatment</em>. The affordable adds to its appeal without compromising quality or results.</p>\n<h2 dir=\"ltr\">Important Information</h2>\n<p dir=\"ltr\">This formula was designed with safety in mind to minimize common side effects like redness, dryness, or irritation. People with very sensitive skin are advised to do a patch test before full use. Always follow directions carefully and avoid excessive sun exposure during treatment to prevent complications.</p>\n<p dir=\"ltr\">For optimal results on how to clear melasma fast, it is best to pair this Anti Melasma Cream with sun protection and a well-rounded skincare regimen. Proper care and prevention help you achieve the best possible outcomes in the shortest time.</p>\n<p dir=\"ltr\">In summary, it offers an advanced and effective solution for pigmentation concerns. Its carefully balanced ingredients work together to fade dark spots, inhibit melanin production, and deeply nourish skin. This cream is a valuable addition to your skincare routine for achieving a more radiant and even complexion every day.</p> 30g 30ml",
           "seller": "Guerniss Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 1250.0,
+          "url": "https://shop.shajgoj.com/product/guerniss-anti-melasma-cream",
+          "matched_title": "Guerniss Anti Melasma Cream",
+          "size": "30ml",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 100.0
         }
@@ -4089,7 +4362,17 @@
       "manufactured_price": 180.50475,
       "market_average_price": 285.0,
       "canonical_name": "Nature Beauty Anti-Tobacco Air Freshener",
-      "sources": {},
+      "sources": {
+        "Shajgoj": {
+          "price": 650.0,
+          "url": "https://shop.shajgoj.com/product/nature-beauty-anti-tobacco-air-freshener-b2g1",
+          "matched_title": "Nature Beauty Anti-Tobacco Air Freshener (B2G1)",
+          "size": "300.0ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 144
@@ -4213,6 +4496,15 @@
       "market_average_price": 150.0,
       "canonical_name": "Nature Beauty Hand Wash- Orchid",
       "sources": {
+        "Shajgoj": {
+          "price": 150.0,
+          "url": "https://shop.shajgoj.com/product/nature-beauty-orcid-handwash",
+          "matched_title": "Nature Beauty Orcid Handwash",
+          "size": "200ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 94.48
+        },
         "OhSoGo": {
           "price": 120.0,
           "url": "https://www.ohsogo.com/products/nature-beauty-hand-wash-orchid-200ml",
@@ -4236,6 +4528,15 @@
       "market_average_price": 150.0,
       "canonical_name": "Nature Beauty Hand Wash- Strawberry",
       "sources": {
+        "Shajgoj": {
+          "price": 150.0,
+          "url": "https://shop.shajgoj.com/product/nature-beauty-strawberry-handwash-3",
+          "matched_title": "Nature Beauty Strawberry Handwash",
+          "size": "200ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 99.52
+        },
         "OhSoGo": {
           "price": 120.0,
           "url": "https://www.ohsogo.com/products/nature-beauty-hand-wash-strawberry-200ml",
@@ -4704,6 +5005,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 295.0,
+          "url": "https://shop.shajgoj.com/product/nature-beauty-milk-face-wash",
+          "matched_title": "Nature Beauty Milk Face Wash",
+          "size": "100ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 65.42
         }
       },
       "mrp_source_type": "workbook",
@@ -4838,6 +5148,15 @@
       "market_average_price": 199.0,
       "canonical_name": "Nature Beauty Pink Rose Tinted Lip Balm",
       "sources": {
+        "Shajgoj": {
+          "price": 199.0,
+          "url": "https://shop.shajgoj.com/product/nature-beauty-pink-rose-tinted-lip-balm",
+          "matched_title": "Nature Beauty Pink Rose Tinted Lip Balm",
+          "size": "3.4gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        },
         "OhSoGo": {
           "price": 149.0,
           "url": "https://www.ohsogo.com/products/nature-beauty-pink-rose-tinted-lip-balm-3-4g",
@@ -4893,6 +5212,15 @@
       "market_average_price": 199.0,
       "canonical_name": "Nature Beauty Aloe Soft Lip Balm",
       "sources": {
+        "Shajgoj": {
+          "price": 199.0,
+          "url": "https://shop.shajgoj.com/product/nature-beauty-aloe-soft-lip-balm-b1g1",
+          "matched_title": "Nature Beauty Aloe Soft Lip Balm (B1G1)",
+          "size": "3.4gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        },
         "Rokomari": {
           "price": 199.0,
           "url": "https://www.rokomari.com/product/527177/nature-beauty-aloe-soft-lip-balm-3-4gm",
@@ -5207,7 +5535,17 @@
       "manufactured_price": 63.335,
       "market_average_price": 100.0,
       "canonical_name": "Apple Colour Shampoo ( Black)",
-      "sources": {},
+      "sources": {
+        "Shajgoj": {
+          "price": 200.0,
+          "url": "https://shop.shajgoj.com/product/buy-2-apple-colour-shampoo-black-get-51-off",
+          "matched_title": "Buy 2 Apple Colour Shampoo ( Black) Get 51/- Off",
+          "size": "30 ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 181
@@ -5227,6 +5565,15 @@
           "matched_title": "Qolore All Blur Pro Face Primer 25ml",
           "size": "Qolore All Blur Pro Face Primer 25ml Buy Qolore All Blur Pro Face Primer 25ml at best price in Bangladesh. For best price, offers, discount and fastest home delivery all over Bangladesh order it from Arogga. 25ml × 1 25ml × 1",
           "seller": null,
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 690.0,
+          "url": "https://shop.shajgoj.com/product/qolore-all-blur-pro-face-primer",
+          "matched_title": "Qolore All Blur Pro Face Primer",
+          "size": "25ml",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 100.0
         }
@@ -5937,6 +6284,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 1500.0,
+          "url": "https://shop.shajgoj.com/product/quinsia-anti-melasma-toner",
+          "matched_title": "Quinsia Anti-Melasma Toner",
+          "size": "100 ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 77.33
         }
       },
       "mrp_source_type": "workbook",
@@ -6245,6 +6601,15 @@
           "matched_title": "Moringa Powder (Small)",
           "size": "Moringa Powder (Small) 399.00 ৳ Premium Moringa Powder: Unbeatable Quality at the Best Price in Bangladesh Unlock the secret to vibrant health with our Premium Moringa Powder, now available at competitive prices in Bangladesh. Pure and Natural : Sourced from the lush hills of Bangladesh, our moringa powder is 100% natural, ensuring you receive nature’s best. Rich in Nutrients : Packed with vitamins, minerals, and amino acids, it’s the perfect supplement for a nutritional boost. Versatile Use : Easily incorporate it into your smoothies, meals, or beverages for a daily dose of wellness. Affordable Wellness : Experience the benefits of high-quality moringa without breaking the bank. Check out our competitive “moringa powder price in Bangladesh”. Premium Quality : We pride ourselves on providing only the finest, premium-grade moringa powder to our customers. Elevate your health routine with our Premium Moringa Powder – your affordable gateway to optimal health and nutrition. Actual Weight: 80g Quantity Quantity Add to cart Order Cash on Delivery WhatsApp Us Chat with Us Compare Category: Health and Ayurveda",
           "seller": "Neofarmers Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Arogga": {
+          "price": 329.175,
+          "url": "https://www.arogga.com/product/61966/neofarmers-moringa-powder-80g",
+          "matched_title": "Neofarmers Moringa Powder 80g",
+          "size": "80gm Jar",
+          "seller": "Arogga",
           "available": true,
           "confidence": 100.0
         }
@@ -6771,6 +7136,15 @@
           "seller": "Neofarmers Official",
           "available": true,
           "confidence": 30.81
+        },
+        "Shajgoj": {
+          "price": 580.0,
+          "url": "https://shop.shajgoj.com/product/neofarmers-cold-pressed-naturally-refined-pistachio-oil",
+          "matched_title": "Neofarmers Cold pressed naturally refined Pistachio Oil",
+          "size": "30ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -6817,6 +7191,15 @@
           "seller": "Neofarmers Official",
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 288.0,
+          "url": "https://shop.shajgoj.com/product/neofarmers-neem-oil",
+          "matched_title": "Neofarmers Neem Oil",
+          "size": "75ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -6838,6 +7221,15 @@
           "matched_title": "Aloe vera oil",
           "size": "Aloe vera oil 540.00 ৳ Aloe vera oil, which is rich in vitamins and minerals mainly rejuvenate your hair cell. This oil promotes hair growth, prevents itching on the scalp, reduces dandruff and conditions your hair. Actual Weight: 75ml Quantity Quantity Add to cart Order Cash on Delivery WhatsApp Us Chat with Us Compare Categories: Hair Care , Skin and body care",
           "seller": "Neofarmers Official",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 486.0,
+          "url": "https://shop.shajgoj.com/product/neofarmers-aloe-vera-oil",
+          "matched_title": "Neofarmers Aloe vera oil",
+          "size": "75ml",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 100.0
         }
@@ -7122,7 +7514,17 @@
       "manufactured_price": 240.0,
       "market_average_price": 400.0,
       "canonical_name": "Skin cafe Sweet Orange Essential Oil",
-      "sources": {},
+      "sources": {
+        "Arogga": {
+          "price": 339.0,
+          "url": "https://www.arogga.com/product/65183/skin-cafe-sweet-orange-essential-oil-10ml",
+          "matched_title": "Skin Cafe Sweet Orange Essential Oil 10ml",
+          "size": "10ml Bottle",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 247
@@ -8103,6 +8505,15 @@
           "seller": "Rajkonna",
           "available": true,
           "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 135.0,
+          "url": "https://www.daraz.com.bd/products/50-i260080008.html",
+          "matched_title": "Rajkonna Henna Powder (50gm)",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -8767,6 +9178,15 @@
       "market_average_price": 250.0,
       "canonical_name": "LILAC PREMIUM TINTED LIP BALM – ORANGE PIE WITH SPF15",
       "sources": {
+        "Arogga": {
+          "price": 212.0,
+          "url": "https://www.arogga.com/product/65230/lilac-premium-tinted-lip-balm-orange-pie-with-spf15-10g",
+          "matched_title": "Lilac Premium Tinted Lip Balm - Orange Pie with SPF15 10g",
+          "size": "10g Pot",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
         "Shajgoj": {
           "price": 212.0,
           "url": "https://shop.shajgoj.com/product/lilac-premium-tinted-lip-balm-orange-pie-with-spf15",
@@ -8821,6 +9241,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 149.0,
+          "url": "https://shop.shajgoj.com/product/lilac-premium-lip-balm-cookie-dough-with-spf15-expiry-date-july-2027",
+          "matched_title": "LILAC PREMIUM LIP BALM COOKIE DOUGH WITH SPF15 (Expiry Date - July 2027)",
+          "size": "10gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -8836,6 +9265,15 @@
       "market_average_price": 250.0,
       "canonical_name": "LILAC PREMIUM LIP BALM – CHOCO DELIGHT WITH SPF15",
       "sources": {
+        "Arogga": {
+          "price": 212.0,
+          "url": "https://www.arogga.com/product/65228/lilac-premium-lip-balm-choco-delight-with-spf15-10g",
+          "matched_title": "Lilac Premium Lip Balm -Choco Delight With SPF15 10g",
+          "size": "10g Pot",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
         "Shajgoj": {
           "price": 212.0,
           "url": "https://shop.shajgoj.com/product/lilac-premium-lip-balm-choco-delight-with-spf15",
@@ -8867,6 +9305,15 @@
           "seller": null,
           "available": true,
           "confidence": 71.92
+        },
+        "Shajgoj": {
+          "price": 110.0,
+          "url": "https://shop.shajgoj.com/product/lilac-lipbalm-with-spf-15-orange-crush",
+          "matched_title": "Lilac Lipbalm With SPF 15 - Orange Crush",
+          "size": "4.5 gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 72.28
         }
       },
       "mrp_source_type": "workbook",
@@ -9159,7 +9606,17 @@
       "manufactured_price": 144.0,
       "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Feeling Blue – 35",
-      "sources": {},
+      "sources": {
+        "Arogga": {
+          "price": 220.0,
+          "url": "https://www.arogga.com/product/65471/nirvana-color-nail-enamel-feeling-blue-35",
+          "matched_title": "Nirvana Color Nail Enamel Feeling Blue - 35",
+          "size": "8ml Bottle",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 303
@@ -9173,6 +9630,15 @@
       "market_average_price": 240.0,
       "canonical_name": "Nirvana Color Nail Enamel – Mint Mojito – 33",
       "sources": {
+        "Arogga": {
+          "price": 198.0,
+          "url": "https://www.arogga.com/product/65461/nirvana-color-nail-enamel-mint-mojito-33",
+          "matched_title": "Nirvana Color Nail Enamel Mint Mojito - 33",
+          "size": "8ml Bottle",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        },
         "Shajgoj": {
           "price": 187.0,
           "url": "https://shop.shajgoj.com/product/nirvana-color-nail-enamel-mint-mojito-33",
@@ -9227,6 +9693,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 234.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-32-8ml-i391749132.html",
+          "matched_title": "Nirvana Color Nail Enamel - Beautiful Mess - 32 (8ml)",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -9261,6 +9736,15 @@
           "matched_title": "Nirvana Color Glitter Nail Enamel - Focus On -23",
           "size": "8ml",
           "seller": null,
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 234.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-23-8ml-i391693133.html",
+          "matched_title": "Nirvana Color Glitter Nail Enamel - Focus On -23 (8ml)",
+          "size": null,
+          "seller": "Daraz",
           "available": true,
           "confidence": 100.0
         }
@@ -9316,6 +9800,15 @@
           "matched_title": "Nirvana Color Nail Enamel Femme Fatale - 36",
           "size": "Nirvana Color Nail Enamel Femme Fatale - 36 Buy Nirvana Color Nail Enamel Femme Fatale - 36 at best price in Bangladesh. For best price, offers, discount and fastest home  delivery all over  Bangladesh order it from Arogga. 8ml Bottle × 1 8ml Bottle × 1",
           "seller": null,
+          "available": true,
+          "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 220.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-nail-enamel-femme-fatale-36",
+          "matched_title": "Nirvana Color Nail Enamel - Femme Fatale - 36",
+          "size": "8ml",
+          "seller": "Shajgoj",
           "available": true,
           "confidence": 100.0
         }
@@ -9387,6 +9880,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 234.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-25-8ml-i391690744.html",
+          "matched_title": "Nirvana Color Glitter Nail Enamel - Touched Angel -25 (8ml)",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -9442,6 +9944,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 234.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-07-8ml-i391722824.html",
+          "matched_title": "Nirvana Color Nail Enamel - Naughty Hand-07 (8ml)",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -9486,6 +9997,15 @@
           "matched_title": "Nirvana Color Nail Enamel - Pretty Girl -17",
           "size": "8ml",
           "seller": null,
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 234.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-17-8ml-i391711128.html",
+          "matched_title": "Nirvana Color Nail Enamel - Pretty Girl -17 (8ml)",
+          "size": null,
+          "seller": "Daraz",
           "available": true,
           "confidence": 100.0
         }
@@ -9543,6 +10063,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 99.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-nail-enamel-black-swan-38-expiry-date-november-2026",
+          "matched_title": "Nirvana Color Nail Enamel Black Swan-38 (Expiry Date - November 2026)",
+          "size": "8ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -9587,6 +10116,15 @@
           "matched_title": "Nirvana Color Nail Enamel - I Am Yours-09",
           "size": "8ml",
           "seller": null,
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 234.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-i-am-yours-09-8ml-i391722646.html",
+          "matched_title": "Nirvana Color Nail Enamel - I Am Yours-09 (8ml)",
+          "size": null,
+          "seller": "Daraz",
           "available": true,
           "confidence": 100.0
         }
@@ -9648,6 +10186,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 405.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-5-i574274866.html",
+          "matched_title": "Nirvana Color Matte Bullet Lipstick - Honey Crush 5gm",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -9662,7 +10209,17 @@
       "manufactured_price": 270.0,
       "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Berry Lips",
-      "sources": {},
+      "sources": {
+        "Shajgoj": {
+          "price": 180.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-matte-bullet-lipstick-berry-lips-b01-expiry-date-november-2026",
+          "matched_title": "Nirvana Color Matte Bullet Lipstick - Berry Lips B01 (Expiry Date - November 2026)",
+          "size": "5gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 325
@@ -9675,7 +10232,17 @@
       "manufactured_price": 270.0,
       "market_average_price": 450.0,
       "canonical_name": "Nirvana Color Matte Color Bullet – Burnt Sienna",
-      "sources": {},
+      "sources": {
+        "Shajgoj": {
+          "price": 180.0,
+          "url": "https://shop.shajgoj.com/product/nirvana-color-matte-bullet-lipstick-burnt-sienna-b02-expiry-date-november-2026",
+          "matched_title": "Nirvana Color Matte Bullet Lipstick - Burnt Sienna B02 (Expiry Date - November 2026)",
+          "size": "5gm",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 326
@@ -9770,7 +10337,17 @@
       "manufactured_price": 690.0,
       "market_average_price": 1150.0,
       "canonical_name": "Nirvana Color Face Perfect Liquid Foundation – Light Beige",
-      "sources": {},
+      "sources": {
+        "Arogga": {
+          "price": 975.0,
+          "url": "https://www.arogga.com/product/65477/nirvana-color-face-perfect-mattifying-poreless-liquid-foundation-light-beige-30ml",
+          "matched_title": "Nirvana Color Face Perfect Mattifying & Poreless Liquid Foundation - Light Beige 30ml",
+          "size": "30ml Bottle",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 331
@@ -9790,6 +10367,15 @@
           "matched_title": "Nirvana Color Face Perfect Liquid Foundation - Light Natural F01",
           "size": "30ml",
           "seller": null,
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 1035.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-f01-30ml-i391386472.html",
+          "matched_title": "Nirvana Color Face Perfect Liquid Foundation - Light Natural F01 (30ml)",
+          "size": null,
+          "seller": "Daraz",
           "available": true,
           "confidence": 100.0
         }
@@ -9813,6 +10399,15 @@
           "matched_title": "Nirvana Color Eau De Parfum For Women - Suranjana",
           "size": "Nirvana Color Eau De Parfum For Women - Suranjana Buy Nirvana Color Eau De Parfum For Women - Suranjana at best price in Bangladesh. For best price, offers, discount and fastest home delivery all over Bangladesh order it from Arogga. 25ml × 1 25ml × 1",
           "seller": null,
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 405.0,
+          "url": "https://www.daraz.com.bd/products/nirvana-eau-de-parfum-25ml-i390605525.html",
+          "matched_title": "Nirvana Color Eau De Parfum For Women Suranjana (সুরঞ্জনা) - 25ml",
+          "size": null,
+          "seller": "Daraz",
           "available": true,
           "confidence": 100.0
         }
@@ -10220,6 +10815,15 @@
           "matched_title": "Groome Personal Care Cotton Pad - 80pcs",
           "size": "",
           "seller": "",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 265.0,
+          "url": "https://www.daraz.com.bd/products/80-i270948817.html",
+          "matched_title": "Groome Personal Care Cotton Pad (80pcs) soft & absorbent non-fleecing gentle on skin",
+          "size": null,
+          "seller": "Daraz",
           "available": true,
           "confidence": 100.0
         }
@@ -10705,6 +11309,15 @@
           "seller": null,
           "available": true,
           "confidence": 100.0
+        },
+        "Shajgoj": {
+          "price": 379.0,
+          "url": "https://shop.shajgoj.com/product/lavino-mint-shower-gel-with-peppermint-extract",
+          "matched_title": "Lavino Mint Shower Gel - with Peppermint Extract",
+          "size": "330ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -11025,6 +11638,24 @@
       "market_average_price": 230.0,
       "canonical_name": "Ombre Mini Perfume Blue Pearl (EDP)",
       "sources": {
+        "Shajgoj": {
+          "price": 210.0,
+          "url": "https://shop.shajgoj.com/product/ombre-mini-perfume-blue-pearl-edp",
+          "matched_title": "Ombre Mini Perfume Blue Pearl (EDP)",
+          "size": "9 ml",
+          "seller": "Shajgoj",
+          "available": true,
+          "confidence": 100.0
+        },
+        "Daraz": {
+          "price": 207.0,
+          "url": "https://www.daraz.com.bd/products/ombre-edp-9-ml-i555782506.html",
+          "matched_title": "Ombre Mini Perfume Blue Pearl (EDP) - 9 ml",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 100.0
+        },
         "PandaMart": {
           "price": 195.0,
           "url": "https://www.foodpanda.com.bd/groceries/product/WX33O5/ombre-mini-perfume-blue-pearl-edp-9ml",
@@ -11111,7 +11742,26 @@
       "manufactured_price": 174.0,
       "market_average_price": 290.0,
       "canonical_name": "Panam Shower Gel Pulp Rain with Free Loofah",
-      "sources": {},
+      "sources": {
+        "Arogga": {
+          "price": 264.0,
+          "url": "https://www.arogga.com/product/87995/buy-1-panam-pulp-rain-shower-gel-250ml-get-1-free",
+          "matched_title": "Buy 1 Panam Pulp Rain Shower Gel 250ml & Get 1 Free",
+          "size": "1's Pack",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 81.21
+        },
+        "Daraz": {
+          "price": 187.53,
+          "url": "https://www.daraz.com.bd/products/250ml-i1578260018.html",
+          "matched_title": "Panam Pulp Rain Shower Gel 250ml (Get Free Loofah)",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 98.02
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 371
@@ -11124,7 +11774,26 @@
       "manufactured_price": 174.0,
       "market_average_price": 290.0,
       "canonical_name": "Panam Shower Gel Ocean Blue With Free Loofah",
-      "sources": {},
+      "sources": {
+        "Arogga": {
+          "price": 261.0,
+          "url": "https://www.arogga.com/product/84729/buy-1-panam-ocean-blue-shower-gel-250ml-get-1-free",
+          "matched_title": "Buy 1 Panam Ocean Blue Shower Gel 250ml & Get 1 Free",
+          "size": "1's Pack",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 81.35
+        },
+        "Daraz": {
+          "price": 187.53,
+          "url": "https://www.daraz.com.bd/products/-i556768783.html",
+          "matched_title": "Panam Ocean Blue Shower Gel 250ml (Get Free Loofah)",
+          "size": null,
+          "seller": "Daraz",
+          "available": true,
+          "confidence": 98.07
+        }
+      },
       "mrp_source_type": "workbook",
       "source_sheet": "Local product ",
       "source_row": 372
@@ -11805,6 +12474,15 @@
           "seller": "Orgagenic Official",
           "confidence": 100.0,
           "available": true
+        },
+        "Arogga": {
+          "price": 330.0,
+          "url": "https://www.arogga.com/product/72741/orgagenic-raw-wild-turmeric-powder-100g",
+          "matched_title": "Orgagenic Raw Wild Turmeric Powder 100g",
+          "size": "100g Jar",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -11915,6 +12593,15 @@
           "seller": "Orgagenic Official",
           "confidence": 100.0,
           "available": true
+        },
+        "Arogga": {
+          "price": 350.0,
+          "url": "https://www.arogga.com/product/78506/orgagenic-sunburn-removal-pack-100g",
+          "matched_title": "Orgagenic Sunburn Removal Pack 100g",
+          "size": "Jar",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -11997,6 +12684,15 @@
           "seller": "Orgagenic Official",
           "confidence": 100.0,
           "available": true
+        },
+        "Arogga": {
+          "price": 110.0,
+          "url": "https://www.arogga.com/product/72746/orgagenic-methi-powder-100g",
+          "matched_title": "Orgagenic Methi Powder 100g",
+          "size": "100g",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",
@@ -12020,6 +12716,15 @@
           "seller": "Orgagenic Official",
           "confidence": 100.0,
           "available": true
+        },
+        "Arogga": {
+          "price": 264.0,
+          "url": "https://www.arogga.com/product/72740/orgagenic-nutmeg-powder-100g",
+          "matched_title": "Orgagenic Nutmeg Powder 100g",
+          "size": "100g Jar",
+          "seller": "Arogga",
+          "available": true,
+          "confidence": 100.0
         }
       },
       "mrp_source_type": "workbook",

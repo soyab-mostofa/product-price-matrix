@@ -38,6 +38,7 @@ No single view shows the combined total; the origin switch carries both counts.
 - `scripts/verify_live_links.py` — The same reachability/identity check against the **live production API**, so a bad deploy or an unsynced remote D1 is caught, not just a bad local file.
 - `scripts/purge_rejected_listings.py` — Deletes listings the hardened matcher now rejects; recovers a dropped candidate size from the live channel and re-validates before deleting.
 - `scripts/fold_d1_listings_into_research.py` — Folds scraper-discovered listings from D1 back into `verified_marketplace_research.json`, re-validating each. **Run after any discovery pass**, or the next `build_matrix.py` silently undoes it.
+- `scripts/verify_scrape_survived.py` — Parses a scraper log and confirms every reported match actually reached the research file, the local replica, **and** live production. A scraper's own "+N new listings" line is not evidence the data survived.
 - `scripts/stamp_workbook_provenance.py` — Stamps each local SKU with its workbook sheet and Excel row.
 - `sku_matcher.py` — Strict brand, category, volume, bundle, concentration, and cosmetic shade validation engine.
 - `src/` — Hono JSX application, API routes, browser client, and server domain modules.
@@ -221,6 +222,29 @@ uv run --with rapidfuzz --with openpyxl python3 scripts/purge_rejected_listings.
 # The same link check against LIVE production
 uv run python3 scripts/verify_live_links.py
 ```
+
+### Discovery Pipeline Order (non-negotiable)
+Scrapers write into the D1 replicas, but `seed.sql` **deletes every local
+listing** before re-inserting from `verified_marketplace_research.json`. Sync
+before folding and the run is silently reverted — this destroyed 80 freshly
+verified listings once, with every command reporting success.
+
+```bash
+# 1. discover
+uv run --with rapidfuzz --with openpyxl python3 scripts/scrape_missing.py --origin all
+# 2. fold into the canonical artifact — BEFORE any sync
+uv run --with rapidfuzz python3 scripts/fold_d1_listings_into_research.py
+# 3. rebuild seed.sql from the now-complete research file
+uv run --with openpyxl --with rapidfuzz python3 build_matrix.py
+# 4. only now sync the replicas
+bun run db:local:sync
+# 5. prove the findings survived to production
+uv run python3 scripts/verify_scrape_survived.py
+```
+
+`db:local:sync` refuses to run when the replica holds verified local listings
+the seed does not carry, naming them and exiting non-zero (`--force` discards
+them deliberately). `tests/test_sync_guard.py` pins that behaviour.
 
 ### Verification (run before claiming work is done)
 ```bash

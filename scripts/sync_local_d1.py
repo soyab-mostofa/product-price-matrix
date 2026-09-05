@@ -3,12 +3,54 @@
 from __future__ import annotations
 
 import sqlite3
+import sys
 from pathlib import Path
 
 from migrate_local_d1 import D1_DIR, migrate_database, table_exists
 
 ROOT = Path(__file__).resolve().parents[1]
 SEED_PATH = ROOT / "seed.sql"
+
+
+def unfolded_listings(path: Path) -> list[tuple[str, str]]:
+    """Verified local listings in the replica that seed.sql would destroy.
+
+    seed.sql opens by deleting every local listing and re-inserting from
+    `verified_marketplace_research.json`. A discovery pass writes straight into
+    the replica, so syncing before folding those findings back silently reverts
+    them — this cost 80 freshly-scraped listings once, and the scraper's own
+    success log is no evidence they survived.
+
+    Returns the (product_name, channel) pairs present in the replica but absent
+    from the seed, so the caller can refuse to run.
+    """
+    import re
+
+    seed_sql = SEED_PATH.read_text(encoding="utf-8")
+    seeded = set(
+        re.findall(
+            r"INSERT INTO marketplace_listings [^\n]*?VALUES \((\d+), '([^']*)'",
+            seed_sql,
+        )
+    )
+
+    connection = sqlite3.connect(path, timeout=30)
+    try:
+        if not table_exists(connection, "products"):
+            return []
+        rows = connection.execute(
+            "SELECT ml.row_id, ml.channel_name, p.product_name "
+            "FROM marketplace_listings ml JOIN products p ON p.row_id = ml.row_id "
+            "WHERE p.sourcing_origin = 'local' AND ml.verified = 1"
+        ).fetchall()
+    finally:
+        connection.close()
+
+    return [
+        (str(name), str(channel))
+        for row_id, channel, name in rows
+        if (str(row_id), str(channel)) not in seeded
+    ]
 
 
 def sync_database(path: Path, seed_sql: str) -> bool:
@@ -38,8 +80,31 @@ def main() -> None:
     if not SEED_PATH.exists():
         raise SystemExit(f"Missing canonical seed: {SEED_PATH}")
 
+    force = "--force" in sys.argv
     seed_sql = SEED_PATH.read_text(encoding="utf-8")
     database_paths = sorted(D1_DIR.glob("*.sqlite")) if D1_DIR.exists() else []
+
+    # Refuse to revert un-folded discovery results. seed.sql deletes every local
+    # listing before re-inserting from the research file, so anything a scraper
+    # wrote but nobody folded back is about to vanish without a trace.
+    if not force:
+        for path in database_paths:
+            orphans = unfolded_listings(path)
+            if orphans:
+                print(
+                    f"REFUSING TO SYNC: {path.name} holds {len(orphans)} verified local "
+                    "listing(s) that seed.sql would delete.\n"
+                    "These look like un-folded discovery results. Run:\n"
+                    "  uv run --with rapidfuzz python3 scripts/fold_d1_listings_into_research.py\n"
+                    "  uv run --with openpyxl --with rapidfuzz python3 build_matrix.py\n"
+                    "then sync again (or pass --force to discard them).\n"
+                )
+                for name, channel in orphans[:10]:
+                    print(f"    {channel:14s} {name[:56]}")
+                if len(orphans) > 10:
+                    print(f"    ... and {len(orphans) - 10} more")
+                raise SystemExit(1)
+
     synced = 0
     for path in database_paths:
         if sync_database(path, seed_sql):
