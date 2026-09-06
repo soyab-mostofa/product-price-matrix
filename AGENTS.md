@@ -249,10 +249,18 @@ them deliberately). `tests/test_sync_guard.py` pins that behaviour.
 ### Verification (run before claiming work is done)
 ```bash
 bun run typecheck   # tsc --noEmit
-bun run test        # 50 Bun unit tests + 56 Python tests
+bun run test        # 69 Bun unit tests + 79 Python tests
 bun run build       # client bundle + Worker bundle
 bun run dev         # local dev server on :5173
+bun run test:audit  # 6 browser audits against a running dev server
 ```
+
+The audits in `tests/audit/` drive a real browser and recompute what was
+painted from the raw API, so a rendering bug fails there even when the unit
+tests pass. `actions.mjs` is the only one that writes: it drives login, the
+global engine, per-SKU tunes and both reset controls, then restores the global
+params and every pre-existing override it found. It needs the admin password
+(from `.dev.vars`, or `AUDIT_ADMIN_PASSWORD`) and skips cleanly without one.
 
 ### Deployment Commands
 ```bash

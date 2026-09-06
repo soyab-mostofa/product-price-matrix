@@ -169,6 +169,40 @@ describe('header filters and sorts', () => {
     }
   })
 
+  // The fixture above is useless for discount ordering: every row is above
+  // market, so its discount order collapses onto the selling-price order and a
+  // test would pass against an implementation that just sorted by price. These
+  // rows make the two disagree on purpose -- 21 and 22 share a selling price of
+  // 185 yet sit at opposite ends of the discount order.
+  const byMarket = [
+    product(21, 'Zinc Serum', 'Brand A', 100, 500),
+    product(22, 'Aloe Toner', 'Brand B', 100, 200),
+    product(23, 'Mint Wash', 'Brand A', 300, 1000),
+    product(24, 'Basil Balm', 'Brand B', 150, 0),
+    product(25, 'Cocoa Cream', 'Brand A', 300, 200),
+  ]
+
+  test('market discount sorts by the gap to MRP, not by the selling price', () => {
+    // selling = cost + 85, so: 21 -> 63%, 22 -> 7.5%, 23 -> 61.5%, 25 -> -92.5%.
+    expect(sortProducts(byMarket, 'discountDesc', selling, []).map((item) => item.row))
+      .toEqual([21, 23, 22, 25, 24])
+    expect(sortProducts(byMarket, 'discountAsc', selling, []).map((item) => item.row))
+      .toEqual([25, 22, 23, 21, 24])
+  })
+
+  test('a SKU with no MRP benchmark sinks to the bottom of both discount sorts', () => {
+    // Row 24 has no benchmark to discount against. It is not "0% off" -- it is
+    // unknown, so it must never head the ascending list.
+    expect(sortProducts(byMarket, 'discountAsc', selling, []).at(-1)?.row).toBe(24)
+    expect(sortProducts(byMarket, 'discountDesc', selling, []).at(-1)?.row).toBe(24)
+  })
+
+  test('the discount sort applies to the filtered view, not the whole catalog', () => {
+    const view = filterProducts(byMarket, { query: '', brand: 'Brand A', source: '' })
+    expect(sortProducts(view, 'discountDesc', selling, []).map((item) => item.row)).toEqual([21, 23, 25])
+    expect(sortProducts(view, 'discountAsc', selling, []).map((item) => item.row)).toEqual([25, 23, 21])
+  })
+
   test('clickable pinned headers toggle in both directions', () => {
     expect(nextPinnedSort('product', 'product')).toBe('productDesc')
     expect(nextPinnedSort('productDesc', 'product')).toBe('product')

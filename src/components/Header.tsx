@@ -95,6 +95,7 @@ export function Header({ meta }: { meta: DashboardMeta }) {
               <option value="product">Product A–Z</option><option value="productDesc">Product Z–A</option>
               <option value="brand">Brand A–Z</option><option value="brandDesc">Brand Z–A</option>
               <option value="sellingAsc">Selling: Low → High</option><option value="sellingDesc">Selling: High → Low</option>
+              <option value="discountAsc">Market discount: Low → High</option><option value="discountDesc">Market discount: High → Low</option>
               <option value="mfgAsc">Source Cost: Low → High</option><option value="mfgDesc">Source Cost: High → Low</option>
               <option value="marketAsc">MRP: Low → High</option><option value="marketDesc">MRP: High → Low</option>
               <option value="coverage">Most Channels</option><option value="spread">Largest Spread</option>

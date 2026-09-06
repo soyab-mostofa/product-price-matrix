@@ -134,6 +134,16 @@ describe('Hono application', () => {
     }
   })
 
+  test('the sort select offers both market-discount directions', async () => {
+    // SortValue and this markup are the two halves of one contract: an option
+    // whose value no longer parses as a SortValue silently sorts by nothing.
+    const text = await (await app.request('/', {}, env)).text()
+    const select = text.match(/<select id="sort">[\s\S]*?<\/select>/)?.[0]
+    expect(select).toBeString()
+    expect(select).toContain('value="discountAsc"')
+    expect(select).toContain('value="discountDesc"')
+  })
+
   test('serves public products JSON from GET /api/products', async () => {
     const res = await app.request('/api/products', {}, env)
     expect(res.status).toBe(200)

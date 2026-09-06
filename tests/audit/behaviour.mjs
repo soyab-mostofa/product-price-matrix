@@ -20,6 +20,19 @@ const ctx = await browser.newContext({ viewport: { width: 1600, height: 1000 } }
 const page = await ctx.newPage()
 const engine = await (await page.request.get(`${BASE}/api/engine`)).json()
 const G = engine.globalParams
+const OV = engine.overrides || {}
+// Same merge the app applies: independent fields pin one at a time, CAC and
+// discount pin as pairs.
+const resolve = (g, ov) => {
+  if (!ov) return g
+  const out = { ...g }
+  for (const k of ['packaging', 'transport', 'delivery', 'targetMarginPct']) {
+    if (ov[k] != null) out[k] = ov[k]
+  }
+  if (ov.cacType != null && ov.cac != null) { out.cacType = ov.cacType; out.cac = ov.cac }
+  if (ov.discountType != null && ov.discountVal != null) { out.discountType = ov.discountType; out.discountVal = ov.discountVal }
+  return out
+}
 const cat = await (await page.request.get(`${BASE}/api/products?origin=local`)).json()
 
 await page.goto(`${BASE}/`, { waitUntil: 'networkidle' })
@@ -115,6 +128,31 @@ for (const [opt, sel, chk, label] of [
   const v = (await colNums(sel)).filter((x) => x !== null)
   if (!chk(v)) bad('sort', `${label} is not ordered (first 6: ${v.slice(0, 6)})`)
 }
+// Market discount ordering. The price and its chip share one cell, so scraping
+// them apart is brittle -- check the row ORDER against the gap computed from the
+// catalog instead.
+const byRow = new Map(cat.products.map((p) => [p.row, p]))
+const discountOf = (row) => {
+  const p = byRow.get(row)
+  if (!p) return null
+  const sp = sellingPrice(p.manufactured_price, resolve(G, OV[String(row)]))
+  const mrp = Number(p.market_average_price)
+  return mrp > 0 ? ((mrp - sp) / mrp) * 100 : null
+}
+for (const [opt, chk, label] of [['discountAsc', asc, 'market discount asc'], ['discountDesc', desc, 'market discount desc']]) {
+  await page.selectOption('#sort', opt)
+  await page.waitForTimeout(350)
+  const ds = (await rowIds()).map(discountOf)
+  const known = ds.filter((d) => d !== null)
+  if (known.length < 2) bad('sort', `${label} had ${known.length} benchmarked rows, too few to prove ordering`)
+  if (!chk(known)) bad('sort', `${label} is not ordered (first 6: ${known.slice(0, 6).map((d) => d.toFixed(1)).join(', ')})`)
+  // An unknown gap is not a zero gap: MRP-less SKUs belong at the tail.
+  const firstMissing = ds.indexOf(null)
+  if (firstMissing >= 0 && ds.slice(firstMissing).some((d) => d !== null)) {
+    bad('sort', `${label} left an SKU without an MRP above a benchmarked one`)
+  }
+}
+
 // Alphabetical
 await page.selectOption('#sort', 'product')
 await page.waitForTimeout(350)

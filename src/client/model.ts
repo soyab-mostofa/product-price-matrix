@@ -18,6 +18,7 @@ export type SortValue =
   | 'product' | 'productDesc'
   | 'brand' | 'brandDesc'
   | 'sellingAsc' | 'sellingDesc'
+  | 'discountAsc' | 'discountDesc'
   | 'mfgAsc' | 'mfgDesc'
   | 'marketAsc' | 'marketDesc'
   | 'coverage' | 'spread'
@@ -85,6 +86,15 @@ export function sortProducts(
   if (sort === 'brandDesc') return list.sort((a, b) => b.brand_name.localeCompare(a.brand_name) || byName(b, a))
   if (sort === 'sellingAsc') return list.sort((a, b) => compareOptionalNumbers(sellingPriceFor(a) ?? undefined, sellingPriceFor(b) ?? undefined, 'asc'))
   if (sort === 'sellingDesc') return list.sort((a, b) => compareOptionalNumbers(sellingPriceFor(a) ?? undefined, sellingPriceFor(b) ?? undefined, 'desc'))
+  if (sort === 'discountAsc' || sort === 'discountDesc') {
+    // Ordered by the chip the Selling price column already shows: how far under
+    // MRP the engine lands. A SKU with no benchmark has an unknown gap rather
+    // than a zero one, so compareOptionalNumbers sinks it in both directions.
+    const discountFor = (item: Product) =>
+      calculateMarketDiscount(sellingPriceFor(item), item.market_average_price) ?? undefined
+    const direction = sort === 'discountAsc' ? 'asc' : 'desc'
+    return list.sort((a, b) => compareOptionalNumbers(discountFor(a), discountFor(b), direction) || byName(a, b))
+  }
   if (sort === 'mfgAsc') return list.sort((a, b) => a.manufactured_price - b.manufactured_price)
   if (sort === 'mfgDesc') return list.sort((a, b) => b.manufactured_price - a.manufactured_price)
   if (sort === 'marketAsc') return list.sort((a, b) => a.market_average_price - b.market_average_price)
