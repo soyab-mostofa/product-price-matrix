@@ -11,7 +11,7 @@ const bad = (a, m) => problems.push(`[${a}] ${m}`)
 // The app rounds to whole BDT and then derives every chip from the ROUNDED
 // price, so the chip always describes the number on screen. Mirror that.
 function sellingPrice(cost, p) {
-  const overhead = p.packaging + p.transport + p.delivery + p.cac
+  const overhead = p.packaging + p.transport + p.delivery + (p.cacType === 'pct' ? (cost * p.cac) / 100 : p.cac)
   if (p.targetMarginPct >= 100) return null
   const list = (cost + overhead) / (1 - p.targetMarginPct / 100)
   const out = p.discountType === 'pct' ? list * (1 - p.discountVal / 100) : list - p.discountVal
@@ -22,9 +22,10 @@ const marketDiscount = (sell, bench) => ((bench - sell) / bench) * 100
 const resolve = (g, ov) => {
   if (!ov) return g
   const out = { ...g }
-  for (const k of ['packaging', 'transport', 'delivery', 'cac', 'targetMarginPct']) {
+  for (const k of ['packaging', 'transport', 'delivery', 'targetMarginPct']) {
     if (ov[k] != null) out[k] = ov[k]
   }
+  if (ov.cacType != null && ov.cac != null) { out.cacType = ov.cacType; out.cac = ov.cac }
   if (ov.discountType != null && ov.discountVal != null) { out.discountType = ov.discountType; out.discountVal = ov.discountVal }
   return out
 }

@@ -39,7 +39,15 @@ export function Modals() {
               <div class="engine-field"><label for="inputPackaging">Packaging (BDT)</label><input id="inputPackaging" class="engine-input" type="number" min="0" max="100000" step="1" required /></div>
               <div class="engine-field"><label for="inputTransport">Transport (BDT)</label><input id="inputTransport" class="engine-input" type="number" min="0" max="100000" step="1" required /><span class="hint">Per unit. Leave 0 unless inbound freight is charged per item.</span></div>
               <div class="engine-field"><label for="inputDelivery">Delivery (BDT)</label><input id="inputDelivery" class="engine-input" type="number" min="0" max="100000" step="1" required /><span class="hint">Delivery is an order-level cost. Charging it per unit prices low-value SKUs above market — amortise it across expected units per order.</span></div>
-              <div class="engine-field"><label for="inputCAC">CAC (BDT)</label><input id="inputCAC" class="engine-input" type="number" min="0" max="100000" step="1" required /><span class="hint">Also order-level. Same caution as delivery.</span></div>
+              <fieldset class="engine-field" style="border:0;padding:0;margin:0;">
+                <legend>CAC type and value</legend>
+                <div class="discount-type-group" role="radiogroup" aria-label="CAC mode">
+                  <button type="button" class="discount-type-btn" id="btnCacTypeAmt" role="radio" aria-checked="false">Amount (BDT)</button>
+                  <button type="button" class="discount-type-btn active" id="btnCacTypePct" role="radio" aria-checked="true">% of source</button>
+                </div>
+                <input id="inputCAC" class="engine-input" type="number" min="0" max="100" step="0.01" style="margin-top:5px;" required />
+                <span class="hint" id="cacHint">Share of each SKU's own sourcing price, so acquisition cost stays proportionate to the headroom.</span>
+              </fieldset>
             </div>
           </div>
 
@@ -60,8 +68,8 @@ export function Modals() {
           </div>
 
           <div class="engine-preview-card">
-            <div class="engine-preview-row"><span>Total variable overhead</span><strong id="summaryOverhead">—</strong></div>
-            <div class="engine-preview-row"><span>Formula</span><span id="formulaDescription">(Source cost + overhead) ÷ (1 − margin%) − discount</span></div>
+            <div class="engine-preview-row"><span>Total variable overhead at ৳1,000 source cost</span><strong id="summaryOverhead">—</strong></div>
+            <div class="engine-preview-row"><span>Formula</span><span id="formulaDescription">(Source cost + packaging + transport + delivery + CAC) ÷ (1 − margin%) − discount</span></div>
             <div class="engine-preview-row total-highlight"><span>Worked example at ৳1,000 source cost</span><strong id="summarySample">—</strong></div>
           </div>
 
@@ -101,7 +109,15 @@ export function Modals() {
               <div class="engine-field"><label for="prodInputPackaging">Packaging (BDT)</label><input id="prodInputPackaging" class="engine-input" type="number" min="0" max="100000" step="1" /></div>
               <div class="engine-field"><label for="prodInputTransport">Transport (BDT)</label><input id="prodInputTransport" class="engine-input" type="number" min="0" max="100000" step="1" /></div>
               <div class="engine-field"><label for="prodInputDelivery">Delivery (BDT)</label><input id="prodInputDelivery" class="engine-input" type="number" min="0" max="100000" step="1" /></div>
-              <div class="engine-field"><label for="prodInputCAC">CAC (BDT)</label><input id="prodInputCAC" class="engine-input" type="number" min="0" max="100000" step="1" /></div>
+              <fieldset class="engine-field" style="border:0;padding:0;margin:0;">
+                <legend>CAC type and value</legend>
+                <div class="discount-type-group" role="radiogroup" aria-label="Product CAC mode">
+                  <button type="button" class="discount-type-btn active" id="prodBtnCacGlobal" role="radio" aria-checked="true">Global</button>
+                  <button type="button" class="discount-type-btn" id="prodBtnCacAmt" role="radio" aria-checked="false">BDT</button>
+                  <button type="button" class="discount-type-btn" id="prodBtnCacPct" role="radio" aria-checked="false">%</button>
+                </div>
+                <input id="prodInputCAC" class="engine-input" type="number" min="0" step="0.01" style="margin-top:5px;" />
+              </fieldset>
               <div class="engine-field"><label for="prodInputMarginPct">Target margin (%)</label><input id="prodInputMarginPct" class="engine-input" type="number" min="0" max="99.99" step="0.1" /></div>
               <fieldset class="engine-field" style="border:0;padding:0;margin:0;">
                 <legend>Discount type and value</legend>

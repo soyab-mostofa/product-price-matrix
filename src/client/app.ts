@@ -11,6 +11,7 @@ import {
   PRICING_DEFAULTS,
   resolvePricingParams,
   sortProducts,
+  totalOverhead,
   type SortValue,
 } from './model'
 
@@ -48,6 +49,9 @@ let activeProductDetail: Product | null = null
 let currentGlobalDiscountType: 'pct' | 'amt' = 'pct'
 /** 'global' = inherit the global discount; 'pct'/'amt' pin it for this SKU. */
 let currentProdDiscountType: 'global' | 'pct' | 'amt' = 'global'
+let currentGlobalCacType: 'amt' | 'pct' = 'pct'
+/** 'global' = inherit the global CAC mode; 'amt'/'pct' pin it for this SKU. */
+let currentProdCacType: 'global' | 'amt' | 'pct' = 'global'
 let isAdminAuthenticated = false
 let authConfigured = false
 let catalogLoaded = false
@@ -161,6 +165,7 @@ const FIELD_LABELS: Record<string, string> = {
   transport: 'Transport',
   delivery: 'Delivery',
   cac: 'CAC',
+  cacType: 'CAC',
   targetMarginPct: 'Target Margin',
   discountType: 'Discount',
   discountVal: 'Discount',
@@ -175,7 +180,7 @@ function getProductParams(rowId: number): PricingParams {
 }
 
 /** e.g. "Target Margin, Discount" — what this SKU pins against the global engine. */
-function describeOverride(override: StoredPricingOverride | undefined): string {
+function describeOverride(override: PricingOverride | undefined): string {
   const labels = overriddenFields(override).map((field) => FIELD_LABELS[field] ?? field)
   return [...new Set(labels)].join(', ')
 }
@@ -599,21 +604,24 @@ function spreadRail(prices: number[], mrp: number, selling: number | null, above
   `
 }
 
-function openDetail(p: Product) {
-  activeProductDetail = p
-  const dialogBrand = document.getElementById('dialogBrand')
-  const dialogName = document.getElementById('dialogName')
-  if (dialogBrand) dialogBrand.textContent = p.brand_name
-  if (dialogName) dialogName.textContent = p.product_name
-
+/**
+ * Render the Market position tab for one SKU under a given tune.
+ *
+ * Takes the override rather than reading the stored one, so the tab can be
+ * re-rendered live while the tune form is being edited. Under a percentage CAC
+ * every figure here -- overhead, the cost stack, the market chips -- moves with
+ * the sourcing price, so leaving saved numbers on screen beside an edited form
+ * would misreport the recommendation.
+ */
+function renderOverviewTab(p: Product, override: PricingOverride | undefined): void {
+  const params = resolvePricingParams(globalCostParams, override)
   const mfg = Number(p.manufactured_price)
   const mktAvg = Number(p.market_average_price)
-  const calculatedSelling = computeSellingPrice(mfg, p.row)
-  const params = getProductParams(p.row)
-  const overhead = Number(params.packaging) + Number(params.transport) + Number(params.delivery) + Number(params.cac)
+  const calculatedSelling = calculateSellingPrice(mfg, params)
+  const overhead = totalOverhead(mfg, params)
   // Label each stat by what is actually pinned: a margin-only tune must not
   // claim the overhead is custom when every cost field still follows global.
-  const detailOverride = productOverrides[String(p.row)]
+  const detailOverride = override
   const detailPinned = describeOverride(detailOverride)
   const overheadIsTuned = overriddenFields(detailOverride)
     .some((field) => field === 'packaging' || field === 'transport' || field === 'delivery' || field === 'cac')
@@ -726,6 +734,16 @@ function openDetail(p: Product) {
 
   const tabOverviewContent = document.getElementById('tabOverviewContent')
   if (tabOverviewContent) tabOverviewContent.innerHTML = out
+}
+
+function openDetail(p: Product) {
+  activeProductDetail = p
+  const dialogBrand = document.getElementById('dialogBrand')
+  const dialogName = document.getElementById('dialogName')
+  if (dialogBrand) dialogBrand.textContent = p.brand_name
+  if (dialogName) dialogName.textContent = p.product_name
+
+  renderOverviewTab(p, productOverrides[String(p.row)])
 
   // Populate per-product inputs. A pinned field shows its value; an inherited
   // field stays blank and advertises the live global value as its placeholder,
@@ -735,7 +753,6 @@ function openDetail(p: Product) {
     ['prodInputPackaging', 'packaging'],
     ['prodInputTransport', 'transport'],
     ['prodInputDelivery', 'delivery'],
-    ['prodInputCAC', 'cac'],
     ['prodInputMarginPct', 'targetMarginPct'],
   ]
   for (const [id, field] of tunableInputs) {
@@ -746,6 +763,14 @@ function openDetail(p: Product) {
     input.placeholder = `Global: ${globalCostParams[field]}`
     input.classList.toggle('is-pinned', input.value !== '')
   }
+
+  const cacInput = document.getElementById('prodInputCAC') as HTMLInputElement | null
+  const cacPinned = overrideForForm?.cacType !== undefined && overrideForForm?.cac !== undefined
+  if (cacInput) {
+    cacInput.value = cacPinned ? String(overrideForForm?.cac) : ''
+    cacInput.classList.toggle('is-pinned', cacPinned)
+  }
+  setProductCacType(cacPinned ? (overrideForForm?.cacType ?? 'amt') : 'global')
 
   const discountInput = document.getElementById('prodInputDiscountVal') as HTMLInputElement | null
   const discountPinned = overrideForForm?.discountType !== undefined && overrideForForm?.discountVal !== undefined
@@ -802,6 +827,64 @@ function setGlobalDiscountType(type: 'pct' | 'amt'): void {
   updateEngineSummary()
 }
 
+/** e.g. "5%" or "40 BDT" — how the global engine currently charges CAC. */
+function describeGlobalCac(): string {
+  return globalCostParams.cacType === 'pct'
+    ? `${globalCostParams.cac}%`
+    : `${globalCostParams.cac} BDT`
+}
+
+function setGlobalCacType(type: 'amt' | 'pct'): void {
+  currentGlobalCacType = type
+  const amt = document.getElementById('btnCacTypeAmt')
+  const pct = document.getElementById('btnCacTypePct')
+  amt?.classList.toggle('active', type === 'amt')
+  amt?.setAttribute('aria-checked', String(type === 'amt'))
+  pct?.classList.toggle('active', type === 'pct')
+  pct?.setAttribute('aria-checked', String(type === 'pct'))
+  const hint = document.getElementById('cacHint')
+  if (hint) {
+    hint.textContent = type === 'pct'
+      ? "Share of each SKU's own sourcing price, so acquisition cost stays proportionate to the headroom."
+      : 'Flat charge on every unit. Order-level cost — same caution as delivery.'
+  }
+  const input = document.getElementById('inputCAC') as HTMLInputElement | null
+  if (input) input.max = type === 'pct' ? '100' : '100000'
+  updateEngineSummary()
+}
+
+function setProductCacType(type: 'global' | 'amt' | 'pct'): void {
+  currentProdCacType = type
+  const global = document.getElementById('prodBtnCacGlobal')
+  const amt = document.getElementById('prodBtnCacAmt')
+  const pct = document.getElementById('prodBtnCacPct')
+  global?.classList.toggle('active', type === 'global')
+  global?.setAttribute('aria-checked', String(type === 'global'))
+  amt?.classList.toggle('active', type === 'amt')
+  amt?.setAttribute('aria-checked', String(type === 'amt'))
+  pct?.classList.toggle('active', type === 'pct')
+  pct?.setAttribute('aria-checked', String(type === 'pct'))
+
+  // Inheriting the global CAC means there is no per-SKU value to type.
+  const input = document.getElementById('prodInputCAC') as HTMLInputElement | null
+  if (input) {
+    input.disabled = type === 'global'
+    if (type === 'global') {
+      input.value = ''
+      input.removeAttribute('max')
+      input.classList.remove('is-pinned')
+      input.placeholder = `Global: ${describeGlobalCac()}`
+    } else if (type === 'pct') {
+      input.max = '100'
+      input.placeholder = '% of sourcing price (0-100)'
+    } else {
+      input.max = '100000'
+      input.placeholder = 'CAC in BDT'
+    }
+  }
+  updateProdTuneSummary()
+}
+
 function setProductDiscountType(type: 'global' | 'pct' | 'amt'): void {
   currentProdDiscountType = type
   const global = document.getElementById('prodBtnTypeGlobal')
@@ -850,13 +933,17 @@ function readTuneForm(): PricingOverride {
   const packaging = numeric('prodInputPackaging')
   const transport = numeric('prodInputTransport')
   const delivery = numeric('prodInputDelivery')
-  const cac = numeric('prodInputCAC')
   const margin = numeric('prodInputMarginPct')
   if (packaging !== undefined) override.packaging = packaging
   if (transport !== undefined) override.transport = transport
   if (delivery !== undefined) override.delivery = delivery
-  if (cac !== undefined) override.cac = cac
   if (margin !== undefined) override.targetMarginPct = margin
+
+  // CAC pins as a pair, and only when a concrete mode is selected.
+  if (currentProdCacType !== 'global') {
+    override.cac = numeric('prodInputCAC') ?? 0
+    override.cacType = currentProdCacType
+  }
 
   // Discount pins as a pair, and only when a concrete mode is selected.
   if (currentProdDiscountType !== 'global') {
@@ -872,6 +959,10 @@ function updateProdTuneSummary() {
   const mfg = Number(activeProductDetail.manufactured_price)
   const override = readTuneForm()
   const resolved = resolvePricingParams(globalCostParams, override)
+
+  // The Market position tab describes this same SKU, so keep it in step with
+  // the form: switching tabs mid-edit must never show a stale recommendation.
+  renderOverviewTab(activeProductDetail, override)
 
   const pinnedLabels = [...new Set(overriddenFields(override).map((field) => FIELD_LABELS[field] ?? field))]
   const pinnedEl = document.getElementById('prodSummaryPinned')
@@ -893,11 +984,14 @@ function updateEngineSummary() {
     transport: Number((document.getElementById('inputTransport') as HTMLInputElement | null)?.value) || 0,
     delivery: Number((document.getElementById('inputDelivery') as HTMLInputElement | null)?.value) || 0,
     cac: Number((document.getElementById('inputCAC') as HTMLInputElement | null)?.value) || 0,
+    cacType: currentGlobalCacType,
     targetMarginPct: Number((document.getElementById('inputMarginPct') as HTMLInputElement | null)?.value) || 0,
     discountType: currentGlobalDiscountType,
     discountVal: Number((document.getElementById('inputDiscountVal') as HTMLInputElement | null)?.value) || 0,
   }
-  const overhead = params.packaging + params.transport + params.delivery + params.cac
+  // Under a percentage CAC there is no single catalog-wide overhead, so both
+  // preview rows are quoted against the same worked example.
+  const overhead = totalOverhead(1000, params)
   const summaryOverhead = document.getElementById('summaryOverhead')
   if (summaryOverhead) summaryOverhead.textContent = money.format(overhead)
   const sample = calculateSellingPrice(1000, params)
@@ -1111,6 +1205,11 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('prodBtnTypeGlobal')?.addEventListener('click', () => setProductDiscountType('global'))
   document.getElementById('prodBtnTypePct')?.addEventListener('click', () => setProductDiscountType('pct'))
   document.getElementById('prodBtnTypeAmt')?.addEventListener('click', () => setProductDiscountType('amt'))
+  document.getElementById('btnCacTypeAmt')?.addEventListener('click', () => setGlobalCacType('amt'))
+  document.getElementById('btnCacTypePct')?.addEventListener('click', () => setGlobalCacType('pct'))
+  document.getElementById('prodBtnCacGlobal')?.addEventListener('click', () => setProductCacType('global'))
+  document.getElementById('prodBtnCacAmt')?.addEventListener('click', () => setProductCacType('amt'))
+  document.getElementById('prodBtnCacPct')?.addEventListener('click', () => setProductCacType('pct'))
 
   for (const id of ENGINE_INPUT_IDS) {
     document.getElementById(id)?.addEventListener('input', updateEngineSummary)
@@ -1145,6 +1244,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (input) input.value = String(val)
     })
     setGlobalDiscountType(globalCostParams.discountType)
+    setGlobalCacType(globalCostParams.cacType)
     updateEngineSummary()
     engineModal?.showModal()
   })
@@ -1207,6 +1307,7 @@ document.addEventListener('DOMContentLoaded', () => {
       transport: Number((document.getElementById('inputTransport') as HTMLInputElement).value) || 0,
       delivery: Number((document.getElementById('inputDelivery') as HTMLInputElement).value) || 0,
       cac: Number((document.getElementById('inputCAC') as HTMLInputElement).value) || 0,
+      cacType: currentGlobalCacType,
       targetMarginPct: Number((document.getElementById('inputMarginPct') as HTMLInputElement).value) || 0,
       discountType: currentGlobalDiscountType,
       discountVal: Number((document.getElementById('inputDiscountVal') as HTMLInputElement).value) || 0,

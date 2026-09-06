@@ -7,6 +7,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 MIGRATION = ROOT / "migrations/0003_sparse_pricing_overrides.sql"
+PERCENTAGE_CAC = ROOT / "migrations/0008_percentage_cac.sql"
 SCHEMA = ROOT / "schema.sql"
 
 DENSE_SCHEMA = """
@@ -150,6 +151,9 @@ class SparseOverrideMigrationTests(unittest.TestCase):
         migrated = _dense_database()
         migrated.commit()
         migrated.executescript(MIGRATION.read_text(encoding="utf-8"))
+        # 0008 reshapes the same table again, so convergence is checked at the
+        # end of the pricing migration chain, not partway through it.
+        migrated.executescript(PERCENTAGE_CAC.read_text(encoding="utf-8"))
         migrated_columns = [
             (row[1], row[2], row[3])
             for row in migrated.execute("PRAGMA table_info(product_pricing_overrides)")

@@ -7,8 +7,10 @@ import {
   pricingOverrideSchema,
   pricingSchema,
   productRowIdSchema,
+  resolveCac,
   resolvePricingParams,
   sparsifyOverride,
+  totalOverhead,
 } from '../src/server/pricing'
 import type { PricingParams } from '../src/types'
 
@@ -17,6 +19,7 @@ const defaults = {
   transport: 0,
   delivery: 0,
   cac: 40,
+  cacType: 'amt' as const,
   targetMarginPct: 0,
   discountType: 'pct' as const,
   discountVal: 0,
@@ -49,7 +52,8 @@ describe('sparse override validation', () => {
   })
 
   test('treats explicit null as "unpin this field"', () => {
-    const parsed = pricingOverrideSchema.parse({ packaging: null, cac: 40 })
+    // CAC pins as a pair now, so the mode travels with the value.
+    const parsed = pricingOverrideSchema.parse({ packaging: null, cacType: 'amt', cac: 40 })
     expect(parsed.packaging).toBeUndefined()
     expect(parsed.cac).toBe(40)
   })
@@ -161,7 +165,116 @@ describe('selling price formula', () => {
     expect(calculateSellingPrice(100, { ...defaults, targetMarginPct: 100 })).toBeNull()
   })
 
-  test('shipped defaults match the documented engine baseline', () => {
-    expect(PRICING_DEFAULTS).toEqual(defaults)
+  test('shipped defaults charge CAC as 5% of the sourcing price', () => {
+    expect(PRICING_DEFAULTS).toEqual({
+      packaging: 45,
+      transport: 0,
+      delivery: 0,
+      cac: 5,
+      cacType: 'pct',
+      targetMarginPct: 0,
+      discountType: 'pct',
+      discountVal: 0,
+    })
+  })
+})
+
+describe('CAC as a percentage of the sourcing price', () => {
+  const pctCac: PricingParams = { ...defaults, cacType: 'pct', cac: 5 }
+
+  test('a flat CAC is the same figure whatever the SKU costs', () => {
+    expect(resolveCac(100, defaults)).toBe(40)
+    expect(resolveCac(5000, defaults)).toBe(40)
+  })
+
+  test('a percentage CAC scales with the sourcing price', () => {
+    expect(resolveCac(100, pctCac)).toBe(5)
+    expect(resolveCac(5000, pctCac)).toBe(250)
+  })
+
+  test('overhead folds the resolved CAC in with the flat costs', () => {
+    // packaging 45 + transport 0 + delivery 0 + 5% of 200
+    expect(totalOverhead(200, pctCac)).toBe(55)
+    expect(totalOverhead(200, defaults)).toBe(85)
+  })
+
+  test('the selling price tracks the sourcing price under a percentage CAC', () => {
+    // (100 + 45 + 5) — the cheap SKU is no longer carrying a flat 40 BDT.
+    expect(calculateSellingPrice(100, pctCac)).toBe(150)
+    // (5000 + 45 + 250) — the expensive SKU now carries proportionate CAC.
+    expect(calculateSellingPrice(5000, pctCac)).toBe(5295)
+  })
+
+  test('percentage CAC still composes with margin and discount', () => {
+    expect(calculateSellingPrice(100, { ...pctCac, targetMarginPct: 50 })).toBe(300)
+    expect(calculateSellingPrice(100, { ...pctCac, discountType: 'amt', discountVal: 50 })).toBe(100)
+  })
+})
+
+describe('CAC mode validation', () => {
+  test('the global engine requires a CAC mode', () => {
+    const { cacType: _omitted, ...withoutMode } = defaults
+    expect(pricingSchema.safeParse(withoutMode).success).toBe(false)
+    expect(pricingSchema.safeParse({ ...defaults, cacType: 'bogus' }).success).toBe(false)
+  })
+
+  test('a percentage CAC cannot exceed 100', () => {
+    expect(pricingSchema.safeParse({ ...defaults, cacType: 'pct', cac: 101 }).success).toBe(false)
+    expect(pricingSchema.safeParse({ ...defaults, cacType: 'pct', cac: 100 }).success).toBe(true)
+    expect(pricingSchema.safeParse({ ...defaults, cacType: 'amt', cac: 101 }).success).toBe(true)
+  })
+
+  test('rejects half a CAC pair', () => {
+    expect(pricingOverrideSchema.safeParse({ cacType: 'pct' }).success).toBe(false)
+    expect(pricingOverrideSchema.safeParse({ cac: 40 }).success).toBe(false)
+    expect(pricingOverrideSchema.safeParse({ cacType: 'amt', cac: 40 }).success).toBe(true)
+  })
+
+  test('enforces the percentage range on a tune too', () => {
+    expect(pricingOverrideSchema.safeParse({ cacType: 'pct', cac: 101 }).success).toBe(false)
+    expect(pricingOverrideSchema.safeParse({ cacType: 'pct', cac: 12.5 }).success).toBe(true)
+  })
+})
+
+describe('CAC override semantics', () => {
+  test('CAC resolves as a pair, never half-inherited', () => {
+    const globalParams: PricingParams = { ...defaults, cacType: 'pct', cac: 5 }
+    const resolved = resolvePricingParams(globalParams, { cacType: 'amt', cac: 80 })
+    expect(resolved.cacType).toBe('amt')
+    expect(resolved.cac).toBe(80)
+
+    const inherited = resolvePricingParams(globalParams, { targetMarginPct: 30 })
+    expect(inherited.cacType).toBe('pct')
+    expect(inherited.cac).toBe(5)
+  })
+
+  test('a SKU pinned to flat CAC ignores a global switch to percentage', () => {
+    const override = { cacType: 'amt' as const, cac: 40 }
+    const globalGoesPercentage: PricingParams = { ...defaults, cacType: 'pct', cac: 5 }
+    expect(calculateSellingPrice(1000, resolvePricingParams(globalGoesPercentage, override))).toBe(1085)
+  })
+
+  test('an un-pinned CAC follows the global switch to percentage', () => {
+    const override = { targetMarginPct: 0 }
+    const globalGoesPercentage: PricingParams = { ...defaults, cacType: 'pct', cac: 5 }
+    expect(calculateSellingPrice(1000, resolvePricingParams(globalGoesPercentage, override))).toBe(1095)
+  })
+
+  test('drops a CAC pair that merely echoes the global engine', () => {
+    const globalParams: PricingParams = { ...defaults, cacType: 'pct', cac: 5 }
+    expect(sparsifyOverride(globalParams, { cacType: 'pct', cac: 5 })).toEqual({})
+  })
+
+  test('keeps a CAC pair when either half differs from global', () => {
+    const globalParams: PricingParams = { ...defaults, cacType: 'pct', cac: 5 }
+    expect(sparsifyOverride(globalParams, { cacType: 'amt', cac: 5 }))
+      .toEqual({ cacType: 'amt', cac: 5 })
+    expect(sparsifyOverride(globalParams, { cacType: 'pct', cac: 12 }))
+      .toEqual({ cacType: 'pct', cac: 12 })
+  })
+
+  test('reports a CAC tune once, in UI order', () => {
+    expect(overriddenFields({ cacType: 'pct', cac: 12, packaging: 25 }))
+      .toEqual(['packaging', 'cac', 'cacType'])
   })
 })

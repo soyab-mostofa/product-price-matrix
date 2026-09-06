@@ -9,7 +9,7 @@ const problems = []
 const bad = (a, m) => problems.push(`[${a}] ${m}`)
 
 function sellingPrice(cost, p) {
-  const oh = p.packaging + p.transport + p.delivery + p.cac
+  const oh = p.packaging + p.transport + p.delivery + (p.cacType === 'pct' ? (cost * p.cac) / 100 : p.cac)
   const list = (cost + oh) / (1 - p.targetMarginPct / 100)
   return Math.round(Math.max(0, p.discountType === 'pct' ? list * (1 - p.discountVal / 100) : list - p.discountVal))
 }

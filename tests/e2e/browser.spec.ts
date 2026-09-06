@@ -155,6 +155,7 @@ test('an un-pinned tune field keeps following the global engine', async ({ page,
     success: true,
     globalParams: {
       packaging: 20, transport: 0, delivery, cac: 0,
+  cacType: 'amt' as const,
       targetMarginPct: 0, discountType: 'pct', discountVal: 0,
     } satisfies PricingParams,
     overrides: { [tunedRowId]: { targetMarginPct: 50, updatedAt: '2026-01-01T00:00:00.000Z' } },
@@ -173,6 +174,7 @@ test('an un-pinned tune field keeps following the global engine', async ({ page,
 
   const withCheapDelivery = calculateSellingPrice(product.manufactured_price, {
     packaging: 20, transport: 0, delivery: 60, cac: 0,
+  cacType: 'amt' as const,
     targetMarginPct: 50, discountType: 'pct', discountVal: 0,
   })
   expect(parseBdt(await tunedRow.innerText())).toBe(withCheapDelivery)
@@ -187,6 +189,7 @@ test('an un-pinned tune field keeps following the global engine', async ({ page,
 
   const withPriceyDelivery = calculateSellingPrice(product.manufactured_price, {
     packaging: 20, transport: 0, delivery: 200, cac: 0,
+  cacType: 'amt' as const,
     targetMarginPct: 50, discountType: 'pct', discountVal: 0,
   })
   expect(withPriceyDelivery).toBeGreaterThan(withCheapDelivery!)
@@ -344,6 +347,7 @@ test('a valid zero selling price renders as BDT 0 with full-discount metrics', a
           transport: 0,
           delivery: 0,
           cac: 0,
+  cacType: 'amt' as const,
           targetMarginPct: 0,
           discountType: 'pct',
           discountVal: 100,

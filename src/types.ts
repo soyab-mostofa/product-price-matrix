@@ -1,4 +1,10 @@
 export type DiscountType = 'pct' | 'amt'
+/**
+ * How CAC is charged: a flat figure in BDT, or a percentage of the SKU's
+ * sourcing price. A percentage keeps acquisition cost proportionate on cheap
+ * SKUs, where a flat charge can exceed the whole trade-discount headroom.
+ */
+export type CacType = 'amt' | 'pct'
 export type MrpSourceType = 'official' | 'third_party_avg' | 'reference' | 'workbook'
 
 /** How a SKU reaches us: made here and bought from the maker, or brought in via an importer. */
@@ -14,7 +20,9 @@ export interface PricingParams {
   packaging: number
   transport: number
   delivery: number
+  /** Flat BDT under `cacType: 'amt'`; percent of sourcing price under 'pct'. */
   cac: number
+  cacType: CacType
   targetMarginPct: number
   discountType: DiscountType
   discountVal: number
@@ -25,8 +33,8 @@ export interface PricingParams {
  * "inherit whatever the global engine currently says", so raising a global cost
  * still reaches tuned SKUs for the knobs they never pinned.
  *
- * discountType/discountVal move as a pair: an amount is meaningless under a
- * percentage mode, so a tune either pins both or neither.
+ * discountType/discountVal and cac/cacType each move as a pair: an amount is
+ * meaningless under a percentage mode, so a tune either pins both or neither.
  */
 export interface PricingOverride {
   // `| undefined` is explicit because exactOptionalPropertyTypes is on and
@@ -35,6 +43,7 @@ export interface PricingOverride {
   transport?: number | undefined
   delivery?: number | undefined
   cac?: number | undefined
+  cacType?: CacType | undefined
   targetMarginPct?: number | undefined
   discountType?: DiscountType | undefined
   discountVal?: number | undefined
@@ -46,6 +55,7 @@ export const PRICING_FIELDS = [
   'transport',
   'delivery',
   'cac',
+  'cacType',
   'targetMarginPct',
   'discountType',
   'discountVal',

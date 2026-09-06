@@ -20,12 +20,17 @@ import {
  * the cost basis is a trade discount off MRP (17-40%), which leaves a headroom
  * proportional to price -- as little as 12 BDT on the cheapest SKUs. Any flat
  * per-unit charge above that headroom prices the SKU out of its own market.
+ *
+ * CAC therefore ships as a PERCENTAGE of the sourcing price rather than a flat
+ * figure: 5% stays inside that proportional headroom on every SKU, where a flat
+ * 40 BDT swallowed it whole on the cheap end.
  */
 export const PRICING_DEFAULTS: Readonly<PricingParams> = Object.freeze({
   packaging: 45,
   transport: 0,
   delivery: 0,
-  cac: 40,
+  cac: 5,
+  cacType: 'pct',
   targetMarginPct: 0,
   discountType: 'pct',
   discountVal: 0,
@@ -59,8 +64,13 @@ export function resolvePricingParams(
   if (override.packaging !== undefined) resolved.packaging = override.packaging
   if (override.transport !== undefined) resolved.transport = override.transport
   if (override.delivery !== undefined) resolved.delivery = override.delivery
-  if (override.cac !== undefined) resolved.cac = override.cac
   if (override.targetMarginPct !== undefined) resolved.targetMarginPct = override.targetMarginPct
+  // CAC moves as a pair: inheriting the mode while pinning the value would let
+  // a global amt->pct switch silently reinterpret 40 BDT as 40% of source cost.
+  if (override.cac !== undefined && override.cacType !== undefined) {
+    resolved.cac = override.cac
+    resolved.cacType = override.cacType
+  }
   if (override.discountType !== undefined && override.discountVal !== undefined) {
     resolved.discountType = override.discountType
     resolved.discountVal = override.discountVal
@@ -83,7 +93,14 @@ export function sparsifyOverride(
   if (override.packaging !== undefined && override.packaging !== globalParams.packaging) sparse.packaging = override.packaging
   if (override.transport !== undefined && override.transport !== globalParams.transport) sparse.transport = override.transport
   if (override.delivery !== undefined && override.delivery !== globalParams.delivery) sparse.delivery = override.delivery
-  if (override.cac !== undefined && override.cac !== globalParams.cac) sparse.cac = override.cac
+  if (override.cac !== undefined && override.cacType !== undefined) {
+    const matchesGlobal = override.cac === globalParams.cac
+      && override.cacType === globalParams.cacType
+    if (!matchesGlobal) {
+      sparse.cac = override.cac
+      sparse.cacType = override.cacType
+    }
+  }
   if (override.targetMarginPct !== undefined && override.targetMarginPct !== globalParams.targetMarginPct) {
     sparse.targetMarginPct = override.targetMarginPct
   }
@@ -99,15 +116,36 @@ export function sparsifyOverride(
 }
 
 /**
+ * CAC in BDT for one SKU: the flat figure, or a percentage of its sourcing
+ * price. Percentage mode is why overhead is a function of the SKU and not of
+ * the engine parameters alone.
+ */
+export function resolveCac(manufacturedPrice: number, params: PricingParams): number {
+  return params.cacType === 'pct' ? (manufacturedPrice * params.cac) / 100 : params.cac
+}
+
+/**
+ * Total per-unit overhead for one SKU, CAC included.
+ *
+ * Every surface that displays an overhead figure must go through here: under a
+ * percentage CAC the number differs per SKU, so a locally re-summed constant
+ * would drift away from the price printed beside it.
+ */
+export function totalOverhead(manufacturedPrice: number, params: PricingParams): number {
+  return params.packaging + params.transport + params.delivery + resolveCac(manufacturedPrice, params)
+}
+
+/**
  * Recommended selling price for one SKU.
  *
+ *   CAC   = cacType === 'pct' ? MFG * cac% : cac
  *   list  = (MFG + packaging + transport + delivery + CAC) / (1 - margin)
  *   final = list * (1 - discount%)   |   list - discountBDT
  */
 export function calculateSellingPrice(manufacturedPrice: number, params: PricingParams): number | null {
   if (!Number.isFinite(manufacturedPrice) || manufacturedPrice <= 0) return null
 
-  const overhead = params.packaging + params.transport + params.delivery + params.cac
+  const overhead = totalOverhead(manufacturedPrice, params)
   const marginRate = params.targetMarginPct / 100
   if (!Number.isFinite(overhead) || marginRate < 0 || marginRate >= 1) return null
 

@@ -17,6 +17,7 @@ SOURCING_ORIGIN_MIGRATION_PATH = ROOT / "migrations/0004_sourcing_origin.sql"
 UNVERIFIED_LISTINGS_MIGRATION_PATH = ROOT / "migrations/0005_unverified_listings.sql"
 WORKBOOK_MRP_MIGRATION_PATH = ROOT / "migrations/0006_workbook_mrp_for_local.sql"
 WORKBOOK_PROVENANCE_MIGRATION_PATH = ROOT / "migrations/0007_workbook_provenance.sql"
+PERCENTAGE_CAC_MIGRATION_PATH = ROOT / "migrations/0008_percentage_cac.sql"
 
 
 def _unwrapped(path: Path) -> str:
@@ -57,6 +58,11 @@ def _workbook_mrp_migration() -> str:
 def _workbook_provenance_migration() -> str:
     """The 0007 migration body, minus the transaction/pragma wrapper."""
     return _unwrapped(WORKBOOK_PROVENANCE_MIGRATION_PATH)
+
+
+def _percentage_cac_migration() -> str:
+    """The 0008 migration body, minus the transaction/pragma wrapper."""
+    return _unwrapped(PERCENTAGE_CAC_MIGRATION_PATH)
 
 
 def _mrp_source_type_allows_workbook(connection: sqlite3.Connection) -> bool:
@@ -190,6 +196,12 @@ def migrate_database(path: Path) -> list[str]:
         if "source_sheet" not in columns(connection, "products"):
             connection.executescript(_workbook_provenance_migration())
             changes.append("products.source_sheet+source_row")
+
+        # 0008 rebuilds both pricing tables, so the column check has to run
+        # after every earlier pricing migration has settled.
+        if "cac_type" not in columns(connection, "global_pricing_params"):
+            connection.executescript(_percentage_cac_migration())
+            changes.append("pricing.cac_type (global CAC -> 5%)")
 
         connection.execute(
             """

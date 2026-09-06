@@ -120,6 +120,20 @@ describe('Hono application', () => {
     expect(text).toContain('/static/app.js')
   })
 
+  test('the CAC inputs accept a fractional percentage', async () => {
+    // A percentage CAC is routinely fractional (5%, 7.5%, 12.5%). These inputs
+    // sit in a <form>, so a step that forbids decimals makes the browser refuse
+    // to submit and the save silently does nothing.
+    const text = await (await app.request('/', {}, env)).text()
+    for (const id of ['inputCAC', 'prodInputCAC']) {
+      const tag = text.match(new RegExp(`<input[^>]*id="${id}"[^>]*>`))?.[0]
+      expect(tag).toBeString()
+      const step = tag!.match(/step="([^"]+)"/)?.[1]
+      expect(step).toBeString()
+      expect(Number(step)).toBeLessThan(1)
+    }
+  })
+
   test('serves public products JSON from GET /api/products', async () => {
     const res = await app.request('/api/products', {}, env)
     expect(res.status).toBe(200)
@@ -404,7 +418,7 @@ describe('sparse per-product overrides', () => {
 
     const res = await postOverride(testEnv, cookie, {
       productRowId: 1,
-      override: { packaging: 45, cac: 40 }, // both identical to global
+      override: { packaging: 45, cacType: 'pct', cac: 5 }, // all identical to global
     })
     expect(res.status).toBe(200)
     const data = await res.json() as any

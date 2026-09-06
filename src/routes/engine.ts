@@ -11,6 +11,7 @@ interface GlobalRow {
   transport: number
   delivery: number
   cac: number
+  cacType: 'amt' | 'pct'
   targetMarginPct: number
   discountType: 'pct' | 'amt'
   discountVal: number
@@ -23,6 +24,7 @@ interface OverrideRow {
   transport: number | null
   delivery: number | null
   cac: number | null
+  cacType: 'amt' | 'pct' | null
   targetMarginPct: number | null
   discountType: 'pct' | 'amt' | null
   discountVal: number | null
@@ -31,11 +33,11 @@ interface OverrideRow {
 
 engine.get('/', async (c) => {
   const [globalResult, overridesResult] = await c.env.DB.batch([
-    c.env.DB.prepare(`SELECT packaging, transport, delivery, cac,
+    c.env.DB.prepare(`SELECT packaging, transport, delivery, cac, cac_type AS cacType,
       target_margin_pct AS targetMarginPct, discount_type AS discountType,
       discount_val AS discountVal FROM global_pricing_params WHERE id = 1`),
     c.env.DB.prepare(`SELECT product_row_id AS productRowId, packaging, transport, delivery, cac,
-      target_margin_pct AS targetMarginPct, discount_type AS discountType,
+      cac_type AS cacType, target_margin_pct AS targetMarginPct, discount_type AS discountType,
       discount_val AS discountVal, updated_at AS updatedAt FROM product_pricing_overrides
       WHERE product_row_id IS NOT NULL`),
   ])
@@ -49,8 +51,12 @@ engine.get('/', async (c) => {
     if (row.packaging !== null) override.packaging = row.packaging
     if (row.transport !== null) override.transport = row.transport
     if (row.delivery !== null) override.delivery = row.delivery
-    if (row.cac !== null) override.cac = row.cac
     if (row.targetMarginPct !== null) override.targetMarginPct = row.targetMarginPct
+    // CAC travels as a pair, so a half-populated row pins neither half.
+    if (row.cac !== null && row.cacType !== null) {
+      override.cac = row.cac
+      override.cacType = row.cacType
+    }
     if (row.discountType !== null && row.discountVal !== null) {
       override.discountType = row.discountType
       override.discountVal = row.discountVal
@@ -71,13 +77,14 @@ engine.post('/', requireAdmin, zValidator('json', pricingSchema, (result, c) => 
   const params = c.req.valid('json')
   await c.env.DB.prepare(
     `INSERT INTO global_pricing_params
-       (id, packaging, transport, delivery, cac, target_margin_pct, discount_type, discount_val, updated_at)
-     VALUES (1, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+       (id, packaging, transport, delivery, cac, cac_type, target_margin_pct, discount_type, discount_val, updated_at)
+     VALUES (1, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
      ON CONFLICT(id) DO UPDATE SET packaging=excluded.packaging, transport=excluded.transport,
-       delivery=excluded.delivery, cac=excluded.cac, target_margin_pct=excluded.target_margin_pct,
+       delivery=excluded.delivery, cac=excluded.cac, cac_type=excluded.cac_type,
+       target_margin_pct=excluded.target_margin_pct,
        discount_type=excluded.discount_type, discount_val=excluded.discount_val, updated_at=CURRENT_TIMESTAMP`,
   ).bind(
-    params.packaging, params.transport, params.delivery, params.cac,
+    params.packaging, params.transport, params.delivery, params.cac, params.cacType,
     params.targetMarginPct, params.discountType, params.discountVal,
   ).run()
   return c.json({ success: true, globalParams: params })

@@ -9,7 +9,7 @@ const problems = []
 const bad = (a, m) => problems.push(`[${a}] ${m}`)
 
 function sellingPrice(cost, p) {
-  const oh = p.packaging + p.transport + p.delivery + p.cac
+  const oh = p.packaging + p.transport + p.delivery + (p.cacType === 'pct' ? (cost * p.cac) / 100 : p.cac)
   if (p.targetMarginPct >= 100) return null
   const list = (cost + oh) / (1 - p.targetMarginPct / 100)
   const out = p.discountType === 'pct' ? list * (1 - p.discountVal / 100) : list - p.discountVal
@@ -146,7 +146,12 @@ for (const p of sample) {
   if (d.brandKicker !== p.brand_name) bad('record', `${tag}: kicker "${d.brandKicker}" vs "${p.brand_name}"`)
 
   const sp = sellingPrice(p.manufactured_price, G)
-  const overhead = G.packaging + G.transport + G.delivery + G.cac
+  // Overhead is per-SKU under a percentage CAC, and the box is money-formatted,
+  // so compare on the rounded figure the operator actually reads.
+  const overhead = Math.round(
+    G.packaging + G.transport + G.delivery
+    + (G.cacType === 'pct' ? (p.manufactured_price * G.cac) / 100 : G.cac),
+  )
 
   // stat boxes
   if (parseBdt(d.stats[0]?.value) !== Math.round(p.manufactured_price)) bad('record', `${tag}: source cost box ${d.stats[0]?.value} vs ${money.format(p.manufactured_price)}`)

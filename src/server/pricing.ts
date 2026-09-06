@@ -11,8 +11,10 @@ export {
   calculateSellingPrice,
   isEmptyOverride,
   overriddenFields,
+  resolveCac,
   resolvePricingParams,
   sparsifyOverride,
+  totalOverhead,
 } from '../shared/pricing'
 
 const costField = z.coerce.number().finite().min(0).max(100_000)
@@ -24,12 +26,16 @@ export const pricingSchema = z.object({
   transport: costField,
   delivery: costField,
   cac: costField,
+  cacType: z.enum(['amt', 'pct']),
   targetMarginPct: marginField,
   discountType: z.enum(['pct', 'amt']),
   discountVal: discountValField,
 }).superRefine((value, context) => {
   if (value.discountType === 'pct' && value.discountVal > 100) {
     context.addIssue({ code: 'custom', path: ['discountVal'], message: 'Percentage discount cannot exceed 100' })
+  }
+  if (value.cacType === 'pct' && value.cac > 100) {
+    context.addIssue({ code: 'custom', path: ['cac'], message: 'Percentage CAC cannot exceed 100' })
   }
 })
 
@@ -48,6 +54,7 @@ export const pricingOverrideSchema = z.object({
   transport: optional(costField),
   delivery: optional(costField),
   cac: optional(costField),
+  cacType: optional(z.enum(['amt', 'pct'])),
   targetMarginPct: optional(marginField),
   discountType: optional(z.enum(['pct', 'amt'])),
   discountVal: optional(discountValField),
@@ -60,6 +67,18 @@ export const pricingOverrideSchema = z.object({
       path: [hasType ? 'discountVal' : 'discountType'],
       message: 'Pin discount type and value together, or neither',
     })
+  }
+  const hasCacType = value.cacType !== undefined
+  const hasCacVal = value.cac !== undefined
+  if (hasCacType !== hasCacVal) {
+    context.addIssue({
+      code: 'custom',
+      path: [hasCacType ? 'cac' : 'cacType'],
+      message: 'Pin CAC type and value together, or neither',
+    })
+  }
+  if (value.cacType === 'pct' && value.cac !== undefined && value.cac > 100) {
+    context.addIssue({ code: 'custom', path: ['cac'], message: 'Percentage CAC cannot exceed 100' })
   }
   if (value.discountType === 'pct' && value.discountVal !== undefined && value.discountVal > 100) {
     context.addIssue({ code: 'custom', path: ['discountVal'], message: 'Percentage discount cannot exceed 100' })

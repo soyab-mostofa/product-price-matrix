@@ -7,7 +7,14 @@ CREATE TABLE IF NOT EXISTS global_pricing_params (
   packaging REAL NOT NULL DEFAULT 45.0 CHECK (packaging >= 0 AND packaging <= 100000),
   transport REAL NOT NULL DEFAULT 0.0 CHECK (transport >= 0 AND transport <= 100000),
   delivery REAL NOT NULL DEFAULT 0.0 CHECK (delivery >= 0 AND delivery <= 100000),
-  cac REAL NOT NULL DEFAULT 40.0 CHECK (cac >= 0 AND cac <= 100000),
+  -- Flat BDT under cac_type 'amt'; a percentage of the SKU's sourcing price
+  -- under 'pct'. Ships as 5% so acquisition cost stays proportionate to the
+  -- trade-discount headroom rather than swamping the cheapest SKUs.
+  cac REAL NOT NULL DEFAULT 5.0 CHECK (
+    cac >= 0 AND
+    ((cac_type = 'amt' AND cac <= 100000) OR (cac_type = 'pct' AND cac <= 100))
+  ),
+  cac_type TEXT NOT NULL DEFAULT 'pct' CHECK (cac_type IN ('amt', 'pct')),
   target_margin_pct REAL NOT NULL DEFAULT 0.0 CHECK (target_margin_pct >= 0 AND target_margin_pct < 100),
   discount_type TEXT NOT NULL DEFAULT 'pct' CHECK (discount_type IN ('pct', 'amt')),
   discount_val REAL NOT NULL DEFAULT 0.0 CHECK (
@@ -67,7 +74,13 @@ CREATE TABLE IF NOT EXISTS product_pricing_overrides (
   packaging REAL CHECK (packaging IS NULL OR (packaging >= 0 AND packaging <= 100000)),
   transport REAL CHECK (transport IS NULL OR (transport >= 0 AND transport <= 100000)),
   delivery REAL CHECK (delivery IS NULL OR (delivery >= 0 AND delivery <= 100000)),
-  cac REAL CHECK (cac IS NULL OR (cac >= 0 AND cac <= 100000)),
+  cac REAL CHECK (
+    cac IS NULL OR (
+      cac >= 0 AND
+      ((cac_type = 'amt' AND cac <= 100000) OR (cac_type = 'pct' AND cac <= 100))
+    )
+  ),
+  cac_type TEXT CHECK (cac_type IS NULL OR cac_type IN ('amt', 'pct')),
   target_margin_pct REAL CHECK (target_margin_pct IS NULL OR (target_margin_pct >= 0 AND target_margin_pct < 100)),
   discount_type TEXT CHECK (discount_type IS NULL OR discount_type IN ('pct', 'amt')),
   discount_val REAL CHECK (
@@ -80,6 +93,8 @@ CREATE TABLE IF NOT EXISTS product_pricing_overrides (
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   -- Discount is pinned as a pair or not at all.
   CHECK ((discount_type IS NULL) = (discount_val IS NULL)),
+  -- CAC likewise: a value without its mode is ambiguous.
+  CHECK ((cac_type IS NULL) = (cac IS NULL)),
   -- An override row must pin at least one field; otherwise it should not exist.
   CHECK (
     packaging IS NOT NULL OR transport IS NOT NULL OR delivery IS NOT NULL OR

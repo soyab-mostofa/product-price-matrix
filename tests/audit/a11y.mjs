@@ -120,7 +120,7 @@ await page.waitForSelector('#dialog[open]')
 await page.locator('#tabTuneBtn').click()
 await page.waitForTimeout(250)
 const tune = await page.evaluate(() => {
-  const ids = ['prodInputPackaging', 'prodInputTransport', 'prodInputDelivery', 'prodInputCAC', 'prodInputMarginPct']
+  const ids = ['prodInputPackaging', 'prodInputTransport', 'prodInputDelivery', 'prodInputMarginPct']
   return {
     placeholders: ids.map((i) => ({ id: i, ph: document.getElementById(i)?.placeholder, val: document.getElementById(i)?.value })),
     pinned: document.getElementById('prodSummaryPinned')?.textContent.trim(),
@@ -129,6 +129,7 @@ const tune = await page.evaluate(() => {
     readOnly: document.getElementById('productReadOnlyBanner')?.textContent.trim(),
     readOnlyHidden: document.getElementById('productReadOnlyBanner')?.hidden,
     saveDisabled: document.getElementById('saveProductCustomEngineBtn')?.disabled,
+    cac: { ph: document.getElementById('prodInputCAC')?.placeholder, val: document.getElementById('prodInputCAC')?.value, disabled: document.getElementById('prodInputCAC')?.disabled, mode: document.querySelector('#prodBtnCacGlobal.active') ? 'global' : document.querySelector('#prodBtnCacPct.active') ? 'pct' : 'amt' },
   }
 })
 console.log('\n--- tune tab ---')
@@ -137,11 +138,18 @@ console.log(JSON.stringify(tune, null, 2))
 const engine = await (await page.request.get(`${BASE}/api/engine`)).json()
 const G = engine.globalParams
 // Placeholders must advertise the live global value ("blank = follows global").
-const expect = { prodInputPackaging: G.packaging, prodInputTransport: G.transport, prodInputDelivery: G.delivery, prodInputCAC: G.cac, prodInputMarginPct: G.targetMarginPct }
+const expect = { prodInputPackaging: G.packaging, prodInputTransport: G.transport, prodInputDelivery: G.delivery, prodInputMarginPct: G.targetMarginPct }
 for (const p of tune.placeholders) {
   if (p.val !== '') bad('tune', `${p.id} pre-filled "${p.val}" — should be blank to inherit`)
   if (p.ph !== `Global: ${expect[p.id]}`) bad('tune', `${p.id} placeholder "${p.ph}" vs "Global: ${expect[p.id]}"`)
 }
+// CAC pins as a pair, so an untuned SKU sits in 'global' mode with the value
+// disabled and the placeholder carrying the global mode as well as the number.
+const wantCacPh = `Global: ${G.cacType === 'pct' ? `${G.cac}%` : `${G.cac} BDT`}`
+if (tune.cac.mode !== 'global') bad('tune', `prodInputCAC mode "${tune.cac.mode}" — should inherit global`)
+if (!tune.cac.disabled) bad('tune', 'prodInputCAC should be disabled while it follows global')
+if (tune.cac.val !== '') bad('tune', `prodInputCAC pre-filled "${tune.cac.val}" — should be blank to inherit`)
+if (tune.cac.ph !== wantCacPh) bad('tune', `prodInputCAC placeholder "${tune.cac.ph}" vs "${wantCacPh}"`)
 if (!/follows global/i.test(tune.pinned)) bad('tune', `pinned summary reads "${tune.pinned}"`)
 if (tune.globalPrice !== tune.selling) bad('tune', `untuned SKU: global ${tune.globalPrice} != selling ${tune.selling}`)
 if (tune.readOnlyHidden) bad('tune', 'no admin session but the read-only notice is hidden')

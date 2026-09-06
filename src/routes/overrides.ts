@@ -21,7 +21,7 @@ overrides.use('*', requireAdmin)
 
 async function readGlobalParams(db: D1Database): Promise<PricingParams> {
   const row = await db.prepare(
-    `SELECT packaging, transport, delivery, cac,
+    `SELECT packaging, transport, delivery, cac, cac_type AS cacType,
        target_margin_pct AS targetMarginPct, discount_type AS discountType,
        discount_val AS discountVal FROM global_pricing_params WHERE id = 1`,
   ).first<PricingParams>()
@@ -55,11 +55,12 @@ overrides.post('/', zValidator('json', overrideSchema, (result, c) => {
   const updatedAt = new Date().toISOString()
   await c.env.DB.prepare(
     `INSERT INTO product_pricing_overrides
-       (product_row_id, packaging, transport, delivery, cac, target_margin_pct, discount_type, discount_val, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+       (product_row_id, packaging, transport, delivery, cac, cac_type, target_margin_pct, discount_type, discount_val, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(product_row_id) DO UPDATE SET packaging=excluded.packaging,
        transport=excluded.transport, delivery=excluded.delivery, cac=excluded.cac,
-       target_margin_pct=excluded.target_margin_pct, discount_type=excluded.discount_type,
+       cac_type=excluded.cac_type, target_margin_pct=excluded.target_margin_pct,
+       discount_type=excluded.discount_type,
        discount_val=excluded.discount_val, updated_at=excluded.updated_at`,
   ).bind(
     productRowId,
@@ -67,6 +68,7 @@ overrides.post('/', zValidator('json', overrideSchema, (result, c) => {
     sparse.transport ?? null,
     sparse.delivery ?? null,
     sparse.cac ?? null,
+    sparse.cacType ?? null,
     sparse.targetMarginPct ?? null,
     sparse.discountType ?? null,
     sparse.discountVal ?? null,

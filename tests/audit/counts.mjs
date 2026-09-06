@@ -16,7 +16,7 @@ const ok = (area, msg) => notes.push(`[${area}] ${msg}`)
 // ── Independent re-implementation of the documented engine ────────────────
 // AGENTS.md §3B: List = (Cost + Overhead) / (1 - Margin/100); then discount.
 function sellingPrice(cost, p) {
-  const overhead = p.packaging + p.transport + p.delivery + p.cac
+  const overhead = p.packaging + p.transport + p.delivery + (p.cacType === 'pct' ? (cost * p.cac) / 100 : p.cac)
   if (p.targetMarginPct >= 100) return null
   const list = (cost + overhead) / (1 - p.targetMarginPct / 100)
   const out = p.discountType === 'pct'
@@ -31,7 +31,7 @@ const marketDiscount = (sell, bench) => ((bench - sell) / bench) * 100
 const resolve = (global, ov) => {
   if (!ov) return global
   const out = { ...global }
-  for (const k of ['packaging', 'transport', 'delivery', 'cac', 'targetMarginPct']) {
+  for (const k of ['packaging', 'transport', 'delivery', 'targetMarginPct']) {
     if (ov[k] !== undefined && ov[k] !== null) out[k] = ov[k]
   }
   if (ov.discountType != null && ov.discountVal != null) {

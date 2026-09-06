@@ -26,6 +26,8 @@ node_modules/
 /coverage/
 
 # Cloudflare and local agent state
+# Local secrets for `wrangler`/vite dev (ADMIN_PASSWORD, SESSION_SECRET).
+/.dev.vars
 /.wrangler/
 /.hermes/
 /_worker.bundle
