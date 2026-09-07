@@ -18,6 +18,7 @@ UNVERIFIED_LISTINGS_MIGRATION_PATH = ROOT / "migrations/0005_unverified_listings
 WORKBOOK_MRP_MIGRATION_PATH = ROOT / "migrations/0006_workbook_mrp_for_local.sql"
 WORKBOOK_PROVENANCE_MIGRATION_PATH = ROOT / "migrations/0007_workbook_provenance.sql"
 PERCENTAGE_CAC_MIGRATION_PATH = ROOT / "migrations/0008_percentage_cac.sql"
+PRICE_EDITS_MIGRATION_PATH = ROOT / "migrations/0009_price_edits.sql"
 
 
 def _unwrapped(path: Path) -> str:
@@ -65,6 +66,36 @@ def _percentage_cac_migration() -> str:
     return _unwrapped(PERCENTAGE_CAC_MIGRATION_PATH)
 
 
+def _price_edits_migration() -> str:
+    """The 0009 migration body, minus the transaction/pragma wrapper."""
+    return _unwrapped(PRICE_EDITS_MIGRATION_PATH)
+
+
+# 0009 carries two independent changes, split on the marker comment that opens
+# the products rebuild. Slicing the file keeps one migration on disk (matching
+# what remote D1 applies as a whole) while letting a local replica adopt either
+# half on its own condition.
+_MANUAL_MRP_MARKER = "-- 'manual' provenance for an admin-edited MRP."
+
+
+def _price_edits_journal() -> str:
+    """The journal-table half of 0009."""
+    body = _price_edits_migration()
+    return body.split(_MANUAL_MRP_MARKER, 1)[0]
+
+
+def _manual_mrp_migration() -> str:
+    """The products-rebuild half of 0009, widening mrp_source_type."""
+    body = _price_edits_migration()
+    parts = body.split(_MANUAL_MRP_MARKER, 1)
+    if len(parts) != 2:
+        raise RuntimeError(
+            "migrations/0009_price_edits.sql no longer contains the "
+            f"{_MANUAL_MRP_MARKER!r} marker that separates its two halves"
+        )
+    return _MANUAL_MRP_MARKER + parts[1]
+
+
 def _mrp_source_type_allows_workbook(connection: sqlite3.Connection) -> bool:
     """True once the products CHECK constraint accepts 'workbook'.
 
@@ -75,6 +106,19 @@ def _mrp_source_type_allows_workbook(connection: sqlite3.Connection) -> bool:
         "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'products'"
     ).fetchone()
     return bool(row) and "'workbook'" in str(row[0])
+
+
+def _mrp_source_type_allows_manual(connection: sqlite3.Connection) -> bool:
+    """True once the products CHECK constraint accepts 'manual'.
+
+    Separate from the price_edits table check: an early 0009 created the
+    journal without widening the constraint, so a replica can have one and not
+    the other.
+    """
+    row = connection.execute(
+        "SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'products'"
+    ).fetchone()
+    return bool(row) and "'manual'" in str(row[0])
 
 
 def columns(connection: sqlite3.Connection, table: str) -> set[str]:
@@ -202,6 +246,19 @@ def migrate_database(path: Path) -> list[str]:
         if "cac_type" not in columns(connection, "global_pricing_params"):
             connection.executescript(_percentage_cac_migration())
             changes.append("pricing.cac_type (global CAC -> 5%)")
+
+        # 0009 has two independent effects: it creates the edit journal, and it
+        # widens products.mrp_source_type to accept 'manual'. A replica can have
+        # one without the other, so each is applied on its own condition. The
+        # journal half is CREATE ... IF NOT EXISTS; the products rebuild is not
+        # idempotent, hence the constraint-text check.
+        if not table_exists(connection, "price_edits"):
+            connection.executescript(_price_edits_journal())
+            changes.append("price_edits (edit journal)")
+
+        if not _mrp_source_type_allows_manual(connection):
+            connection.executescript(_manual_mrp_migration())
+            changes.append("products.mrp_source_type=manual")
 
         connection.execute(
             """

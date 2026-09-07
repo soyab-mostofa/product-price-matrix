@@ -1,5 +1,5 @@
 import type { DashboardMeta } from '../types'
-import { CompareIcon, DownloadIcon, LockIcon, SearchIcon, SlidersIcon } from './icons'
+import { CompareIcon, DownloadIcon, LockIcon, SearchIcon, SlidersIcon, SpreadsheetIcon } from './icons'
 import { OriginSwitch } from './OriginSwitch'
 
 /**
@@ -50,6 +50,16 @@ export function Header({ meta }: { meta: DashboardMeta }) {
           <button class="btn-register" id="adminLoginBtn" type="button" hidden>
             <LockIcon />
             <span>Admin login</span>
+          </button>
+          <button
+            class="btn-register is-icon"
+            id="downloadXlsx"
+            type="button"
+            aria-label="Export Local and Imported books as Excel"
+            title="Export Excel workbook (Local + Imported)"
+            hidden
+          >
+            <SpreadsheetIcon />
           </button>
           <button
             class="btn-register is-icon"

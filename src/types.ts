@@ -5,7 +5,12 @@ export type DiscountType = 'pct' | 'amt'
  * SKUs, where a flat charge can exceed the whole trade-discount headroom.
  */
 export type CacType = 'amt' | 'pct'
-export type MrpSourceType = 'official' | 'third_party_avg' | 'reference' | 'workbook'
+/**
+ * Where a SKU's MRP came from. 'workbook' is the local book's benchmark;
+ * 'manual' is an admin edit, which deliberately stops claiming workbook
+ * authority for a figure the workbook no longer backs.
+ */
+export type MrpSourceType = 'official' | 'third_party_avg' | 'reference' | 'workbook' | 'manual'
 
 /** How a SKU reaches us: made here and bought from the maker, or brought in via an importer. */
 export type SourcingOrigin = 'local' | 'imported'
@@ -93,6 +98,15 @@ export interface Product {
   sourcing_origin: SourcingOrigin
   /** Skincare / Haircare / Fragrance for imported SKUs; local SKUs have none. */
   category: string | null
+  /** Workbook provenance: the exact sheet and 1-based Excel row. */
+  source_sheet: string | null
+  source_row: number | null
+  /**
+   * When an actively edited price was last changed, or null when both current
+   * values are back at their workbook baselines. The audit history remains in
+   * price_edits after a revert; this flag represents current state, not history.
+   */
+  price_edited_at: string | null
   sources: Record<string, MarketplaceListing>
 }
 

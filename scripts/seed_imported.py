@@ -21,10 +21,26 @@ from imported_seed import find_overlaps, read_workbook  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 D1_DIR = ROOT / ".wrangler/state/v3/d1/miniflare-D1DatabaseObject"
 REPORT_PATH = ROOT / "imported_seed_report.json"
+IMPORTED_PRICE_EDITS_PATH = ROOT / "imported_price_edits.json"
 
 # A brand is required by the schema; one SKU genuinely cannot be resolved and
 # is parked here rather than guessed at. See tests/test_imported_seed.py.
 UNKNOWN_BRAND = "Unknown"
+
+
+def imported_price_edits() -> list[dict]:
+    """Canonical hard-overwrites applied after the workbook/listing recompute.
+
+    This is a build artifact, not a runtime resolution layer. It is keyed by
+    workbook sheet + row because imported row_ids can move when a replica is
+    rebuilt.
+    """
+    if not IMPORTED_PRICE_EDITS_PATH.exists():
+        return []
+    payload = json.loads(IMPORTED_PRICE_EDITS_PATH.read_text(encoding="utf-8"))
+    if payload.get("version") != 1 or not isinstance(payload.get("edits"), list):
+        raise ValueError(f"Invalid imported price edit artifact: {IMPORTED_PRICE_EDITS_PATH}")
+    return payload["edits"]
 
 
 def seed(path: Path) -> dict[str, int]:
@@ -121,6 +137,32 @@ def seed(path: Path) -> dict[str, int]:
             """
         )
 
+        # Manual admin prices are the final static values. Apply them AFTER the
+        # listing-based recompute above or a manual MRP would be immediately
+        # overwritten. The stable key is workbook sheet + row; imported row_ids
+        # can move when a replica is rebuilt.
+        manual_edits_applied = 0
+        for edit in imported_price_edits():
+            source_cost = edit.get("source_cost")
+            mrp = edit.get("mrp")
+            if source_cost is None and mrp is None:
+                continue
+            result = connection.execute(
+                "UPDATE products SET "
+                "manufactured_price = COALESCE(?, manufactured_price), "
+                "market_average_price = COALESCE(?, market_average_price), "
+                "mrp_source_type = CASE WHEN ? IS NOT NULL THEN 'manual' ELSE mrp_source_type END "
+                "WHERE sourcing_origin = 'imported' AND source_sheet = ? AND source_row = ?",
+                (source_cost, mrp, mrp, edit["source_sheet"], int(edit["source_row"])),
+            )
+            if result.rowcount != 1:
+                raise ValueError(
+                    "Imported price edit did not resolve to exactly one SKU: "
+                    f"{edit.get('source_sheet')} row {edit.get('source_row')} "
+                    f"({edit.get('product_name', 'unknown')})"
+                )
+            manual_edits_applied += 1
+
         connection.commit()
 
         report_data = {
@@ -131,6 +173,7 @@ def seed(path: Path) -> dict[str, int]:
             "missing_sizes": report.missing_sizes,
             "overlaps": [list(o) for o in report.overlaps],
             "rejected_prices": [list(r) for r in report.rejected_prices],
+            "manual_price_edits_applied": manual_edits_applied,
         }
         REPORT_PATH.write_text(json.dumps(report_data, indent=2), encoding="utf-8")
 
@@ -141,6 +184,7 @@ def seed(path: Path) -> dict[str, int]:
             "unresolved_brands": len(report.unresolved_brands),
             "overlaps": len(report.overlaps),
             "rejected_cells": len(report.rejected_prices),
+            "manual_price_edits_applied": manual_edits_applied,
         }
     except Exception:
         connection.rollback()

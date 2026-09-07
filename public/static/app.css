@@ -788,6 +788,88 @@ td {
   text-transform: uppercase;
 }
 
+/* ── Inline price editing (admin) ──────────────────────────────────────── */
+/*
+ * Source Cost and MRP are directly editable by an admin. The affordance is
+ * deliberately quiet: a dotted underline on hover, nothing at rest, so the
+ * sheet still reads as a sheet rather than a form.
+ *
+ * The input replaces the number INSIDE the existing cell box and inherits the
+ * row's height. Money inputs elsewhere run ~40px tall, but 407 rows of that
+ * would reflow the whole sheet on every edit; here the figure earns its weight
+ * through the focus ring and tabular type instead of padding.
+ */
+.cell-editable {
+  cursor: text;
+  border-bottom: 1px dotted transparent;
+}
+tbody tr:hover .cell-editable,
+.cell-editable:focus-visible {
+  border-bottom-color: var(--ink-4);
+}
+.cell-editable:focus-visible {
+  outline: 2px solid var(--assay-700);
+  outline-offset: 2px;
+}
+
+.price-edit-input {
+  flex: 1 1 auto;
+  min-width: 64px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--assay-700);
+  border-radius: 0;
+  background: var(--sheet);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.price-edit-input:focus { outline: none; }
+/* The spinner would shift the figure off the column's right edge. */
+.price-edit-input::-webkit-outer-spin-button,
+.price-edit-input::-webkit-inner-spin-button { appearance: none; margin: 0; }
+.price-edit-input[type='number'] { appearance: textfield; -moz-appearance: textfield; }
+
+.price-edit-input.is-saving { opacity: 0.6; }
+.price-edit-input.is-error { border-bottom-color: var(--spec-600); color: var(--spec-700); }
+
+/* An edited figure and its provenance pill, matching how Tuned reads. */
+.num-price.price-edited { color: var(--tune-700); }
+.price-edit-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 5px;
+  background: var(--tune-50);
+  border: 1px solid var(--tune-100);
+  color: var(--tune-700);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Implied trade discount, shown live while editing a local SKU. It floats
+   beneath the cell instead of consuming horizontal room and shrinking the
+   money input to zero. */
+.dual-metric-cell:has(.price-edit-input) { position: relative; }
+.implied-discount-note {
+  position: absolute;
+  z-index: 45;
+  top: calc(100% + 4px);
+  right: 0;
+  padding: 3px 6px;
+  border: 1px solid var(--rule-2);
+  background: var(--sheet);
+  font-size: 10px;
+  color: var(--ink-35);
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+.implied-discount-note .shift { color: var(--tune-700); font-weight: 600; }
+
 /* ── Replicate measurement cells (channels) ────────────────────────────── */
 .source-data-cell {
   padding: 6px 10px;

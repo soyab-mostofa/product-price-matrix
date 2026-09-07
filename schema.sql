@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS products (
   manufactured_price REAL NOT NULL CHECK (manufactured_price >= 0),
   market_average_price REAL NOT NULL CHECK (market_average_price >= 0),
   canonical_name TEXT,
-  mrp_source_type TEXT NOT NULL DEFAULT 'reference' CHECK (mrp_source_type IN ('official', 'third_party_avg', 'reference', 'workbook')),
+  mrp_source_type TEXT NOT NULL DEFAULT 'reference' CHECK (mrp_source_type IN ('official', 'third_party_avg', 'reference', 'workbook', 'manual')),
   -- How this SKU reaches us: manufactured locally and bought from the
   -- manufacturer, or brought in and bought from an importer.
   sourcing_origin TEXT NOT NULL DEFAULT 'local' CHECK (sourcing_origin IN ('local', 'imported')),
@@ -111,8 +111,28 @@ CREATE TABLE IF NOT EXISTS admin_login_attempts (
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Append-only audit log of admin edits to Source Cost / MRP. Deliberately NOT
+-- part of the read path: fetchCatalog reads the static prices straight off
+-- `products`. This table exists so an edit survives the rebuild (see
+-- scripts/fold_price_edits_into_research.py) and so a revert can reach the
+-- workbook figure rather than the previous edit. See migrations/0009.
+CREATE TABLE IF NOT EXISTS price_edits (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  product_row_id INTEGER NOT NULL,
+  field TEXT NOT NULL CHECK (field IN ('source_cost', 'mrp')),
+  old_value REAL NOT NULL CHECK (old_value >= 0),
+  new_value REAL NOT NULL CHECK (new_value >= 0),
+  workbook_value REAL CHECK (workbook_value IS NULL OR workbook_value >= 0),
+  edited_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  folded INTEGER NOT NULL DEFAULT 0 CHECK (folded IN (0, 1)),
+  CHECK (new_value != old_value),
+  FOREIGN KEY (product_row_id) REFERENCES products(row_id) ON DELETE CASCADE
+);
+
 CREATE INDEX IF NOT EXISTS idx_products_brand ON products(brand_name);
 CREATE INDEX IF NOT EXISTS idx_products_origin ON products(sourcing_origin);
 CREATE INDEX IF NOT EXISTS idx_listings_channel ON marketplace_listings(channel_name);
 CREATE INDEX IF NOT EXISTS idx_listings_row ON marketplace_listings(row_id);
 CREATE INDEX IF NOT EXISTS idx_listings_available ON marketplace_listings(available);
+CREATE INDEX IF NOT EXISTS idx_price_edits_row ON price_edits(product_row_id);
+CREATE INDEX IF NOT EXISTS idx_price_edits_unfolded ON price_edits(folded) WHERE folded = 0;

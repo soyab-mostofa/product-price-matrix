@@ -53,6 +53,33 @@ def unfolded_listings(path: Path) -> list[tuple[str, str]]:
     ]
 
 
+def unfolded_price_edits(path: Path) -> list[tuple[str, str, float]]:
+    """Admin price edits in the replica that seed.sql would overwrite.
+
+    seed.sql re-inserts every local product with
+    `ON CONFLICT(row_id) DO UPDATE SET manufactured_price=excluded...`, so an
+    edit that has not been folded into the research file is reverted by the
+    next sync — the same silent-revert shape as the 80-listing loss above.
+
+    Returns (product_name, field, new_value) for every unfolded edit. Local
+    edits fold into the research JSON; imported edits fold into
+    imported_price_edits.json, but either would be overwritten if skipped.
+    """
+    connection = sqlite3.connect(path, timeout=30)
+    try:
+        if not table_exists(connection, "price_edits"):
+            return []
+        rows = connection.execute(
+            "SELECT p.product_name, e.field, e.new_value "
+            "FROM price_edits e JOIN products p ON p.row_id = e.product_row_id "
+            "WHERE e.folded = 0"
+        ).fetchall()
+    finally:
+        connection.close()
+
+    return [(str(name), str(field), float(value)) for name, field, value in rows]
+
+
 def sync_database(path: Path, seed_sql: str) -> bool:
     migrate_database(path)
     connection = sqlite3.connect(path, timeout=30)
@@ -103,6 +130,24 @@ def main() -> None:
                     print(f"    {channel:14s} {name[:56]}")
                 if len(orphans) > 10:
                     print(f"    ... and {len(orphans) - 10} more")
+                raise SystemExit(1)
+
+            # Same failure mode, different table: an admin price edit that was
+            # never folded is about to be overwritten by the seed's UPSERT.
+            pending = unfolded_price_edits(path)
+            if pending:
+                print(
+                    f"REFUSING TO SYNC: {path.name} holds {len(pending)} un-folded "
+                    "price edit(s) that seed.sql would overwrite.\n"
+                    "Run:\n"
+                    "  uv run python3 scripts/fold_price_edits_into_research.py\n"
+                    "  uv run --with openpyxl --with rapidfuzz python3 build_matrix.py\n"
+                    "then sync again (or pass --force to discard them).\n"
+                )
+                for name, field, value in pending[:10]:
+                    print(f"    {field:12s} -> {value:<10} {name[:48]}")
+                if len(pending) > 10:
+                    print(f"    ... and {len(pending) - 10} more")
                 raise SystemExit(1)
 
     synced = 0

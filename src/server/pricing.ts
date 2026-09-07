@@ -1,4 +1,6 @@
 import { z } from 'zod'
+import { PRICING_DEFAULTS } from '../shared/pricing'
+import type { PricingParams, StoredPricingOverride } from '../types'
 
 /**
  * Request validation for the pricing endpoints. Kept separate from
@@ -6,8 +8,8 @@ import { z } from 'zod'
  * re-exports the shared domain helpers for convenience.
  */
 
+export { PRICING_DEFAULTS }
 export {
-  PRICING_DEFAULTS,
   calculateSellingPrice,
   isEmptyOverride,
   overriddenFields,
@@ -16,6 +18,66 @@ export {
   sparsifyOverride,
   totalOverhead,
 } from '../shared/pricing'
+
+interface GlobalPricingRow {
+  packaging: number
+  transport: number
+  delivery: number
+  cac: number
+  cacType: 'amt' | 'pct'
+  targetMarginPct: number
+  discountType: 'pct' | 'amt'
+  discountVal: number
+}
+
+interface StoredOverrideRow {
+  productRowId: number
+  packaging: number | null
+  transport: number | null
+  delivery: number | null
+  cac: number | null
+  cacType: 'amt' | 'pct' | null
+  targetMarginPct: number | null
+  discountType: 'pct' | 'amt' | null
+  discountVal: number | null
+  updatedAt: string | null
+}
+
+/** One authoritative D1 read path for the UI API and the XLSX export. */
+export async function readPricingState(db: D1Database): Promise<{
+  globalParams: PricingParams
+  overrides: Record<string, StoredPricingOverride>
+}> {
+  const [globalResult, overridesResult] = await db.batch([
+    db.prepare(`SELECT packaging, transport, delivery, cac, cac_type AS cacType,
+      target_margin_pct AS targetMarginPct, discount_type AS discountType,
+      discount_val AS discountVal FROM global_pricing_params WHERE id = 1`),
+    db.prepare(`SELECT product_row_id AS productRowId, packaging, transport, delivery, cac,
+      cac_type AS cacType, target_margin_pct AS targetMarginPct, discount_type AS discountType,
+      discount_val AS discountVal, updated_at AS updatedAt FROM product_pricing_overrides
+      WHERE product_row_id IS NOT NULL`),
+  ])
+  const globalRow = globalResult?.results[0] as unknown as GlobalPricingRow | undefined
+  const overrides: Record<string, StoredPricingOverride> = {}
+  const rows = (overridesResult?.results ?? []) as unknown as StoredOverrideRow[]
+  for (const row of rows) {
+    const override: StoredPricingOverride = { updatedAt: row.updatedAt }
+    if (row.packaging !== null) override.packaging = row.packaging
+    if (row.transport !== null) override.transport = row.transport
+    if (row.delivery !== null) override.delivery = row.delivery
+    if (row.targetMarginPct !== null) override.targetMarginPct = row.targetMarginPct
+    if (row.cac !== null && row.cacType !== null) {
+      override.cac = row.cac
+      override.cacType = row.cacType
+    }
+    if (row.discountType !== null && row.discountVal !== null) {
+      override.discountType = row.discountType
+      override.discountVal = row.discountVal
+    }
+    overrides[String(row.productRowId)] = override
+  }
+  return { globalParams: globalRow ?? { ...PRICING_DEFAULTS }, overrides }
+}
 
 const costField = z.coerce.number().finite().min(0).max(100_000)
 const marginField = z.coerce.number().finite().min(0).max(99.99)

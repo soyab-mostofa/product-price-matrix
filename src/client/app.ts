@@ -219,6 +219,8 @@ function updateAdminUI() {
     adminLoginBtn.textContent = isAdminAuthenticated ? 'Log out' : 'Admin Login'
   }
   if (openEngineBtn) openEngineBtn.hidden = false
+  const xlsxButton = document.getElementById('downloadXlsx') as HTMLButtonElement | null
+  if (xlsxButton) xlsxButton.hidden = !isAdminAuthenticated
 
   const readOnly = !isAdminAuthenticated
   const notice = authConfigured
@@ -245,6 +247,10 @@ function updateAdminUI() {
   for (const button of document.querySelectorAll<HTMLButtonElement>('.discount-type-btn')) {
     button.disabled = readOnly
   }
+
+  // Editable-cell attributes are emitted by render(), so a login/logout must
+  // repaint the matrix immediately rather than requiring a page reload.
+  if (catalogLoaded) render()
 }
 
 function getVisibleSources(list: Product[]): string[] {
@@ -440,9 +446,21 @@ function render() {
     const mrpTooltip = provenance.tooltip
     const mrpClass = provenance.className
 
+    // An admin can retype either price straight in the sheet. Read-only
+    // visitors get the same markup minus the affordance, so nothing shifts.
+    const editable = isAdminAuthenticated
+    const priceEdited = Boolean(p.price_edited_at)
+    const editedTitle = priceEdited
+      ? `Price edited by an admin on ${new Date(p.price_edited_at as string).toLocaleDateString()} — the workbook figure is no longer what is shown.`
+      : ''
+    const editAttrs = (field: 'source_cost' | 'mrp', value: number) => editable
+      ? ` class="cell-editable" tabindex="0" role="button" data-edit-field="${field}"`
+        + ` data-edit-value="${value}" title="Click to edit — currently ${esc(money.format(value))}"`
+      : ''
+
     const marketAvgDisplay = `
       <div class="dual-metric-cell" title="${esc(mrpTooltip)}">
-        <span class="${mrpClass}">${esc(money.format(mktAvg))}</span>
+        <span class="${mrpClass}${priceEdited ? ' price-edited' : ''}"${editAttrs('mrp', mktAvg)}>${esc(money.format(mktAvg))}</span>
         ${avgMarkupChip}
       </div>
     `
@@ -489,7 +507,12 @@ function render() {
           ${p.size ? `<div class="item-size">${esc(p.size)}</div>` : ''}
         </td>
         <td class="col-brand"><span class="brand-label">${esc(p.brand_name)}</span></td>
-        <td class="col-mfg"><span class="num-price mfg">${esc(money.format(p.manufactured_price))}</span></td>
+        <td class="col-mfg">
+          <div class="dual-metric-cell">
+            ${priceEdited ? `<span class="price-edit-tag" title="${esc(editedTitle)}">Edited</span>` : ''}
+            <span class="num-price mfg${priceEdited ? ' price-edited' : ''}"${editAttrs('source_cost', mfg)}>${esc(money.format(p.manufactured_price))}</span>
+          </div>
+        </td>
         <td class="col-market">${marketAvgDisplay}</td>
         <td class="col-selling-price">${sellingDisplay}</td>
         ${activeSources.map((s) => sourceCell(p, s)).join('')}
@@ -1155,7 +1178,10 @@ document.addEventListener('DOMContentLoaded', () => {
   bodyElement?.addEventListener('click', (e) => {
     const target = e.target as HTMLElement | null
     const row = target?.closest('tr[data-row-id]') as HTMLElement | null
-    if (row && !target?.closest('a')) {
+    // An editable price cell owns its own click. This listener is registered
+    // first, so stopPropagation from the edit handler cannot help — the
+    // exclusion has to live here, alongside the existing anchor exclusion.
+    if (row && !target?.closest('a') && !target?.closest('[data-edit-field]')) {
       const found = productsByRow.get(Number(row.dataset.rowId))
       if (found) openDetail(found)
     }
@@ -1164,7 +1190,7 @@ document.addEventListener('DOMContentLoaded', () => {
   bodyElement?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       const target = e.target as HTMLElement | null
-      if (target?.closest('a, button, input, select, textarea')) return
+      if (target?.closest('a, button, input, select, textarea, [data-edit-field]')) return
       const row = target?.closest('tr[data-row-id]') as HTMLElement | null
       if (row) {
         e.preventDefault()
@@ -1453,6 +1479,207 @@ document.addEventListener('DOMContentLoaded', () => {
         status.textContent = 'Network error'
         status.className = 'status-message error'
       }
+    }
+  })
+
+  // ── Inline price editing ────────────────────────────────────────────────
+  // Source Cost and MRP are edited in place. The commit path is deliberately
+  // narrow: one PATCH, then a local update of the product record and a single
+  // re-render, so every derived figure (selling price, markup chips, the
+  // above-market banner) recomputes from the same code path as a fresh load.
+
+  /** The trade discount a cost/MRP pair implies, or null when it is undefined. */
+  const impliedDiscount = (cost: number, mrp: number): number | null =>
+    mrp > 0 && cost >= 0 ? ((mrp - cost) / mrp) * 100 : null
+
+  let activeEditor: HTMLInputElement | null = null
+
+  function beginEdit(target: HTMLElement) {
+    if (!isAdminAuthenticated || activeEditor) return
+    const field = target.dataset.editField as 'source_cost' | 'mrp' | undefined
+    const row = target.closest('tr')
+    const rowId = Number(row?.getAttribute('data-row-id'))
+    if (!field || !rowId) return
+
+    const product = products.find((item) => item.row === rowId)
+    if (!product) return
+
+    const original = Number(target.dataset.editValue)
+    const input = document.createElement('input')
+    input.type = 'number'
+    input.step = '0.01'
+    input.min = '0'
+    input.className = 'price-edit-input'
+    input.value = String(original)
+    input.setAttribute('aria-label',
+      `${field === 'source_cost' ? 'Source cost' : 'MRP'} for ${product.product_name}`)
+
+    // A live readout of the trade discount the pair implies. The workbook
+    // derives cost as MRP x (1 - discount); editing either side moves that
+    // rate, and this is the only place it is visible. Advisory only — it never
+    // blocks a save and is never written anywhere.
+    const note = document.createElement('div')
+    note.className = 'implied-discount-note'
+    const startCost = field === 'source_cost' ? original : Number(product.manufactured_price)
+    const startMrp = field === 'mrp' ? original : Number(product.market_average_price)
+    const startDiscount = impliedDiscount(startCost, startMrp)
+
+    const paintNote = () => {
+      if (product.sourcing_origin !== 'local' || startDiscount === null) return
+      const typed = Number(input.value)
+      const cost = field === 'source_cost' ? typed : Number(product.manufactured_price)
+      const mrp = field === 'mrp' ? typed : Number(product.market_average_price)
+      const next = impliedDiscount(cost, mrp)
+      if (next === null || !Number.isFinite(next)) {
+        note.textContent = `trade discount ${startDiscount.toFixed(1)}%`
+        return
+      }
+      note.innerHTML = Math.abs(next - startDiscount) < 0.05
+        ? `trade discount ${esc(startDiscount.toFixed(1))}%`
+        : `trade discount ${esc(startDiscount.toFixed(1))}% <span class="shift">&rarr; ${esc(next.toFixed(1))}%</span>`
+    }
+    paintNote()
+
+    const parent = target.parentElement
+    if (!parent) return
+    target.hidden = true
+    parent.appendChild(input)
+    if (product.sourcing_origin === 'local' && startDiscount !== null) parent.appendChild(note)
+
+    activeEditor = input
+    input.focus()
+    input.select()
+
+    let settled = false
+    const teardown = () => {
+      input.remove()
+      note.remove()
+      target.hidden = false
+      activeEditor = null
+    }
+
+    const commit = async () => {
+      if (settled) return
+      const value = Number(input.value)
+      if (!Number.isFinite(value) || value < 0) {
+        input.classList.add('is-error')
+        return
+      }
+      if (value === original) {
+        settled = true
+        teardown()
+        return
+      }
+      settled = true
+      input.classList.add('is-saving')
+      input.disabled = true
+
+      try {
+        const res = await fetch('/api/prices', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'X-Price-Matrix-Admin': '1' },
+          body: JSON.stringify({ productRowId: rowId, field, value }),
+        })
+        const data = await res.json() as {
+          success: boolean
+          error?: string
+          editedAt?: string
+          mrpSourceType?: string
+        }
+        if (!data.success) {
+          input.classList.remove('is-saving')
+          input.classList.add('is-error')
+          input.disabled = false
+          input.title = data.error ?? 'Save failed'
+          settled = false
+          return
+        }
+
+        // Update the in-memory record so the re-render below reflects the save
+        // without a round trip. Everything derived recomputes from these.
+        if (field === 'source_cost') product.manufactured_price = value
+        else product.market_average_price = value
+        if (data.mrpSourceType) product.mrp_source_type = data.mrpSourceType as Product['mrp_source_type']
+        product.price_edited_at = data.editedAt ?? new Date().toISOString()
+
+        teardown()
+        render()
+      } catch {
+        input.classList.remove('is-saving')
+        input.classList.add('is-error')
+        input.disabled = false
+        input.title = 'Network error'
+        settled = false
+      }
+    }
+
+    input.addEventListener('input', () => {
+      input.classList.remove('is-error')
+      paintNote()
+    })
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault()
+        void commit()
+      } else if (event.key === 'Escape') {
+        event.preventDefault()
+        settled = true
+        teardown()
+      }
+    })
+    input.addEventListener('blur', () => { void commit() })
+  }
+
+  bodyElement?.addEventListener('click', (event) => {
+    const target = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-edit-field]')
+    if (!target) return
+    // The row itself opens the detail modal; an edit must not do both.
+    event.stopPropagation()
+    beginEdit(target)
+  })
+
+  bodyElement?.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return
+    const target = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-edit-field]')
+    if (!target) return
+    event.preventDefault()
+    event.stopPropagation()
+    beginEdit(target)
+  })
+
+  // Admin Excel export — fetched rather than linked because requireAdmin needs
+  // the same-origin admin header. The worker returns one workbook with the
+  // complete Local and Imported books, regardless of which route is open.
+  document.getElementById('downloadXlsx')?.addEventListener('click', async (event) => {
+    const button = event.currentTarget as HTMLButtonElement
+    if (!isAdminAuthenticated || button.disabled) return
+    const originalTitle = button.title
+    button.disabled = true
+    button.title = 'Preparing Excel workbook…'
+    try {
+      const response = await fetch('/api/export.xlsx', {
+        headers: { 'X-Price-Matrix-Admin': '1' },
+      })
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({})) as { error?: string }
+        throw new Error(data.error ?? `Export failed (${response.status})`)
+      }
+      const blob = await response.blob()
+      const disposition = response.headers.get('Content-Disposition') ?? ''
+      const filename = disposition.match(/filename="([^"]+)"/)?.[1]
+        ?? `product-price-matrix-${new Date().toISOString().slice(0, 10)}.xlsx`
+      const url = URL.createObjectURL(blob)
+      const anchor = document.createElement('a')
+      anchor.href = url
+      anchor.download = filename
+      anchor.click()
+      URL.revokeObjectURL(url)
+    } catch (error) {
+      button.title = error instanceof Error ? error.message : 'Excel export failed'
+      window.setTimeout(() => { button.title = originalTitle }, 4000)
+    } finally {
+      button.disabled = false
+      if (button.title === 'Preparing Excel workbook…') button.title = originalTitle
     }
   })
 

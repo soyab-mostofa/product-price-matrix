@@ -40,6 +40,13 @@ export const DownloadIcon = () => (
   </svg>
 )
 
+export const SpreadsheetIcon = () => (
+  <svg aria-hidden="true" viewBox="0 0 16 16" {...stroke}>
+    <rect x="2.5" y="2" width="11" height="12" />
+    <path d="M2.5 6h11M6.2 6v8M10 6v8M2.5 10h11" />
+  </svg>
+)
+
 export const CompareIcon = () => (
   <svg aria-hidden="true" viewBox="0 0 16 16" {...stroke}>
     <path d="M2.5 5.5h8M8 3l2.5 2.5L8 8" />

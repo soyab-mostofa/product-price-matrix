@@ -1,69 +1,14 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { requireAdmin } from '../server/auth'
-import { PRICING_DEFAULTS, pricingSchema } from '../server/pricing'
-import type { AppEnv, StoredPricingOverride } from '../types'
+import { pricingSchema, readPricingState } from '../server/pricing'
+import type { AppEnv } from '../types'
 
 const engine = new Hono<AppEnv>()
 
-interface GlobalRow {
-  packaging: number
-  transport: number
-  delivery: number
-  cac: number
-  cacType: 'amt' | 'pct'
-  targetMarginPct: number
-  discountType: 'pct' | 'amt'
-  discountVal: number
-}
-
-/** Override rows are sparse: NULL means the SKU inherits that global field. */
-interface OverrideRow {
-  productRowId: number
-  packaging: number | null
-  transport: number | null
-  delivery: number | null
-  cac: number | null
-  cacType: 'amt' | 'pct' | null
-  targetMarginPct: number | null
-  discountType: 'pct' | 'amt' | null
-  discountVal: number | null
-  updatedAt: string | null
-}
-
 engine.get('/', async (c) => {
-  const [globalResult, overridesResult] = await c.env.DB.batch([
-    c.env.DB.prepare(`SELECT packaging, transport, delivery, cac, cac_type AS cacType,
-      target_margin_pct AS targetMarginPct, discount_type AS discountType,
-      discount_val AS discountVal FROM global_pricing_params WHERE id = 1`),
-    c.env.DB.prepare(`SELECT product_row_id AS productRowId, packaging, transport, delivery, cac,
-      cac_type AS cacType, target_margin_pct AS targetMarginPct, discount_type AS discountType,
-      discount_val AS discountVal, updated_at AS updatedAt FROM product_pricing_overrides
-      WHERE product_row_id IS NOT NULL`),
-  ])
-  const globalRow = globalResult?.results[0] as unknown as GlobalRow | undefined
-  const globalParams = globalRow ?? PRICING_DEFAULTS
-  const overrides: Record<string, StoredPricingOverride> = {}
-  const overrideRows = (overridesResult?.results ?? []) as unknown as OverrideRow[]
-  for (const row of overrideRows) {
-    // Only pinned fields travel to the client; absent keys mean "inherit global".
-    const override: StoredPricingOverride = { updatedAt: row.updatedAt }
-    if (row.packaging !== null) override.packaging = row.packaging
-    if (row.transport !== null) override.transport = row.transport
-    if (row.delivery !== null) override.delivery = row.delivery
-    if (row.targetMarginPct !== null) override.targetMarginPct = row.targetMarginPct
-    // CAC travels as a pair, so a half-populated row pins neither half.
-    if (row.cac !== null && row.cacType !== null) {
-      override.cac = row.cac
-      override.cacType = row.cacType
-    }
-    if (row.discountType !== null && row.discountVal !== null) {
-      override.discountType = row.discountType
-      override.discountVal = row.discountVal
-    }
-    overrides[String(row.productRowId)] = override
-  }
-  return c.json({ success: true, globalParams, overrides })
+  const state = await readPricingState(c.env.DB)
+  return c.json({ success: true, ...state })
 })
 
 // Reading the engine is public: the dashboard renders selling prices for

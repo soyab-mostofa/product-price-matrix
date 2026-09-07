@@ -31,6 +31,23 @@ colors:
   tune-700: "#5b3fa8"
   tune-100: "#e2dcf4"
   tune-50: "#f2eefb"
+  chip-mkt-disc-bg: "#e2f0e8"
+  chip-mkt-disc-border: "#b5d9c7"
+  chip-mkt-disc-text: "#14614a"
+  chip-tier1-bg: "#eef4f1"
+  chip-tier1-border: "#cee1d8"
+  chip-tier1-text: "#2c5f4d"
+  chip-tier2-bg: "#e2f0e8"
+  chip-tier2-border: "#b5d9c7"
+  chip-tier2-text: "#14614a"
+  chip-tier3-bg: "#f6eedb"
+  chip-tier3-border: "#e3d1a6"
+  chip-tier4-bg: "#f6e4da"
+  chip-tier4-border: "#e5c1ab"
+  chip-tier4-text: "#8a3b14"
+  chip-zero-bg: "#f1f1ee"
+  chip-zero-border: "#dedcd5"
+  chip-zero-text: "#4a4f56"
 typography:
   display:
     fontFamily: "Plus Jakarta Sans, Inter, sans-serif"
@@ -158,6 +175,11 @@ components:
     textColor: "{colors.sheet}"
     rounded: "{rounded.none}"
     padding: "2px 6px"
+  chip-edited:
+    backgroundColor: "{colors.tune-50}"
+    textColor: "{colors.tune-700}"
+    rounded: "{rounded.none}"
+    padding: "1px 5px"
   chip-tuned:
     backgroundColor: "{colors.tune-50}"
     textColor: "{colors.tune-700}"
@@ -188,7 +210,7 @@ This system explicitly rejects the SaaS admin dashboard it replaced: the generic
 
 A warm lab-paper ground under graphite ink, with exactly two semantic colors: assay green for what is healthy and crimson for what has failed.
 
-**Strategy: Restrained.** The operator came to complete a task, so color is reserved for meaning. Green marks the brand, the primary action, and the healthy margin band. Crimson marks a single condition — a recommendation that cannot be sold. Violet appears only on the `TUNED` pill. Nothing else in the interface is colored.
+**Strategy: Restrained.** The operator came to complete a task, so color is reserved for meaning. Green marks the brand, the primary action, and the healthy margin band. Crimson marks a single condition — a recommendation that cannot be sold. Violet marks an operator-set value: either a `TUNED` engine parameter or an `EDITED` raw price. Nothing else in the interface is colored.
 
 | Role | Token | Value | Use |
 | --- | --- | --- | --- |
@@ -208,7 +230,7 @@ A warm lab-paper ground under graphite ink, with exactly two semantic colors: as
 | Brass | `brass-700` | `#78530f` | The rich-margin chip band; a third-party-average MRP |
 | Out of spec | `spec-700` / `600` | `#8f1d1d` / `#b32020` | Failed measurements, the danger zone, the out-of-spec flag |
 | Out-of-spec tint | `spec-100` / `50` | `#eecfcb` / `#fbedec` | Banner and flag grounds |
-| Tune | `tune-700` / `100` / `50` | `#5b3fa8` / `#e2dcf4` / `#f2eefb` | Per-SKU pinned parameters, and only those |
+| Operator-set value | `tune-700` / `100` / `50` | `#5b3fa8` / `#e2dcf4` / `#f2eefb` | Per-SKU pinned engine parameters (`TUNED`) and admin-edited Source Cost/MRP (`EDITED`) |
 
 **The chip ramp is an ordered scale, not a set of tags.** Both ends alarm — selling under cost, or so far over it the price will not clear — with the healthy band in assay green at the center, warming through brass as margin gets rich.
 
@@ -270,7 +292,9 @@ Everywhere else, layering is tonal: `sheet` over `sheet-alt` over `sheet-sunk`. 
 - **The out-of-spec flag is a button, not a readout.** It names its action (`Show 51 above market` → `Showing`) and filters the sheet on click. It counts across the whole book, never the current view: filtering to one brand must not make a catalog-wide pricing failure look like it went away.
 - **The compare cord.** One control that re-reads every chip in the field at once, switching the whole sheet between markup-over-cost and discount-off-MRP.
 - **Records** (product dialogs) are ruled bands, not stacked cards: an identity strip, four assay readings, a cost stack drawn to scale, a spread rail placing our price against the channels, and the channel audit. Each percentage names its basis (`VS COST`, `VS MRP`).
-- **Every interactive element ships default, hover, focus-visible, active, and disabled.** Read-only state is real: without an admin session, inputs stay readable but disabled and a banner says why.
+- **Inline raw-price editing is a cell state, not a form row.** Admins click Source Cost or MRP in place; the input fills the existing cell box so a 407-row sheet never reflows. Enter commits, Escape cancels, and a local SKU floats its implied trade discount beneath the cell while typing. The violet `EDITED` marker reports a current deviation from the workbook baseline and disappears after a revert; the append-only audit history remains.
+- **Admin Excel export is icon-only.** It downloads one `.xlsx` containing `Local` and `Imported` worksheets, with numeric price cells, frozen headers, filters, current engine output, workbook baselines, provenance, and every marketplace channel. It is hidden until login and requires the same-origin admin header.
+- **Every interactive element ships default, hover, focus-visible, active, and disabled.** Read-only state is real: without an admin session, inputs stay readable but disabled and raw-price cells are not interactive.
 - **Motion is 120–150ms and reports state only.** No page-load choreography — the app loads into a task. `prefers-reduced-motion` collapses everything to 0.001ms.
 - **Browser surfaces are themed**, because they carry the design too: selection is assay green on white, scrollbars are 11px `rule-3` on `sheet-alt`, and focus rings are 2px `assay-700` at `1px` offset.
 
@@ -286,7 +310,7 @@ Everywhere else, layering is tonal: `sheet` over `sheet-alt` over `sheet-sunk`. 
 
 **Don't**
 - Don't introduce a radius. Not on a chip, not on a modal, not "just a small one."
-- Don't add a third semantic color. Green is healthy, crimson has failed; violet is spoken for by tuning.
+- Don't add a third semantic color. Green is healthy, crimson has failed; violet is spoken for by operator-set values (tuning and raw price edits).
 - Don't put a colored border above 1px on the side of anything.
 - Don't nest cards, or use a card where a ruled band works.
 - Don't use `ink-4` for text — it is for marks and dashes only.

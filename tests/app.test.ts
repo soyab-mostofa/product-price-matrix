@@ -39,6 +39,14 @@ function fakeDb({ products = [], listings = [], globalParams = null, overrides =
         },
         async all() {
           seen.push(sql)
+          if (sql.includes('FROM products') && sql.includes('ORDER BY product.row_id')) {
+            // The catalog query aliases the table and pulls price_edited_at from
+            // the journal via a correlated subquery. The fake has no journal, so
+            // the flag is surfaced as null unless a fixture sets it.
+            return {
+              results: visibleProducts().map((p: any) => ({ price_edited_at: null, ...p })),
+            }
+          }
           if (sql.includes('FROM products') && sql.includes('ORDER BY row_id')) return { results: visibleProducts() }
           if (sql.includes('DISTINCT brand_name')) return { results: [...new Set(visibleProducts().map((p: any) => ({ brand_name: p.brand_name })))] }
           if (sql.includes('GROUP BY sourcing_origin')) {

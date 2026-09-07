@@ -32,6 +32,9 @@ interface ProductRow {
   mrp_source_type: MrpSourceType
   sourcing_origin: SourcingOrigin
   category: string | null
+  source_sheet: string | null
+  source_row: number | null
+  price_edited_at: string | null
 }
 
 interface ListingRow {
@@ -47,10 +50,25 @@ interface ListingRow {
 
 export async function fetchCatalog(db: D1Database, origin: SourcingOrigin = 'local'): Promise<CatalogPayload> {
   const [productsResult, listingsResult] = await db.batch([
-    db.prepare(`SELECT row_id, product_name, brand_name, size, manufactured_price,
-                       market_average_price, canonical_name, mrp_source_type,
-                       sourcing_origin, category
-                  FROM products WHERE sourcing_origin = ? ORDER BY row_id ASC`).bind(origin),
+    // Prices come straight off `products` — the journal is an audit log, not a
+    // resolution layer. The only thing joined here is WHEN a row was last
+    // edited, which is what the UI's edited affordance keys off.
+    db.prepare(`SELECT product.row_id, product.product_name, product.brand_name,
+                       product.size, product.manufactured_price,
+                       product.market_average_price, product.canonical_name,
+                       product.mrp_source_type, product.sourcing_origin, product.category,
+                       product.source_sheet, product.source_row,
+                       (SELECT MAX(edit.edited_at) FROM price_edits edit
+                         WHERE edit.product_row_id = product.row_id
+                           AND edit.id = (
+                             SELECT MAX(latest.id) FROM price_edits latest
+                              WHERE latest.product_row_id = edit.product_row_id
+                                AND latest.field = edit.field
+                           )
+                           AND (edit.workbook_value IS NULL OR edit.new_value != edit.workbook_value)
+                       ) AS price_edited_at
+                  FROM products product WHERE product.sourcing_origin = ?
+                 ORDER BY product.row_id ASC`).bind(origin),
     db.prepare(`SELECT listing.row_id, listing.channel_name, listing.price, listing.url,
                        listing.matched_title, listing.seller, listing.confidence, listing.verified
                   FROM marketplace_listings listing
@@ -89,6 +107,9 @@ export async function fetchCatalog(db: D1Database, origin: SourcingOrigin = 'loc
     mrp_source_type: row.mrp_source_type,
     sourcing_origin: row.sourcing_origin ?? origin,
     category: row.category ?? null,
+    source_sheet: row.source_sheet ?? null,
+    source_row: row.source_row ?? null,
+    price_edited_at: row.price_edited_at ?? null,
     sources: listingsByRow.get(row.row_id) ?? {},
   }))
 

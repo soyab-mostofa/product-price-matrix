@@ -27,6 +27,9 @@ const product = (row: number, name: string, brand: string, mfg: number, mrp: num
   product_name: name,
   brand_name: brand,
   size: null,
+  source_sheet: null,
+  source_row: null,
+  price_edited_at: null,
   manufactured_price: mfg,
   market_average_price: mrp,
   canonical_name: name,
@@ -82,26 +85,35 @@ describe('pricing arithmetic', () => {
     }
   })
 
-  test('a local SKU MRP is the workbook benchmark, never a scraped listing', async () => {
-    // The workbook is the commercial source of truth: its cost basis is a trade
-    // discount off this exact number. A scraped brand-store price is a live
-    // listing (often promotional, sometimes below our cost) and must not
-    // overwrite the benchmark it is meant to be compared against.
-    const workbook = await Bun.file('verified_marketplace_research.json').json() as {
-      products: Array<{ row: number; excel_prices?: { market_average_price?: number } }>
+  test('a local SKU MRP follows the canonical workbook/manual value, never a scraped listing', async () => {
+    // The research artifact carries the workbook benchmark unless an admin has
+    // deliberately folded a manual MRP into it. Scraped brand-store prices stay
+    // live listings and never overwrite either canonical value.
+    const canonical = await Bun.file('verified_marketplace_research.json').json() as {
+      products: Array<{
+        row: number
+        mrp_source_type?: Product['mrp_source_type']
+        excel_prices?: { market_average_price?: number }
+      }>
     }
     const benchmarks = new Map(
-      workbook.products.map((item) => [item.row, item.excel_prices?.market_average_price]),
+      canonical.products.map((item) => [item.row, {
+        value: item.excel_prices?.market_average_price,
+        source: item.mrp_source_type === 'manual' ? 'manual' as const : 'workbook' as const,
+      }]),
     )
 
     const catalog = await Bun.file('product_pricing_data.json').json() as { products: Product[] }
     expect(catalog.products.length).toBeGreaterThan(0)
 
     for (const item of catalog.products) {
-      expect(item.mrp_source_type).toBe('workbook')
       const benchmark = benchmarks.get(item.row)
-      expect(benchmark).toBeGreaterThan(0)
-      expect(item.market_average_price).toBeCloseTo(benchmark as number, 6)
+      if (!benchmark || benchmark.value === undefined) {
+        throw new Error(`Missing canonical MRP for row ${item.row}`)
+      }
+      expect(benchmark.value).toBeGreaterThan(0)
+      expect(item.market_average_price).toBeCloseTo(benchmark.value, 6)
+      expect(item.mrp_source_type).toBe(benchmark.source)
     }
   })
 

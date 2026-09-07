@@ -2,9 +2,10 @@
 
 Three checks the commercial data must always pass:
 
-1. **Parity** — every SKU's Source Cost and MRP in D1 equal the workbook's,
-   to the paisa. The workbook is the commercial source of truth; drift here
-   is a pricing error, not a display quirk.
+1. **Parity** — every SKU's Source Cost and MRP in D1 either equal the
+   workbook to the paisa, or match the latest active admin edit recorded in
+   ``price_edits``. A journalled edit is deliberate; unexplained drift is still
+   a pricing error, not a display quirk.
 2. **No duplicates** — one row per SKU (name + size), and one listing per
    (SKU, channel). A duplicate silently double-counts a channel.
 3. **Traceability** — every product carries the sheet name and the 1-based
@@ -96,6 +97,54 @@ def local_workbook_rows() -> dict[tuple[str, str], dict]:
     return out
 
 
+def active_price_edits(connection: sqlite3.Connection) -> dict[tuple[int, str], sqlite3.Row]:
+    """Latest non-reverted admin edit per (SKU, field).
+
+    Every edit stays in the append-only journal. Current state is the newest row
+    for each field; a newest row whose value equals workbook_value is a revert,
+    so it no longer explains a parity difference.
+    """
+    tables = {
+        str(row[0]) for row in connection.execute(
+            "SELECT name FROM sqlite_master WHERE type = 'table'"
+        )
+    }
+    if "price_edits" not in tables:
+        return {}
+    rows = connection.execute(
+        """
+        SELECT edit.product_row_id, edit.field, edit.new_value,
+               edit.workbook_value, edit.edited_at
+          FROM price_edits edit
+         WHERE edit.id = (
+           SELECT MAX(latest.id) FROM price_edits latest
+            WHERE latest.product_row_id = edit.product_row_id
+              AND latest.field = edit.field
+         )
+           AND edit.workbook_value IS NOT NULL
+           AND ABS(edit.new_value - edit.workbook_value) > 0.01
+        """
+    ).fetchall()
+    return {
+        (int(row["product_row_id"]), str(row["field"])): row
+        for row in rows
+    }
+
+
+def edit_explains(
+    edit: sqlite3.Row | None,
+    current: Decimal,
+    workbook: Decimal,
+) -> bool:
+    """True only when both sides match what the journal claims."""
+    if edit is None:
+        return False
+    return (
+        abs(current - Decimal(str(edit["new_value"]))) <= TOLERANCE
+        and abs(workbook - Decimal(str(edit["workbook_value"]))) <= TOLERANCE
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--verbose", action="store_true")
@@ -104,6 +153,8 @@ def main() -> int:
     con = sqlite3.connect(replica())
     con.row_factory = sqlite3.Row
     failures = 0
+    active_edits = active_price_edits(con)
+    deliberate: list[tuple[int, str, str, Decimal, Decimal, str]] = []
 
     # ---- 2. Duplicates -------------------------------------------------
     print("=== Duplicate check ===")
@@ -165,13 +216,29 @@ def main() -> int:
         cost = Decimal(str(product["manufactured_price"]))
         mrp = Decimal(str(product["market_average_price"]))
         if abs(cost - entry["cost"]) > TOLERANCE:
-            print(f"  COST  [{product['row_id']}] {product['product_name'][:44]!r}: "
-                  f"D1 {cost} != workbook {entry['cost']}")
-            mismatched += 1
+            edit = active_edits.get((int(product["row_id"]), "source_cost"))
+            if edit_explains(edit, cost, entry["cost"]):
+                assert edit is not None
+                deliberate.append((
+                    int(product["row_id"]), str(product["product_name"]),
+                    "Source Cost", entry["cost"], cost, str(edit["edited_at"]),
+                ))
+            else:
+                print(f"  COST  [{product['row_id']}] {product['product_name'][:44]!r}: "
+                      f"D1 {cost} != workbook {entry['cost']} (no matching active edit)")
+                mismatched += 1
         if abs(mrp - entry["mrp"]) > TOLERANCE:
-            print(f"  MRP   [{product['row_id']}] {product['product_name'][:44]!r}: "
-                  f"D1 {mrp} != workbook {entry['mrp']}")
-            mismatched += 1
+            edit = active_edits.get((int(product["row_id"]), "mrp"))
+            if edit_explains(edit, mrp, entry["mrp"]):
+                assert edit is not None
+                deliberate.append((
+                    int(product["row_id"]), str(product["product_name"]),
+                    "MRP", entry["mrp"], mrp, str(edit["edited_at"]),
+                ))
+            else:
+                print(f"  MRP   [{product['row_id']}] {product['product_name'][:44]!r}: "
+                      f"D1 {mrp} != workbook {entry['mrp']} (no matching active edit)")
+                mismatched += 1
 
     print(f"  {len(local)} local SKUs checked, {mismatched} price mismatches, "
           f"{missing} without a workbook row")
@@ -195,13 +262,32 @@ def main() -> int:
         cost = Decimal(str(product["manufactured_price"]))
         expected = Decimal(str(sku.source_cost))
         if abs(cost - expected) > TOLERANCE:
-            print(f"  COST  [{product['row_id']}] {product['product_name'][:44]!r}: "
-                  f"D1 {cost} != workbook {expected}")
-            imp_mismatched += 1
+            edit = active_edits.get((int(product["row_id"]), "source_cost"))
+            if edit_explains(edit, cost, expected):
+                assert edit is not None
+                deliberate.append((
+                    int(product["row_id"]), str(product["product_name"]),
+                    "Source Cost", expected, cost, str(edit["edited_at"]),
+                ))
+            else:
+                print(f"  COST  [{product['row_id']}] {product['product_name'][:44]!r}: "
+                      f"D1 {cost} != workbook {expected} (no matching active edit)")
+                imp_mismatched += 1
 
     print(f"  {len(imported)} imported SKUs checked, {imp_mismatched} cost mismatches, "
           f"{imp_missing} without a workbook row")
     failures += imp_mismatched
+
+    # ---- Deliberate admin edits -----------------------------------------
+    print(f"\n=== Deliberate price edits ({len(deliberate)}) ===")
+    if deliberate:
+        for row_id, name, field, workbook, current, edited_at in deliberate:
+            print(
+                f"  {field:12s} [{row_id}] {name[:42]!r}: "
+                f"workbook {workbook} -> D1 {current}  ({edited_at})"
+            )
+    else:
+        print("  none — all current prices match their workbook baselines")
 
     # ---- 3. Traceability ------------------------------------------------
     print("\n=== Traceability (source sheet + Excel row) ===")
