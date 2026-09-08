@@ -18,6 +18,9 @@ AUDIT_PATH = ROOT / "verified_match_audit.json"
 SEED_PATH = ROOT / "seed.sql"
 LOCAL_PRICE_EDITS_PATH = ROOT / "local_price_edits.json"
 
+# Mirrors CHANNEL_ORDER in src/server/catalog.ts. Channels discovered later sort
+# alphabetically after these, so a missing entry is not fatal — but it silently
+# demotes a known channel below the unknown ones, so keep both lists in step.
 CHANNEL_ORDER = [
     "Official Store",
     "Arogga",
@@ -28,14 +31,24 @@ CHANNEL_ORDER = [
     "PandaMart",
     "Rokomari",
     "Chaldal",
+    "Klassy Missy",
+    "Skincarebd",
+    "themallbd",
+    "Skinplus",
 ]
 CHANNEL_RANK = {channel: index for index, channel in enumerate(CHANNEL_ORDER)}
 
+# Mirrors PRICING_DEFAULTS in src/shared/pricing.ts and the column defaults in
+# schema.sql. CAC ships as a PERCENTAGE of the sourcing price ('pct'), not a flat
+# figure: seeding 40 without its mode wrote a 40% CAC into a fresh database
+# (cac_type defaults to 'pct'), overstating every recommendation — +433 BDT on a
+# 1237.5 SKU — and pushing SKUs above their market reference.
 DEFAULT_GLOBAL_PARAMS = {
     "packaging": 45.0,
     "transport": 0.0,
     "delivery": 0.0,
-    "cac": 40.0,
+    "cac": 5.0,
+    "cacType": "pct",
     "targetMarginPct": 0.0,
     "discountType": "pct",
     "discountVal": 0.0,
@@ -163,9 +176,14 @@ def build_public_data(
             )
             if confidence > 100:
                 raise ValueError(f"row {item['row']} {channel} confidence cannot exceed 100")
-            url = str(listing.get("url") or "")
-            if not url.startswith(("https://", "http://")):
-                reason = "listing URL must be HTTP(S)"
+            raw_url = listing.get("url")
+            url = str(raw_url).strip() if raw_url is not None else ""
+            # A price can remain commercially useful after its product page is
+            # delisted. `url = null` is the explicit unverified state carried by
+            # MarketplaceListing and rendered by the UI as a dashed marker. Only
+            # a PRESENT but unsafe/malformed URL is a validation failure.
+            if url and not url.startswith(("https://", "http://")):
+                reason = "listing URL must be HTTP(S) when present"
                 violations.append(
                     {
                         "row": item["row"],
@@ -176,6 +194,7 @@ def build_public_data(
                 )
                 if strict:
                     continue
+            listing["url"] = url or None
             listing["price"] = price
             listing["confidence"] = confidence
             listing["available"] = True
@@ -257,6 +276,11 @@ def _sql_text(value: Any) -> str:
     return "'" + str(value or "").replace("'", "''") + "'"
 
 
+def _sql_nullable_text(value: Any) -> str:
+    """SQL NULL for absent optional text; escaped text otherwise."""
+    return "NULL" if value is None else _sql_text(value)
+
+
 def _sql_number(value: Any) -> str:
     return repr(float(value))
 
@@ -299,10 +323,13 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
         "PRAGMA foreign_keys = ON;",
         "BEGIN TRANSACTION;",
         (
+            # cac_type travels with cac. Omitting it let the column default decide
+            # the MEANING of the number: 40 seeded as 40% rather than 40 BDT.
             "INSERT INTO global_pricing_params "
-            "(id, packaging, transport, delivery, cac, target_margin_pct, discount_type, discount_val) "
+            "(id, packaging, transport, delivery, cac, cac_type, target_margin_pct, discount_type, discount_val) "
             f"VALUES (1, {defaults['packaging']}, {defaults['transport']}, "
-            f"{defaults['delivery']}, {defaults['cac']}, {defaults['targetMarginPct']}, "
+            f"{defaults['delivery']}, {defaults['cac']}, {_sql_text(defaults['cacType'])}, "
+            f"{defaults['targetMarginPct']}, "
             f"{_sql_text(defaults['discountType'])}, {defaults['discountVal']}) "
             "ON CONFLICT(id) DO NOTHING;"
         ),
@@ -343,7 +370,7 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
                 "INSERT INTO marketplace_listings "
                 "(row_id, channel_name, price, url, matched_title, size, seller, confidence, available, verified) "
                 f"VALUES ({row_id}, {_sql_text(channel)}, {_sql_number(listing['price'])}, "
-                f"{_sql_text(listing.get('url'))}, {_sql_text(listing.get('matched_title'))}, "
+                f"{_sql_nullable_text(listing.get('url'))}, {_sql_text(listing.get('matched_title'))}, "
                 f"{_sql_text(listing.get('size'))}, {_sql_text(listing.get('seller'))}, "
                 f"{_sql_number(listing.get('confidence', 100))}, 1, {verified});"
             )

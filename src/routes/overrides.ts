@@ -6,14 +6,17 @@ import {
   PRICING_DEFAULTS,
   isEmptyOverride,
   pricingOverrideSchema,
+  productRowIdParamSchema,
   productRowIdSchema,
   sparsifyOverride,
 } from '../server/pricing'
 import type { AppEnv, PricingParams } from '../types'
 
 const overrides = new Hono<AppEnv>()
+// The POST body is JSON (numbers must be numbers); the DELETE filter is a query
+// string (values are text, so the id is coerced).
 const overrideSchema = z.object({ productRowId: productRowIdSchema, override: pricingOverrideSchema })
-const deleteSchema = z.object({ productRowId: productRowIdSchema.optional(), all: z.enum(['true']).optional() })
+const deleteSchema = z.object({ productRowId: productRowIdParamSchema.optional(), all: z.enum(['true']).optional() })
 
 // Every route here mutates stored pricing, so the whole router is admin-only.
 // Overrides are read through GET /api/engine, which stays public.

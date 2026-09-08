@@ -79,9 +79,20 @@ export async function readPricingState(db: D1Database): Promise<{
   return { globalParams: globalRow ?? { ...PRICING_DEFAULTS }, overrides }
 }
 
-const costField = z.coerce.number().finite().min(0).max(100_000)
-const marginField = z.coerce.number().finite().min(0).max(99.99)
-const discountValField = z.coerce.number().finite().min(0).max(1_000_000)
+/**
+ * JSON bodies carry real JSON types, so a numeric field must already BE a
+ * number. `z.coerce.number()` here accepted anything `Number()` swallows and
+ * wrote the result as a price: `null` and `[]` both became 0, `true` became 1,
+ * and the endpoint answered 200. A fabricated 0 is the damaging case — it is a
+ * legal price that passes every CHECK, so it lands in `products`, journals an
+ * edit, and then reads back as an unpriceable SKU (`calculateSellingPrice`
+ * returns null at cost <= 0, and every markup chip blanks).
+ *
+ * Coercion belongs only on query strings, which arrive as text by definition.
+ */
+const costField = z.number().finite().min(0).max(100_000)
+const marginField = z.number().finite().min(0).max(99.99)
+const discountValField = z.number().finite().min(0).max(1_000_000)
 
 export const pricingSchema = z.object({
   packaging: costField,
@@ -147,4 +158,15 @@ export const pricingOverrideSchema = z.object({
   }
 })
 
-export const productRowIdSchema = z.coerce.number().int().positive()
+/**
+ * Row ids arrive two ways, and each needs its own reading.
+ *
+ * In a JSON body the id must already be a number — coercing there let `null`
+ * and `[]` become 0 and `true` become 1, which then failed the `positive()`
+ * check for the wrong reason or, on other fields, wrote silently.
+ *
+ * In a query string every value is text, so `?productRowId=2` can only ever be
+ * the string "2" and coercion is the correct reading.
+ */
+export const productRowIdSchema = z.number().int().positive()
+export const productRowIdParamSchema = z.coerce.number().int().positive()

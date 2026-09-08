@@ -131,6 +131,33 @@ describe('pricing arithmetic', () => {
       }
     }
   })
+
+  test('PandaMart never publishes its retired groceries/product URL scheme', async () => {
+    // foodpanda retired /groceries/product/<alphanumeric-id>/<slug>. Those URLs
+    // either bounce to the darkstore home or hit a PerimeterX challenge, so a
+    // cell carrying one is not a verified deep link. Current products use the
+    // vendor-scoped /darkstore/<code>/<slug>/product/<numeric-id> route. A
+    // recorded price with no confirmed replacement keeps url=null and renders
+    // the UI's dashed unverified marker instead of pointing at the wrong page.
+    const catalog = await Bun.file('product_pricing_data.json').json() as { products: Product[] }
+    const pandaMart = catalog.products.flatMap((item) => {
+      const listing = item.sources.PandaMart
+      return listing ? [{ row: item.row, listing }] : []
+    })
+
+    expect(pandaMart.length).toBeGreaterThan(0)
+    for (const { row, listing } of pandaMart) {
+      expect(listing.price).toBeGreaterThan(0)
+      expect(listing.url?.includes('/groceries/product/')).not.toBe(true)
+      if (listing.url) {
+        expect(listing.url, `row ${row}`).toMatch(
+          /^https:\/\/www\.foodpanda\.com\.bd\/darkstore\/[a-z0-9]+\/[a-z0-9-]+\/product\/\d+$/,
+        )
+      } else {
+        expect(listing.url).toBeNull()
+      }
+    }
+  })
 })
 
 describe('header filters and sorts', () => {

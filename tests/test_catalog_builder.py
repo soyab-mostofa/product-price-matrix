@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import re
 import sqlite3
 import tempfile
 import unittest
 
 import catalog_builder
 from catalog_builder import (
+    CHANNEL_ORDER,
     DEFAULT_GLOBAL_PARAMS,
     CatalogValidationError,
     build_public_data,
@@ -169,6 +171,45 @@ class CatalogBuilderTests(unittest.TestCase):
             msg=listing_insert,
         )
 
+    def test_active_price_without_a_confirmed_page_is_kept_unverified(self) -> None:
+        """A recorded price can outlive its product page.
+
+        MarketplaceListing.url is nullable by design: the UI renders a dashed
+        unverified marker while preserving the commercial price. The builder
+        used to contradict that contract by rejecting every active null URL,
+        making it impossible to demote a dead link without deleting its price.
+        """
+        listing = self.listing(250)
+        listing["url"] = None
+        research = self.make_research([
+            self.product(sources={"PandaMart": listing})
+        ])
+
+        output, _ = build_public_data(research, strict=True)
+        kept = output["products"][0]["sources"]["PandaMart"]
+        self.assertEqual(250, kept["price"])
+        self.assertIsNone(kept["url"])
+
+        listing_insert = next(
+            line for line in generate_seed_sql(output).splitlines()
+            if line.startswith("INSERT INTO marketplace_listings")
+        )
+        self.assertIn(", NULL,", listing_insert)
+        self.assertTrue(
+            listing_insert.rstrip().endswith("1, 0);"),
+            msg=listing_insert,
+        )
+
+    def test_non_http_listing_url_still_fails_strict_build(self) -> None:
+        listing = self.listing(250)
+        listing["url"] = "javascript:alert(1)"
+        research = self.make_research([
+            self.product(sources={"PandaMart": listing})
+        ])
+
+        with self.assertRaisesRegex(CatalogValidationError, "listing URL must be HTTP"):
+            build_public_data(research, strict=True)
+
     def test_seed_uses_product_row_id_overrides_and_canonical_defaults(self) -> None:
         research = self.make_research([
             self.product(sources={"Official Store": self.listing(250)})
@@ -178,8 +219,52 @@ class CatalogBuilderTests(unittest.TestCase):
         sql = generate_seed_sql(output)
 
         self.assertIn("row_id", sql)
-        self.assertIn("45.0, 0.0, 0.0, 40.0, 0.0, 'pct', 0.0", sql)
+        self.assertIn("45.0, 0.0, 0.0, 5.0, 'pct', 0.0, 'pct', 0.0", sql)
         self.assertEqual(0, DEFAULT_GLOBAL_PARAMS["targetMarginPct"])
+
+    def test_seeded_cac_carries_its_mode_and_matches_the_shipped_default(self) -> None:
+        """A CAC figure is meaningless without its mode.
+
+        The seed wrote `cac` but not `cac_type`, so the column default ('pct')
+        decided what the number MEANT: 40 seeded as 40% of the sourcing price
+        rather than 40 BDT. On a 1237.5 SKU that is 495 BDT of phantom
+        acquisition cost instead of 62, overstating the recommendation by 433 BDT
+        and pushing SKUs above their market reference. Masked on existing
+        databases by ON CONFLICT DO NOTHING, so only a fresh deploy saw it.
+        """
+        research = self.make_research([
+            self.product(sources={"Official Store": self.listing(250)})
+        ])
+        output, _ = build_public_data(research, strict=True)
+
+        connection = sqlite3.connect(":memory:")
+        connection.executescript(
+            (Path(__file__).resolve().parents[1] / "schema.sql").read_text(encoding="utf-8")
+        )
+        connection.executescript(generate_seed_sql(output))
+
+        cac, cac_type = connection.execute(
+            "SELECT cac, cac_type FROM global_pricing_params WHERE id = 1"
+        ).fetchone()
+        connection.close()
+
+        self.assertEqual(5.0, cac)
+        self.assertEqual("pct", cac_type)
+        # And the seed agrees with the single source of truth it mirrors.
+        self.assertEqual(DEFAULT_GLOBAL_PARAMS["cac"], cac)
+        self.assertEqual(DEFAULT_GLOBAL_PARAMS["cacType"], cac_type)
+
+    def test_channel_order_matches_the_typescript_catalog(self) -> None:
+        """CHANNEL_ORDER is mirrored in src/server/catalog.ts; drift demotes a
+        known channel below the alphabetical unknown-channel tail."""
+        catalog_ts = (
+            Path(__file__).resolve().parents[1] / "src" / "server" / "catalog.ts"
+        ).read_text(encoding="utf-8")
+        block = re.search(r"const CHANNEL_ORDER = \[(.*?)\]", catalog_ts, re.S)
+        assert block is not None, "CHANNEL_ORDER not found in src/server/catalog.ts"
+        ts_channels = re.findall(r"'([^']+)'", block.group(1))
+
+        self.assertEqual(ts_channels, CHANNEL_ORDER)
 
     def test_seed_preserves_saved_global_pricing_configuration(self) -> None:
         research = self.make_research([
@@ -219,14 +304,16 @@ class CatalogBuilderTests(unittest.TestCase):
         connection.executescript(generate_seed_sql(output))
 
         saved = connection.execute(
-            "SELECT packaging, transport, delivery, cac, target_margin_pct, discount_type, discount_val "
-            "FROM global_pricing_params WHERE id = 1"
+            "SELECT packaging, transport, delivery, cac, cac_type, target_margin_pct, "
+            "discount_type, discount_val FROM global_pricing_params WHERE id = 1"
         ).fetchone()
         products = connection.execute("SELECT COUNT(*) FROM products").fetchone()[0]
         listings = connection.execute("SELECT COUNT(*) FROM marketplace_listings").fetchone()[0]
         connection.close()
 
-        self.assertEqual((45.0, 0.0, 0.0, 40.0, 0.0, "pct", 0.0), saved)
+        # CAC is 5% of the sourcing price, not 40 — and the mode is stated, not
+        # left to the column default to interpret.
+        self.assertEqual((45.0, 0.0, 0.0, 5.0, "pct", 0.0, "pct", 0.0), saved)
         self.assertEqual(1, products)
         self.assertEqual(1, listings)
 

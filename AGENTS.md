@@ -20,7 +20,7 @@ No single view shows the combined total; the origin switch carries both counts.
 
 - **Runtime**: Python 3.12+ (uv / pip), Node.js (Bun 1.3+)
 - **Database & Storage**: Cloudflare D1 (Serverless SQLite at the edge, DB name: `product-price-matrix-db`, UUID: `78a79d0b-20b4-4b3f-b0bf-d2d0e97c9990`)
-- **Serverless API**: Hono Cloudflare Pages Worker (`src/index.tsx`) with routes for `/api/auth`, `/api/engine`, `/api/overrides`, and `/api/products`
+- **Serverless API**: Hono Cloudflare Pages Worker (`src/index.tsx`) with routes for `/api/auth`, `/api/products`, `/api/engine`, `/api/overrides`, `/api/prices` (admin price edits + reverts), and `/api/export.xlsx` (admin-only workbook export)
 - **Data & Excel**: `openpyxl`, `pandas`
 - **Scraping & Networking**: `primp` (TLS fingerprint impersonation for Cloudflare bypass), `BeautifulSoup4`, `ddgs`
 - **Matching & Similarity**: `rapidfuzz`
@@ -85,8 +85,12 @@ $$\text{Markup \%} = \frac{P - C}{C} \times 100$$
 The model computes the recommended selling price from variable overheads, target margins, and promotional discounts:
 
 1. **Total Base Cost**:
+   CAC resolves by mode — flat BDT under `cacType: 'amt'`, or a share of the SKU's own sourcing price under `'pct'`:
+   $$\text{CAC} = \begin{cases} \text{cac} & \text{cacType} = \texttt{amt} \\ C \times \frac{\text{cac}}{100} & \text{cacType} = \texttt{pct} \end{cases}$$
    $$\text{Overhead} = \text{Packaging} + \text{Transport} + \text{Delivery} + \text{CAC}$$
    $$\text{Total Base Cost} = C + \text{Overhead}$$
+
+   Under `pct`, overhead is a **function of the SKU**, not of the engine parameters alone. Every surface that shows an overhead figure must go through `totalOverhead()` / `resolveCac()` in `src/shared/pricing.ts`; a locally re-summed constant drifts away from the price printed beside it.
 
 2. **List Price with Gross Margin**:
    $$\text{List Price} = \frac{\text{Total Base Cost}}{1 - \frac{\text{Target Margin \%}}{100}}$$
@@ -108,7 +112,7 @@ The model computes the recommended selling price from variable overheads, target
 Both are persisted **in Cloudflare D1 only** — there is no `localStorage` anywhere in the codebase.
 
 - **Global Defaults**: Managed via the top navbar `Pricing Engine` modal, stored in D1 `global_pricing_params` (single row, `id = 1`).
-  - Shipped default: Packaging = ৳45, Transport = ৳0, Delivery = ৳0, CAC = ৳40, Margin = 0%, Discount = 0% (pct) — **৳85/unit**, defined once in `src/shared/pricing.ts` (`PRICING_DEFAULTS`) and mirrored in `schema.sql` and `catalog_builder.py`.
+  - Shipped default: Packaging = ৳45, Transport = ৳0, Delivery = ৳0, CAC = **5% of the sourcing price** (`cacType: 'pct'`), Margin = 0%, Discount = 0% (pct), defined once in `src/shared/pricing.ts` (`PRICING_DEFAULTS`) and mirrored in `schema.sql` and `catalog_builder.py`. CAC is a percentage rather than a flat figure because a flat ৳40 exceeded the entire trade-discount headroom on the cheapest SKUs; 5% stays proportional across the whole catalog. Overhead is therefore a function of the SKU, not of the engine parameters alone — always read it through `totalOverhead()` / `resolveCac()`.
 - **Per-Product Custom Overrides**: Configurable in each product's detail modal under the *Custom Pricing Engine* tab, stored in D1 `product_pricing_overrides` keyed by immutable `product_row_id`.
   - Overrides are **sparse**: a `NULL` column means "inherit the current global value", so raising a global cost still reaches tuned SKUs for knobs they never pinned. A field equal to the current global value is stripped on save (`sparsifyOverride`); an override pinning nothing is deleted rather than stored.
   - `discount_type` and `discount_val` pin as a pair or not at all.
@@ -148,6 +152,11 @@ Both are persisted **in Cloudflare D1 only** — there is no `localStorage` anyw
    - Every product carries `source_sheet` and `source_row` — the sheet it was read from and the **1-based Excel row** (headers are row 1, data starts at row 2), so a figure on screen can be typed into Excel's Name Box and land on its cell.
    - Reconcile with `uv run --with openpyxl --with rapidfuzz python3 scripts/verify_workbook_parity.py`. It must print `PASS — 0 problem(s)` before any deploy that touches pricing.
    - Workbook lookups key on **(name, size)**, never name alone: the catalog holds same-name SKUs differing only by pack size (Nature Beauty Healthy Glowing Body Lotion 200/370ml; Orgagenic White Sandalwood 50/100g), and a name-only key silently compares a SKU against its sibling's price.
+
+6. **Never coerce a number out of a JSON body**:
+   - Numeric fields read from a **JSON request body** use `z.number()`. Only **query-string** fields use `z.coerce.number()` (`productRowIdParamSchema`), because a query value is text by definition.
+   - `z.coerce.number()` on a body accepts anything `Number()` swallows: `null` and `[]` become `0`, `true` becomes `1`, `"12"` becomes `12` — and the endpoint answers `200` as though the edit were intended. A fabricated **0 is the damaging case**: it is a legal price that satisfies every CHECK constraint, so it reaches `products`, journals a real edit, and leaves the SKU unpriceable (`calculateSellingPrice` returns `null` at cost ≤ 0 and every markup chip blanks).
+   - Pinned by `tests/pricing.test.ts` ("a JSON body must carry real numbers") and `tests/prices.test.ts` ("a non-numeric price is rejected, never coerced into a figure"), which also assert the write never lands and the journal stays empty.
 
 ---
 
@@ -255,7 +264,7 @@ them deliberately). `tests/test_sync_guard.py` pins that behaviour.
 ### Verification (run before claiming work is done)
 ```bash
 bun run typecheck   # tsc --noEmit
-bun run test        # 69 Bun unit tests + 79 Python tests
+bun run test        # 115 Bun unit tests + 134 Python tests
 bun run build       # client bundle + Worker bundle
 bun run dev         # local dev server on :5173
 bun run test:audit  # 6 browser audits against a running dev server

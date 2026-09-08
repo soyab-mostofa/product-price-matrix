@@ -244,6 +244,40 @@ describe('PATCH /api/prices', () => {
     }
   })
 
+  test('a non-numeric price is rejected, never coerced into a figure', async () => {
+    // z.coerce.number() read each of these as a valid price and stored it:
+    // null and [] became 0, true became 1, "12" became 12 — all answering 200.
+    // A fabricated 0 is the damaging one: it is a legal price that satisfies
+    // every CHECK, so it reaches `products`, journals an edit, and leaves the
+    // SKU unpriceable (calculateSellingPrice returns null at cost <= 0).
+    const db = sqliteD1()
+    const env = envWith(db)
+    const cookie = await loginCookie(env)
+
+    for (const value of [null, true, false, [], {}, '12', '', 'abc']) {
+      const res = await edit(env, cookie, { productRowId: 2, field: 'source_cost', value })
+      expect(res.status).toBe(400)
+    }
+
+    const product = db.raw.query(
+      'SELECT manufactured_price FROM products WHERE row_id = 2',
+    ).get() as any
+    expect(product.manufactured_price).toBe(1237.5)
+
+    const journal = db.raw.query('SELECT COUNT(*) AS n FROM price_edits').get() as any
+    expect(journal.n).toBe(0)
+  })
+
+  test('a non-numeric row id is rejected rather than coerced to a row', async () => {
+    const env = envWith(sqliteD1())
+    const cookie = await loginCookie(env)
+
+    for (const productRowId of [null, true, [], '2', '', 'abc']) {
+      const res = await edit(env, cookie, { productRowId, field: 'source_cost', value: 1300 })
+      expect(res.status).toBe(400)
+    }
+  })
+
   test('imported SKUs are editable on both fields', async () => {
     const db = sqliteD1()
     const env = envWith(db)

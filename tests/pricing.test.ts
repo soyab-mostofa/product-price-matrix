@@ -6,6 +6,7 @@ import {
   overriddenFields,
   pricingOverrideSchema,
   pricingSchema,
+  productRowIdParamSchema,
   productRowIdSchema,
   resolveCac,
   resolvePricingParams,
@@ -33,9 +34,27 @@ describe('pricing input validation', () => {
     expect(pricingSchema.safeParse({ ...defaults, discountType: 'bogus' }).success).toBe(false)
   })
 
+  test('a JSON body must carry real numbers, not coercible junk', () => {
+    // z.coerce.number() accepted anything Number() swallows, so a malformed
+    // payload wrote a fabricated figure and answered 200: null and [] became 0,
+    // true became 1. Zero is the dangerous one — a legal price that leaves the
+    // SKU unpriceable rather than erroring.
+    for (const junk of [null, true, false, [], '45', '', 'abc']) {
+      expect(pricingSchema.safeParse({ ...defaults, packaging: junk }).success).toBe(false)
+      expect(pricingOverrideSchema.safeParse({ packaging: junk, ...(junk === null ? { targetMarginPct: 1 } : {}) }).success)
+        .toBe(junk === null) // explicit null is the documented "unpin", not a value
+    }
+  })
+
   test('requires immutable positive product row IDs', () => {
-    expect(productRowIdSchema.parse('42')).toBe(42)
-    expect(productRowIdSchema.safeParse('Product Name').success).toBe(false)
+    // A JSON body must state the id as a number; a query string cannot, so the
+    // param variant is the one that coerces.
+    expect(productRowIdParamSchema.parse('42')).toBe(42)
+    expect(productRowIdSchema.parse(42)).toBe(42)
+    expect(productRowIdSchema.safeParse('42').success).toBe(false)
+    expect(productRowIdSchema.safeParse(null).success).toBe(false)
+    expect(productRowIdSchema.safeParse(true).success).toBe(false)
+    expect(productRowIdParamSchema.safeParse('Product Name').success).toBe(false)
     expect(productRowIdSchema.safeParse(0).success).toBe(false)
   })
 })

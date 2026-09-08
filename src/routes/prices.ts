@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 import { requireAdmin } from '../server/auth'
-import { productRowIdSchema } from '../server/pricing'
+import { productRowIdParamSchema, productRowIdSchema } from '../server/pricing'
 import type { AppEnv, MrpSourceType, SourcingOrigin } from '../types'
 
 const prices = new Hono<AppEnv>()
@@ -23,8 +23,12 @@ type PriceField = keyof typeof PRICE_COLUMNS
  * Bounded well above the dearest SKU in the catalog but far below anything that
  * would suggest a fat-fingered paste. Mirrors the CHECK constraints in
  * migrations/0009_price_edits.sql.
+ *
+ * Not coerced: this is read from a JSON body, where a price is either a number
+ * or it is not a price. Coercion turned `null`/`[]` into a stored 0 and `true`
+ * into 1, each answering 200 as though the edit were meant.
  */
-const priceValue = z.coerce.number().finite().min(0).max(1_000_000)
+const priceValue = z.number().finite().min(0).max(1_000_000)
 
 const editSchema = z.object({
   productRowId: productRowIdSchema,
@@ -32,8 +36,9 @@ const editSchema = z.object({
   value: priceValue,
 })
 
+/** Reverts arrive as a query string, where values are text by definition. */
 const revertSchema = z.object({
-  productRowId: productRowIdSchema,
+  productRowId: productRowIdParamSchema,
   field: z.enum(['source_cost', 'mrp']),
 })
 
