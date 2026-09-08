@@ -33,7 +33,8 @@ No single view shows the combined total; the origin switch carries both counts.
 - `verified_match_audit.json` — Full audit log of accepted matches and rejected candidates with explicit reasons.
 - `build_matrix.py` / `catalog_builder.py` — Pipeline that validates listings and regenerates canonical JSON, audit, and D1 seed artifacts (`seed.sql`).
 - `scripts/restore_workbook_mrp.py` — One-shot repair that restores `excel_prices.market_average_price` from the workbook. Run if a scraper ever overwrites the benchmark again.
-- `scripts/verify_workbook_parity.py` — **The reconciliation gate.** Asserts every SKU's Source Cost and MRP in D1 equal the workbook to the paisa, that no SKU/row_id/(SKU,channel) is duplicated, and that every product carries its sheet + Excel row. Exits non-zero on any drift.
+- `scripts/verify_workbook_parity.py` — **The reconciliation gate.** Asserts every SKU's immutable workbook baselines (`workbook_source_cost` / `workbook_mrp`) equal the workbook to the paisa, that no SKU/row_id/(SKU,channel) is duplicated, and that every product carries its sheet + Excel row. Reads the **local replica only**. Exits non-zero on any drift.
+- `scripts/verify_live_workbook_parity.py` — The same parity question asked of **live production** over HTTPS, keyed on each SKU's recorded (sheet, row) provenance. The local gate cannot see an edit made against the deployed site, a partial deploy, or an unsynced remote D1 — production once held an edited Source Cost for ~7 hours with every local check passing. `--allow-edited` reports only *unexplained* drift.
 - `scripts/audit_all_listings.py` — Checks every verified listing three ways: reachable (no 404), identical after redirects (the Arogga `pv_id` class of bug), and still accepted by `sku_matcher`. Writes `/tmp/listing_audit.json`.
 - `scripts/verify_live_links.py` — The same reachability/identity check against the **live production API**, so a bad deploy or an unsynced remote D1 is caught, not just a bad local file.
 - `scripts/purge_rejected_listings.py` — Deletes listings the hardened matcher now rejects; recovers a dropped candidate size from the live channel and re-validates before deleting.
@@ -221,6 +222,11 @@ uv run --with rapidfuzz --with openpyxl python3 scripts/purge_rejected_listings.
 
 # The same link check against LIVE production
 uv run python3 scripts/verify_live_links.py
+
+# Workbook parity against LIVE production — catches drift the local gate cannot
+# see (an edit made against the deployed site, a partial deploy, an unsynced
+# remote D1). verify_workbook_parity.py only ever reads the local replica.
+uv run --with openpyxl --with rapidfuzz python3 scripts/verify_live_workbook_parity.py
 ```
 
 ### Discovery Pipeline Order (non-negotiable)
