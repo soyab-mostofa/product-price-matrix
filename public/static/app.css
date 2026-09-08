@@ -837,7 +837,7 @@ tbody tr:hover .cell-editable,
 .price-edit-input.is-saving { opacity: 0.6; }
 .price-edit-input.is-error { border-bottom-color: var(--spec-600); color: var(--spec-700); }
 
-/* An edited figure and its provenance pill, matching how Tuned reads. */
+/* An edited figure and its provenance marker, matching how Tuned reads. */
 .num-price.price-edited { color: var(--tune-700); }
 .price-edit-tag {
   font-size: 9px;
@@ -848,6 +848,52 @@ tbody tr:hover .cell-editable,
   color: var(--tune-700);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+}
+
+/* For an admin the marker IS the undo control. It keeps the violet
+   operator-set reading at rest and turns crimson on hover/focus, where it
+   states the destructive action it performs. Both faces are laid in the same
+   grid cell so swapping them cannot change the chip's width and reflow the
+   column under the pointer. */
+button.price-edit-tag {
+  display: inline-grid;
+  border-radius: 0;
+  font-family: inherit;
+  line-height: 1.45;
+  cursor: pointer;
+  transition: background 90ms linear, border-color 90ms linear, color 90ms linear;
+}
+button.price-edit-tag > * {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  justify-content: center;
+}
+button.price-edit-tag .tag-undo { visibility: hidden; }
+button.price-edit-tag .tag-undo svg { width: 9px; height: 9px; }
+
+button.price-edit-tag:hover,
+button.price-edit-tag:focus-visible {
+  background: var(--spec-50);
+  border-color: var(--spec-100);
+  color: var(--spec-700);
+}
+button.price-edit-tag:hover .tag-word,
+button.price-edit-tag:focus-visible .tag-word { visibility: hidden; }
+button.price-edit-tag:hover .tag-undo,
+button.price-edit-tag:focus-visible .tag-undo { visibility: visible; }
+
+button.price-edit-tag:focus-visible {
+  outline: 2px solid var(--spec-600);
+  outline-offset: 1px;
+}
+button.price-edit-tag:active { background: var(--spec-100); }
+button.price-edit-tag.is-saving { opacity: 0.6; cursor: progress; }
+button.price-edit-tag.is-error {
+  background: var(--spec-600);
+  border-color: var(--spec-600);
+  color: var(--sheet);
 }
 
 /* Implied trade discount, shown live while editing a local SKU. It floats

@@ -1,5 +1,5 @@
 import type { CatalogPayload, PricingOverride, PricingParams, Product, StoredPricingOverride } from '../types'
-import { ICON_CHIP_DOWN, ICON_CHIP_UP, ICON_EXTERNAL, ICON_UNVERIFIED } from './icons'
+import { ICON_CHIP_DOWN, ICON_CHIP_UP, ICON_EXTERNAL, ICON_UNDO, ICON_UNVERIFIED } from './icons'
 import {
   calculateMarketDiscount,
   calculateMarkup,
@@ -449,18 +449,36 @@ function render() {
     // An admin can retype either price straight in the sheet. Read-only
     // visitors get the same markup minus the affordance, so nothing shifts.
     const editable = isAdminAuthenticated
-    const priceEdited = Boolean(p.price_edited_at)
-    const editedTitle = priceEdited
-      ? `Price edited by an admin on ${new Date(p.price_edited_at as string).toLocaleDateString()} — the workbook figure is no longer what is shown.`
-      : ''
+    const costEditedAt = p.source_cost_edited_at
+    const mrpEditedAt = p.mrp_edited_at
+
     const editAttrs = (field: 'source_cost' | 'mrp', value: number) => editable
       ? ` class="cell-editable" tabindex="0" role="button" data-edit-field="${field}"`
         + ` data-edit-value="${value}" title="Click to edit — currently ${esc(money.format(value))}"`
       : ''
 
+    // The Edited marker doubles as the undo control: for an admin it is a
+    // button that restores the workbook figure, so reverting does not require
+    // knowing the original number. For a visitor it stays a plain marker.
+    const editedMarker = (field: 'source_cost' | 'mrp', editedAt: string | null) => {
+      if (!editedAt) return ''
+      const when = new Date(editedAt).toLocaleDateString()
+      const label = field === 'source_cost' ? 'Source Cost' : 'MRP'
+      if (!editable) {
+        return `<span class="price-edit-tag" title="${esc(`${label} edited by an admin on ${when} — the workbook figure is no longer what is shown.`)}">Edited</span>`
+      }
+      const title = `${label} edited on ${when}. Click to undo and restore the workbook figure.`
+      return `<button type="button" class="price-edit-tag is-undoable" data-undo-field="${field}"`
+        + ` title="${esc(title)}" aria-label="${esc(title)}">`
+        + `<span class="tag-word">Edited</span>`
+        + `<span class="tag-undo">${ICON_UNDO}Undo</span>`
+        + `</button>`
+    }
+
     const marketAvgDisplay = `
       <div class="dual-metric-cell" title="${esc(mrpTooltip)}">
-        <span class="${mrpClass}${priceEdited ? ' price-edited' : ''}"${editAttrs('mrp', mktAvg)}>${esc(money.format(mktAvg))}</span>
+        ${editedMarker('mrp', mrpEditedAt)}
+        <span class="${mrpClass}${mrpEditedAt ? ' price-edited' : ''}"${editAttrs('mrp', mktAvg)}>${esc(money.format(mktAvg))}</span>
         ${avgMarkupChip}
       </div>
     `
@@ -509,8 +527,8 @@ function render() {
         <td class="col-brand"><span class="brand-label">${esc(p.brand_name)}</span></td>
         <td class="col-mfg">
           <div class="dual-metric-cell">
-            ${priceEdited ? `<span class="price-edit-tag" title="${esc(editedTitle)}">Edited</span>` : ''}
-            <span class="num-price mfg${priceEdited ? ' price-edited' : ''}"${editAttrs('source_cost', mfg)}>${esc(money.format(p.manufactured_price))}</span>
+            ${editedMarker('source_cost', costEditedAt)}
+            <span class="num-price mfg${costEditedAt ? ' price-edited' : ''}"${editAttrs('source_cost', mfg)}>${esc(money.format(p.manufactured_price))}</span>
           </div>
         </td>
         <td class="col-market">${marketAvgDisplay}</td>
@@ -1600,7 +1618,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (field === 'source_cost') product.manufactured_price = value
         else product.market_average_price = value
         if (data.mrpSourceType) product.mrp_source_type = data.mrpSourceType as Product['mrp_source_type']
-        product.price_edited_at = data.editedAt ?? new Date().toISOString()
+        const stamp = data.editedAt ?? new Date().toISOString()
+        if (field === 'source_cost') product.source_cost_edited_at = stamp
+        else product.mrp_edited_at = stamp
 
         teardown()
         render()
@@ -1629,6 +1649,72 @@ document.addEventListener('DOMContentLoaded', () => {
     })
     input.addEventListener('blur', () => { void commit() })
   }
+
+  /**
+   * Restore one price field to its workbook baseline. The server resolves the
+   * baseline from the journal's first recorded edit, so the browser never has
+   * to know the original figure — which is the point of the control.
+   */
+  async function undoEdit(button: HTMLElement) {
+    if (button.getAttribute('aria-busy') === 'true') return
+    const field = button.dataset.undoField as 'source_cost' | 'mrp' | undefined
+    const row = button.closest<HTMLElement>('tr[data-row-id]')
+    const rowId = Number(row?.dataset.rowId)
+    if (!field || !Number.isFinite(rowId)) return
+
+    const product = productsByRow.get(rowId)
+    if (!product) return
+
+    button.setAttribute('aria-busy', 'true')
+    button.classList.add('is-saving')
+
+    try {
+      const res = await fetch(`/api/prices?productRowId=${rowId}&field=${field}`, {
+        method: 'DELETE',
+        headers: { 'X-Price-Matrix-Admin': '1' },
+      })
+      const data = await res.json() as {
+        success: boolean
+        error?: string
+        value?: number
+        mrpSourceType?: string
+      }
+      if (!data.success || typeof data.value !== 'number') {
+        button.classList.remove('is-saving')
+        button.classList.add('is-error')
+        button.title = data.error ?? 'Undo failed'
+        button.removeAttribute('aria-busy')
+        return
+      }
+
+      if (field === 'source_cost') {
+        product.manufactured_price = data.value
+        product.source_cost_edited_at = null
+      } else {
+        product.market_average_price = data.value
+        product.mrp_edited_at = null
+      }
+      if (data.mrpSourceType) product.mrp_source_type = data.mrpSourceType as Product['mrp_source_type']
+
+      render()
+    } catch {
+      button.classList.remove('is-saving')
+      button.classList.add('is-error')
+      button.title = 'Network error'
+      button.removeAttribute('aria-busy')
+    }
+  }
+
+  // Undo must be tested before the edit affordance below: the marker sits
+  // inside the same cell, and a click landing on it should restore the
+  // workbook figure rather than open an editor over it.
+  bodyElement?.addEventListener('click', (event) => {
+    const button = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-undo-field]')
+    if (!button) return
+    event.stopPropagation()
+    event.preventDefault()
+    void undoEdit(button)
+  })
 
   bodyElement?.addEventListener('click', (event) => {
     const target = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-edit-field]')

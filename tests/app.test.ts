@@ -40,11 +40,14 @@ function fakeDb({ products = [], listings = [], globalParams = null, overrides =
         async all() {
           seen.push(sql)
           if (sql.includes('FROM products') && sql.includes('ORDER BY product.row_id')) {
-            // The catalog query aliases the table and pulls price_edited_at from
-            // the journal via a correlated subquery. The fake has no journal, so
-            // the flag is surfaced as null unless a fixture sets it.
+            // The catalog query aliases the table and pulls each price field's
+            // edit timestamp from the journal via correlated subqueries. The
+            // fake has no journal, so both flags surface as null unless a
+            // fixture sets them.
             return {
-              results: visibleProducts().map((p: any) => ({ price_edited_at: null, ...p })),
+              results: visibleProducts().map((p: any) => ({
+                source_cost_edited_at: null, mrp_edited_at: null, ...p,
+              })),
             }
           }
           if (sql.includes('FROM products') && sql.includes('ORDER BY row_id')) return { results: visibleProducts() }

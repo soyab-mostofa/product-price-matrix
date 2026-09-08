@@ -102,11 +102,14 @@ export interface Product {
   source_sheet: string | null
   source_row: number | null
   /**
-   * When an actively edited price was last changed, or null when both current
-   * values are back at their workbook baselines. The audit history remains in
-   * price_edits after a revert; this flag represents current state, not history.
+   * When each price field's active edit was last made, or null when that field
+   * is back at its workbook baseline. Tracked PER FIELD: editing the MRP must
+   * not mark an untouched Source Cost as edited, or the sheet offers to revert
+   * a figure that already equals the workbook. The audit history remains in
+   * price_edits after a revert; these flags represent current state, not history.
    */
-  price_edited_at: string | null
+  source_cost_edited_at: string | null
+  mrp_edited_at: string | null
   sources: Record<string, MarketplaceListing>
 }
 

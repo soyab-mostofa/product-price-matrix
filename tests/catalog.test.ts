@@ -89,11 +89,12 @@ describe('fetchCatalog against real SQLite', () => {
     expect(sku?.market_average_price).toBe(1650)
   })
 
-  test('price_edited_at is null until the SKU is actually edited', async () => {
+  test('both edit flags are null until the SKU is actually edited', async () => {
     const db = realDb()
     const catalog = await fetchCatalog(db, 'local')
     for (const product of catalog.products) {
-      expect(product.price_edited_at).toBeNull()
+      expect(product.source_cost_edited_at).toBeNull()
+      expect(product.mrp_edited_at).toBeNull()
     }
   })
 
@@ -109,11 +110,27 @@ describe('fetchCatalog against real SQLite', () => {
     const edited = catalog.products.find((p) => p.row === 2)
     const untouched = catalog.products.find((p) => p.row === 3)
 
-    expect(edited?.price_edited_at).toBe('2026-09-07T10:00:00.000Z')
-    expect(untouched?.price_edited_at).toBeNull()
+    expect(edited?.source_cost_edited_at).toBe('2026-09-07T10:00:00.000Z')
+    expect(untouched?.source_cost_edited_at).toBeNull()
   })
 
-  test('the most recent edit wins when a SKU has several', async () => {
+  // The regression: one timestamp for the whole row made an MRP-only edit
+  // mark the untouched Source Cost as edited, offering to "revert" a figure
+  // that already equalled the workbook.
+  test('editing the MRP does not mark Source Cost as edited', async () => {
+    const db = realDb()
+    await db.prepare(
+      `INSERT INTO price_edits
+         (product_row_id, field, old_value, new_value, workbook_value, edited_at)
+       VALUES (2, 'mrp', 1650.0, 1700.0, 1650.0, '2026-09-07T12:00:00.000Z')`,
+    ).run()
+
+    const sku = (await fetchCatalog(db, 'local')).products.find((p) => p.row === 2)
+    expect(sku?.mrp_edited_at).toBe('2026-09-07T12:00:00.000Z')
+    expect(sku?.source_cost_edited_at).toBeNull()
+  })
+
+  test('each field reports its own most recent edit', async () => {
     const db = realDb()
     await db.prepare(
       `INSERT INTO price_edits
@@ -126,9 +143,35 @@ describe('fetchCatalog against real SQLite', () => {
        VALUES (2, 'mrp', 1650.0, 1700.0, 1650.0, '2026-09-07T12:00:00.000Z')`,
     ).run()
 
-    const catalog = await fetchCatalog(db, 'local')
-    expect(catalog.products.find((p) => p.row === 2)?.price_edited_at)
-      .toBe('2026-09-07T12:00:00.000Z')
+    const sku = (await fetchCatalog(db, 'local')).products.find((p) => p.row === 2)
+    expect(sku?.source_cost_edited_at).toBe('2026-09-07T10:00:00.000Z')
+    expect(sku?.mrp_edited_at).toBe('2026-09-07T12:00:00.000Z')
+  })
+
+  // Undo appends a row restoring the workbook value. That row is the field's
+  // latest, so the flag must clear -- not fall back to the earlier edit.
+  test('a reverted field clears its flag while the other stays edited', async () => {
+    const db = realDb()
+    await db.prepare(
+      `INSERT INTO price_edits
+         (product_row_id, field, old_value, new_value, workbook_value, edited_at)
+       VALUES (2, 'source_cost', 1237.5, 1300.0, 1237.5, '2026-09-07T10:00:00.000Z')`,
+    ).run()
+    await db.prepare(
+      `INSERT INTO price_edits
+         (product_row_id, field, old_value, new_value, workbook_value, edited_at)
+       VALUES (2, 'mrp', 1650.0, 1700.0, 1650.0, '2026-09-07T11:00:00.000Z')`,
+    ).run()
+    // the undo of the source cost
+    await db.prepare(
+      `INSERT INTO price_edits
+         (product_row_id, field, old_value, new_value, workbook_value, edited_at)
+       VALUES (2, 'source_cost', 1300.0, 1237.5, 1237.5, '2026-09-07T12:00:00.000Z')`,
+    ).run()
+
+    const sku = (await fetchCatalog(db, 'local')).products.find((p) => p.row === 2)
+    expect(sku?.source_cost_edited_at).toBeNull()
+    expect(sku?.mrp_edited_at).toBe('2026-09-07T11:00:00.000Z')
   })
 
   test('the journal join does not multiply rows', async () => {

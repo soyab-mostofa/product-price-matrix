@@ -6,6 +6,10 @@
 
 const attrs = 'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"'
 
+/** Undo an admin price edit, restoring the workbook figure. */
+export const ICON_UNDO =
+  `<svg aria-hidden="true" viewBox="0 0 16 16" ${attrs}><path d="M3.4 6.6h6a3.6 3.6 0 0 1 0 7.2H6.2M3.4 6.6l2.8-2.8M3.4 6.6l2.8 2.8"/></svg>`
+
 /** Opens a verified listing in a new tab. */
 export const ICON_EXTERNAL =
   `<svg aria-hidden="true" viewBox="0 0 16 16" ${attrs}><path d="M6.4 3.2H3.2v9.6h9.6V9.6M9.6 3.2h3.2v3.2M12.8 3.2 7.4 8.6"/></svg>`

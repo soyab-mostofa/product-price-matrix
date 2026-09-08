@@ -34,7 +34,8 @@ interface ProductRow {
   category: string | null
   source_sheet: string | null
   source_row: number | null
-  price_edited_at: string | null
+  source_cost_edited_at: string | null
+  mrp_edited_at: string | null
 }
 
 interface ListingRow {
@@ -51,22 +52,33 @@ interface ListingRow {
 export async function fetchCatalog(db: D1Database, origin: SourcingOrigin = 'local'): Promise<CatalogPayload> {
   const [productsResult, listingsResult] = await db.batch([
     // Prices come straight off `products` — the journal is an audit log, not a
-    // resolution layer. The only thing joined here is WHEN a row was last
-    // edited, which is what the UI's edited affordance keys off.
+    // resolution layer. The only thing joined here is WHEN each price field was
+    // last edited, which is what the UI's edited affordance keys off.
+    //
+    // Resolved PER FIELD, not per product. A single timestamp for the whole row
+    // made an MRP-only edit mark the untouched Source Cost as edited too, and
+    // offered to "revert" a figure that already equalled its workbook value.
     db.prepare(`SELECT product.row_id, product.product_name, product.brand_name,
                        product.size, product.manufactured_price,
                        product.market_average_price, product.canonical_name,
                        product.mrp_source_type, product.sourcing_origin, product.category,
                        product.source_sheet, product.source_row,
-                       (SELECT MAX(edit.edited_at) FROM price_edits edit
+                       (SELECT edit.edited_at FROM price_edits edit
                          WHERE edit.product_row_id = product.row_id
-                           AND edit.id = (
-                             SELECT MAX(latest.id) FROM price_edits latest
-                              WHERE latest.product_row_id = edit.product_row_id
-                                AND latest.field = edit.field
-                           )
+                           AND edit.field = 'source_cost'
+                           AND edit.id = (SELECT MAX(latest.id) FROM price_edits latest
+                                           WHERE latest.product_row_id = product.row_id
+                                             AND latest.field = 'source_cost')
                            AND (edit.workbook_value IS NULL OR edit.new_value != edit.workbook_value)
-                       ) AS price_edited_at
+                       ) AS source_cost_edited_at,
+                       (SELECT edit.edited_at FROM price_edits edit
+                         WHERE edit.product_row_id = product.row_id
+                           AND edit.field = 'mrp'
+                           AND edit.id = (SELECT MAX(latest.id) FROM price_edits latest
+                                           WHERE latest.product_row_id = product.row_id
+                                             AND latest.field = 'mrp')
+                           AND (edit.workbook_value IS NULL OR edit.new_value != edit.workbook_value)
+                       ) AS mrp_edited_at
                   FROM products product WHERE product.sourcing_origin = ?
                  ORDER BY product.row_id ASC`).bind(origin),
     db.prepare(`SELECT listing.row_id, listing.channel_name, listing.price, listing.url,
@@ -109,7 +121,8 @@ export async function fetchCatalog(db: D1Database, origin: SourcingOrigin = 'loc
     category: row.category ?? null,
     source_sheet: row.source_sheet ?? null,
     source_row: row.source_row ?? null,
-    price_edited_at: row.price_edited_at ?? null,
+    source_cost_edited_at: row.source_cost_edited_at ?? null,
+    mrp_edited_at: row.mrp_edited_at ?? null,
     sources: listingsByRow.get(row.row_id) ?? {},
   }))
 
