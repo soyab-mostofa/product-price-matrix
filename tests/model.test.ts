@@ -182,6 +182,51 @@ describe('header filters and sorts', () => {
     }
   })
 
+  // Workbook-row ordering has to group by SHEET first. Every sheet starts its
+  // data at row 2, so ordering on the row number alone interleaves five
+  // different spreadsheets and the leftmost column stops reading as the
+  // workbook it points at. These rows collide on purpose: three sheets each
+  // carry a row 2.
+  const byWorkbook = [
+    product(31, 'Imported Serum', 'Brand C', 100, 200),
+    product(32, 'Local Balm', 'Brand A', 100, 200),
+    product(33, 'Local Wash', 'Brand A', 100, 200),
+    product(34, 'Orgagenic Pack', 'Brand B', 100, 200),
+    product(35, 'Stray SKU', 'Brand D', 100, 200),
+  ]
+  byWorkbook[0]!.source_sheet = 'imported Skincare'; byWorkbook[0]!.source_row = 2
+  byWorkbook[1]!.source_sheet = 'Local product '; byWorkbook[1]!.source_row = 3
+  byWorkbook[2]!.source_sheet = 'Local product '; byWorkbook[2]!.source_row = 2
+  byWorkbook[3]!.source_sheet = 'local product Orgagenic'; byWorkbook[3]!.source_row = 2
+  // No provenance at all: must sink, never sort as row 0.
+  byWorkbook[4]!.source_sheet = null; byWorkbook[4]!.source_row = null
+
+  test('workbook-row sort groups by sheet, then by Excel row', () => {
+    const asc = sortProducts(byWorkbook, 'excelrowAsc', selling, []).map((p) => p.row)
+    // localeCompare orders sheet names alphabetically ignoring case, so the
+    // blocks run 'imported Skincare' -> 'Local product ' -> 'local product
+    // Orgagenic', each ordered by its Excel row within the block.
+    expect(asc).toEqual([31, 33, 32, 34, 35])
+
+    const desc = sortProducts(byWorkbook, 'excelrowDesc', selling, []).map((p) => p.row)
+    expect(desc).toEqual([34, 32, 33, 31, 35])
+  })
+
+  test('a SKU with no workbook provenance sinks in both directions', () => {
+    for (const sort of ['excelrowAsc', 'excelrowDesc'] as const) {
+      const ordered = sortProducts(byWorkbook, sort, selling, []).map((p) => p.row)
+      expect(ordered[ordered.length - 1]).toBe(35)
+    }
+  })
+
+  test('workbook-row sort never interleaves two sheets', () => {
+    const ordered = sortProducts(byWorkbook, 'excelrowAsc', selling, [])
+      .filter((p) => p.source_sheet)
+      .map((p) => p.source_sheet)
+    const blocks = ordered.filter((sheet, i) => i === 0 || sheet !== ordered[i - 1])
+    expect(blocks.length).toBe(new Set(blocks).size)
+  })
+
   // The fixture above is useless for discount ordering: every row is above
   // market, so its discount order collapses onto the selling-price order and a
   // test would pass against an implementation that just sorted by price. These

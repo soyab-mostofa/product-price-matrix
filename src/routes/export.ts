@@ -30,7 +30,7 @@ const percent = (value: number | null | undefined): XlsxCell => ({ value, style:
 const integer = (value: number | null | undefined): XlsxCell => ({ value, style: 'integer' })
 
 const BASE_HEADERS = [
-  'Row ID', 'Product', 'Brand', 'Size', 'Category',
+  'Row ID', 'Excel Row', 'Excel Sheet', 'Product', 'Brand', 'Size', 'Category',
   'Source Cost', 'MRP', 'MRP Source',
   'Implied Discount %', 'MRP Markup %',
   'Selling Price', 'Target Markup %', 'Above Market?',
@@ -92,6 +92,10 @@ function rowFor(
 
   const cells: XlsxCell[] = [
     integer(product.row),
+    // The workbook coordinate, kept beside the row id so the sheet reads the
+    // same way the dashboard's leftmost column does.
+    integer(product.source_row),
+    text(product.source_sheet),
     text(product.product_name),
     text(product.brand_name),
     text(product.size),

@@ -102,6 +102,7 @@
   --head-1: 46px;   /* register tier */
   --head-2: 46px;   /* instrument tier */
 
+  --col-row: 76px;
   --col-product: 300px;
   --col-brand: 128px;
   --col-mfg: 124px;
@@ -634,9 +635,21 @@ th.source-col-head {
 .badge-channel.market { background: var(--sheet-sunk); color: var(--ink-3); }
 
 /* ── Pinned specimen columns ───────────────────────────────────────────── */
-.col-product {
+/* The workbook row is the leftmost datum: it is how a figure on screen is
+   traced back to a cell in the source spreadsheet, so it pins ahead of the
+   product title and every following offset is measured from it. */
+.col-row {
   position: sticky;
   left: 0;
+  z-index: 20;
+  width: var(--col-row);
+  min-width: var(--col-row);
+  max-width: var(--col-row);
+  background: var(--sheet);
+}
+.col-product {
+  position: sticky;
+  left: var(--col-row);
   z-index: 20;
   width: var(--col-product);
   min-width: var(--col-product);
@@ -645,7 +658,7 @@ th.source-col-head {
 }
 .col-brand {
   position: sticky;
-  left: var(--col-product);
+  left: calc(var(--col-row) + var(--col-product));
   z-index: 20;
   width: var(--col-brand);
   min-width: var(--col-brand);
@@ -654,7 +667,7 @@ th.source-col-head {
 }
 .col-mfg {
   position: sticky;
-  left: calc(var(--col-product) + var(--col-brand));
+  left: calc(var(--col-row) + var(--col-product) + var(--col-brand));
   z-index: 20;
   width: var(--col-mfg);
   min-width: var(--col-mfg);
@@ -664,7 +677,7 @@ th.source-col-head {
 }
 .col-market {
   position: sticky;
-  left: calc(var(--col-product) + var(--col-brand) + var(--col-mfg));
+  left: calc(var(--col-row) + var(--col-product) + var(--col-brand) + var(--col-mfg));
   z-index: 20;
   width: var(--col-market);
   min-width: var(--col-market);
@@ -673,7 +686,7 @@ th.source-col-head {
 }
 .col-selling-price {
   position: sticky;
-  left: calc(var(--col-product) + var(--col-brand) + var(--col-mfg) + var(--col-market));
+  left: calc(var(--col-row) + var(--col-product) + var(--col-brand) + var(--col-mfg) + var(--col-market));
   z-index: 20;
   width: var(--col-selling);
   min-width: var(--col-selling);
@@ -688,6 +701,7 @@ th.col-mfg .sort-button,
 th.col-market .sort-button,
 th.col-selling-price .sort-button { align-items: flex-end; text-align: right; }
 
+thead th.col-row,
 thead th.col-product,
 thead th.col-brand,
 thead th.col-mfg,
@@ -744,6 +758,37 @@ td {
   letter-spacing: 0.02em;
   line-height: 15px;
 }
+
+/* The workbook coordinate: the Excel row number over the sheet it came from.
+   Typing the number into Excel's Name Box lands on the cell that produced the
+   figures in this row, so it is a reference, not decoration -- rendered in the
+   same tabular figures as the money it traces. */
+.row-ref {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: flex-start;
+}
+.row-ref-num {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 16px;
+}
+.row-ref-sheet {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-35);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  line-height: 13px;
+}
+.row-ref-none { color: var(--ink-4); font-size: 12.5px; }
 
 .brand-label {
   font-size: 11.5px;
@@ -1724,6 +1769,7 @@ dialog::backdrop {
   }
   .col-selling-price { border-right: 1px solid var(--rule-datum) !important; }
   :root {
+    --col-row: 66px;
     --col-product: 244px;
     --col-brand: 112px;
     --col-mfg: 112px;

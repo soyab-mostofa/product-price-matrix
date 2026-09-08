@@ -103,6 +103,7 @@ export function Header({ meta }: { meta: DashboardMeta }) {
             <label class="sr-only" for="sort">Sort products</label>
             <select id="sort">
               <option value="product">Product A–Z</option><option value="productDesc">Product Z–A</option>
+              <option value="excelrowAsc">Workbook row: First → Last</option><option value="excelrowDesc">Workbook row: Last → First</option>
               <option value="brand">Brand A–Z</option><option value="brandDesc">Brand Z–A</option>
               <option value="sellingAsc">Selling: Low → High</option><option value="sellingDesc">Selling: High → Low</option>
               <option value="discountAsc">Market discount: Low → High</option><option value="discountDesc">Market discount: High → Low</option>

@@ -28,13 +28,14 @@ export function PriceMatrix() {
       <div id="aboveMarketBanner" class="above-market-banner" role="status" aria-live="polite" hidden></div>
       <table>
         <thead><tr id="headerRow">
+          <SortHeader className="col-row" sort="excelrow" basis="Sheet · row" title="Sort by the workbook row this figure was read from">Row</SortHeader>
           <SortHeader className="col-product" sort="product" basis="Title / pack size" title="Sort by product title">Product</SortHeader>
           <SortHeader className="col-brand" sort="brand" basis="Manufacturer" title="Sort by brand">Brand</SortHeader>
           <SortHeader className="col-mfg" sort="mfg" basis="BDT / unit" title="Sort by the price we pay to acquire one unit">Source cost</SortHeader>
           <SortHeader className="col-market" sort="market" basis="BDT · vs cost" title="Sort by official MRP or third-party benchmark">MRP</SortHeader>
           <SortHeader className="col-selling-price" sort="selling" basis="BDT · engine output" title="Sort by configured selling price">Selling price</SortHeader>
         </tr></thead>
-        <tbody id="body"><tr><td colspan={5} class="empty-state">Loading live catalog…</td></tr></tbody>
+        <tbody id="body"><tr><td colspan={6} class="empty-state">Loading live catalog…</td></tr></tbody>
       </table>
       <div id="empty" class="empty-state" hidden>No products match the selected criteria.</div>
     </main>

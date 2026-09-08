@@ -518,8 +518,25 @@ function render() {
       if (aboveMarket) aboveMarketCount += 1
     }
 
+    // The workbook coordinate. `source_row` is the 1-based Excel row, so it can
+    // be typed straight into Excel's Name Box; the sheet name beneath it says
+    // which of the five sheets to type it into. 22 SKUs carry no size, but
+    // every SKU carries provenance — a missing one is a data defect, shown as
+    // a dash rather than silently rendering an empty cell.
+    const sheetShort = (p.source_sheet ?? '').trim()
+      .replace(/^local product Orgagenic$/i, 'Orgagenic')
+      .replace(/^Local product$/i, 'Local')
+      .replace(/^imported /i, '')
+    const rowRef = p.source_row
+      ? `<div class="row-ref" title="${esc(`Workbook row ${p.source_row} of ${(p.source_sheet ?? '').trim()} — type ${p.source_row} into Excel's Name Box to open this row.`)}">`
+        + `<span class="row-ref-num">${p.source_row}</span>`
+        + `<span class="row-ref-sheet">${esc(sheetShort)}</span>`
+        + `</div>`
+      : '<span class="row-ref-none" title="No workbook provenance recorded for this SKU">&mdash;</span>'
+
     return `
       <tr tabindex="0" data-row-id="${p.row}">
+        <td class="col-row">${rowRef}</td>
         <td class="col-product">
           <div class="item-name" title="${esc(p.product_name)}">${esc(p.product_name)}</div>
           ${p.size ? `<div class="item-size">${esc(p.size)}</div>` : ''}
@@ -1142,7 +1159,7 @@ async function syncData() {
     if (catalogLoaded) {
       render()
     } else if (bodyElement) {
-      bodyElement.innerHTML = '<tr><td colspan="5" class="empty-state">Unable to load the live catalog. Please refresh to retry.</td></tr>'
+      bodyElement.innerHTML = '<tr><td colspan="6" class="empty-state">Unable to load the live catalog. Please refresh to retry.</td></tr>'
     }
     matrixViewport?.setAttribute('aria-busy', 'false')
   }

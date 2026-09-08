@@ -19,6 +19,7 @@ export type SortValue =
   | 'brand' | 'brandDesc'
   | 'sellingAsc' | 'sellingDesc'
   | 'discountAsc' | 'discountDesc'
+  | 'excelrowAsc' | 'excelrowDesc'
   | 'mfgAsc' | 'mfgDesc'
   | 'marketAsc' | 'marketDesc'
   | 'coverage' | 'spread'
@@ -95,6 +96,25 @@ export function sortProducts(
     const direction = sort === 'discountAsc' ? 'asc' : 'desc'
     return list.sort((a, b) => compareOptionalNumbers(discountFor(a), discountFor(b), direction) || byName(a, b))
   }
+  if (sort === 'excelrowAsc' || sort === 'excelrowDesc') {
+    // Workbook order: sheet first, then the 1-based Excel row within it. Row
+    // number alone would interleave five sheets that each start at 2, so the
+    // column would not read as the workbook it points at. A SKU missing
+    // provenance sinks in both directions rather than sorting as row 0.
+    const direction = sort === 'excelrowAsc' ? 'asc' : 'desc'
+    return list.sort((a, b) => {
+      const sheetA = a.source_sheet ?? ''
+      const sheetB = b.source_sheet ?? ''
+      if (sheetA !== sheetB) {
+        if (!sheetA) return 1
+        if (!sheetB) return -1
+        const bySheet = sheetA.localeCompare(sheetB)
+        return direction === 'asc' ? bySheet : -bySheet
+      }
+      return compareOptionalNumbers(a.source_row ?? undefined, b.source_row ?? undefined, direction)
+        || byName(a, b)
+    })
+  }
   if (sort === 'mfgAsc') return list.sort((a, b) => a.manufactured_price - b.manufactured_price)
   if (sort === 'mfgDesc') return list.sort((a, b) => b.manufactured_price - a.manufactured_price)
   if (sort === 'marketAsc') return list.sort((a, b) => a.market_average_price - b.market_average_price)
@@ -111,6 +131,7 @@ export function sortProducts(
 }
 
 export const PINNED_SORT_VALUES = {
+  excelrow: ['excelrowAsc', 'excelrowDesc'],
   product: ['product', 'productDesc'],
   brand: ['brand', 'brandDesc'],
   mfg: ['mfgAsc', 'mfgDesc'],
