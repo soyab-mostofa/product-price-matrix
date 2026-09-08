@@ -41,7 +41,8 @@ def database() -> sqlite3.Connection:
           old_value REAL NOT NULL,
           new_value REAL NOT NULL,
           workbook_value REAL,
-          edited_at TEXT NOT NULL
+          edited_at TEXT NOT NULL,
+          reverted INTEGER NOT NULL DEFAULT 0
         );
         """
     )
@@ -55,12 +56,13 @@ def add_edit(
     new: float,
     workbook: float,
     at: str = "2026-09-07T10:00:00Z",
+    reverted: bool = False,
 ) -> None:
     connection.execute(
         "INSERT INTO price_edits "
-        "(product_row_id, field, old_value, new_value, workbook_value, edited_at) "
-        "VALUES (2, ?, ?, ?, ?, ?)",
-        (field, old, new, workbook, at),
+        "(product_row_id, field, old_value, new_value, workbook_value, edited_at, reverted) "
+        "VALUES (2, ?, ?, ?, ?, ?, ?)",
+        (field, old, new, workbook, at, 1 if reverted else 0),
     )
 
 
@@ -87,7 +89,8 @@ class ActivePriceEditTests(unittest.TestCase):
         connection = database()
         self.addCleanup(connection.close)
         add_edit(connection, "mrp", 1650.0, 1700.0, 1650.0)
-        add_edit(connection, "mrp", 1700.0, 1650.0, 1650.0, "2026-09-07T12:00:00Z")
+        add_edit(connection, "mrp", 1700.0, 1650.0, 1650.0,
+                 "2026-09-07T12:00:00Z", reverted=True)
 
         self.assertNotIn((2, "mrp"), parity.active_price_edits(connection))
 
@@ -125,10 +128,11 @@ class FullParityCommandTests(unittest.TestCase):
         connection.execute(
             "INSERT INTO products (row_id, product_name, brand_name, size, "
             "manufactured_price, market_average_price, canonical_name, "
-            "mrp_source_type, sourcing_origin, source_sheet, source_row) "
+            "mrp_source_type, sourcing_origin, source_sheet, source_row, "
+            "workbook_source_cost, workbook_mrp) "
             "VALUES (2, 'Bio-Screen Powder Sunblock SPF 50+', 'Bio-Screen', "
             "'12gm', 1300, 1650, 'Bio-Screen Powder Sunblock SPF 50+', "
-            "'workbook', 'local', 'Local product ', 2)"
+            "'workbook', 'local', 'Local product ', 2, 1237.5, 1650)"
         )
         connection.execute(
             "INSERT INTO price_edits (product_row_id, field, old_value, new_value, "

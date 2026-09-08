@@ -22,14 +22,14 @@ function sqliteD1(): D1Database & { raw: Database } {
     INSERT INTO products
       (row_id, product_name, brand_name, size, manufactured_price,
        market_average_price, canonical_name, mrp_source_type, sourcing_origin,
-       source_sheet, source_row)
+       source_sheet, source_row, workbook_source_cost, workbook_mrp)
     VALUES
       (2, 'Bio-Screen Powder Sunblock SPF 50+', 'Bio-Screen', '12gm',
        1237.5, 1650.0, 'Bio-Screen Powder Sunblock SPF 50+', 'workbook', 'local',
-       'Local product ', 2),
+       'Local product ', 2, 1237.5, 1650.0),
       (500, 'Simple Face Wash Refreshing Gel 150ml (uk)', 'Simple', '150ml',
        425.0, 749.0, 'Simple Face Wash Refreshing Gel 150ml (uk)', 'official',
-       'imported', 'imported Skincare', 2);
+       'imported', 'imported Skincare', 2, 425.0, 749.0);
   `)
 
   // An imported SKU resolves its MRP provenance from listings, so a revert has
@@ -296,6 +296,74 @@ describe('DELETE /api/prices (revert)', () => {
     expect(journal[2].folded).toBe(0)
   })
 
+  test('typing the baseline value by hand clears the edited marker', async () => {
+    const db = sqliteD1()
+    const env = envWith(db)
+    const cookie = await loginCookie(env)
+
+    // Edit away from the workbook, then type the workbook figure straight back.
+    await edit(env, cookie, { productRowId: 2, field: 'source_cost', value: 1400 })
+    const back = await edit(env, cookie, { productRowId: 2, field: 'source_cost', value: 1237.5 })
+    expect(back.status).toBe(200)
+    expect((await back.json() as any).reverted).toBe(true)
+
+    const product = db.raw.query('SELECT manufactured_price FROM products WHERE row_id = 2').get() as any
+    expect(product.manufactured_price).toBe(1237.5)
+
+    // The catalog marker takes the LATEST row, then shows it only if it is not
+    // a revert — so a superseded earlier edit must not resurface the marker.
+    const marker = db.raw.query(
+      `SELECT edit.edited_at FROM price_edits edit
+        WHERE edit.product_row_id = 2 AND edit.field = 'source_cost'
+          AND edit.id = (SELECT MAX(l.id) FROM price_edits l
+                          WHERE l.product_row_id = 2 AND l.field = 'source_cost')
+          AND edit.reverted = 0`,
+    ).get() as any
+    expect(marker).toBeNull()
+  })
+
+  test('typing the baseline MRP restores workbook provenance for a local SKU', async () => {
+    const db = sqliteD1()
+    const env = envWith(db)
+    const cookie = await loginCookie(env)
+
+    await edit(env, cookie, { productRowId: 2, field: 'mrp', value: 1800 })
+    const back = await edit(env, cookie, { productRowId: 2, field: 'mrp', value: 1650 })
+    expect((await back.json() as any).mrpSourceType).toBe('workbook')
+
+    const product = db.raw.query(
+      'SELECT market_average_price, mrp_source_type FROM products WHERE row_id = 2',
+    ).get() as any
+    expect(product.market_average_price).toBe(1650)
+    expect(product.mrp_source_type).toBe('workbook')
+  })
+
+  test('revert uses the immutable product baseline, not a corrupt first journal row', async () => {
+    const db = sqliteD1()
+    const env = envWith(db)
+    const cookie = await loginCookie(env)
+
+    db.raw.query(
+      `INSERT INTO price_edits
+         (product_row_id, field, old_value, new_value, workbook_value, folded)
+       VALUES (2, 'source_cost', 999, 1100, 999, 1)`,
+    ).run()
+    await edit(env, cookie, { productRowId: 2, field: 'source_cost', value: 1400 })
+    await app.request(
+      'https://matrix.example/api/prices?productRowId=2&field=source_cost',
+      {
+        method: 'DELETE',
+        headers: { Origin: 'https://matrix.example', 'X-Price-Matrix-Admin': '1', Cookie: cookie },
+      },
+      env,
+    )
+
+    const cost = (db.raw.query(
+      'SELECT manufactured_price FROM products WHERE row_id = 2',
+    ).get() as any).manufactured_price
+    expect(cost).toBe(1237.5)
+  })
+
   test('a reverted local MRP is the workbook benchmark again', async () => {
     const db = sqliteD1()
     const env = envWith(db)
@@ -345,6 +413,45 @@ describe('DELETE /api/prices (revert)', () => {
   // after an undo, because the resolver counted any AVAILABLE listing while
   // seed_imported.py counts only listings that are available AND VERIFIED. The
   // two predicates must stay identical or undo silently rewrites provenance.
+  test('an imported MRP revert recomputes both value and provenance from current listings', async () => {
+    const db = sqliteD1()
+    const env = envWith(db)
+    const cookie = await loginCookie(env)
+
+    await edit(env, cookie, { productRowId: 500, field: 'mrp', value: 900 })
+    // The market moves while the manual pin is active. Undo must not restore the
+    // stale pre-edit 749 and merely relabel it as official.
+    db.raw.query(
+      "UPDATE marketplace_listings SET price = 799 WHERE row_id = 500 AND channel_name = 'Official Store'",
+    ).run()
+
+    const response = await app.request(
+      'https://matrix.example/api/prices?productRowId=500&field=mrp',
+      {
+        method: 'DELETE',
+        headers: { Origin: 'https://matrix.example', 'X-Price-Matrix-Admin': '1', Cookie: cookie },
+      },
+      env,
+    )
+    expect(response.status).toBe(200)
+    const body = await response.json() as any
+    expect(body.value).toBe(799)
+    expect(body.mrpSourceType).toBe('official')
+
+    const product = db.raw.query(
+      'SELECT market_average_price, mrp_source_type FROM products WHERE row_id = 500',
+    ).get() as any
+    expect(product.market_average_price).toBe(799)
+    expect(product.mrp_source_type).toBe('official')
+
+    const journal = db.raw.query(
+      'SELECT workbook_value, new_value, reverted FROM price_edits ORDER BY id DESC LIMIT 1',
+    ).get() as any
+    expect(journal.workbook_value).toBe(749)
+    expect(journal.new_value).toBe(799)
+    expect(journal.reverted).toBe(1)
+  })
+
   test('an unverified listing does not promote a reference SKU on revert', async () => {
     const db = sqliteD1()
     const env = envWith(db)
@@ -353,11 +460,12 @@ describe('DELETE /api/prices (revert)', () => {
     db.raw.exec(`
       INSERT INTO products
         (row_id, product_name, brand_name, size, manufactured_price, market_average_price,
-         canonical_name, mrp_source_type, sourcing_origin, source_sheet, source_row)
+         canonical_name, mrp_source_type, sourcing_origin, source_sheet, source_row,
+         workbook_source_cost, workbook_mrp)
       VALUES
         (501, 'Dove Pink Moisturising Beauty Bar 100g', 'Dove', '100g',
          225.0, 235.5, 'Dove Pink Moisturising Beauty Bar 100g', 'reference',
-         'imported', 'imported Skincare', 3);
+         'imported', 'imported Skincare', 3, 225.0, 235.5);
       INSERT INTO marketplace_listings
         (row_id, channel_name, price, url, matched_title, seller, confidence, available, verified)
       VALUES

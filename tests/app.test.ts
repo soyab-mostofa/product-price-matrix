@@ -129,6 +129,9 @@ describe('Hono application', () => {
     const text = await res.text()
     expect(text).toContain('Price Matrix')
     expect(text).toContain('/static/app.js')
+    expect(text).toContain('id="downloadLocalXlsx"')
+    expect(text).toContain('id="downloadImportedXlsx"')
+    expect(text).not.toContain('id="downloadXlsx"')
   })
 
   test('the CAC inputs accept a fractional percentage', async () => {

@@ -6,6 +6,10 @@
 
 const attrs = 'fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"'
 
+/** Inline direction between a before and after measurement. */
+export const ICON_ARROW_RIGHT =
+  `<svg aria-hidden="true" viewBox="0 0 12 8" ${attrs}><path d="M1 4h9M7 1l3 3-3 3"/></svg>`
+
 /** Undo an admin price edit, restoring the workbook figure. */
 export const ICON_UNDO =
   `<svg aria-hidden="true" viewBox="0 0 16 16" ${attrs}><path d="M3.4 6.6h6a3.6 3.6 0 0 1 0 7.2H6.2M3.4 6.6l2.8-2.8M3.4 6.6l2.8 2.8"/></svg>`

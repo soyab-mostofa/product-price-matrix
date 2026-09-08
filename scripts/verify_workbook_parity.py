@@ -2,10 +2,11 @@
 
 Three checks the commercial data must always pass:
 
-1. **Parity** — every SKU's Source Cost and MRP in D1 either equal the
-   workbook to the paisa, or match the latest active admin edit recorded in
-   ``price_edits``. A journalled edit is deliberate; unexplained drift is still
-   a pricing error, not a display quirk.
+1. **Baseline parity** — every SKU's immutable ``workbook_source_cost`` /
+   ``workbook_mrp`` equals the workbook to the paisa. The current static columns
+   either equal that baseline or match the latest active admin edit in
+   ``price_edits``. A journalled override is deliberate; unexplained drift or a
+   corrupted baseline is still a pricing error.
 2. **No duplicates** — one row per SKU (name + size), and one listing per
    (SKU, channel). A duplicate silently double-counts a channel.
 3. **Traceability** — every product carries the sheet name and the 1-based
@@ -121,8 +122,7 @@ def active_price_edits(connection: sqlite3.Connection) -> dict[tuple[int, str], 
             WHERE latest.product_row_id = edit.product_row_id
               AND latest.field = edit.field
          )
-           AND edit.workbook_value IS NOT NULL
-           AND ABS(edit.new_value - edit.workbook_value) > 0.01
+           AND edit.reverted = 0
         """
     ).fetchall()
     return {
@@ -192,7 +192,8 @@ def main() -> int:
     print("\n=== Local book parity (workbook vs D1) ===")
     workbook_rows = local_workbook_rows()
     local = con.execute(
-        "SELECT row_id, product_name, size, manufactured_price, market_average_price "
+        "SELECT row_id, product_name, size, manufactured_price, market_average_price, "
+        "workbook_source_cost, workbook_mrp "
         "FROM products WHERE sourcing_origin = 'local' ORDER BY row_id"
     ).fetchall()
 
@@ -215,6 +216,16 @@ def main() -> int:
             continue
         cost = Decimal(str(product["manufactured_price"]))
         mrp = Decimal(str(product["market_average_price"]))
+        baseline_cost = Decimal(str(product["workbook_source_cost"]))
+        baseline_mrp = Decimal(str(product["workbook_mrp"]))
+        if abs(baseline_cost - entry["cost"]) > TOLERANCE:
+            print(f"  BASE  [{product['row_id']}] {product['product_name'][:44]!r}: "
+                  f"stored cost baseline {baseline_cost} != workbook {entry['cost']}")
+            mismatched += 1
+        if abs(baseline_mrp - entry["mrp"]) > TOLERANCE:
+            print(f"  BASE  [{product['row_id']}] {product['product_name'][:44]!r}: "
+                  f"stored MRP baseline {baseline_mrp} != workbook {entry['mrp']}")
+            mismatched += 1
         if abs(cost - entry["cost"]) > TOLERANCE:
             edit = active_edits.get((int(product["row_id"]), "source_cost"))
             if edit_explains(edit, cost, entry["cost"]):
@@ -249,7 +260,7 @@ def main() -> int:
     report = read_workbook()
     by_name = {sku.product_name: sku for sku in report.skus}
     imported = con.execute(
-        "SELECT row_id, product_name, manufactured_price FROM products "
+        "SELECT row_id, product_name, manufactured_price, workbook_source_cost FROM products "
         "WHERE sourcing_origin = 'imported' ORDER BY row_id"
     ).fetchall()
 
@@ -261,6 +272,11 @@ def main() -> int:
             continue
         cost = Decimal(str(product["manufactured_price"]))
         expected = Decimal(str(sku.source_cost))
+        baseline = Decimal(str(product["workbook_source_cost"]))
+        if abs(baseline - expected) > TOLERANCE:
+            print(f"  BASE  [{product['row_id']}] {product['product_name'][:44]!r}: "
+                  f"stored cost baseline {baseline} != workbook {expected}")
+            imp_mismatched += 1
         if abs(cost - expected) > TOLERANCE:
             edit = active_edits.get((int(product["row_id"]), "source_cost"))
             if edit_explains(edit, cost, expected):

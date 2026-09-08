@@ -10,12 +10,10 @@
 -- joins it — `fetchCatalog` still selects `manufactured_price` /
 -- `market_average_price` straight off `products`. It exists for two jobs:
 --
---   1. Durability. seed.sql re-inserts every local row with
---      `ON CONFLICT(row_id) DO UPDATE SET manufactured_price=excluded...`, so a
---      rebuild silently reverts an edit. scripts/fold_price_edits_into_research.py
---      reads the unfolded rows here and writes them into
---      verified_marketplace_research.json BEFORE the rebuild, exactly as
---      fold_d1_listings_into_research.py does for scraped listings.
+--   1. Durability. Rebuilds restore the workbook-derived baselines, then apply
+--      manual pins from local_price_edits.json / imported_price_edits.json.
+--      scripts/fold_price_edits_into_research.py reads unfolded rows here and
+--      updates those separate override artifacts; it never rewrites excel_prices.
 --   2. Provenance. `workbook_value` is the figure the workbook shipped, kept
 --      separate from `old_value` (whatever the price was immediately before
 --      this particular edit) so "revert to workbook" survives any number of

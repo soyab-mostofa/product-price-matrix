@@ -16,6 +16,7 @@ PUBLIC_DIR = ROOT / "public"
 PUBLIC_JSON_PATH = PUBLIC_DIR / "product_pricing_data.json"
 AUDIT_PATH = ROOT / "verified_match_audit.json"
 SEED_PATH = ROOT / "seed.sql"
+LOCAL_PRICE_EDITS_PATH = ROOT / "local_price_edits.json"
 
 CHANNEL_ORDER = [
     "Official Store",
@@ -260,6 +261,38 @@ def _sql_number(value: Any) -> str:
     return repr(float(value))
 
 
+def _local_price_edits(products: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Validated manual overrides, separate from immutable ``excel_prices``.
+
+    The commercial research JSON mirrors the workbook and must never be turned
+    into an override store. Pins are keyed by workbook sheet + row because that
+    identity survives a rebuild even if a D1 row id moves.
+    """
+    if not LOCAL_PRICE_EDITS_PATH.exists():
+        return []
+    payload = json.loads(LOCAL_PRICE_EDITS_PATH.read_text(encoding="utf-8"))
+    if payload.get("version") != 1 or not isinstance(payload.get("edits"), list):
+        raise ValueError(f"Invalid local price edit artifact: {LOCAL_PRICE_EDITS_PATH}")
+
+    by_key: dict[tuple[str, int], list[dict[str, Any]]] = {}
+    for product in products:
+        sheet, row = product.get("source_sheet"), product.get("source_row")
+        if sheet and row:
+            by_key.setdefault((str(sheet), int(row)), []).append(product)
+
+    for edit in payload["edits"]:
+        key = (str(edit.get("source_sheet") or ""), int(edit.get("source_row") or 0))
+        matches = by_key.get(key, [])
+        if len(matches) != 1:
+            raise ValueError(
+                "Local price edit did not resolve to exactly one workbook row: "
+                f"{key[0]!r} row {key[1]} ({len(matches)} matches)"
+            )
+        if edit.get("source_cost") is None and edit.get("mrp") is None:
+            raise ValueError(f"Empty local price edit at {key[0]!r} row {key[1]}")
+    return payload["edits"]
+
+
 def generate_seed_sql(output: dict[str, Any]) -> str:
     defaults = DEFAULT_GLOBAL_PARAMS
     lines = [
@@ -284,19 +317,21 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
         source_row_sql = str(int(source_row)) if source_row else "NULL"
         lines.append(
             "INSERT INTO products "
-            "(row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin, source_sheet, source_row) "
+            "(row_id, product_name, brand_name, size, manufactured_price, market_average_price, canonical_name, mrp_source_type, sourcing_origin, source_sheet, source_row, workbook_source_cost, workbook_mrp) "
             f"VALUES ({row_id}, {_sql_text(product['product_name'])}, {_sql_text(product['brand_name'])}, "
             f"{_sql_text(product.get('size'))}, {_sql_number(product['manufactured_price'])}, "
             f"{_sql_number(product['market_average_price'])}, {_sql_text(product.get('canonical_name'))}, "
             f"{_sql_text(product.get('mrp_source_type'))}, 'local', "
-            f"{_sql_text(product.get('source_sheet'))}, {source_row_sql}) "
+            f"{_sql_text(product.get('source_sheet'))}, {source_row_sql}, "
+            f"{_sql_number(product['manufactured_price'])}, {_sql_number(product['market_average_price'])}) "
             "ON CONFLICT(row_id) DO UPDATE SET product_name=excluded.product_name, "
             "brand_name=excluded.brand_name, size=excluded.size, "
             "manufactured_price=excluded.manufactured_price, "
             "market_average_price=excluded.market_average_price, "
             "canonical_name=excluded.canonical_name, mrp_source_type=excluded.mrp_source_type, "
             "sourcing_origin=excluded.sourcing_origin, "
-            "source_sheet=excluded.source_sheet, source_row=excluded.source_row;"
+            "source_sheet=excluded.source_sheet, source_row=excluded.source_row, "
+            "workbook_source_cost=excluded.workbook_source_cost, workbook_mrp=excluded.workbook_mrp;"
         )
         for channel, listing in product.get("sources", {}).items():
             # A listing is verified when it was confirmed against a live product
@@ -312,6 +347,21 @@ def generate_seed_sql(output: dict[str, Any]) -> str:
                 f"{_sql_text(listing.get('size'))}, {_sql_text(listing.get('seller'))}, "
                 f"{_sql_number(listing.get('confidence', 100))}, 1, {verified});"
             )
+
+    # Workbook rows above always reset both current and baseline values to the
+    # commercial source of truth. Manual pins are a SEPARATE layer applied last,
+    # so `verified_marketplace_research.json` / `excel_prices` remain immutable.
+    for edit in _local_price_edits(output["products"]):
+        source_cost = edit.get("source_cost")
+        mrp = edit.get("mrp")
+        lines.append(
+            "UPDATE products SET "
+            f"manufactured_price = COALESCE({_sql_number(source_cost) if source_cost is not None else 'NULL'}, manufactured_price), "
+            f"market_average_price = COALESCE({_sql_number(mrp) if mrp is not None else 'NULL'}, market_average_price), "
+            f"mrp_source_type = CASE WHEN {_sql_number(mrp) if mrp is not None else 'NULL'} IS NOT NULL THEN 'manual' ELSE mrp_source_type END "
+            "WHERE sourcing_origin = 'local' "
+            f"AND source_sheet = {_sql_text(edit['source_sheet'])} AND source_row = {int(edit['source_row'])};"
+        )
 
     lines.append(f"DELETE FROM products WHERE sourcing_origin = 'local' AND row_id NOT IN ({', '.join(row_ids)});")
     lines.extend(["COMMIT;", ""])

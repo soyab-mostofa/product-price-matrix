@@ -3,7 +3,7 @@ import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 import { requireAdmin } from '../server/auth'
 import { productRowIdSchema } from '../server/pricing'
-import type { AppEnv } from '../types'
+import type { AppEnv, MrpSourceType, SourcingOrigin } from '../types'
 
 const prices = new Hono<AppEnv>()
 
@@ -44,32 +44,18 @@ prices.use('*', requireAdmin)
 interface ProductPriceRow {
   manufactured_price: number
   market_average_price: number
-  sourcing_origin: string
-  mrp_source_type: string
+  workbook_source_cost: number | null
+  workbook_mrp: number | null
+  sourcing_origin: SourcingOrigin
+  mrp_source_type: MrpSourceType
 }
 
-/**
- * The figure the workbook shipped for this SKU/field.
- *
- * D1 holds only the current value, so the baseline is captured from the FIRST
- * edit's `old_value` and carried forward on every later edit. That keeps
- * "revert to workbook" pointing at the workbook rather than at the previous
- * edit, however many times a price has been changed.
- */
-async function workbookBaseline(
-  db: D1Database,
-  productRowId: number,
-  field: PriceField,
-  currentValue: number,
-): Promise<number> {
-  const firstEdit = await db.prepare(
-    `SELECT workbook_value, old_value FROM price_edits
-      WHERE product_row_id = ?1 AND field = ?2
-      ORDER BY id ASC LIMIT 1`,
-  ).bind(productRowId, field).first<{ workbook_value: number | null; old_value: number }>()
-
-  if (!firstEdit) return currentValue
-  return firstEdit.workbook_value ?? firstEdit.old_value
+function workbookBaseline(product: ProductPriceRow, field: PriceField): number {
+  const baseline = field === 'source_cost' ? product.workbook_source_cost : product.workbook_mrp
+  if (baseline === null) {
+    throw new Error(`Missing workbook baseline for ${field}`)
+  }
+  return baseline
 }
 
 prices.patch('/', zValidator('json', editSchema, (result, c) => {
@@ -81,7 +67,8 @@ prices.patch('/', zValidator('json', editSchema, (result, c) => {
   const { productRowId, field, value } = c.req.valid('json')
 
   const product = await c.env.DB.prepare(
-    `SELECT manufactured_price, market_average_price, sourcing_origin, mrp_source_type
+    `SELECT manufactured_price, market_average_price, workbook_source_cost,
+            workbook_mrp, sourcing_origin, mrp_source_type
        FROM products WHERE row_id = ?`,
   ).bind(productRowId).first<ProductPriceRow>()
   if (!product) return c.json({ success: false, error: 'Product not found' }, 404)
@@ -95,25 +82,36 @@ prices.patch('/', zValidator('json', editSchema, (result, c) => {
     return c.json({ success: true, productRowId, field, value, changed: false })
   }
 
-  const baseline = await workbookBaseline(c.env.DB, productRowId, field, current)
+  const baseline = workbookBaseline(product, field)
   const editedAt = new Date().toISOString()
+
+  // Typing the baseline figure by hand IS a revert. Journalling it as an ordinary
+  // edit would leave the field marked EDITED forever: the marker reads the latest
+  // unreverted row, and DELETE would then short-circuit because the current value
+  // already equals its target, never appending the reverted row that clears it.
+  const restoresBaseline = value === baseline
 
   // An edited MRP is no longer the workbook benchmark, and mrp_source_type is
   // what the UI reads to say where a number came from. Source cost has no
   // equivalent provenance column.
+  let mrpSourceType = product.mrp_source_type
+  if (field === 'mrp') {
+    mrpSourceType = restoresBaseline && product.sourcing_origin === 'local' ? 'workbook' : 'manual'
+  }
+
   const statements = [
     field === 'mrp'
       ? c.env.DB.prepare(
-          `UPDATE products SET ${column} = ?1, mrp_source_type = 'manual' WHERE row_id = ?2`,
-        ).bind(value, productRowId)
+          `UPDATE products SET ${column} = ?1, mrp_source_type = ?3 WHERE row_id = ?2`,
+        ).bind(value, productRowId, mrpSourceType)
       : c.env.DB.prepare(
           `UPDATE products SET ${column} = ?1 WHERE row_id = ?2`,
         ).bind(value, productRowId),
     c.env.DB.prepare(
       `INSERT INTO price_edits
-         (product_row_id, field, old_value, new_value, workbook_value, edited_at, folded)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0)`,
-    ).bind(productRowId, field, current, value, baseline, editedAt),
+         (product_row_id, field, old_value, new_value, workbook_value, edited_at, folded, reverted)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, ?7)`,
+    ).bind(productRowId, field, current, value, baseline, editedAt, restoresBaseline ? 1 : 0),
   ]
 
   await c.env.DB.batch(statements)
@@ -124,10 +122,11 @@ prices.patch('/', zValidator('json', editSchema, (result, c) => {
     field,
     value,
     changed: true,
+    reverted: restoresBaseline,
     previousValue: current,
     workbookValue: baseline,
     editedAt,
-    mrpSourceType: field === 'mrp' ? 'manual' : product.mrp_source_type,
+    mrpSourceType,
   })
 })
 
@@ -138,39 +137,33 @@ prices.patch('/', zValidator('json', editSchema, (result, c) => {
  * stays complete and the fold script carries the restored value through the
  * rebuild rather than leaving the research file holding the edited number.
  */
-/**
- * The provenance an imported SKU's MRP should carry once a manual edit is
- * reverted.
- *
- * The row's CURRENT value is useless here — it reads 'manual', because that is
- * what the edit being undone set it to. The pre-edit provenance has to be
- * recovered the same way the pre-edit price is: from the journal. Falling back
- * to the resolution order in AGENTS.md §2 (official -> third-party avg ->
- * reference) keeps a never-edited row honest.
- */
-async function restoredImportedMrpSource(
+interface ImportedMrpResolution {
+  value: number
+  source: Exclude<MrpSourceType, 'workbook' | 'manual'>
+}
+
+/** Resolve an imported MRP exactly as scripts/seed_imported.py does. */
+async function resolveImportedMrp(
   db: D1Database,
   productRowId: number,
-  current: string,
-): Promise<string> {
-  // The predicate must match scripts/seed_imported.py exactly: a listing only
-  // counts when it is BOTH available and verified. Testing availability alone
-  // let an unverified listing resurrect a 'third_party_avg' on a row the seed
-  // had resolved to 'reference', so undo silently rewrote provenance.
-  const hasOfficial = await db.prepare(
-    `SELECT 1 FROM marketplace_listings
-      WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1 AND verified = 1`,
-  ).bind(productRowId).first()
-  if (hasOfficial) return 'official'
+  workbookFallback: number,
+): Promise<ImportedMrpResolution> {
+  const official = await db.prepare(
+    `SELECT price FROM marketplace_listings
+      WHERE row_id = ?1 AND channel_name = 'Official Store'
+        AND available = 1 AND verified = 1`,
+  ).bind(productRowId).first<{ price: number }>()
+  if (official) return { value: Number(official.price), source: 'official' }
 
-  const hasAny = await db.prepare(
-    'SELECT 1 FROM marketplace_listings WHERE row_id = ?1 AND available = 1 AND verified = 1',
-  ).bind(productRowId).first()
-  if (hasAny) return 'third_party_avg'
+  const thirdParty = await db.prepare(
+    `SELECT AVG(price) AS price FROM marketplace_listings
+      WHERE row_id = ?1 AND available = 1 AND verified = 1`,
+  ).bind(productRowId).first<{ price: number | null }>()
+  if (thirdParty?.price !== null && thirdParty?.price !== undefined) {
+    return { value: Number(thirdParty.price), source: 'third_party_avg' }
+  }
 
-  // Nothing to resolve from: keep whatever the row had unless that is the
-  // 'manual' marker we are undoing.
-  return current === 'manual' ? 'reference' : current
+  return { value: workbookFallback, source: 'reference' }
 }
 
 prices.delete('/', zValidator('query', revertSchema, (result, c) => {
@@ -182,50 +175,54 @@ prices.delete('/', zValidator('query', revertSchema, (result, c) => {
   const { productRowId, field } = c.req.valid('query')
 
   const product = await c.env.DB.prepare(
-    `SELECT manufactured_price, market_average_price, sourcing_origin, mrp_source_type
+    `SELECT manufactured_price, market_average_price, workbook_source_cost,
+            workbook_mrp, sourcing_origin, mrp_source_type
        FROM products WHERE row_id = ?`,
   ).bind(productRowId).first<ProductPriceRow>()
   if (!product) return c.json({ success: false, error: 'Product not found' }, 404)
 
   const column = PRICE_COLUMNS[field]
   const current = field === 'source_cost' ? product.manufactured_price : product.market_average_price
-  const baseline = await workbookBaseline(c.env.DB, productRowId, field, current)
+  const baseline = workbookBaseline(product, field)
 
-  if (current === baseline) {
+  let targetValue = baseline
+  let restoredMrpSource: MrpSourceType = product.mrp_source_type
+  if (field === 'mrp') {
+    if (product.sourcing_origin === 'local') {
+      restoredMrpSource = 'workbook'
+    } else {
+      const resolved = await resolveImportedMrp(c.env.DB, productRowId, baseline)
+      targetValue = resolved.value
+      restoredMrpSource = resolved.source
+    }
+  }
+
+  if (current === targetValue && (field !== 'mrp' || product.mrp_source_type === restoredMrpSource)) {
     return c.json({ success: true, productRowId, field, value: current, changed: false })
   }
 
   const editedAt = new Date().toISOString()
 
-  // A reverted local MRP is the workbook benchmark again. An imported SKU never
-  // carried 'workbook' — its MRP resolves from listings — so its provenance is
-  // re-resolved rather than read off the row, which currently says 'manual'.
-  const restoredMrpSource = field === 'mrp'
-    ? (product.sourcing_origin === 'local'
-        ? 'workbook'
-        : await restoredImportedMrpSource(c.env.DB, productRowId, product.mrp_source_type))
-    : product.mrp_source_type
-
   await c.env.DB.batch([
     field === 'mrp'
       ? c.env.DB.prepare(
           `UPDATE products SET ${column} = ?1, mrp_source_type = ?2 WHERE row_id = ?3`,
-        ).bind(baseline, restoredMrpSource, productRowId)
+        ).bind(targetValue, restoredMrpSource, productRowId)
       : c.env.DB.prepare(
           `UPDATE products SET ${column} = ?1 WHERE row_id = ?2`,
-        ).bind(baseline, productRowId),
+        ).bind(targetValue, productRowId),
     c.env.DB.prepare(
       `INSERT INTO price_edits
-         (product_row_id, field, old_value, new_value, workbook_value, edited_at, folded)
-       VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0)`,
-    ).bind(productRowId, field, current, baseline, baseline, editedAt),
+         (product_row_id, field, old_value, new_value, workbook_value, edited_at, folded, reverted)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, 0, 1)`,
+    ).bind(productRowId, field, current, targetValue, baseline, editedAt),
   ])
 
   return c.json({
     success: true,
     productRowId,
     field,
-    value: baseline,
+    value: targetValue,
     changed: true,
     previousValue: current,
     workbookValue: baseline,

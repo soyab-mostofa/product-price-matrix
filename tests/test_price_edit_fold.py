@@ -49,20 +49,23 @@ def make_replica(path: Path) -> None:
         connection.execute(
             "INSERT INTO products (row_id, product_name, brand_name, size, "
             "manufactured_price, market_average_price, canonical_name, "
-            "mrp_source_type, sourcing_origin, source_sheet, source_row) "
+            "mrp_source_type, sourcing_origin, source_sheet, source_row, "
+            "workbook_source_cost, workbook_mrp) "
             "VALUES (?, ?, 'Bio-Screen', '12gm', ?, ?, ?, 'workbook', 'local', "
-            "'Local product ', 2)",
-            (ROW_ID, NAME, WORKBOOK_COST, WORKBOOK_MRP, NAME),
+            "'Local product ', 2, ?, ?)",
+            (ROW_ID, NAME, WORKBOOK_COST, WORKBOOK_MRP, NAME, WORKBOOK_COST, WORKBOOK_MRP),
         )
         connection.execute(
             "INSERT INTO products (row_id, product_name, brand_name, size, "
             "manufactured_price, market_average_price, canonical_name, "
-            "mrp_source_type, sourcing_origin, category, source_sheet, source_row) "
+            "mrp_source_type, sourcing_origin, category, source_sheet, source_row, "
+            "workbook_source_cost, workbook_mrp) "
             "VALUES (?, ?, 'Simple', '150ml', ?, ?, ?, 'official', 'imported', "
-            "'Skincare', ?, ?)",
+            "'Skincare', ?, ?, ?, ?)",
             (
                 IMPORTED_ROW_ID, IMPORTED_NAME, IMPORTED_COST, IMPORTED_MRP,
                 IMPORTED_NAME, IMPORTED_SHEET, IMPORTED_SOURCE_ROW,
+                IMPORTED_COST, IMPORTED_MRP,
             ),
         )
         connection.commit()
@@ -77,6 +80,7 @@ def journal_edit(
     new: float,
     row_id: int = ROW_ID,
     workbook_value: float | None = None,
+    reverted: bool = False,
 ) -> None:
     connection = sqlite3.connect(path)
     try:
@@ -88,8 +92,9 @@ def journal_edit(
         )
         connection.execute(
             "INSERT INTO price_edits (product_row_id, field, old_value, "
-            "new_value, workbook_value, folded) VALUES (?, ?, ?, ?, ?, 0)",
-            (row_id, field, old, new, old if workbook_value is None else workbook_value),
+            "new_value, workbook_value, folded, reverted) VALUES (?, ?, ?, ?, ?, 0, ?)",
+            (row_id, field, old, new, old if workbook_value is None else workbook_value,
+             1 if reverted else 0),
         )
         connection.commit()
     finally:
@@ -116,23 +121,41 @@ def research_payload(cost: float, mrp: float) -> dict:
     }
 
 
-def seed_from_research(research: dict) -> str:
-    """A seed shaped like build_matrix.py's output: the UPSERT that reverts."""
+def seed_from_research(research: dict, local_edits: dict | None = None) -> str:
+    """A build seed: workbook baseline first, manual pins applied last."""
     product = research["products"][0]
     prices = product["excel_prices"]
-    return (
+    statements = (
         "DELETE FROM marketplace_listings WHERE row_id IN "
         "(SELECT row_id FROM products WHERE sourcing_origin = 'local');\n"
         "INSERT INTO products (row_id, product_name, brand_name, size, "
         "manufactured_price, market_average_price, canonical_name, "
-        "mrp_source_type, sourcing_origin, source_sheet, source_row) VALUES "
+        "mrp_source_type, sourcing_origin, source_sheet, source_row, "
+        "workbook_source_cost, workbook_mrp) VALUES "
         f"({product['row']}, '{product['product_name']}', 'Bio-Screen', '12gm', "
         f"{prices['manufactured_price']}, {prices['market_average_price']}, "
-        f"'{product['canonical_name']}', 'workbook', 'local', 'Local product ', 2) "
+        f"'{product['canonical_name']}', 'workbook', 'local', 'Local product ', 2, "
+        f"{prices['manufactured_price']}, {prices['market_average_price']}) "
         "ON CONFLICT(row_id) DO UPDATE SET "
         "manufactured_price=excluded.manufactured_price, "
-        "market_average_price=excluded.market_average_price;\n"
+        "market_average_price=excluded.market_average_price, "
+        "mrp_source_type=excluded.mrp_source_type, "
+        "workbook_source_cost=excluded.workbook_source_cost, "
+        "workbook_mrp=excluded.workbook_mrp;\n"
     )
+    for edit in (local_edits or {"edits": []})["edits"]:
+        if edit.get("source_cost") is not None:
+            statements += (
+                f"UPDATE products SET manufactured_price={float(edit['source_cost'])} "
+                "WHERE source_sheet='Local product ' AND source_row=2;\n"
+            )
+        if edit.get("mrp") is not None:
+            statements += (
+                f"UPDATE products SET market_average_price={float(edit['mrp'])}, "
+                "mrp_source_type='manual' "
+                "WHERE source_sheet='Local product ' AND source_row=2;\n"
+            )
+    return statements
 
 
 def price_in(path: Path, column: str) -> float:
@@ -154,10 +177,15 @@ class PriceEditFoldTests(unittest.TestCase):
         self.dir = Path(self.tmp.name)
         self.replica = self.dir / "replica.sqlite"
         self.research = self.dir / "research.json"
+        self.local_edits = self.dir / "local_price_edits.json"
         self.imported_edits = self.dir / "imported_price_edits.json"
         make_replica(self.replica)
         self.research.write_text(
             json.dumps(research_payload(WORKBOOK_COST, WORKBOOK_MRP), indent=2),
+            encoding="utf-8",
+        )
+        self.local_edits.write_text(
+            json.dumps({"version": 1, "edits": []}, indent=2),
             encoding="utf-8",
         )
         self.imported_edits.write_text(
@@ -171,6 +199,9 @@ class PriceEditFoldTests(unittest.TestCase):
         patched = source.replace(
             'RESEARCH = ROOT / "verified_marketplace_research.json"',
             f'RESEARCH = Path({str(self.research)!r})',
+        ).replace(
+            'LOCAL_EDITS = ROOT / "local_price_edits.json"',
+            f'LOCAL_EDITS = Path({str(self.local_edits)!r})',
         ).replace(
             'IMPORTED_EDITS = ROOT / "imported_price_edits.json"',
             f'IMPORTED_EDITS = Path({str(self.imported_edits)!r})',
@@ -212,12 +243,14 @@ class PriceEditFoldTests(unittest.TestCase):
         research = json.loads(self.research.read_text(encoding="utf-8"))
         self.assertEqual(
             research["products"][0]["excel_prices"]["manufactured_price"],
-            EDITED_COST,
-            "the fold must carry the edit into the research file",
+            WORKBOOK_COST,
+            "the fold must never rewrite the immutable workbook mirror",
         )
+        local = json.loads(self.local_edits.read_text(encoding="utf-8"))
+        self.assertEqual(local["edits"][0]["source_cost"], EDITED_COST)
 
         connection = sqlite3.connect(self.replica)
-        connection.executescript(seed_from_research(research))
+        connection.executescript(seed_from_research(research, local))
         connection.commit()
         connection.close()
 
@@ -247,20 +280,19 @@ class PriceEditFoldTests(unittest.TestCase):
         journal_edit(self.replica, "source_cost", 1300.0, 1400.0)
 
         self.run_fold()
-        research = json.loads(self.research.read_text(encoding="utf-8"))
-        self.assertEqual(
-            research["products"][0]["excel_prices"]["manufactured_price"], 1400.0
-        )
+        artifact = json.loads(self.local_edits.read_text(encoding="utf-8"))
+        self.assertEqual(artifact["edits"][0]["source_cost"], 1400.0)
 
-    def test_an_mrp_edit_updates_the_mirror_and_provenance(self):
-        """market_average_price is mirrored at the top level and drives the MRP."""
+    def test_an_mrp_edit_uses_a_separate_override_and_preserves_the_mirror(self):
         journal_edit(self.replica, "mrp", WORKBOOK_MRP, 1700.0)
         self.run_fold()
 
         product = json.loads(self.research.read_text(encoding="utf-8"))["products"][0]
-        self.assertEqual(product["excel_prices"]["market_average_price"], 1700.0)
-        self.assertEqual(product["market_average_price"], 1700.0)
-        self.assertEqual(product["mrp_source_type"], "manual")
+        self.assertEqual(product["excel_prices"]["market_average_price"], WORKBOOK_MRP)
+        self.assertEqual(product["market_average_price"], WORKBOOK_MRP)
+        self.assertEqual(product["mrp_source_type"], "workbook")
+        edit = json.loads(self.local_edits.read_text(encoding="utf-8"))["edits"][0]
+        self.assertEqual(edit["mrp"], 1700.0)
 
     def test_imported_edits_fold_into_the_stable_workbook_key(self):
         """Imported row_ids can move; sheet + Excel row is the durable identity."""
@@ -310,6 +342,7 @@ class PriceEditFoldTests(unittest.TestCase):
         journal_edit(
             self.replica, "mrp", 800.0, IMPORTED_MRP,
             row_id=IMPORTED_ROW_ID, workbook_value=IMPORTED_MRP,
+            reverted=True,
         )
         self.assertEqual(self.run_fold().returncode, 0)
         artifact = json.loads(self.imported_edits.read_text(encoding="utf-8"))
@@ -318,20 +351,23 @@ class PriceEditFoldTests(unittest.TestCase):
             "revert must remove the manual pin, not pin the baseline as 'manual'",
         )
 
-    def test_local_mrp_revert_restores_workbook_provenance(self):
+    def test_local_mrp_revert_removes_the_override_without_touching_the_mirror(self):
         journal_edit(self.replica, "mrp", WORKBOOK_MRP, 1700.0)
         self.assertEqual(self.run_fold().returncode, 0)
-        first = json.loads(self.research.read_text(encoding="utf-8"))["products"][0]
-        self.assertEqual(first["mrp_source_type"], "manual")
+        first = json.loads(self.local_edits.read_text(encoding="utf-8"))["edits"][0]
+        self.assertEqual(first["mrp"], 1700.0)
 
         journal_edit(
             self.replica, "mrp", 1700.0, WORKBOOK_MRP,
-            workbook_value=WORKBOOK_MRP,
+            workbook_value=WORKBOOK_MRP, reverted=True,
         )
         self.assertEqual(self.run_fold().returncode, 0)
-        reverted = json.loads(self.research.read_text(encoding="utf-8"))["products"][0]
-        self.assertEqual(reverted["market_average_price"], WORKBOOK_MRP)
-        self.assertEqual(reverted["mrp_source_type"], "workbook")
+        self.assertEqual(
+            json.loads(self.local_edits.read_text(encoding="utf-8"))["edits"], []
+        )
+        product = json.loads(self.research.read_text(encoding="utf-8"))["products"][0]
+        self.assertEqual(product["market_average_price"], WORKBOOK_MRP)
+        self.assertEqual(product["mrp_source_type"], "workbook")
 
     def test_seed_imported_applies_manual_values_after_its_recompute(self):
         """Full imported contract: edit -> fold -> workbook seed -> edit survives."""

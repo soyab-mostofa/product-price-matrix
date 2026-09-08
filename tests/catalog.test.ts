@@ -165,8 +165,8 @@ describe('fetchCatalog against real SQLite', () => {
     // the undo of the source cost
     await db.prepare(
       `INSERT INTO price_edits
-         (product_row_id, field, old_value, new_value, workbook_value, edited_at)
-       VALUES (2, 'source_cost', 1300.0, 1237.5, 1237.5, '2026-09-07T12:00:00.000Z')`,
+         (product_row_id, field, old_value, new_value, workbook_value, edited_at, reverted)
+       VALUES (2, 'source_cost', 1300.0, 1237.5, 1237.5, '2026-09-07T12:00:00.000Z', 1)`,
     ).run()
 
     const sku = (await fetchCatalog(db, 'local')).products.find((p) => p.row === 2)

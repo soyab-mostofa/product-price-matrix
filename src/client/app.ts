@@ -1,5 +1,5 @@
 import type { CatalogPayload, PricingOverride, PricingParams, Product, StoredPricingOverride } from '../types'
-import { ICON_CHIP_DOWN, ICON_CHIP_UP, ICON_EXTERNAL, ICON_UNDO, ICON_UNVERIFIED } from './icons'
+import { ICON_ARROW_RIGHT, ICON_CHIP_DOWN, ICON_CHIP_UP, ICON_EXTERNAL, ICON_UNDO, ICON_UNVERIFIED } from './icons'
 import {
   calculateMarketDiscount,
   calculateMarkup,
@@ -219,8 +219,10 @@ function updateAdminUI() {
     adminLoginBtn.textContent = isAdminAuthenticated ? 'Log out' : 'Admin Login'
   }
   if (openEngineBtn) openEngineBtn.hidden = false
-  const xlsxButton = document.getElementById('downloadXlsx') as HTMLButtonElement | null
-  if (xlsxButton) xlsxButton.hidden = !isAdminAuthenticated
+  for (const id of ['downloadLocalXlsx', 'downloadImportedXlsx']) {
+    const xlsxButton = document.getElementById(id) as HTMLButtonElement | null
+    if (xlsxButton) xlsxButton.hidden = !isAdminAuthenticated
+  }
 
   const readOnly = !isAdminAuthenticated
   const notice = authConfigured
@@ -297,6 +299,16 @@ function mrpProvenance(p: Product): { label: string; tooltip: string; className:
     return {
       label: 'Workbook MRP',
       tooltip: `Workbook MRP: ${money.format(mktAvg)} — the agreed retail benchmark this SKU was sourced against. Channel prices on the right are live listings and may sit above or below it.`,
+      className: 'num-price mrp-ref',
+    }
+  }
+  if (p.mrp_source_type === 'manual') {
+    const explicit = p.sourcing_origin === 'local'
+      ? 'Manual MRP override — the workbook benchmark remains the stored baseline and can be restored with Undo.'
+      : 'Manual MRP override — Undo resumes official / verified-market resolution.'
+    return {
+      label: 'Manual MRP',
+      tooltip: `Manual MRP: ${money.format(mktAvg)}. ${explicit}`,
       className: 'num-price mrp-ref',
     }
   }
@@ -449,25 +461,21 @@ function render() {
     // An admin can retype either price straight in the sheet. Read-only
     // visitors get the same markup minus the affordance, so nothing shifts.
     const editable = isAdminAuthenticated
-    const costEditedAt = p.source_cost_edited_at
-    const mrpEditedAt = p.mrp_edited_at
+    const costEditedAt = editable ? p.source_cost_edited_at : null
+    const mrpEditedAt = editable ? p.mrp_edited_at : null
 
     const editAttrs = (field: 'source_cost' | 'mrp', value: number) => editable
       ? ` class="cell-editable" tabindex="0" role="button" data-edit-field="${field}"`
         + ` data-edit-value="${value}" title="Click to edit — currently ${esc(money.format(value))}"`
       : ''
 
-    // The Edited marker doubles as the undo control: for an admin it is a
-    // button that restores the workbook figure, so reverting does not require
-    // knowing the original number. For a visitor it stays a plain marker.
+    // The Edited marker doubles as the admin's undo control: it restores the
+    // baseline figure, so reverting does not require knowing the original number.
     const editedMarker = (field: 'source_cost' | 'mrp', editedAt: string | null) => {
       if (!editedAt) return ''
       const when = new Date(editedAt).toLocaleDateString()
       const label = field === 'source_cost' ? 'Source Cost' : 'MRP'
-      if (!editable) {
-        return `<span class="price-edit-tag" title="${esc(`${label} edited by an admin on ${when} — the workbook figure is no longer what is shown.`)}">Edited</span>`
-      }
-      const title = `${label} edited on ${when}. Click to undo and restore the workbook figure.`
+      const title = `${label} edited on ${when}. Click to undo and restore the baseline figure.`
       return `<button type="button" class="price-edit-tag is-undoable" data-undo-field="${field}"`
         + ` title="${esc(title)}" aria-label="${esc(title)}">`
         + `<span class="tag-word">Edited</span>`
@@ -1575,7 +1583,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       note.innerHTML = Math.abs(next - startDiscount) < 0.05
         ? `trade discount ${esc(startDiscount.toFixed(1))}%`
-        : `trade discount ${esc(startDiscount.toFixed(1))}% <span class="shift">&rarr; ${esc(next.toFixed(1))}%</span>`
+        : `trade discount ${esc(startDiscount.toFixed(1))}% <span class="shift">${ICON_ARROW_RIGHT}<span>${esc(next.toFixed(1))}%</span></span>`
     }
     paintNote()
 
@@ -1754,40 +1762,42 @@ document.addEventListener('DOMContentLoaded', () => {
     beginEdit(target)
   })
 
-  // Admin Excel export — fetched rather than linked because requireAdmin needs
-  // the same-origin admin header. The worker returns one workbook with the
-  // complete Local and Imported books, regardless of which route is open.
-  document.getElementById('downloadXlsx')?.addEventListener('click', async (event) => {
-    const button = event.currentTarget as HTMLButtonElement
-    if (!isAdminAuthenticated || button.disabled) return
-    const originalTitle = button.title
-    button.disabled = true
-    button.title = 'Preparing Excel workbook…'
-    try {
-      const response = await fetch('/api/export.xlsx', {
-        headers: { 'X-Price-Matrix-Admin': '1' },
-      })
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({})) as { error?: string }
-        throw new Error(data.error ?? `Export failed (${response.status})`)
+  // Admin Excel export — two separate workbooks, one per sourcing book. Fetched
+  // rather than linked because requireAdmin needs the same-origin admin header.
+  document.querySelectorAll<HTMLButtonElement>('[data-export-origin]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      if (!isAdminAuthenticated || button.disabled) return
+      const origin = button.dataset.exportOrigin
+      if (origin !== 'local' && origin !== 'imported') return
+      const originalTitle = button.title
+      button.disabled = true
+      button.title = `Preparing ${origin} Excel workbook…`
+      try {
+        const response = await fetch(`/api/export.xlsx?origin=${origin}`, {
+          headers: { 'X-Price-Matrix-Admin': '1' },
+        })
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({})) as { error?: string }
+          throw new Error(data.error ?? `Export failed (${response.status})`)
+        }
+        const blob = await response.blob()
+        const disposition = response.headers.get('Content-Disposition') ?? ''
+        const filename = disposition.match(/filename="([^"]+)"/)?.[1]
+          ?? `product-price-matrix-${origin}-${new Date().toISOString().slice(0, 10)}.xlsx`
+        const url = URL.createObjectURL(blob)
+        const anchor = document.createElement('a')
+        anchor.href = url
+        anchor.download = filename
+        anchor.click()
+        URL.revokeObjectURL(url)
+      } catch (error) {
+        button.title = error instanceof Error ? error.message : 'Excel export failed'
+        window.setTimeout(() => { button.title = originalTitle }, 4000)
+      } finally {
+        button.disabled = false
+        if (button.title.startsWith('Preparing ')) button.title = originalTitle
       }
-      const blob = await response.blob()
-      const disposition = response.headers.get('Content-Disposition') ?? ''
-      const filename = disposition.match(/filename="([^"]+)"/)?.[1]
-        ?? `product-price-matrix-${new Date().toISOString().slice(0, 10)}.xlsx`
-      const url = URL.createObjectURL(blob)
-      const anchor = document.createElement('a')
-      anchor.href = url
-      anchor.download = filename
-      anchor.click()
-      URL.revokeObjectURL(url)
-    } catch (error) {
-      button.title = error instanceof Error ? error.message : 'Excel export failed'
-      window.setTimeout(() => { button.title = originalTitle }, 4000)
-    } finally {
-      button.disabled = false
-      if (button.title === 'Preparing Excel workbook…') button.title = originalTitle
-    }
+    })
   })
 
   // Export JSON

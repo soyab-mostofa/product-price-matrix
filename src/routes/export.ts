@@ -17,10 +17,9 @@ const exportWorkbook = new Hono<AppEnv>()
 exportWorkbook.use('*', requireAdmin)
 
 interface BaselineRow {
-  product_row_id: number
-  field: 'source_cost' | 'mrp'
-  workbook_value: number | null
-  old_value: number
+  row_id: number
+  workbook_source_cost: number | null
+  workbook_mrp: number | null
 }
 
 const text = (value: XlsxCell['value']): XlsxCell => ({ value, style: 'text' })
@@ -29,44 +28,39 @@ const money = (value: number | null | undefined): XlsxCell => ({ value, style: '
 const percent = (value: number | null | undefined): XlsxCell => ({ value, style: 'percent' })
 const integer = (value: number | null | undefined): XlsxCell => ({ value, style: 'integer' })
 
-const BASE_HEADERS = [
-  'Row ID', 'Excel Row', 'Excel Sheet', 'Product', 'Brand', 'Size', 'Category',
-  'Source Cost', 'MRP', 'MRP Source',
-  'Implied Discount %', 'MRP Markup %',
-  'Selling Price', 'Target Markup %', 'Above Market?',
-  'Source Cost Edited?', 'Source Cost Edited At',
-  'MRP Edited?', 'MRP Edited At', 'Workbook Source Cost', 'Workbook MRP',
-  'Source Sheet', 'Source Row',
-  'Packaging', 'Transport', 'Delivery', 'CAC Type', 'CAC',
-  'Target Margin %', 'Discount Type', 'Discount', 'Tuned?',
+const BASE_COLUMNS = [
+  ['Excel Row', 11], ['Excel Sheet', 24], ['Row ID', 9],
+  ['Product', 46], ['Brand', 22], ['Size', 14], ['Category', 18],
+  ['Source Cost', 16], ['MRP', 16], ['MRP Source', 16],
+  ['Implied Discount %', 18], ['MRP Markup %', 16],
+  ['Selling Price', 17], ['Target Markup %', 18], ['Above Market?', 15],
+  ['Source Cost Edited?', 20], ['Source Cost Edited At', 23],
+  ['MRP Edited?', 14], ['MRP Edited At', 23],
+  ['Workbook Source Cost', 22], ['Workbook MRP', 18],
+  ['Source Sheet', 24], ['Source Row', 12],
+  ['Packaging', 14], ['Transport', 14], ['Delivery', 14],
+  ['CAC Type', 22], ['CAC', 14], ['Target Margin %', 18],
+  ['Discount Type', 17], ['Discount', 14], ['Tuned?', 11],
 ] as const
 
-/** First-ever baseline per (SKU, field), which remains the workbook figure. */
+const BASE_HEADERS = BASE_COLUMNS.map(([label]) => label)
+
+/** Immutable workbook baselines stored beside the current static prices. */
 async function workbookBaselines(db: D1Database): Promise<Map<string, number>> {
   const result = await db.prepare(
-    `SELECT edit.product_row_id, edit.field, edit.workbook_value, edit.old_value
-       FROM price_edits edit
-      WHERE edit.id = (
-        SELECT MIN(first_edit.id) FROM price_edits first_edit
-         WHERE first_edit.product_row_id = edit.product_row_id
-           AND first_edit.field = edit.field
-      )`,
+    `SELECT row_id, workbook_source_cost, workbook_mrp FROM products`,
   ).all<BaselineRow>()
 
-  return new Map(
-    (result.results ?? []).map((row) => [
-      `${row.product_row_id}:${row.field}`,
-      Number(row.workbook_value ?? row.old_value),
-    ]),
-  )
-}
-
-function channelOrder(local: string[], imported: string[]): string[] {
-  const ordered: string[] = []
-  for (const channel of [...local, ...imported]) {
-    if (!ordered.includes(channel)) ordered.push(channel)
+  const baselines = new Map<string, number>()
+  for (const row of result.results ?? []) {
+    if (row.workbook_source_cost !== null) {
+      baselines.set(`${row.row_id}:source_cost`, Number(row.workbook_source_cost))
+    }
+    if (row.workbook_mrp !== null) {
+      baselines.set(`${row.row_id}:mrp`, Number(row.workbook_mrp))
+    }
   }
-  return ordered
+  return baselines
 }
 
 function ratio(numerator: number, denominator: number): number | null {
@@ -91,11 +85,11 @@ function rowFor(
   const workbookMrp = baselines.get(`${product.row}:mrp`) ?? mrp
 
   const cells: XlsxCell[] = [
-    integer(product.row),
-    // The workbook coordinate, kept beside the row id so the sheet reads the
-    // same way the dashboard's leftmost column does.
+    // The workbook coordinate leads every row, matching the dashboard's pinned
+    // leftmost column, so a figure here can be typed into Excel's Name Box.
     integer(product.source_row),
     text(product.source_sheet),
+    integer(product.row),
     text(product.product_name),
     text(product.brand_name),
     text(product.size),
@@ -154,26 +148,25 @@ function sheetFor(
     freezeHeader: true,
     autoFilter: true,
     widths: [
-      9, 46, 22, 14, 18,
-      16, 16, 16, 18, 16,
-      17, 18, 15, 11, 23, 20, 18,
-      24, 12, 14, 14, 14, 22, 14, 18, 17, 14, 11,
+      ...BASE_COLUMNS.map(([, width]) => width),
       ...channels.map(() => 17),
     ],
   }
 }
 
 exportWorkbook.get('/', async (c) => {
-  const [local, imported, pricing, baselines] = await Promise.all([
-    fetchCatalog(c.env.DB, 'local'),
-    fetchCatalog(c.env.DB, 'imported'),
+  const requested = c.req.query('origin')
+  if (requested !== 'local' && requested !== 'imported') {
+    return c.json({ success: false, error: "origin must be 'local' or 'imported'" }, 400)
+  }
+  const origin: SourcingOrigin = requested
+  const [catalog, pricing, baselines] = await Promise.all([
+    fetchCatalog(c.env.DB, origin),
     readPricingState(c.env.DB),
     workbookBaselines(c.env.DB),
   ])
-  const channels = channelOrder(local.source_columns, imported.source_columns)
   const bytes = buildXlsx([
-    sheetFor('local', local.products, channels, baselines, pricing),
-    sheetFor('imported', imported.products, channels, baselines, pricing),
+    sheetFor(origin, catalog.products, catalog.source_columns, baselines, pricing),
   ])
 
   const date = new Date().toISOString().slice(0, 10)
@@ -183,7 +176,7 @@ exportWorkbook.get('/', async (c) => {
   new Uint8Array(body).set(bytes)
   return c.body(body, 200, {
     'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    'Content-Disposition': `attachment; filename="product-price-matrix-${date}.xlsx"`,
+    'Content-Disposition': `attachment; filename="product-price-matrix-${origin}-${date}.xlsx"`,
     'Cache-Control': 'private, no-store',
   })
 })

@@ -82,10 +82,11 @@ def seed(path: Path) -> dict[str, int]:
                 connection.execute(
                     "UPDATE products SET brand_name = ?, size = ?, manufactured_price = ?, "
                     "market_average_price = ?, canonical_name = ?, mrp_source_type = ?, category = ?, "
-                    "source_sheet = ?, source_row = ? "
+                    "source_sheet = ?, source_row = ?, workbook_source_cost = ?, workbook_mrp = ? "
                     "WHERE row_id = ?",
                     (brand, sku.size, sku.source_cost, benchmark, sku.product_name,
-                     mrp_source, sku.category, sku.source_sheet, sku.source_row, row_id),
+                     mrp_source, sku.category, sku.source_sheet, sku.source_row,
+                     sku.source_cost, benchmark, row_id),
                 )
             else:
                 row_id = next_id
@@ -93,11 +94,12 @@ def seed(path: Path) -> dict[str, int]:
                 connection.execute(
                     "INSERT INTO products (row_id, product_name, brand_name, size, "
                     "manufactured_price, market_average_price, canonical_name, "
-                    "mrp_source_type, sourcing_origin, category, source_sheet, source_row) "
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'imported', ?, ?, ?)",
+                    "mrp_source_type, sourcing_origin, category, source_sheet, source_row, "
+                    "workbook_source_cost, workbook_mrp) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'imported', ?, ?, ?, ?, ?)",
                     (row_id, sku.product_name, brand, sku.size, sku.source_cost,
                      benchmark, sku.product_name, mrp_source, sku.category,
-                     sku.source_sheet, sku.source_row),
+                     sku.source_sheet, sku.source_row, sku.source_cost, benchmark),
                 )
                 products += 1
             written += 1
@@ -123,8 +125,8 @@ def seed(path: Path) -> dict[str, int]:
                        WHERE row_id = products.row_id AND channel_name = 'Official Store' AND available = 1 AND verified = 1),
                      (SELECT AVG(price) FROM marketplace_listings
                        WHERE row_id = products.row_id AND available = 1 AND verified = 1),
-                     products.market_average_price,
-                     products.manufactured_price
+                     products.workbook_mrp,
+                     products.workbook_source_cost
                    ),
                    mrp_source_type = CASE
                      WHEN EXISTS (SELECT 1 FROM marketplace_listings

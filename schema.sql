@@ -44,7 +44,11 @@ CREATE TABLE IF NOT EXISTS products (
   -- provenance, not a constraint. Declared last to match migration 0007,
   -- which appends them with ALTER TABLE ADD COLUMN.
   source_sheet TEXT,
-  source_row INTEGER CHECK (source_row IS NULL OR source_row > 1)
+  source_row INTEGER CHECK (source_row IS NULL OR source_row > 1),
+  -- Immutable workbook-derived baselines. The two historical price columns
+  -- above are the CURRENT static values and may carry an admin override.
+  workbook_source_cost REAL CHECK (workbook_source_cost IS NULL OR workbook_source_cost >= 0),
+  workbook_mrp REAL CHECK (workbook_mrp IS NULL OR workbook_mrp >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS marketplace_listings (
@@ -112,10 +116,10 @@ CREATE TABLE IF NOT EXISTS admin_login_attempts (
 );
 
 -- Append-only audit log of admin edits to Source Cost / MRP. Deliberately NOT
--- part of the read path: fetchCatalog reads the static prices straight off
--- `products`. This table exists so an edit survives the rebuild (see
--- scripts/fold_price_edits_into_research.py) and so a revert can reach the
--- workbook figure rather than the previous edit. See migrations/0009.
+-- part of the read path: fetchCatalog reads the current static prices straight
+-- off `products`. The immutable workbook baselines live beside them. This table
+-- exists so an edit survives a rebuild through the separate local/imported
+-- override artifacts and so every change/revert remains auditable.
 CREATE TABLE IF NOT EXISTS price_edits (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   product_row_id INTEGER NOT NULL,
@@ -125,7 +129,8 @@ CREATE TABLE IF NOT EXISTS price_edits (
   workbook_value REAL CHECK (workbook_value IS NULL OR workbook_value >= 0),
   edited_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   folded INTEGER NOT NULL DEFAULT 0 CHECK (folded IN (0, 1)),
-  CHECK (new_value != old_value),
+  reverted INTEGER NOT NULL DEFAULT 0 CHECK (reverted IN (0, 1)),
+  CHECK (new_value != old_value OR reverted = 1),
   FOREIGN KEY (product_row_id) REFERENCES products(row_id) ON DELETE CASCADE
 );
 

@@ -854,7 +854,7 @@ tbody tr:hover .cell-editable,
 }
 .cell-editable:focus-visible {
   outline: 2px solid var(--assay-700);
-  outline-offset: 2px;
+  outline-offset: 1px;
 }
 
 .price-edit-input {
@@ -906,7 +906,7 @@ button.price-edit-tag {
   font-family: inherit;
   line-height: 1.45;
   cursor: pointer;
-  transition: background 90ms linear, border-color 90ms linear, color 90ms linear;
+  transition: background 120ms linear, border-color 120ms linear, color 120ms linear;
 }
 button.price-edit-tag > * {
   grid-area: 1 / 1;
@@ -959,7 +959,14 @@ button.price-edit-tag.is-error {
   text-align: right;
   white-space: nowrap;
 }
-.implied-discount-note .shift { color: var(--tune-700); font-weight: 600; }
+.implied-discount-note .shift {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--tune-700);
+  font-weight: 600;
+}
+.implied-discount-note .shift svg { width: 12px; height: 8px; }
 
 /* ── Replicate measurement cells (channels) ────────────────────────────── */
 .source-data-cell {

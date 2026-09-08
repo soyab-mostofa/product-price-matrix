@@ -23,14 +23,14 @@ function sqliteD1(): D1Database & { raw: Database } {
     INSERT INTO products
       (row_id, product_name, brand_name, size, manufactured_price,
        market_average_price, canonical_name, mrp_source_type, sourcing_origin,
-       category, source_sheet, source_row)
+       category, source_sheet, source_row, workbook_source_cost, workbook_mrp)
     VALUES
       (2, 'Bio-Screen Powder Sunblock SPF 50+', 'Bio-Screen', '12gm',
-       1300, 1650, 'Bio-Screen Powder Sunblock SPF 50+', 'workbook', 'local',
-       NULL, 'Local product ', 2),
+       1300, 1650, 'Bio-Screen Powder Sunblock SPF 50+', 'manual', 'local',
+       NULL, 'Local product ', 2, 1237.5, 1650),
       (500, 'Simple Face Wash Refreshing Gel 150ml (uk)', 'Simple', '150ml',
        425, 749, 'Simple Face Wash Refreshing Gel 150ml (uk)', 'official', 'imported',
-       'Skincare', 'imported Skincare', 2);
+       'Skincare', 'imported Skincare', 2, 425, 749);
 
     INSERT INTO marketplace_listings
       (row_id, channel_name, price, url, matched_title, seller, confidence, available, verified)
@@ -120,8 +120,11 @@ for name in wb.sheetnames:
       'mrp_edited': ws.cell(row, headers['MRP Edited?']).value,
       'source_sheet': ws.cell(row, headers['Source Sheet']).value,
       'source_row': ws.cell(row, headers['Source Row']).value,
-      'official': ws.cell(row, headers['Official Store']).value,
-      'shajgoj': ws.cell(row, headers['Shajgoj']).value,
+      'official': ws.cell(row, headers['Official Store']).value if 'Official Store' in headers else None,
+      'shajgoj': ws.cell(row, headers['Shajgoj']).value if 'Shajgoj' in headers else None,
+      'first_header': ws.cell(1, 1).value,
+      'second_header': ws.cell(1, 2).value,
+      'excel_row_first_cell': ws.cell(row, 1).value,
       'frozen': ws.freeze_panes,
     }
 print(json.dumps(out))
@@ -136,7 +139,7 @@ print(json.dumps(out))
 describe('GET /api/export.xlsx', () => {
   test('is admin-only', async () => {
     const env = envWith(sqliteD1())
-    const response = await app.request('https://matrix.example/api/export.xlsx', {
+    const response = await app.request('https://matrix.example/api/export.xlsx?origin=local', {
       headers: { Origin: 'https://matrix.example', 'X-Price-Matrix-Admin': '1' },
     }, env)
     expect(response.status).toBe(401)
@@ -145,41 +148,50 @@ describe('GET /api/export.xlsx', () => {
   test('requires the same-origin admin header even with a valid session', async () => {
     const env = envWith(sqliteD1())
     const cookie = await loginCookie(env)
-    const response = await app.request('https://matrix.example/api/export.xlsx', {
+    const response = await app.request('https://matrix.example/api/export.xlsx?origin=local', {
       headers: { Origin: 'https://matrix.example', Cookie: cookie },
     }, env)
     expect(response.status).toBe(403)
   })
 
-  test('downloads one valid workbook with Local and Imported sheets', async () => {
+  test('downloads separate valid Local and Imported workbooks', async () => {
     const env = envWith(sqliteD1())
     const cookie = await loginCookie(env)
-    const response = await app.request('https://matrix.example/api/export.xlsx', {
-      headers: {
-        Origin: 'https://matrix.example',
-        'X-Price-Matrix-Admin': '1',
-        Cookie: cookie,
-      },
-    }, env)
 
-    expect(response.status).toBe(200)
-    expect(response.headers.get('Content-Type')).toContain('spreadsheetml.sheet')
-    expect(response.headers.get('Content-Disposition')).toMatch(/product-price-matrix-\d{4}-\d{2}-\d{2}\.xlsx/)
-    expect(response.headers.get('Cache-Control')).toBe('private, no-store')
+    for (const origin of ['local', 'imported'] as const) {
+      const response = await app.request(`https://matrix.example/api/export.xlsx?origin=${origin}`, {
+        headers: {
+          Origin: 'https://matrix.example',
+          'X-Price-Matrix-Admin': '1',
+          Cookie: cookie,
+        },
+      }, env)
 
-    await Bun.write(OUTPUT, await response.arrayBuffer())
-    const probe = openpyxlProbe(OUTPUT) as any
+      expect(response.status).toBe(200)
+      expect(response.headers.get('Content-Type')).toContain('spreadsheetml.sheet')
+      expect(response.headers.get('Content-Disposition'))
+        .toMatch(new RegExp(`product-price-matrix-${origin}-\\d{4}-\\d{2}-\\d{2}\\.xlsx`))
+      expect(response.headers.get('Cache-Control')).toBe('private, no-store')
 
-    expect(probe.sheets).toEqual(['Local', 'Imported'])
-    expect(probe.Local.rows).toBe(2)
-    expect(probe.Imported.rows).toBe(2)
-    expect(probe.Local.frozen).toBe('A2')
+      await Bun.write(OUTPUT, await response.arrayBuffer())
+      const probe = openpyxlProbe(OUTPUT) as any
+      const sheet = origin === 'local' ? 'Local' : 'Imported'
+      expect(probe.sheets).toEqual([sheet])
+
+      // Traceability: the workbook coordinate leads every row, matching the
+      // dashboard's pinned leftmost column.
+      expect(probe[sheet].first_header).toBe('Excel Row')
+      expect(probe[sheet].second_header).toBe('Excel Sheet')
+      expect(probe[sheet].excel_row_first_cell).toBe(probe[sheet].source_row)
+      expect(probe[sheet].rows).toBe(2)
+      expect(probe[sheet].frozen).toBe('A2')
+    }
   })
 
   test('exports current static prices, workbook baselines, provenance and channels', async () => {
     const env = envWith(sqliteD1())
     const cookie = await loginCookie(env)
-    const response = await app.request('https://matrix.example/api/export.xlsx', {
+    const response = await app.request('https://matrix.example/api/export.xlsx?origin=local', {
       headers: {
         Origin: 'https://matrix.example',
         'X-Price-Matrix-Admin': '1',
@@ -198,18 +210,12 @@ describe('GET /api/export.xlsx', () => {
     expect(probe.Local.source_row).toBe(2)
     expect(probe.Local.official).toBe(1402)
     expect(probe.Local.shajgoj).toBeNull()
-
-    expect(probe.Imported.source_cost).toBe(425)
-    expect(probe.Imported.mrp).toBe(749)
-    expect(probe.Imported.official).toBeNull()
-    expect(probe.Imported.shajgoj).toBe(749)
-    expect(probe.Imported.source_sheet).toBe('imported Skincare')
   })
 
   test('selling price matches the shipped pricing engine', async () => {
     const env = envWith(sqliteD1())
     const cookie = await loginCookie(env)
-    const response = await app.request('https://matrix.example/api/export.xlsx', {
+    const response = await app.request('https://matrix.example/api/export.xlsx?origin=local', {
       headers: {
         Origin: 'https://matrix.example',
         'X-Price-Matrix-Admin': '1',

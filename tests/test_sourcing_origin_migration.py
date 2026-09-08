@@ -16,6 +16,8 @@ PRODUCT_SHAPE_MIGRATIONS = (
     MIGRATION,
     ROOT / "migrations/0006_workbook_mrp_for_local.sql",
     ROOT / "migrations/0007_workbook_provenance.sql",
+    ROOT / "migrations/0009_price_edits.sql",
+    ROOT / "migrations/0010_workbook_baselines.sql",
 )
 
 # The catalog as it stood before sourcing origin existed: every product was a

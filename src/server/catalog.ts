@@ -69,7 +69,7 @@ export async function fetchCatalog(db: D1Database, origin: SourcingOrigin = 'loc
                            AND edit.id = (SELECT MAX(latest.id) FROM price_edits latest
                                            WHERE latest.product_row_id = product.row_id
                                              AND latest.field = 'source_cost')
-                           AND (edit.workbook_value IS NULL OR edit.new_value != edit.workbook_value)
+                           AND edit.reverted = 0
                        ) AS source_cost_edited_at,
                        (SELECT edit.edited_at FROM price_edits edit
                          WHERE edit.product_row_id = product.row_id
@@ -77,7 +77,7 @@ export async function fetchCatalog(db: D1Database, origin: SourcingOrigin = 'loc
                            AND edit.id = (SELECT MAX(latest.id) FROM price_edits latest
                                            WHERE latest.product_row_id = product.row_id
                                              AND latest.field = 'mrp')
-                           AND (edit.workbook_value IS NULL OR edit.new_value != edit.workbook_value)
+                           AND edit.reverted = 0
                        ) AS mrp_edited_at
                   FROM products product WHERE product.sourcing_origin = ?
                  ORDER BY product.row_id ASC`).bind(origin),

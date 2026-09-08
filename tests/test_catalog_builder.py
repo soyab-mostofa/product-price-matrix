@@ -6,6 +6,7 @@ import sqlite3
 import tempfile
 import unittest
 
+import catalog_builder
 from catalog_builder import (
     DEFAULT_GLOBAL_PARAMS,
     CatalogValidationError,
@@ -228,6 +229,45 @@ class CatalogBuilderTests(unittest.TestCase):
         self.assertEqual((45.0, 0.0, 0.0, 40.0, 0.0, "pct", 0.0), saved)
         self.assertEqual(1, products)
         self.assertEqual(1, listings)
+
+    def test_real_seed_applies_local_pins_without_mutating_workbook_baselines(self) -> None:
+        research = self.make_research([
+            self.product(sources={"Official Store": self.listing(250)})
+        ])
+        output, _ = build_public_data(research, strict=True)
+        product = output["products"][0]
+        product["row"] = 2
+        product["source_sheet"] = "Local product "
+        product["source_row"] = 2
+
+        with tempfile.TemporaryDirectory() as tmp:
+            artifact = Path(tmp) / "local_price_edits.json"
+            artifact.write_text(json.dumps({
+                "version": 1,
+                "edits": [{
+                    "source_sheet": "Local product ", "source_row": 2,
+                    "product_name": product["product_name"],
+                    "source_cost": 130, "mrp": 1100,
+                }],
+            }), encoding="utf-8")
+            original = catalog_builder.LOCAL_PRICE_EDITS_PATH
+            catalog_builder.LOCAL_PRICE_EDITS_PATH = artifact
+            try:
+                sql = generate_seed_sql(output)
+            finally:
+                catalog_builder.LOCAL_PRICE_EDITS_PATH = original
+
+        connection = sqlite3.connect(":memory:")
+        self.addCleanup(connection.close)
+        connection.executescript(
+            (Path(__file__).resolve().parents[1] / "schema.sql").read_text(encoding="utf-8")
+        )
+        connection.executescript(sql)
+        row = connection.execute(
+            "SELECT manufactured_price, market_average_price, mrp_source_type, "
+            "workbook_source_cost, workbook_mrp FROM products WHERE row_id = 2"
+        ).fetchone()
+        self.assertEqual(row, (130.0, 1100.0, "manual", 100.0, 999.0))
 
     def test_repo_build_outputs_are_reproducible(self) -> None:
         root = Path(__file__).resolve().parents[1]

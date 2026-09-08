@@ -16,6 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MIGRATION = ROOT / "migrations/0009_price_edits.sql"
+BASELINE_MIGRATION = ROOT / "migrations/0010_workbook_baselines.sql"
 SCHEMA_PATH = ROOT / "schema.sql"
 SEED_PATH = ROOT / "seed.sql"
 
@@ -86,6 +87,12 @@ def _migrated() -> sqlite3.Connection:
     return connection
 
 
+def _fully_migrated() -> sqlite3.Connection:
+    connection = _migrated()
+    connection.executescript(BASELINE_MIGRATION.read_text(encoding="utf-8"))
+    return connection
+
+
 def columns(connection: sqlite3.Connection, table: str) -> set[str]:
     return {str(row[1]) for row in connection.execute(f"PRAGMA table_info({table})")}
 
@@ -116,7 +123,7 @@ class PriceEditsMigrationTests(unittest.TestCase):
         self.addCleanup(fresh.close)
         fresh.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
 
-        migrated = _migrated()
+        migrated = _fully_migrated()
         self.addCleanup(migrated.close)
 
         self.assertEqual(columns(fresh, "price_edits"), columns(migrated, "price_edits"))
@@ -281,7 +288,7 @@ class ManualMrpProvenanceTests(unittest.TestCase):
         self.addCleanup(fresh.close)
         fresh.executescript(SCHEMA_PATH.read_text(encoding="utf-8"))
 
-        migrated = _migrated()
+        migrated = _fully_migrated()
         self.addCleanup(migrated.close)
 
         self.assertEqual(columns(fresh, "products"), columns(migrated, "products"))

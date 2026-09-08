@@ -58,11 +58,12 @@ def unfolded_price_edits(path: Path) -> list[tuple[str, str, float]]:
 
     seed.sql re-inserts every local product with
     `ON CONFLICT(row_id) DO UPDATE SET manufactured_price=excluded...`, so an
-    edit that has not been folded into the research file is reverted by the
-    next sync — the same silent-revert shape as the 80-listing loss above.
+    edit that has not been folded into the separate local/imported override
+    artifact is reverted by the next sync — the same silent-revert shape as the
+    80-listing loss above.
 
     Returns (product_name, field, new_value) for every unfolded edit. Local
-    edits fold into the research JSON; imported edits fold into
+    edits fold into local_price_edits.json; imported edits fold into
     imported_price_edits.json, but either would be overwritten if skipped.
     """
     connection = sqlite3.connect(path, timeout=30)

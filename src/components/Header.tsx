@@ -1,5 +1,5 @@
 import type { DashboardMeta } from '../types'
-import { CompareIcon, DownloadIcon, LockIcon, SearchIcon, SlidersIcon, SpreadsheetIcon } from './icons'
+import { CompareIcon, DownloadIcon, ImportedSpreadsheetIcon, LocalSpreadsheetIcon, LockIcon, SearchIcon, SlidersIcon } from './icons'
 import { OriginSwitch } from './OriginSwitch'
 
 /**
@@ -53,13 +53,25 @@ export function Header({ meta }: { meta: DashboardMeta }) {
           </button>
           <button
             class="btn-register is-icon"
-            id="downloadXlsx"
+            id="downloadLocalXlsx"
+            data-export-origin="local"
             type="button"
-            aria-label="Export Local and Imported books as Excel"
-            title="Export Excel workbook (Local + Imported)"
+            aria-label="Export the Local book as Excel"
+            title="Export Local Excel workbook"
             hidden
           >
-            <SpreadsheetIcon />
+            <LocalSpreadsheetIcon />
+          </button>
+          <button
+            class="btn-register is-icon"
+            id="downloadImportedXlsx"
+            data-export-origin="imported"
+            type="button"
+            aria-label="Export the Imported book as Excel"
+            title="Export Imported Excel workbook"
+            hidden
+          >
+            <ImportedSpreadsheetIcon />
           </button>
           <button
             class="btn-register is-icon"

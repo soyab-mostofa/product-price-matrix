@@ -40,10 +40,19 @@ export const DownloadIcon = () => (
   </svg>
 )
 
-export const SpreadsheetIcon = () => (
+export const LocalSpreadsheetIcon = () => (
   <svg aria-hidden="true" viewBox="0 0 16 16" {...stroke}>
     <rect x="2.5" y="2" width="11" height="12" />
     <path d="M2.5 6h11M6.2 6v8M10 6v8M2.5 10h11" />
+    <path d="M4 4.2 5.1 3.3l1.1.9" />
+  </svg>
+)
+
+export const ImportedSpreadsheetIcon = () => (
+  <svg aria-hidden="true" viewBox="0 0 16 16" {...stroke}>
+    <rect x="2.5" y="2" width="11" height="12" />
+    <path d="M2.5 6h11M6.2 6v8M10 6v8M2.5 10h11" />
+    <circle cx="11.3" cy="4" r="1.3" />
   </svg>
 )
 

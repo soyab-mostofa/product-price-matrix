@@ -19,6 +19,7 @@ WORKBOOK_MRP_MIGRATION_PATH = ROOT / "migrations/0006_workbook_mrp_for_local.sql
 WORKBOOK_PROVENANCE_MIGRATION_PATH = ROOT / "migrations/0007_workbook_provenance.sql"
 PERCENTAGE_CAC_MIGRATION_PATH = ROOT / "migrations/0008_percentage_cac.sql"
 PRICE_EDITS_MIGRATION_PATH = ROOT / "migrations/0009_price_edits.sql"
+WORKBOOK_BASELINES_MIGRATION_PATH = ROOT / "migrations/0010_workbook_baselines.sql"
 
 
 def _unwrapped(path: Path) -> str:
@@ -69,6 +70,11 @@ def _percentage_cac_migration() -> str:
 def _price_edits_migration() -> str:
     """The 0009 migration body, minus the transaction/pragma wrapper."""
     return _unwrapped(PRICE_EDITS_MIGRATION_PATH)
+
+
+def _workbook_baselines_migration() -> str:
+    """Immutable workbook price columns + explicit revert marker."""
+    return _unwrapped(WORKBOOK_BASELINES_MIGRATION_PATH)
 
 
 # 0009 carries two independent changes, split on the marker comment that opens
@@ -259,6 +265,23 @@ def migrate_database(path: Path) -> list[str]:
         if not _mrp_source_type_allows_manual(connection):
             connection.executescript(_manual_mrp_migration())
             changes.append("products.mrp_source_type=manual")
+
+        product_columns = columns(connection, "products")
+        edit_columns = columns(connection, "price_edits")
+        missing_baselines = {
+            name for name in ("workbook_source_cost", "workbook_mrp")
+            if name not in product_columns
+        }
+        revert_marker_missing = "reverted" not in edit_columns
+        if missing_baselines or revert_marker_missing:
+            # 0010 is a single migration remotely. Locally, fail loudly on a
+            # partially-applied shape rather than re-running ALTER TABLE for a
+            # column that already exists.
+            if missing_baselines != {"workbook_source_cost", "workbook_mrp"} \
+                    or not revert_marker_missing:
+                raise RuntimeError("Partial 0010 workbook-baseline migration detected")
+            connection.executescript(_workbook_baselines_migration())
+            changes.append("products.workbook_baselines+price_edits.reverted")
 
         connection.execute(
             """
