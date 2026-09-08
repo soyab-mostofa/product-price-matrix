@@ -1196,10 +1196,14 @@ document.addEventListener('DOMContentLoaded', () => {
   bodyElement?.addEventListener('click', (e) => {
     const target = e.target as HTMLElement | null
     const row = target?.closest('tr[data-row-id]') as HTMLElement | null
-    // An editable price cell owns its own click. This listener is registered
-    // first, so stopPropagation from the edit handler cannot help — the
-    // exclusion has to live here, alongside the existing anchor exclusion.
-    if (row && !target?.closest('a') && !target?.closest('[data-edit-field]')) {
+    // An editable price cell and its undo control each own their own click.
+    // This listener is registered first, so stopPropagation from those handlers
+    // cannot help — the exclusion has to live here, alongside the existing
+    // anchor exclusion. The undo chip is a sibling of the price, not inside it,
+    // so [data-edit-field] alone does not cover it: activating undo by mouse or
+    // by keyboard (which synthesises a click) would open the detail modal.
+    if (row && !target?.closest('a') && !target?.closest('[data-edit-field]')
+        && !target?.closest('[data-undo-field]')) {
       const found = productsByRow.get(Number(row.dataset.rowId))
       if (found) openDetail(found)
     }

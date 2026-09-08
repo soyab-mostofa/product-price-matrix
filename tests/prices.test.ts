@@ -341,6 +341,47 @@ describe('DELETE /api/prices (revert)', () => {
     expect(product.mrp_source_type).toBe('official')
   })
 
+  // A live probe caught this: a 'reference' SKU came back as 'third_party_avg'
+  // after an undo, because the resolver counted any AVAILABLE listing while
+  // seed_imported.py counts only listings that are available AND VERIFIED. The
+  // two predicates must stay identical or undo silently rewrites provenance.
+  test('an unverified listing does not promote a reference SKU on revert', async () => {
+    const db = sqliteD1()
+    const env = envWith(db)
+    const cookie = await loginCookie(env)
+
+    db.raw.exec(`
+      INSERT INTO products
+        (row_id, product_name, brand_name, size, manufactured_price, market_average_price,
+         canonical_name, mrp_source_type, sourcing_origin, source_sheet, source_row)
+      VALUES
+        (501, 'Dove Pink Moisturising Beauty Bar 100g', 'Dove', '100g',
+         225.0, 235.5, 'Dove Pink Moisturising Beauty Bar 100g', 'reference',
+         'imported', 'imported Skincare', 3);
+      INSERT INTO marketplace_listings
+        (row_id, channel_name, price, url, matched_title, seller, confidence, available, verified)
+      VALUES
+        (501, 'Daraz', 240.0, 'https://example.com/dove-bar',
+         'Dove Pink Beauty Bar 100g', 'Daraz Seller', 80.0, 1, 0);
+    `)
+
+    await edit(env, cookie, { productRowId: 501, field: 'mrp', value: 300 })
+    await app.request(
+      'https://matrix.example/api/prices?productRowId=501&field=mrp',
+      {
+        method: 'DELETE',
+        headers: { Origin: 'https://matrix.example', 'X-Price-Matrix-Admin': '1', Cookie: cookie },
+      },
+      env,
+    )
+
+    const product = db.raw.query(
+      'SELECT market_average_price, mrp_source_type FROM products WHERE row_id = 501',
+    ).get() as any
+    expect(product.market_average_price).toBe(235.5)
+    expect(product.mrp_source_type).toBe('reference')
+  })
+
   test('reverting an unedited price changes nothing', async () => {
     const db = sqliteD1()
     const env = envWith(db)

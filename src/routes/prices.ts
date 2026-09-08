@@ -153,14 +153,18 @@ async function restoredImportedMrpSource(
   productRowId: number,
   current: string,
 ): Promise<string> {
+  // The predicate must match scripts/seed_imported.py exactly: a listing only
+  // counts when it is BOTH available and verified. Testing availability alone
+  // let an unverified listing resurrect a 'third_party_avg' on a row the seed
+  // had resolved to 'reference', so undo silently rewrote provenance.
   const hasOfficial = await db.prepare(
     `SELECT 1 FROM marketplace_listings
-      WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1`,
+      WHERE row_id = ?1 AND channel_name = 'Official Store' AND available = 1 AND verified = 1`,
   ).bind(productRowId).first()
   if (hasOfficial) return 'official'
 
   const hasAny = await db.prepare(
-    'SELECT 1 FROM marketplace_listings WHERE row_id = ?1 AND available = 1',
+    'SELECT 1 FROM marketplace_listings WHERE row_id = ?1 AND available = 1 AND verified = 1',
   ).bind(productRowId).first()
   if (hasAny) return 'third_party_avg'
 
